@@ -1,0 +1,364 @@
+.message__wrapper {
+  position: fixed;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white; }
+  @media (min-width: 767px) {
+    .message__wrapper {
+      position: relative;
+      background-color: transparent;
+      height: auto; } }
+  .message__wrapper .toBottom {
+    position: absolute;
+    bottom: 95px;
+    cursor: pointer;
+    right: 18px;
+    background-color: #01305c;
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    background-image: url("http://m-contract.ru/ico/down-arrow.svg");
+    background-size: 14px auto;
+    background-position: 50% 50%;
+    background-repeat: no-repeat; }
+
+.message__header {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 80px;
+  position: relative;
+  border-bottom: 2px solid #f1f3f5; }
+  .message__header .back {
+    width: 18px;
+    height: 100%;
+    border-right: 2px solid #f1f3f5;
+    background-image: url("http://m-contract.ru/ico/left-arr.svg");
+    background-position: 50% 50%;
+    background-size: 7px 12px;
+    cursor: pointer;
+    background-repeat: no-repeat; }
+    @media (min-width: 767px) {
+      .message__header .back {
+        width: 30px; } }
+  .message__header .info-wrapper {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center; }
+    .message__header .info-wrapper .img {
+      margin-left: 10px;
+      margin-right: 10px;
+      width: 60px;
+      height: 60px; }
+      .message__header .info-wrapper .img img {
+        width: 100%;
+        height: 100%; }
+    .message__header .info-wrapper .info-text {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -webkit-flex-direction: column;
+          -ms-flex-direction: column;
+              flex-direction: column; }
+      .message__header .info-wrapper .info-text .oo {
+        color: #14355d;
+        font-size: 10px;
+        font-weight: 700; }
+      .message__header .info-wrapper .info-text .city {
+        color: #506175;
+        font-size: 10px;
+        font-weight: 400; }
+      .message__header .info-wrapper .info-text .name {
+        color: #506175;
+        font-size: 11px;
+        font-weight: 700; }
+      .message__header .info-wrapper .info-text .status {
+        color: #a5b1bf;
+        font-size: 11px;
+        font-weight: 400; }
+        .message__header .info-wrapper .info-text .status.on-line {
+          color: #61af90; }
+  .message__header .edit {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    cursor: pointer;
+    width: 21px;
+    height: 19px;
+    display: block;
+    background-image: url("http://m-contract.ru/ico/edit.png");
+    background-size: 100% 100%; }
+    .message__header .edit .edit-list {
+      position: absolute;
+      padding: 0;
+      top: 24px;
+      right: 8px;
+      margin: 0;
+      list-style: none;
+      background-color: #a5b1bf;
+      width: 190px;
+      z-index: 10;
+      border: 1px solid white; }
+      .message__header .edit .edit-list.closed {
+        display: none; }
+    .message__header .edit .edit-item {
+      color: white;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 30px;
+      padding-left: 20px;
+      -webkit-transition: 400ms ease-out background-color;
+      -o-transition: 400ms ease-out background-color;
+      transition: 400ms ease-out background-color; }
+      .message__header .edit .edit-item:not(:last-of-type) {
+        border-bottom: 1px solid white; }
+      .message__header .edit .edit-item:hover {
+        background-color: #506175; }
+    @media (min-width: 767px) {
+      .message__header .edit {
+        top: 14px;
+        right: 14px; } }
+  @media (min-width: 767px) {
+    .message__header {
+      height: 110px;
+      background-color: white; } }
+
+.message__main {
+  overflow-y: scroll;
+  height: -webkit-calc(100% - 126px);
+  height: calc(100% - 126px);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 0px 10px;
+  position: relative; }
+  .message__main-date {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column; }
+    .message__main-date .date-message {
+      color: #506175;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      font-weight: 400;
+      text-align: center; }
+    .message__main-date .message-in {
+      padding: 6px 12px;
+      background-color: #e6f1fa;
+      width: -webkit-fit-content;
+      width: -moz-fit-content;
+      width: fit-content;
+      max-width: 280px;
+      margin-bottom: 15px; }
+      .message__main-date .message-in .message-info {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+            -ms-flex-align: center;
+                align-items: center;
+        width: 100%; }
+        .message__main-date .message-in .message-info .img {
+          width: 20px;
+          height: 20px;
+          margin-right: 8px; }
+          .message__main-date .message-in .message-info .img img {
+            margin-top: -8px;
+            width: 100%;
+            height: 100%; }
+        .message__main-date .message-in .message-info .date {
+          color: #506175;
+          font-size: 10px;
+          font-weight: 400;
+          width: 100px;
+          line-height: 10px; }
+        .message__main-date .message-in .message-info .add {
+          margin-left: auto;
+          width: 10px;
+          height: 6px;
+          background-image: url("http://m-contract.ru/ico/arrDown-black.png");
+          background-size: 100% 100%;
+          position: relative;
+          cursor: pointer; }
+          .message__main-date .message-in .message-info .add .message-list {
+            position: absolute;
+            top: 10px;
+            right: -36px;
+            list-style: none;
+            width: 190px;
+            z-index: 5;
+            border: 2px solid #14355d;
+            background-color: white;
+            padding: 27px 30px;
+            margin: 0; }
+            .message__main-date .message-in .message-info .add .message-list .message-item {
+              color: #14355d;
+              font-size: 12px;
+              cursor: pointer;
+              font-weight: 400;
+              text-decoration: underline;
+              -webkit-transition: 400ms ease-out color;
+              -o-transition: 400ms ease-out color;
+              transition: 400ms ease-out color; }
+              .message__main-date .message-in .message-info .add .message-list .message-item:not(:last-of-type) {
+                margin-bottom: 10px; }
+              .message__main-date .message-in .message-info .add .message-list .message-item:hover {
+                color: #2b8ff1; }
+            .message__main-date .message-in .message-info .add .message-list.closed {
+              display: none; }
+      .message__main-date .message-in .message-text {
+        color: #506175;
+        font-size: 13px;
+        margin-top: 6px;
+        font-weight: 400; }
+        @media (min-width: 767px) {
+          .message__main-date .message-in .message-text {
+            margin-left: 45px;
+            margin-right: 10px;
+            margin-bottom: 10px; } }
+      .message__main-date .message-in.out {
+        margin-left: auto;
+        background-color: #dee4e9;
+        position: relative; }
+        .message__main-date .message-in.out .add .message-list {
+          right: -16px; }
+        .message__main-date .message-in.out .status {
+          position: absolute;
+          top: 13px;
+          left: -24px;
+          height: 7px;
+          width: 15px;
+          background-position: 50% 50%;
+          background-repeat: no-repeat; }
+          .message__main-date .message-in.out .status.sent {
+            background-image: url("http://m-contract.ru/ico/send.svg");
+            background-size: auto 100%; }
+          .message__main-date .message-in.out .status.delivered {
+            background-image: url("http://m-contract.ru/ico/delived.svg");
+            background-size: auto 100%; }
+          .message__main-date .message-in.out .status.readed {
+            background-image: url("http://m-contract.ru/ico/readed.svg");
+            background-size: auto 100%; }
+      @media (min-width: 767px) {
+        .message__main-date .message-in {
+          max-width: 446px; } }
+      @media (min-width: 993px) {
+        .message__main-date .message-in {
+          max-width: 550px; } }
+  @media (min-width: 767px) {
+    .message__main {
+      background-color: white;
+      height: 600px;
+      max-height: 600px;
+      padding: 0px 18px; } }
+
+.message__send {
+  height: 46px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+  .message__send .add-file {
+    min-width: 46px;
+    width: 46px;
+    height: 46px;
+    background-color: #899aae;
+    background-image: url("http://m-contract.ru/ico/attach.svg");
+    background-position: 50% 50%;
+    background-size: 24px auto;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    -webkit-transition: 400ms ease-out background-color;
+    -o-transition: 400ms ease-out background-color;
+    transition: 400ms ease-out background-color; }
+    .message__send .add-file:hover {
+      background-color: #2b8ff1; }
+    @media (min-width: 767px) {
+      .message__send .add-file {
+        margin-right: 18px; } }
+  .message__send textarea {
+    height: 46px;
+    resize: none;
+    border-radius: 0px;
+    word-wrap: break-word;
+    border: 1px solid #dee4e9;
+    width: 100%;
+    padding-left: 18px;
+    padding-top: 12px;
+    color: #636a72;
+    font-size: 13px;
+    font-weight: 400;
+    -webkit-transition: 400ms ease-out border-color;
+    -o-transition: 400ms ease-out border-color;
+    transition: 400ms ease-out border-color; }
+    .message__send textarea::-webkit-input-placeholder {
+      color: #a5b1bf; }
+    .message__send textarea::-moz-placeholder {
+      color: #a5b1bf; }
+    .message__send textarea:-ms-input-placeholder {
+      color: #a5b1bf; }
+    .message__send textarea::-ms-input-placeholder {
+      color: #a5b1bf; }
+    .message__send textarea::placeholder {
+      color: #a5b1bf; }
+    .message__send textarea:hover, .message__send textarea:focus {
+      border-color: #2b8ff1; }
+    @media (min-width: 767px) {
+      .message__send textarea {
+        resize: vertical;
+        padding-bottom: 12px; } }
+  .message__send .message-send-btn {
+    min-width: 46px;
+    width: 46px;
+    height: 46px;
+    background-color: #899aae;
+    background-image: url("http://m-contract.ru/ico/arrow.svg");
+    background-position: 50% 50%;
+    background-size: 24px auto;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    -webkit-transition: 400ms ease-out background-color;
+    -o-transition: 400ms ease-out background-color;
+    transition: 400ms ease-out background-color; }
+    .message__send .message-send-btn:hover {
+      background-color: #2b8ff1; }
+    @media (min-width: 767px) {
+      .message__send .message-send-btn {
+        margin-left: 18px; } }
+  @media (min-width: 767px) {
+    .message__send {
+      height: auto;
+      min-height: 46px;
+      margin-top: 30px;
+      margin-bottom: 160px;
+      -webkit-box-align: end;
+      -webkit-align-items: flex-end;
+          -ms-flex-align: end;
+              align-items: flex-end; } }

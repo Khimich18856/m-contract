@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512px" height="376px" viewBox="0 0 512 376" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Path</title>
+    <g id="View" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="320" transform="translate(-215.000000, -564.000000)" fill="#86D1B3" fill-rule="nonzero">
+            <g id="tick" transform="translate(215.000000, 564.000000)">
+                <path d="M504.502,7.496 C494.505,-2.502 478.297,-2.502 468.298,7.496 L161.594,314.203 L43.702,196.311 C33.705,186.313 17.497,186.314 7.498,196.311 C-2.5,206.308 -2.5,222.516 7.498,232.514 L143.492,368.506 C153.486,378.503 169.706,378.496 179.696,368.506 L504.502,43.7 C514.5,33.703 514.499,17.494 504.502,7.496 Z" id="Path"></path>
+            </g>
+        </g>
+    </g>
+</svg>

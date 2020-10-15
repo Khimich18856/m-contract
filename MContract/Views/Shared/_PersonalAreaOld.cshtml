@@ -1,0 +1,140 @@
+﻿@model MContract.Models.User
+
+<link href="@Url.Content("~/css/Shared/_PersonalArea.css")?p=2020-08-28" rel="stylesheet" type="text/css" />
+
+<div class="sideBarContainer">
+    <div class="companyQuickInfoContainer">
+        <div class="companyLogoContainer">
+            <img src="@(Model.SmallPhotoUrl)" />
+            <div class="uploadLogo">
+                <div class="imageUploadContainer">
+                    <input type="file" name="imageSelect" id="personalAreaImageSelect" accept="image/png, image/jpeg" multiple />
+                    <button class="uploadImages btn btn-primary">@(Model.LogoGroup.Any() ? "Сменить логотип" : "Загрузить логотип")</button>
+                </div>
+            </div>
+        </div>
+        <p>
+            @Model.CompanyNameWithTypeOfOwnership<br />
+            <span class="ratingStar"></span>@Model.Rating, @Model.TownName
+        </p>
+    </div>
+	<div class="buttonsContainer">
+		<a href="@ViewBag.L.SiteUrlClear/my">
+			<span>Данные профиля</span>
+		</a>
+		<div class="myAdsButtonsContainer">
+			<a href="~/User/MyAds">
+				<span>Мои объявления</span>
+				<div class="adsNotificationContainer">
+					@Model.AdsCount
+				</div>
+			</a>
+			<a href="~/Ads/Index?my=true">
+				<span>Активные</span>
+			</a>
+			<a href="~/Ads/Index?adStatusId=@((int)MContract.Models.Enums.AdStatuses.Finished)&my=true">
+				<span>Завершенные</span>
+			</a>
+		</div>
+		<a href="~/User/DealsHistory">
+			<span>История сделок</span>
+		</a>
+		<a href="~/Ads/Index?my=true&favorites=true">
+			<span>Избранное</span>
+		</a>
+		<a href="~/User/Dialogs">
+			<span>Сообщения</span>
+			@if (Model.UnreadMessagesCount != 0)
+			{
+				<div class="messagesNotificationContainer unreadMessagesCount">
+					@Model.UnreadMessagesCount
+				</div>
+			}
+		</a>
+		<a href="~/Ads/Index?adStatusId=@((int)MContract.Models.Enums.AdStatuses.Draft)&my=true">
+			<span>Черновики</span>
+		</a>
+		<a href="~/Ads/Offers">
+			<span>Мои отклики</span>
+		</a>
+		<a href="~/User/Companies?isRegularClients=true">
+			<span>Постоянные клиенты</span>
+		</a>
+		@if (Model.IsAdmin)
+		{
+			<a href="~/Admin">
+				<span>Админка</span>
+			</a>
+		}
+	</div>
+</div>
+
+<script>
+    jQuery(document).ready(function () {
+        $(".companyQuickInfoContainer .companyLogoContainer").hover(function () {
+            $(this).children(".uploadLogo").css("display", "flex");
+        }, function () {
+            $(this).children(".uploadLogo").css("display", "none");
+        });
+        $(".companyQuickInfoContainer .uploadImages").click(function () {
+            $(this).siblings("#personalAreaImageSelect").trigger("click");
+        });
+        $("#personalAreaImageSelect").click(function () {
+            var input = document.getElementById("personalAreaImageSelect");
+            var files = input.files;
+            if (window.FormData !== undefined) {
+                var data = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    data.append("file" + i, files[i]);
+                }
+                data.append('userId', @Model.Id);
+                /*var newAdPhotoContainer = $(".adPhotosContainer .cloneSource").clone();
+                newAdPhotoContainer.removeClass("cloneSource");*/
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("UploadPhoto", "User")',
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (result) {
+                        /*//$('#sendingSpan').hide();
+                        if (!result.includes("error")) {
+                            result = result.slice(0, -1);
+                            splitResult = result.split('|');
+                            splitResult.forEach(r => {
+                                var splitPhotoInformation = r.split(',');
+                                var photoId = splitPhotoInformation[1];
+                                var photoUrl = splitPhotoInformation[2];
+                                newAdPhotoContainer.find(".adPhoto").attr("id", photoId).attr("style", "background: url(" + photoUrl + ") 50% 50% cover");
+                                $(".adPhotosContainer").append(newAdPhotoContainer);
+                                newAdPhotoContainer = $(".adPhotosContainer .cloneSource").clone();
+                                newAdPhotoContainer.removeClass("cloneSource");
+                            });
+                            $(".adPhotosContainer").removeClass("isEmpty");
+                            let parts = result.split(',');
+                            let newFileId = parts[1];
+                            let fileName = parts[2];
+                            let attachedFileIds = $('#attachedFileIds').val();
+                            if (attachedFileIds.length > 0)
+                                attachedFileIds += ',';
+
+                            attachedFileIds += newFileId;
+                            $('#attachedFileIds').val(attachedFileIds);
+                            $('#attachedFilesDiv').show();
+                            $('#attachedFilesDiv').append('<p><span>' + fileName + '</span></p>');
+                        }
+                        else
+                            alert(result);*/
+                    },
+                    error: function (xhr, status, p3) {
+                        $('#sendingSpan').hide();
+                        alert("Error! " + xhr.responseText);
+                    }
+                });
+            } else {
+                alert("Браузер не поддерживает загрузку файлов HTML5! Установите современный браузер.");
+            }
+            $(this).val(null);
+        });
+    });
+</script>

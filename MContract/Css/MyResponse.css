@@ -1,0 +1,308 @@
+@import url(NewAdFinalStep.css);
+.lk__main-back {
+  margin-bottom: 18px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-left: auto;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+  .lk__main-back a {
+    display: block;
+    width: 52px;
+    padding-left: 15px;
+    margin-right: 10px;
+    position: relative;
+    color: #017bf2;
+    font-size: 13px;
+    font-weight: 400; }
+    .lk__main-back a::before {
+      position: absolute;
+      content: '<';
+      top: 10px;
+      left: 0;
+      color: #01305c; }
+    .lk__main-back a:hover {
+      text-decoration: none;
+      color: #01305c; }
+  .lk__main-back.lk__main-back-desctop {
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    margin-top: 17px;
+    margin-left: 30px; }
+  .lk__main-back.lk__main-back-desctop-ft {
+    margin-top: 40px;
+    margin-bottom: 0px;
+    padding-bottom: 100px; }
+
+.deal__wrapper {
+  background-color: white;
+  margin-bottom: 158px;
+  padding-bottom: 70px; }
+
+.c__offer-title {
+  background-color: #f1f3f5;
+  margin-bottom: 20px;
+  position: relative; }
+  .c__offer-title .contract {
+    color: #14355d !important; }
+  .c__offer-title .info {
+    color: #5d6d7f;
+    font-size: 11px;
+    font-weight: 700; }
+
+.back-to-edit {
+  color: #017bf2;
+  font-size: 13px;
+  font-weight: 400;
+  text-decoration: underline; }
+
+.btn-send-message {
+  width: 46px;
+  height: 46px;
+  margin-right: 17px;
+  background-color: #899aae;
+  background-image: url("http://m-contract.ru/ico/message.svg");
+  background-size: 26px auto;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  -webkit-transition: 400ms ease-out background-color;
+  -o-transition: 400ms ease-out background-color;
+  transition: 400ms ease-out background-color; }
+  .btn-send-message:hover {
+    background-color: #2b8ff1; }
+
+.btns-wrapper {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-top: 14px;
+  margin-top: 10px;
+  padding-left: 15px;
+  padding-right: 15px; }
+  .btns-wrapper .main-btns {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  .btns-wrapper .main-btn {
+    height: 19px;
+    width: 19px;
+    cursor: pointer;
+    background-position: 50% 50%;
+    background-repeat: no-repeat; }
+    .btns-wrapper .main-btn.refresh {
+      background-image: url("http://m-contract.ru/ico/refresh.svg");
+      background-size: 100% 100%;
+      margin-right: 26px; }
+    .btns-wrapper .main-btn.edit {
+      background-image: url("http://m-contract.ru/ico/edit-pencil.svg");
+      background-size: 18px 18px; }
+    .btns-wrapper .main-btn.delete-btn {
+      background-image: url("http://m-contract.ru/ico/trash-bold.svg");
+      background-size: 18px 19px; }
+
+.comment__wrapper {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column; }
+  .comment__wrapper .title {
+    background-color: #01305c;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 30px;
+    padding-left: 16px; }
+  .comment__wrapper .text {
+    padding: 20px 15px;
+    color: #506175;
+    font-size: 14px;
+    font-weight: 400; }
+
+.offer__description {
+  margin-top: 0; }
+
+.select-date-calenar {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding-top: 28px;
+  background-color: #a5b1bf;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  z-index: 20; }
+  .select-date-calenar .selected-date {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    color: #506175;
+    height: 45px;
+    padding-bottom: 6px;
+    width: 200px;
+    padding-left: 12px;
+    font-size: 13px;
+    font-weight: 400;
+    border-bottom: 1px solid #506175; }
+  .select-date-calenar .calendar-table {
+    margin-top: 26px; }
+    .select-date-calenar .calendar-table table tr td {
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 400;
+      -webkit-transition: 400ms ease-out background-color;
+      -o-transition: 400ms ease-out background-color;
+      transition: 400ms ease-out background-color; }
+    .select-date-calenar .calendar-table table tr:not(:first-of-type) td:hover {
+      background-color: #506175; }
+    .select-date-calenar .calendar-table table tr:not(:first-of-type) td.selected {
+      background-color: #506175; }
+  .select-date-calenar .calendar-btns {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-around;
+        -ms-flex-pack: distribute;
+            justify-content: space-around;
+    margin-top: 40px;
+    padding-bottom: 20px; }
+    .select-date-calenar .calendar-btns .calendar-btn {
+      display: inline-block;
+      line-height: 28px;
+      background-color: #506175;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 400;
+      text-transform: uppercase;
+      padding: 0px 16px;
+      -webkit-transition: 400ms ease-out background-color;
+      -o-transition: 400ms ease-out background-color;
+      transition: 400ms ease-out background-color; }
+      .select-date-calenar .calendar-btns .calendar-btn.cancel {
+        margin-right: 40px; }
+      .select-date-calenar .calendar-btns .calendar-btn:hover {
+        background-color: #2b8ff1; }
+  .select-date-calenar.closed {
+    display: none; }
+
+.pc-btns-wrapper {
+  display: none;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-top: 66px; }
+  .pc-btns-wrapper a {
+    display: inline-block;
+    line-height: 46px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0px 26px;
+    background-color: #899aae;
+    -webkit-transition: 400ms ease-out background-color;
+    -o-transition: 400ms ease-out background-color;
+    transition: 400ms ease-out background-color; }
+    .pc-btns-wrapper a:hover {
+      text-decoration: none;
+      background-color: #2b8ff1; }
+
+@media (min-width: 767px) {
+  .c__offer-title .c__offer-title-wrapper {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+        -ms-flex-align: start;
+            align-items: flex-start; }
+    .c__offer-title .c__offer-title-wrapper .info br {
+      display: none; }
+  .pc-btns-wrapper {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+  .comment__wrapper {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column; }
+    .comment__wrapper .title {
+      color: #01305c;
+      background-color: transparent;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 30px;
+      padding-left: 16px; }
+    .comment__wrapper .text {
+      padding: 20px 15px;
+      background-color: #f1f3f5;
+      color: #506175;
+      font-size: 14px;
+      font-weight: 400; } }
+
+.delete__draft-title {
+  padding: 0px 10px; }

@@ -1,0 +1,73 @@
+﻿@model MContract.Models.UserCompaniesViewModel
+
+@{
+    ViewBag.Title = ViewBag.Heading;
+    Layout = "~/Views/Shared/_LayoutOld.cshtml";
+}
+
+@section Styles{
+    <link href="@Url.Content("~/css/User/Companies.css")?p=202006112" rel="stylesheet" type="text/css" />
+}
+
+@if (Model.Companies.Any())
+{
+    foreach (var company in Model.Companies)
+    {
+        <div class="singleCompanyContainer">
+            <div class="companyId">@company.Id</div>
+            <a href="@company.Url" class="companyLogoContainer">
+                <img src="@(company.SmallPhotoUrl)" class="companyLogo" />
+            </a>
+            <a href="@company.Url" class="textContainer">
+                <h3 class="companyNameContainer">
+                    @company.CompanyNameWithTypeOfOwnership
+                </h3>
+                <div class="informationContainer">
+                    <p class="rating"><span class="ratingStar"></span>@company.Rating</p>
+                    <p class="cityName">@company.TownName</p>
+                </div>
+            </a>
+            <input type="checkbox" class="isRegular" @(Model.PersonalAreaUser?.RegularClients.Any(u => u.Id == company.Id) == true ? "checked" : "") />
+            <button class="isRegularButton btn btn-primary">
+                @(Model.PersonalAreaUser?.RegularClients.Any(u => u.Id == company.Id) == true
+                    ? "Удалить из списка постоянных клиентов"
+                    : "Добавить в список постоянных клиентов")
+            </button>
+        </div>
+    }
+}
+else
+{
+    <span>Вы еще не добавили постоянных клиентов.</span>
+}
+
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        $("body").on("change", ".isRegular", function () {
+            var isChecked = false;
+            if ($(this).is(":checked")) {
+                isChecked = true;
+            }
+            var clientId = parseInt($(this).closest(".singleCompanyContainer").find(".companyId").html());
+            var isDelete = !isChecked;
+            $.post("@ViewBag.L.SiteUrlClear/User/ChangeRegularClient", {
+                userId: @(Model.PersonalAreaUser?.Id),
+                clientId: clientId,
+                isDelete: isDelete
+            }, changeRegularClientCallback($(this)));
+        });
+        function changeRegularClientCallback(obj) {
+            if ($(obj).is(":checked")) {
+                $(obj).closest(".singleCompanyContainer").find(".isRegularButton").html("Удалить из списка постоянных клиентов");
+            } else {
+                $(obj).closest(".singleCompanyContainer").find(".isRegularButton").html("Добавить в список постоянных клиентов");
+                if (@Model.IsRegularClients.ToString().ToLower()) {
+                    $(obj).closest(".singleCompanyContainer").remove();
+                }
+            }
+        }
+        $("body").on("click", ".isRegularButton", function () {
+            $(this).closest(".singleCompanyContainer").find(".isRegular").trigger("click");
+        });
+    });
+</script>

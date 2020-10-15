@@ -1,0 +1,359 @@
+﻿@model MContract.Models.UserMessagesViewModel
+
+@{
+    ViewBag.Title = "Переписка с пользователем";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var respondent = Model.Respondent;
+    var messages = Model.Messages;
+    var currentUser = Model.CurrentUser;
+}
+
+<!-- Styles -->
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/lk-layout.css?p=2020-10-10-a">
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/Dialog.css?p=2020-10-10-a">
+
+<section class="header-pc">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-5 col-lg-4">
+                <div class="offer__title">
+                    <h1>Личный кабинет</h1>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-5 col-lg-7">
+                <div class="offer__open">
+                    <div class="open">
+                        Сообщения
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md col-lg-1 mobile-first">
+                <div class="product__crumbs">
+                    <span class="page"><a href="@ViewBag.L.SiteUrlClear">Главная</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<main>
+    <section class="lk__main__wrapper">
+        <div class="container">
+            <div class="row">
+                @{
+                    Html.RenderPartial("_LeftMenu", Model.LeftMenuViewModel);
+                }
+                <div class="col-sm-12 col-md-9">
+                    <div class="message__wrapper">
+                        <div class="message__header">
+                            <a href="@ViewBag.L.SiteUrlClear/User/Dialogs"class="back">
+
+                            </a>
+                            <div class="info-wrapper">
+                                <div class="img">
+                                    <img src="@respondent.SmallPhotoUrl" alt="">
+                                </div>
+                                <div class="info-text">
+                                    @if (respondent.IsSystemNotifications == false)
+                                    {
+                                        <div class="oo">
+                                            @respondent.CompanyNameWithTypeOfOwnership
+                                        </div>
+                                        <div class="city">
+                                            @(respondent.Town?.NameAndRegionNameWithComma)
+                                        </div>
+                                    }
+                                    <div class="name" data-respondent-id="@respondent.Id">
+                                        @respondent.ContactName
+                                    </div>
+                                    @if (respondent.IsSystemNotifications == false)
+                                    {
+                                        <div class="status on-line">
+                                            @if (respondent.IsOnline)
+                                            {
+                                                @:В сети
+                                            }
+                                            else
+                                            {
+                                                <span class="convert-time-from-universal">@respondent.LastOnline.ToString("o")</span>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="edit">
+                                <ul class="edit-list closed">
+                                    <li class="edit-item" onclick="location.href='@respondent.Url'">Профиль контрагента</li>
+                                    <li class="edit-item" onclick="deleteChat">Удалить всю переписку</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="message__main">
+                            @if (messages != null && messages.Any())
+                            {
+                                var todayDate = DateTime.Now.Date;
+                                var messageDayGroups = messages.GroupBy(m => m.Date.Date);
+                                var lastGroupKey = messageDayGroups.Last().Key;
+                                foreach (var messageGroup in messageDayGroups)
+                                {
+                                    <div class="message__main-date@(DateTime.Equals(messageGroup.Key, lastGroupKey) ? " last" : "")">
+                                        <div class="date-message">@(DateTime.Equals(todayDate, messageGroup.Key) ? "Сегодня" :
+												                    DateTime.Equals(todayDate, messageGroup.Key.AddDays(-1)) ? "Вчера" :
+												                    messageGroup.Key.ToShortDateString())</div>
+                                        @foreach (var message in messageGroup)
+                                        {
+                                            <div class="message-in@(message.Direction == "outgoing" ? " out" : "")" data-id="@message.Id">
+                                                <div class="message-info">
+                                                    <div class="img">
+                                                        <img src="@(message.Sender?.SmallPhotoUrl)" alt="">
+                                                    </div>
+                                                    <div class="date convert-time-from-universal">
+                                                        @message.Date.ToString("o")
+                                                    </div>
+                                                    <div class="add">
+                                                        <ul class="message-list closed">
+                                                            <li class="message-item delete-message">Удалить сообщение</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="message-text">
+                                                    @message.Text
+                                                </div>
+                                                @if (message.Files != null && message.Files.Any())
+                                                {
+                                                    <div class="message-files">
+                                                        @foreach (var file in message.Files)
+                                                        {
+                                                            <a class="file" href="@file.Url" target="_blank">@file.NameWithExtension</a>
+                                                        }
+                                                    </div>
+                                                }
+                                            </div>
+                                            <div class="status@(message.IsRead == false && message.Direction == "outgoing" ? "" : " readed")">
+
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            }
+                            @if (respondent.IsSystemNotifications == false)
+                            {
+                                <div class="message__send">
+                                    <div class="add-file">
+
+                                    </div>
+                                    <input type="file" name="fileSelect" id="fileSelect" multiple style="display:none"/>
+                                    <textarea type="text" name="message" id="message" placeholder="Написать сообщение"></textarea>
+                                    <div class="message-send-btn">
+
+                                    </div>
+                                </div>
+                            }
+                            <div class="toBottom">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+</main>
+
+<script src="@ViewBag.L.SiteUrlClear/js/lk-main.js?p=2020-10-10-a"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/Dialog.js?p=2020-10-10-a"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/user/replaceIsoDateWithLocalDate.js"></script>
+<script type="text/javascript">
+    var isMainChatPage = true;
+
+    function showMessage(message) {
+        var messageDirection = message.SenderId == @currentUser.Id ? "out" : "";
+        var messageId = message.Id;
+        var sender = message.Sender;
+        var messageText = message.Text;
+        var messageDateOfPosting = message.Date;
+        var messageFilesString = "";
+        if (message.Files && message.Files.length > 0) {
+            messageFilesString += `<div class="message-files">`;
+            $(message.Files).each(function () {
+                var file = this;
+                var fileName = file.NameWithExtension;
+                var fileUrl = file.Url;
+                messageFilesString += `<a class="file" href="${fileUrl}" target="_blank">${fileName}</a>`
+            });
+            messageFilesString += `</div>`;
+        }
+
+        if ($(".message__main-date").length == 0 || $(".message__main-date.last .date-message").html() != "Сегодня") {
+            if ($(".message__main-date").length > 0)
+                $(".message__main-date.last").removeClass("last");
+            $newMessageMainDate = $('<div class="message__main"><div class="message__main-date last">Сегодня</div></div>');
+            $(".message__main").append($newMessageMainDate);
+        }
+
+        $(".message__main-date.last").append(
+`<div class="message-in ${messageDirection}" data-id="${messageId}">` +
+`    <div class="message-info">` +
+`        <div class="img">` +
+`            <img src="${sender.SmallPhotoUrl}" alt="">` +
+`        </div>` +
+`        <div class="date convert-time-from-universal">` +
+`            ${messageDateOfPosting}` +
+`        </div>` +
+`        <div class="add">` +
+`            <ul class="message-list closed">` +
+`                <li class="message-item delete-message">Удалить сообщение</li>` +
+`            </ul>` +
+`        </div>` +
+`    </div>` +
+`    <div class="message-text">` +
+`        ${messageText}` +
+`    </div>` +
+`    ${messageFilesString}` +
+`</div>` +
+`<div class="status readed">` +
+`` +
+`</div>`);
+
+        replaceIsoDateTimeWithLocalDateTime($(".message-in .convert-time-from-universal").last());
+        $(".message__main").scrollTop($(".message__main").prop("scrollHeight"));
+    }
+
+	function deleteChat() {
+		$.post("@ViewBag.L.SiteUrlClear/User/DeleteChat", {
+			respondentId: @respondent.Id
+		}, function (result) {
+			if (result == 'ok') {
+				alert("Чат удален, вы будете перенаправлены на страницу диалогов");
+				location.href = "@ViewBag.L.SiteUrlClear/User/Dialogs";
+			}
+			else
+				alert(result);
+        });
+    }
+
+    jQuery(document).ready(function ($) {
+        replaceIsoDateTimeWithLocalDateTime($(".convert-time-from-universal"));
+
+        $(".message__main").scrollTop($(".message__main").prop("scrollHeight"));
+
+        $(".message__send .add-file").on("click", function () {
+            $("#fileSelect").trigger("click");
+        });
+        $("#fileSelect").on("change", function () {
+            //var input = document.getElementById("fileSelect");
+            var input = $(this)[0];
+            var files = input.files;
+
+            if (input.files.length == 0)
+                return;
+
+            if (window.FormData !== undefined) {
+                var data = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    data.append("file" + i, files[i]);
+                }
+                var respondentId = @respondent.Id;
+                data.append("respondentId", respondentId);
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("UploadFiles", "Files")",
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (result) {
+                        var files = [];
+                        result = result.slice(0, -1);
+                        splitResult = result.split('|');
+                        $(splitResult).each(function () {
+                            var splitFileInformation = this.split(',');
+                            if (splitFileInformation[0] == "ok") {
+                                var fileName = splitFileInformation[1];
+                                var fileUrl = splitFileInformation[2];
+                                files.push({
+                                    NameWithExtension: fileName,
+                                    Url: fileUrl
+                                });
+                            }
+                        });
+
+                        var messageText = "Прикрепленные файлы:";
+                        var messageSenderId = @currentUser.Id;
+                        var messageRecipientId = @respondent.Id;
+
+					    var messageSender = {
+						    Id: messageSenderId,
+						    CompanyNameWithTypeOfOwnership: "Я",
+						    SmallPhotoUrl: '@currentUser.SmallPhotoUrl'
+					    };
+					    var message = {
+                            SenderId: messageSenderId,
+						    Sender: messageSender,
+                            Text: messageText,
+                            Files: files,
+						    Date: new Date()
+					    };
+                        showMessage(message);
+                        var currentChatBoxRespondentId = $(".chatBoxContainer .chatBoxHeader").attr("data-respondent-id");
+                        var messageRecipientId = $(".messageAppContainer .respondentName").attr("data-respondent-id");
+                        if (messageRecipientId == currentChatBoxRespondentId) {
+                            showMessageInChatBox(message["Text"], "outgoing", 0, files);
+                        }
+                    },
+                    error: function (xhr, status, p3) {
+                        alert("Error! " + xhr.responseText);
+                    }
+                });
+            } else {
+                alert("Браузер не поддерживает загрузку файлов HTML5! Установите современный браузер.");
+            }
+            $(this).val(null);
+        });
+
+        $(".message-send-btn").on("click", function () {
+            var messageText = $("#message").val();
+            var messageSenderId = @currentUser.Id;
+            var messageRecipientId = @respondent.Id;
+            //var messageRecipientId = $(".messageAppContainer .respondentName").attr("data-respondent-id");
+            if (messageText.length != 0) {
+                $.post("@ViewBag.L.SiteUrlClear/User/AddMessage", {
+                    SenderId: messageSenderId,
+                    RecipientId: messageRecipientId,
+                    Text: messageText
+                }, function (data) {
+                    $("#message").val("");
+					var messageSender = {
+						Id: messageSenderId,
+						CompanyNameWithTypeOfOwnership: "Я",
+						SmallPhotoUrl: '@currentUser.SmallPhotoUrl'
+					};
+					var message = {
+						SenderId: messageSenderId,
+						Sender: messageSender,
+						Text: messageText,
+						Date: new Date()
+                    };
+                    showMessage(message);
+                    var currentChatBoxRespondentId = $(".chatBoxContainer .chatBoxHeader").attr("data-respondent-id");
+                    if (messageRecipientId == currentChatBoxRespondentId) {
+                        showMessageInChatBox(messageText, "outgoing", 0);
+                    }
+                });
+            }
+        });
+
+		$(".message__main").on("click", ".delete-message", function () {
+            $(this).closest(".message-list").addClass("closed");
+            var $thisMessage = $(this).closest(".message-in");
+            var messageId = $thisMessage.attr("data-id");
+            $.post("@ViewBag.L.SiteUrlClear/User/DeleteMessage", {
+                messageId: messageId
+            }, function (result) {
+                if (result == "ok") {
+                    $thisMessage.remove();
+                }
+                else
+                    alert(result);
+            });
+        });
+    });
+</script>

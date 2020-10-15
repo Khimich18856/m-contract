@@ -1,0 +1,113 @@
+﻿@model MContract.Models.AdsOffersViewModel
+
+@{
+    ViewBag.Title = ViewBag.Heading;
+    Layout = "~/Views/Shared/_LayoutOld.cshtml";
+}
+
+@section Styles{
+    <link href="@Url.Content("~/css/Ads/Offers.css")?p=2020-10-10-a" rel="stylesheet" type="text/css" />
+}
+
+@*<button class="btn showIncoming btn-primary">Входящие</button>
+    <button class="btn showOutgoing btn-secondary">Исходящие</button>
+    <h3 class="noOutgoing">Пока нет предложений</h3>
+    <h3 class="noIncoming">Пока нет предложений</h3>*@
+@if (!Model.OutgoingOffers.Any())
+{
+    <h3 class="noOutgoing">Пока нет предложений</h3>
+}
+else
+{
+    foreach (var offer in Model.OutgoingOffers@*.Union(Model.IncomingOffers)*@)
+{
+if (offer == null || offer.Ad == null)
+{
+continue;
+}
+var requiredDimension = 200;
+var smallestDimensionDifference = 0;
+var bestFitPhoto = new MContract.Models.Photo();
+if (offer.Ad.MainPhotoGroup != null)
+{
+smallestDimensionDifference = offer.Ad.MainPhotoGroup.Min(p => Math.Abs(p.HigherDimension.Value - requiredDimension));
+bestFitPhoto = offer.Ad.MainPhotoGroup.Find(p => Math.Abs(p.HigherDimension.Value - requiredDimension) == smallestDimensionDifference);
+}
+<div class="singleOfferContainer @(offer.SenderId == Model.PersonalAreaUser?.Id ? "outgoing" : "incoming")">
+    <a href="@offer.Url" class="adPhotoContainer">
+        <img src="@(offer.Ad.MainPhotoGroup != null ? bestFitPhoto.Url : "/Images/NoLogo.png")" class="adPhoto" />
+    </a>
+    <a href="@offer.Url" class="textContainer">
+        <h3 class="adName">
+            @offer.Ad.Name
+        </h3>
+        <h4>
+            @(offer.Ad.Sender?.CompanyNameWithTypeOfOwnership)@(offer.Ad.Sender?.TownName != null ? ", " + offer.Ad.Sender?.TownName : "")
+        </h4>
+        @*<h4 class="offerName">
+                @offer.Name
+                @(offer.SenderId == Model.PersonalAreaUser?.Id ? offer.Name : "Предложение")
+            </h4>*@
+        <div class="informationContainer">
+            @*<p>@offer.Sender?.CompanyNameWithTypeOfOwnership -> @offer.Ad.Sender?.CompanyNameWithTypeOfOwnership, @offer.Ad.Sender?.City</p>*@
+            <p class="cityName">@(offer.City?.RegionName.Contains(offer.City?.Name) != false ? offer.City?.Name : offer.City?.NameAndRegionName)</p>
+            <p>Сумма: @offer.SumOffer.ToString("0") руб.</p>
+            <p>@offer.ProductOffersDescription</p>
+        </div>
+        @if (offer.DateOfPosting != null)
+        {
+            <p class="dateOfPostingContainer">
+                @offer.DateOfPosting.ToString("o")
+            </p>
+        }
+    </a>
+</div>
+}
+}
+
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        $(".dateOfPostingContainer").each(function () {
+            var localDate = new Date($.trim($(this).html()));
+            var milliseconds = localDate.getMilliseconds();
+            var offset = localDate.getTimezoneOffset() * 1000;
+            localDate.setMilliseconds(milliseconds - offset);
+            $(this).html(localDate.toLocaleString("ru-RU"));
+        });
+        /*$(".singleOfferContainer.outgoing").hide();
+        $(".noIncoming, .noOutgoing").hide();
+        $(".showIncoming").on("click", function () {
+            $(this).removeClass("btn-secondary").addClass("btn-primary");
+            $(this).siblings(".showOutgoing").removeClass("btn-primary").addClass("btn-secondary");
+            if ($(".singleOfferContainer.incoming").length == 0) {
+                $(".noIncoming").show();
+            }
+            $(".singleOfferContainer").each(function () {
+                if ($(this).hasClass("incoming")) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            $(".noOutgoing").hide();
+        });
+        $(".showOutgoing").on("click", function () {
+            $(this).removeClass("btn-secondary").addClass("btn-primary");
+            $(this).siblings(".showIncoming").removeClass("btn-primary").addClass("btn-secondary");
+            if ($(".singleOfferContainer.outgoing").length == 0) {
+                $(".noOutgoing").show();
+            }
+            $(".singleOfferContainer").each(function () {
+                if ($(this).hasClass("outgoing")) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            $(".noIncoming").hide();
+        });
+        if ($(".singleOfferContainer.incoming").length == 0 && $(".singleOfferContainer.outgoing").length != 0) {
+            $(".showOutgoing").trigger("click");
+        }*/
+    });
+</script>

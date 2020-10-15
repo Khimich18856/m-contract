@@ -1,0 +1,12 @@
+@media (min-width: 993px) {
+  .lk__main-offers-block-wrapper .lk-product__item_d {
+    padding: 18px; } }
+
+.lk__main-offers-block-wrapper .lk-product__item_d-img {
+  margin-right: 18px; }
+  .lk__main-offers-block-wrapper .lk-product__item_d-img img {
+    width: 150px;
+    height: 150px; }
+
+.lk__main-offers-block-wrapper .lk-product__item_d-info .stats {
+  margin-top: 0px; }

@@ -1,0 +1,65 @@
+﻿h2 {
+    margin-bottom: 10px;
+}
+
+.showIncoming, .showOutgoing {
+    margin-bottom: 10px;
+}
+
+.singleOfferContainer {
+    width: 100%;
+    min-height: 200px;
+    border: 1px solid black;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+}
+
+.singleOfferContainer .adPhotoContainer {
+    margin-top: 10px;
+    margin-left: 10px;
+    height: 180px;
+}
+
+.singleOfferContainer .adPhoto {
+    height: 100%;
+    width: auto;
+}
+
+.singleOfferContainer .textContainer {
+    max-width: 65%;
+    margin-top: 10px;
+    margin-left: 10px;
+    align-self: stretch;
+    flex: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.singleOfferContainer .textContainer .offerName {
+    margin-top: 0.5em;
+}
+
+.singleOfferContainer .textContainer:hover {
+    text-decoration: none;
+}
+
+.singleOfferContainer .textContainer p {
+    display: block;
+    align-self: stretch;
+    margin-bottom: 0.3em;
+}
+
+.singleOfferContainer .textContainer p {
+    color: black;
+}
+
+.singleOfferContainer .textContainer .offerNameContainer:hover {
+    text-decoration: underline;
+}
+
+.singleOfferContainer .textContainer .dateOfPostingContainer {
+    margin-top: auto;
+}

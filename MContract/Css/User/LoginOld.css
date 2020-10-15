@@ -1,0 +1,10 @@
+﻿.needFieldSpan {
+	background-color: tomato;
+	float: left;
+	display: none;
+}
+
+.errorLoginMessage {
+	background-color: tomato;
+	float: left;
+}

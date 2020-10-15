@@ -1,0 +1,93 @@
+﻿@model MContract.Models.MobileMenuViewModel
+
+<!-- Header -->
+<header class="mobile__off">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12 p-0">
+				<div class="lk__hedaer">
+					<div class="lk__hedaer-burger">
+
+					</div>
+					<div class="lk__hedaer-title">
+						Личный кабинет
+					</div>
+					<a href="@ViewBag.L.SiteUrlClear" class="lk__hedaer-home">
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="row p-0">
+			<section class="col-sm-12 p-0 lk__wrapper closed-lk">
+				<div class="close__btn-lk"></div>
+				<div class="lk__main">
+					<ul class="lk__main-ul">
+						<li class="lk__main-li @Model.ProfileDataSelected">
+							<div class="ico">
+								<img src="http://m-contract.ru/ico/user.svg" alt="">
+							</div>
+							<a href="@ViewBag.L.SiteUrlClear/my">Данные профиля</a>
+						</li>
+						<li class="lk__main-li have-add @Model.MyAdsSelected">
+							<div class="ico">
+								<img src="http://m-contract.ru/ico/list.svg" alt="">
+							</div>
+							<a href="@ViewBag.L.SiteUrlClear/User/MyAds">Мои объявления</a>
+							<span class="add">(@Model.AdsCount)</span>
+						</li>
+						<li class="lk__main-li @Model.DealsHistorySelected">
+							<div class="ico">
+								<img src="http://m-contract.ru/ico/calendar.svg" alt="">
+							</div>
+							<a href="@ViewBag.L.SiteUrlClear/User/DealsHistory">История сделок</a>
+						</li>
+						<li class="lk__main-li @Model.FavoritesSelected">
+							<div class="ico">
+								<img src="http://m-contract.ru/ico/star.svg" alt="">
+							</div>
+							<a href="@ViewBag.L.SiteUrlClear/User/Favorites">Избранное</a>
+						</li>
+						<li class="lk__main-li have-message @Model.MessagesSelected">
+							<div class="ico">
+								<img src="http://m-contract.ru/ico/email.svg" alt="">
+							</div>
+							<a href="@ViewBag.L.SiteUrlClear/User/Dialogs">Сообщения</a>
+							@if (Model.UnreadMessagesCount != 0)
+							{
+								<span class="count-of-message">@Model.UnreadMessagesCount</span>
+							}
+						</li>
+						<li class="lk__main-li @Model.DraftsSelected">
+							<div class="ico">
+								<img src="http://m-contract.ru/ico/edit.svg" alt="">
+							</div>
+							<a href="@ViewBag.L.SiteUrlClear/User/Drafts">Черновики</a>
+						</li>
+						<li class="lk__main-li @Model.MyOffersSelected">
+							<div class="ico">
+								<img src="http://m-contract.ru/ico/comment.svg" alt="">
+							</div>
+							<a href="@ViewBag.L.SiteUrlClear/User/MyOffers">Мои отклики</a>
+						</li>
+						<li class="lk__main-li @Model.RegularClientsSelected">
+							<div class="ico">
+								<img src="http://m-contract.ru/ico/contact.svg" alt="">
+							</div>
+							<a href="@ViewBag.L.SiteUrlClear/User/RegularClients">Постоянные клиенты</a>
+						</li>
+					</ul>
+					<div class="lk__main-line">
+
+					</div>
+					<div class="lk__main-exit">
+						<div class="ico">
+							<img src="http://m-contract.ru/ico/logout.svg" alt="">
+						</div>
+						<a clss="lk__main-exit-link" href="@ViewBag.L.SiteUrlClear/User/Logout">Выход</a>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+</header>
+<!-- // Header -->

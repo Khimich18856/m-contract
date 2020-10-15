@@ -1,0 +1,246 @@
+﻿@model MContract.Models.UserDraftsViewModel
+@{
+	ViewBag.Title = "Черновики";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/lk-layout.css?p=2020-10-10-a">
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/chernovik.css?p=2020-10-10-a">
+
+@{
+	Html.RenderPartial("_MobileMenu", Model.MobileMenuViewModel);
+}
+
+<section class="header-pc">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12 col-md-5 col-lg-3">
+				<div class="offer__title">
+					<h1>Личный кабинет</h1>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-5 col-lg-8">
+				<div class="offer__open">
+					<div class="open">
+						Черновики
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md col-lg-1 mobile-first">
+				<div class="product__crumbs">
+					<span class="page"><a href="@ViewBag.L.SiteUrlClear">Главная</a></span>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<main>
+
+	<section class="lk__main__wrapper">
+		<div class="container">
+			<div class="row">
+				@{
+					Html.RenderPartial("_LeftMenu", Model.LeftMenuViewModel);
+				}
+				<div class="col-sm-12 mobile__off">
+					<div class="lk__main-title">
+						Черновики
+					</div>
+				</div>
+				<div class="col-sm-12 p-0 col-md-9 padding-desktop">
+					<div class="lk__main-offers-block favourites-wrapper">
+
+						<div class="lk__main-offers-block-wrapper first-wrapper active-wrapper active">
+							@{ var noRowsSpanStyle = Model.Ads.Any() ? "display: none" : ""; }
+							<span id="noRowsSpan" style="font-size: large; @noRowsSpanStyle">Пока нет записей</span>
+							<!-- Mobile -->
+							@foreach (var ad in Model.Ads)
+							{
+								<a href="@ViewBag.L.SiteUrlClear/Ads/EditAd?id=@ad.Id" class="lk-product__item a-for-adId-@ad.Id">
+									<div class="lk-product__item-info-block">
+										<div class="lk-product__item-img">
+											<img src="@ViewBag.L.SiteUrlClear/ico/edit-avatar.png" alt="image-first">
+										</div>
+										<div class="lk-product__item-adress">
+											<span class="number">@ad.NameWithoutOpenOrClose</span> <br> @ad.OpenOrClose
+										</div>
+										<div class="lk-product__item-close">
+										</div>
+									</div>
+									<div class="lk-product__item-text-block">
+										@foreach (var parentCategory in ad.ProductCategoriesLevel1)
+										{
+											<span class="name">
+												@parentCategory.Name@(parentCategory.ChildCategories.Any() ? ": " : "")<br>
+											</span>
+											if (parentCategory.ChildCategories.Any())
+											{
+												var lastChildCategory = parentCategory.ChildCategories.Last();
+												foreach (var childCategory in parentCategory.ChildCategories)
+												{
+													<span class="consist">
+														@childCategory.Name@(parentCategory.ChildCategories.Last() == childCategory ? "; " : "")
+													</span>
+												}
+											}
+										}
+									</div>
+									<div class="lk-product__item-stats-block">
+										<div class="date">
+											Дата:
+										</div>
+										<div class="day">
+											@(ad.DateOfPosting.ToShortDateString()),
+										</div>
+										<div class="time-post">
+											@(ad.DateOfPosting.ToShortTimeString())
+										</div>
+									</div>
+									<div class="delete__draft-cur closed">
+										<div class="delete__draft-cur-wrapper">
+											<div class="delete__draft-cur-title">
+												Удалить черновик безвозвратно?
+											</div>
+											<div class="delete__draft-cur-flex">
+												<span class="delete__draft-cur-btn yes">Да</span>
+												<span class="delete__draft-cur-btn no">Нет</span>
+											</div>
+										</div>
+									</div>
+								</a>
+
+							}
+							<!-- //Mobile -->
+							<!-- Desktop -->
+							@foreach (var ad in Model.Ads)
+							{
+								<a href="@ViewBag.L.SiteUrlClear/Ads/EditAd?id=@ad.Id" class="lk-product__item_d a-for-adId-@ad.Id">
+									<div class="lk-product__item_d-img">
+										<img src="@ViewBag.L.SiteUrlClear/ico/edit-square.svg" alt="">
+									</div>
+									<div class="lk-product__item_d-info">
+										<div class="open">
+											<div class="open-status">
+												<span class="num">@ad.NameWithoutOpenOrClose </span> @ad.OpenOrClose
+											</div>
+
+										</div>
+										<div class="company">
+											@Model.CurrentUser.CompanyNameWithTypeOfOwnership, @(Model.CurrentUser.Town?.Name)
+										</div>
+										<div class="about">
+											@foreach (var parentCategory in ad.ProductCategoriesLevel1)
+											{
+												<span class="title">
+													@parentCategory.Name@(parentCategory.ChildCategories.Any() ? ": " : "")<br>
+												</span>
+												if (parentCategory.ChildCategories.Any())
+												{
+													var lastChildCategory = parentCategory.ChildCategories.Last();
+													foreach (var childCategory in parentCategory.ChildCategories)
+													{
+														<span class="text">
+															@childCategory.Name@(parentCategory.ChildCategories.Last() == childCategory ? "; " : "")
+														</span>
+													}
+												}
+											}
+										</div>
+										<div class="lk-product__item-stats-block">
+											<div class="date">
+												Дата:
+											</div>
+											<div class="day">
+												@(ad.DateOfPosting.ToShortDateString()),
+											</div>
+											<div class="time-post">
+												@(ad.DateOfPosting.ToShortTimeString())
+											</div>
+										</div>
+										<div class="lk-product__item-close"></div>
+									</div>
+									<div class="delete__draft-cur closed">
+										<div class="delete__draft-cur-wrapper">
+											<div class="delete__draft-cur-title">
+												Удалить черновик безвозвратно?
+											</div>
+											<div class="delete__draft-cur-flex">
+												<span class="delete__draft-cur-btn yes" onclick="deleteDraft(@ad.Id)">Да</span>
+												<span class="delete__draft-cur-btn no">Нет</span>
+											</div>
+										</div>
+									</div>
+								</a>
+								<input class="adIdHf" type="hidden" value="@ad.Id" />
+
+							}
+							<!-- //Desktop -->
+						</div>
+
+						@if (Model.Ads.Any())
+						{
+							<div id="deleteAllDraftsBtn" class="clear-draft">
+								<div class="clear-draft-wrapper" onclick="deleteAllDrafts()">
+									Очистить все черновики
+								</div>
+							</div>
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	@{
+		Html.RenderPartial("_AdsSlider", Model.AdsSliderViewModel);
+	}
+
+</main>
+
+<script src="@ViewBag.L.SiteUrlClear/js/offer.js?p=2020-10-10-a"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/lk-main.js?p=2020-10-10-a"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/chernovik.js?p=2020-10-10-a"></script>
+
+<script type="text/javascript">
+	var draftsCount = @Model.Ads.Count();
+	function deleteDraft(adId) {
+		var ids = [];
+		ids.push(adId);
+		$.post("@ViewBag.L.SiteUrlClear/Ads/DeleteAds",
+			{ ids },
+			function (result) {
+				if (result == 'ok') {
+					$('.a-for-adId-' + adId).remove();
+					draftsCount--;
+					if (draftsCount <= 0) {
+						$('#noRowsSpan').show();
+						$('#deleteAllDraftsBtn').hide();
+					}
+				}
+				else
+					alert("Произошла ошибка при удалении черновика: " + result)
+			}
+		);
+	}
+
+	function deleteAllDrafts(){
+		var ids = [];
+        $(".adIdHf").each(function () {
+            ids.push($(this).val());
+        });
+		$.post("@ViewBag.L.SiteUrlClear/Ads/DeleteAds",
+			{ ids },
+			function (result) {
+				if (result == 'ok') {
+					$('.lk-product__item,.lk-product__item_d').remove();
+					$('#noRowsSpan').show();
+					$('#deleteAllDraftsBtn').hide();
+				}
+				else
+					alert("Произошла ошибка при очистке черновиков: " + result)
+			}
+		);
+	}
+</script>

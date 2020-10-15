@@ -1,0 +1,193 @@
+﻿@model MContract.Models.AdsSliderViewModel
+
+@if (Model.Ads != null && Model.Ads.Any())
+{
+	<section class="similar__block">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 col-md-5 offset-md-1 offset-lg-0">
+					<div class="similar__block-title">
+						@Model.Title
+					</div>
+				</div>
+				<div class="col-sm-12 offset-md-4 col-md-2">
+					<div class="similar__block-view">
+						<div class="similar-view-btn double selected">
+							<span> < </span>
+							<span> > </span>
+						</div>
+						<div class="similar-view-btn single">
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row margin-bottom-sli">
+				<div class="col-sm-12">
+					<div class="slider__arows"></div>
+					<div class="similar__block-slider">
+
+					</div>
+				</div>
+				<div class="col-sm-12">
+					<div class="similar__block-non-slider">
+						<!-- Mobile -->
+						@foreach (var ad in Model.Ads)
+						{
+							<a href="@ad.Url" class="product__item">
+								<div class="product__item-open">
+									<span class="number">@ad.NameWithoutOpenOrClose</span> @ad.OpenOrClose
+								</div>
+								<div class="product__item-info-block">
+									<div class="product__item-img">
+										<img src="@ad.SmallPhotoUrl" alt="image-first">
+									</div>
+									<div class="product__item-adress">
+										@(ad.City?.NameAndRegionNameWithComma)
+									</div>
+									<div class="product__item-favour"></div>
+								</div>
+								<div class="product__item-text-block">
+									@foreach (var parentCategory in ad.ProductCategoriesLevel1)
+									{
+										<span class="name">
+											@parentCategory.Name@(parentCategory.ChildCategories.Any() ? ": " : "")<br>
+										</span>
+										if (parentCategory.ChildCategories.Any())
+										{
+											var lastChildCategory = parentCategory.ChildCategories.Last();
+											foreach (var childCategory in parentCategory.ChildCategories)
+											{
+												<span class="consist">
+													@childCategory.Name@(parentCategory.ChildCategories.Last() == childCategory ? "; " : "<br>")
+												</span>
+											}
+										}
+									}
+									<span class="weight">
+										<br> Общий вес:
+									</span>
+									<span class="consist">
+										@ad.SumOfProductWeights тн.
+									</span>
+								</div>
+								<div class="product__item-stats-block">
+									<div class="opened">
+										@ad.TimeFromDateOfPostingDescription
+									</div>
+									<div class="views">
+										<img src="/ico/eye-w.svg" alt="">
+										<span>@ad.ViewsCount</span>
+									</div>
+									<div class="comments">
+										<img src="/ico/message-w.svg" alt="">
+										<span>@ad.OffersCount</span>
+									</div>
+									<div class="favourites">
+										<img src="/ico/star-w.svg" alt="">
+										<span>@ad.FavoritesCount</span>
+									</div>
+								</div>
+							</a>
+						}
+						<!-- //Mobile -->
+						<!-- Desktop -->
+						@foreach (var ad in Model.Ads)
+						{
+							<a href="@ad.Url" class="product__item_d">
+								<div class="product__item_d-img">
+									<img src="@ad.SmallPhotoUrl" alt="" width="50px">
+								</div>
+								<div class="product__item_d-info">
+									<div class="open">
+										<div class="open-status">
+											<span class="num">@ad.NameWithoutOpenOrClose</span> @ad.OpenOrClose
+										</div>
+
+									</div>
+									<div class="company">
+										@(ad.City?.NameAndRegionNameWithComma)
+									</div>
+									<div class="about">
+										@foreach (var parentCategory in ad.ProductCategoriesLevel1)
+										{
+											<span class="title">
+												@parentCategory.Name@(parentCategory.ChildCategories.Any() ? ": " : "")<br>
+											</span>
+											if (parentCategory.ChildCategories.Any())
+											{
+												var lastChildCategory = parentCategory.ChildCategories.Last();
+												foreach (var childCategory in parentCategory.ChildCategories)
+												{
+													<span class="text">
+														@childCategory.Name@(parentCategory.ChildCategories.Last() == childCategory ? "; " : "")
+													</span>
+												}
+											}
+										}
+										<span class="title"><br>Общий вес:</span>
+										<span class="text">@ad.SumOfProductWeights тн.</span>
+									</div>
+									<div class="stats">
+										<div class="time">
+											@ad.TimeFromDateOfPostingDescription
+										</div>
+										<div class="stats-items">
+											<div class="views">
+												<img src="/ico/eye-w.svg" alt="">
+												<span>@ad.ViewsCount</span>
+											</div>
+											<div class="comments">
+												<img src="/ico/message-w.svg" alt="">
+												<span>@ad.OffersCount</span>
+											</div>
+											<div class="favourites">
+												<img src="/ico/star-w.svg" alt="">
+												<span>@ad.FavoritesCount</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="inFavoritesDivForAdId_@ad.Id" class="open-favour @(ad.IsInFavorites ? "selected" : "")" onclick="changeFavorites(@ad.Id)">
+								</div>
+							</a>
+						}
+						<!-- //Desktop -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<script type="text/javascript">
+		function changeFavorites(adId) {
+			debugger;
+
+			let currentUserId = @Model.CurrentUserId;
+			if (currentUserId == 0)
+				return;
+
+			let inFavoritesDiv = $('#inFavoritesDivForAdId_' + adId);
+			let isDelete = inFavoritesDiv.hasClass('selected');
+			$.post("@ViewBag.L.SiteUrlClear/Ads/ChangeFavoriteAd",
+				{
+					userId: currentUserId,
+					adId: adId,
+					isDelete: isDelete
+				}, function (result)
+				{
+					if (result == 'False') {
+						alert('Не удалось ' + (isDelete ? 'удалить из избранного' : 'добавить в избранное') + '. Пожалуйста, попробуйте позже.');
+					}
+
+					if (isDelete)
+						inFavoritesDiv.removeClass('selected');
+					else
+						inFavoritesDiv.addClass('selected');
+				}
+			);
+		}
+	</script>
+}

@@ -1,0 +1,225 @@
+﻿@model MContract.Models.UserMyOffersViewModel
+@{
+	ViewBag.Title = "MyOffers";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/lk-layout.css?p=2020-10-10-a">
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/MyResponses.css?p=2020-10-10-a">
+
+@{
+	Html.RenderPartial("_MobileMenu", Model.MobileMenuViewModel);
+}
+
+<section class="header-pc">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12 col-md-5 col-lg-4">
+				<div class="offer__title">
+					<h1>Личный кабинет</h1>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-5 col-lg-6">
+				<div class="offer__open">
+					<div class="open">
+						Мои отклики
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md col-lg-1 mobile-first">
+				<div class="product__crumbs">
+					<span class="page"><a href="@ViewBag.L.SiteUrlClear">Главная</a></span>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<main>
+
+	<section class="lk__main__wrapper">
+		<div class="container">
+			<div class="row">
+				@{
+					Html.RenderPartial("_LeftMenu", Model.LeftMenuViewModel);
+				}
+				<div class="col-sm-12 mobile__off">
+					<div class="lk__main-title">
+						Мои отклики
+					</div>
+				</div>
+				<div class="col-sm-12 p-0 col-md-8 col-lg-9 padding-desktop">
+					<div class="lk__main-select">
+						<div class="filter-name favour-filter-name only-desktop">
+							<ul class="filter-list-desktop">
+								<li class="selected-filter allFilter">Все объявления</li>
+								<li class="saleFilter">Продажи</li>
+								<li class="buyFilter">Закупки</li>
+							</ul>
+						</div>
+						<div class="filter-name-mobile favour-filter-name mobile__off">
+							<span class="selected-filter-span">
+								Все объявления
+							</span>
+							<div class="filter-block closed">
+								<ul class="filter-list">
+									<li class="filter-item selected allFilter">Все объявления</li>
+									<li class="filter-item saleFilter">Продажи</li>
+									<li class="filter-item buyFilter">Закупки</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="lk__main-offers-block favourites-wrapper">
+
+						<div class="lk__main-offers-block-wrapper first-wrapper active-wrapper active">
+							<!-- Mobile -->
+							@foreach (var offer in Model.OutgoingOffers)
+							{
+								var ad = offer.Ad;
+								<a href="@offer.Url" class="lk-product__item @(ad.IsBuy ? "buy-ad" : "sale-ad")" data-offer-id="@offer.Id">
+									<div class="lk-product__item-open">
+										<span class="number">@offer.Ad.NameWithoutOpenOrClose</span> @offer.Ad.OpenOrClose
+									</div>
+									<div class="lk-product__item-info-block">
+										<div class="lk-product__item-img">
+											<img src="@offer.Ad.SmallPhotoUrl" alt="image-first">
+										</div>
+										<div class="lk-product__item-adress">
+											@(offer.Ad.City?.NameAndRegionNameWithComma)
+										</div>
+										<div class="lk-product__item-favour selected"></div>
+									</div>
+									<div class="lk-product__item-text-block">
+										@Html.Raw(ad.CategoriesMobileHtml)
+										<span class="weight">
+											<br> Общий вес:
+										</span>
+										<span class="consist">
+											@offer.Ad.SumOfProductWeights тн.
+										</span>
+									</div>
+									<div class="lk-product__item-stats-block">
+										<div class="opened">
+											Дата: <span class="b">@offer.Ad.DateOfPosting.ToShortDateString()</span>
+										</div>
+									</div>
+									@*<div class="lk-product__item-stats-block">
+										<div class="opened">
+											@offer.Ad.TimeFromDateOfPostingDescription
+										</div>
+									</div>*@
+									<div class="lk-product__item_d-delete closed">
+										<div class="title">
+											Это предложение удаляется безвозвратно. Вы подтверждаете это?
+										</div>
+										<div class="btns">
+											<div class="delete-btn yes">Да</div>
+											<div class="delete-btn no">Нет</div>
+										</div>
+									</div>
+								</a>
+							}
+							<!-- //Mobile -->
+							<!-- Desktop -->
+							@foreach (var offer in Model.OutgoingOffers)
+							{
+								var ad = offer.Ad;
+								<a href="@offer.Url" class="lk-product__item_d @(ad.IsBuy ? "buy-ad" : "sale-ad")" data-offer-id="@offer.Id">
+									<div class="lk-product__item_d-img">
+										<img src="@ad.SmallPhotoUrl" alt="">
+									</div>
+									<div class="lk-product__item_d-info">
+										<div class="open">
+											<div class="open-status">
+												<span class="num">@ad.NameWithoutOpenOrClose</span> @ad.OpenOrClose
+											</div>
+
+										</div>
+										<div class="company">
+											@(ad.City?.NameAndRegionNameWithComma)
+										</div>
+										<div class="about">
+											<span class="title"><br>Общая сумма:</span>
+											<span class="text">@offer.SumOffer.ToString("0") ₽</span>
+											@Html.Raw(ad.CategoriesDesktopHtml)
+											<span class="title"><br>Общий вес:</span>
+											<span class="text">@ad.SumOfProductWeights тн.</span>
+										</div>
+										<div class="stats">
+											<div class="time">
+												<span class="b">Дата:</span>
+												15.06.2020, 19:30 доделать
+											</div>
+										</div>
+									</div>
+									<div class="open-favour">
+									</div>
+									<div class="lk-product__item_d-delete closed">
+										<div class="title">
+											Это предложение удаляется безвозвратно. Вы подтверждаете это?
+										</div>
+										<div class="btns">
+											<div class="delete-btn yes">Да</div>
+											<div class="delete-btn no">Нет</div>
+										</div>
+									</div>
+								</a>
+							}
+							<!-- //Desktop -->
+							<div class="dnt-have-products closed">
+                                <span>Отклики отсутсвуют</span>
+                            </div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 col-md-8 offset-md-4">
+					<div class="pugination__block">
+						<div class="left"> &#60; </div>
+						<div class="right"> &#62; </div>
+						<div class="pages">
+							<div class="pages-item selected">
+								<a href="#">1</a>
+							</div>
+							<div class="pages-item">
+								<a href="#">2</a>
+							</div>
+							<div class="pages-item">
+								<a href="#">3</a>
+							</div>
+							<div class="pages-item disabled">
+								...
+							</div>
+							<div class="pages-item">
+								<a href="#">10</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+</main>
+
+<script src="@ViewBag.L.SiteUrlClear/js/offer.js?p=2020-10-10-a"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/lk-main.js"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/MyResponses.js"></script>
+
+<script type="text/javascript">
+	function deleteOffer(id) {
+		$.post("@ViewBag.L.SiteUrlClear/Ads/DeleteOffer",
+            { id },
+            function (data) {
+                if (data.toLowerCase() == "true") {
+                    //скрыть удаленный блок со страницы
+                } else {
+                    alert("Отклик не был удален. Попробуйте позже.");
+                }
+			}
+		);
+	}
+</script>

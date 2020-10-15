@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512px" height="451px" viewBox="0 0 512 451" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>speech-bubble</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="speech-bubble" fill="#FFFFFF" fill-rule="nonzero">
+            <path d="M74.414,450.548 L38.2,450.548 L63.807,424.941 C77.614,411.134 86.236,393.176 88.554,373.695 C29.427,334.893 0,278.681 0,219.751 C0,111.032 99.923,0.548 256.414,0.548 C422.199,0.548 511.096,102.214 511.096,210.226 C511.096,318.95 421.26,420.548 256.414,420.548 C227.537,420.548 197.404,416.693 170.501,409.62 C145.034,435.741 110.528,450.548 74.414,450.548 Z" id="Path"></path>
+        </g>
+    </g>
+</svg>

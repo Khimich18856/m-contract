@@ -1,0 +1,650 @@
+﻿.slidesContainer {
+	width: 100%;
+	height: auto;
+}
+
+	.slidesContainer .singleSlide {
+		width: 100%;
+		height: auto;
+	}
+
+.growing-quote {
+	color: green;
+}
+
+.falling-quote {
+	color: red;
+}
+
+.singleSlide {
+	width: 100%;
+}
+
+.slidesContainer__wrap {
+	background-color: #16243f
+}
+
+.slidesContainer__content {
+	position: relative;
+}
+
+.registerArea__title {
+	font-size: 1.8rem;
+	font-weight: 700;
+}
+
+.registerArea__descr {
+	font-size: 1.2rem;
+}
+
+	.registerArea__descr li {
+		margin-bottom: 10px;
+		padding-left: 25px;
+	}
+
+	.registerArea__descr li {
+		background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAMAAABVLlSxAAAAAXNSR0IB2cksfwAAAD9QTFRF////5g9v5g9v5g9v5g9v5g9v5g9v5g9v5g9v5g9v5g9v5g9v5g9v5g9v5g9v5g9v5g9v5g9v5g9v5g9v5g9vCMOxAwAAABV0Uk5TACEt6mkq/4yf56gDSLQGvQnGwA8IGbgxuQAAAEhJREFUeJxFjFcOgDAMQ03TuIuWMO5/VkBVwD8esh7gWr6EING7ChOihBkzkCgKLaztmTJlLezjfbZKcrNJGJ27Oc6O82df025MGQGWC0kCxwAAAABJRU5ErkJggg==') no-repeat;
+		background-position: left 4px;
+		/*position: absolute;
+	content: '';
+	width: 100%;
+	height: 100% */
+	}
+
+.registerArea__buttons button:first-child {
+	margin-right: 10px
+}
+
+.registerArea__content {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 265px;
+	background-color: #fff;
+	padding: 45px 60px 30px;
+	position: absolute;
+	right: 15px;
+	top: 30px;
+	height: 330px;
+	z-index: 2;
+}
+
+#slideOne {
+	background: url('../../Images/slide-1.jpg') no-repeat top center;
+	background-size: cover;
+}
+
+#slideTwo {
+	background: url('../../Images/slide-1.jpg') no-repeat top center;
+	background-size: cover;
+}
+
+#slideThree {
+	background: url('../../Images/slide-1.jpg') no-repeat top center;
+	background-size: cover;
+}
+
+.singleSlide__text-block {
+	width: 50%;
+	padding: 100px 30px 50px;
+}
+
+.singleSlide__title {
+	font-size: 2.8rem;
+	font-weight: 700;
+	color: #fff
+}
+
+.singleSlide__descr {
+	font-size: 1.6rem;
+	font-weight: 700;
+	color: #8fa4bd;
+	padding: 50px 0 70px;
+	line-height: 24px
+}
+
+.slidesContainer .slick-dots {
+	position: absolute;
+	bottom: 20px;
+	display: flex;
+	list-style: none;
+	justify-content: center;
+	width: 100%;
+	padding: 0;
+	margin-bottom: 0;
+}
+
+	.slidesContainer .slick-dots li {
+		margin: 0 5px
+	}
+
+		.slidesContainer .slick-dots li button {
+			font-size: 0;
+			height: 15px;
+			width: 15px;
+			border-radius: 20rem;
+			border: 3px solid #fff;
+			padding: 0
+		}
+
+		.slidesContainer .slick-dots li.slick-active:focus button {
+			outline-color: transparent;
+			outline-style: none;
+			outline-width: 0px;
+		}
+
+		.slidesContainer .slick-dots li.slick-active button {
+			background-color: red
+		}
+
+.row.no-gutters {
+	margin-right: 0;
+	margin-left: 0;
+}
+
+	.row.no-gutters [class^="col-"],
+	.row.no-gutters [class*=" col-"] {
+		padding-right: 0;
+		padding-left: 0;
+	}
+
+.rates-block {
+	height: 330px;
+	background-color: #fff
+}
+
+.quickInfoArea__wrap {
+	display: flex;
+	justify-content: space-between;
+}
+
+#currencyRatesArea {
+	width: 16%
+}
+
+#InvestingComInfoArea {
+	width: 55%
+}
+
+#lmeInfoArea {
+	width: 26%
+}
+
+.quickInfoArea__header {
+	font-size: 1.4rem;
+	font-weight: 700;
+	padding: 35px 0;
+}
+
+#currencyRatesArea .quickInfoArea__header {
+	background-color: #01305c;
+	color: #fff;
+	text-align: center;
+}
+
+#currencyRatesArea .currencyRatesArea__date {
+	padding: 35px 30px 25px;
+	font-size: 1.3rem;
+	color: #a5b1bf;
+	font-family: 'Open Sans Condensed', sans-serif;
+	font-weight: 300;
+	background-color: #fff;
+}
+
+.currencyRatesArea__rates {
+	padding: 0 30px;
+	font-weight: 700;
+	font-size: 1.6rem;
+	background-color: #fff
+}
+
+#currencyRatesArea .currencyName {
+	display: none
+}
+
+.currencyRatesArea__value {
+	display: flex;
+	align-items: center;
+	margin-bottom: 30px;
+	justify-content: flex-start;
+}
+
+	.currencyRatesArea__value img {
+		height: 25px;
+		margin-right: 10px
+	}
+
+	.currencyRatesArea__value .rouble-mark {
+		font-weight: 400;
+		font-size: 90%;
+		align-self: inherit;
+		margin-left: 5px;
+	}
+
+#InvestingComInfoArea .quickInfoArea__header, #lmeInfoArea .quickInfoArea__header {
+	padding-left: 30px;
+	padding-right: 30px
+}
+
+#InvestingComInfoArea .quickInfoArea__table-wrap, #lmeInfoArea .quickInfoArea__table-wrap {
+	padding: 0 30px 30px
+}
+
+#InvestingComInfoArea td, #lmeInfoArea td {
+	padding: 6px 25px;
+	font-size: 13px
+}
+
+#InvestingComInfoArea table, #lmeInfoArea table {
+	margin: 0 auto;
+}
+
+#lmeInfoArea thead tr td:nth-child(2) {
+	font-family: 'Open Sans Condensed', sans-serif;
+}
+
+#lmeInfoArea tbody tr td:nth-child(2) {
+	color: #506175
+}
+
+.quickInfoArea__wrap table {
+	border: 1px solid #f1f3f5
+}
+
+.quickInfoArea__wrap thead {
+	background: #f1f3f5;
+	color: #a5b1bf;
+}
+
+.quickInfoArea__wrap tr td {
+	border: 1px solid #f1f3f5
+}
+
+.quickInfoArea__wrap tbody tr td:first-child a, .quickInfoArea__wrap tbody tr td:first-child {
+	color: #459ef5
+}
+
+.quickInfoArea__wrap tr td:nth-child(2) a, .quickInfoArea__wrap tr td:nth-child(5) a {
+	color: #506175
+}
+
+.quickInfoArea__wrap thead td {
+	border-right: 1px solid #fff;
+	border-left: 1px solid #fff;
+}
+
+#newsArea {
+	padding-top: 50px;
+	padding-bottom: 100px
+}
+
+.newsArea__wrap {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.newsBlock {
+	width: 40%;
+	background-color: #01305c;
+	min-height: 525px
+}
+
+.newsBlock__header {
+	display: flex;
+	align-items: center;
+}
+
+.newsBlock__header-title {
+	font-size: 2.4rem;
+	color: #fff;
+	font-weight: 700;
+	padding-left: 35px;
+	padding-right: 35px;
+}
+
+.newsBlock__header-date {
+	background-color: #2b8ff1;
+	color: #fff;
+	text-align: right;
+	padding: 50px 35px;
+	font-size: 1.3rem;
+}
+
+.newsBlock__content {
+	padding: 35px;
+	font-size: 1.3rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.newsBlock__item {
+	margin-bottom: 15px;
+	display: flex
+}
+
+.newsBlock__item-time {
+	color: #fff;
+	font-weight: 700;
+}
+
+.newsBlock__item-header {
+	color: #fff;
+	opacity: .7;
+	padding-left: 10px;
+}
+
+.newsBlock__more {
+	padding-left: 45px;
+	text-decoration: underline;
+}
+
+.aboutProject {
+	max-width: 50%;
+	padding: 0 90px 0 30px;
+}
+
+.aboutProject__header {
+	font-weight: 700;
+	font-size: 2.4rem;
+	margin-bottom: 60px;
+}
+
+.aboutProject__bodytext {
+	font-size: 1.4rem;
+	color: #506175;
+	line-height: 20px;
+	margin-bottom: 25px;
+}
+
+.aboutProject__sub-header {
+	font-size: 1.6rem;
+	font-weight: 700;
+	margin-bottom: 25px;
+}
+
+.aboutProject__buttons {
+	margin-top: 60px
+}
+
+	.aboutProject__buttons button:first-child {
+		margin-right: 10px
+	}
+
+.postInfo__mobile {
+	display: none;
+}
+
+@media only screen and (max-width:1200px) {
+	#InvestingComInfoArea td, #lmeInfoArea td {
+		font-family: 'Open Sans Condensed', sans-serif;
+		padding: 6px 17px;
+	}
+
+	#lmeInfoArea thead tr td:nth-child(2) {
+		padding: 6px 10px
+	}
+
+	.quickInfoArea__header {
+		font-size: 1.1rem
+	}
+}
+
+@media only screen and (min-device-width : 360px) and (max-device-width : 667px) and (orientation : landscape) {
+	.slidesContainer__content {
+		padding-bottom: 50px;
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	#InvestingComInfoArea td {
+		padding: 6px 10px;
+		font-size: 15px;
+		font-family: 'Open Sans Condensed', sans-serif;
+	}
+
+	.singleSlide__text-block {
+		width: 40%
+	}
+
+	.singleSlide__title {
+		font-size: 2.4rem
+	}
+
+	.quickInfoArea__header {
+		padding: 35px 10px;
+	}
+
+	.currencyRatesArea__rates {
+		font-size: 1.3rem
+	}
+
+	.rates-block {
+		height: 350px;
+	}
+
+	.newsBlock__header-title {
+		font-size: 2.2rem;
+		color: #fff;
+		font-weight: 700;
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+
+	.newsBlock {
+		width: 45%
+	}
+
+	.aboutProject {
+		max-width: 45%;
+		padding: 0 30px 0 30px;
+	}
+
+	.footer-info {
+		font-size: 1.1rem
+	}
+}
+
+@media only screen and (max-width: 992px) and (min-width: 631px) {
+	.registerArea__content {
+		padding: 45px 30px 30px
+	}
+
+	.rates-block {
+		height: 340px
+	}
+
+	#currencyRatesArea {
+		width: 12%
+	}
+
+		#currencyRatesArea .currencyRatesArea__date {
+			padding: 25px 10px
+		}
+
+	.currencyRatesArea__rates {
+		padding: 0 10px
+	}
+
+	.currencyRatesArea__value {
+		flex-wrap: wrap;
+	}
+
+	.cbTickerName__wrap {
+		margin-top: 5px
+	}
+
+	#InvestingComInfoArea .quickInfoArea__header, #lmeInfoArea .quickInfoArea__header {
+		padding-right: 10px;
+		padding-left: 10px
+	}
+
+	#InvestingComInfoArea .quickInfoArea__table-wrap, #lmeInfoArea .quickInfoArea__table-wrap {
+		padding: 0 10px 10px
+	}
+
+	.newsBlock__header-date {
+		padding: 50px 22px
+	}
+}
+
+@media only screen and (max-width: 630px) {
+	.postInfo__mobile {
+		display: block;
+		position: fixed;
+		top: 80vh;
+		height: 90px;
+		width: 90%;
+		margin-left: 5%;
+		background: #2b8ef1;
+		padding: 24px 0;
+		font-size: 1.6rem;
+		text-transform: uppercase;
+		font-weight: 700;
+		color: #fff;
+		text-align: center;
+		border: none;
+		z-index: 999
+	}
+
+	.singleSlide__text-block {
+		width: 100%;
+		padding: 50px 0 30px;
+	}
+
+	.singleSlide__title {
+		font-size: 2.4rem;
+		font-weight: 400;
+		padding-left: 20px;
+		padding-right: 20px
+	}
+
+	.singleSlide__descr {
+		font-size: 1.5rem;
+		font-weight: 400;
+		padding-left: 20px;
+		padding-right: 20px
+	}
+
+	.singleSlide__text-block button {
+		margin-left: 20px
+	}
+
+	.slidesContainer .slick-dots {
+		padding-left: 60%;
+		width: auto;
+		bottom: 30px;
+	}
+
+	.slidesContainer__content {
+		padding-bottom: 50px;
+		padding-left: 0;
+		padding-right: 0
+	}
+	/*
+	#slideOne, #slideTwo, #slideThree {
+		background-size: contain
+	}
+	*/
+	.registerArea__content {
+		position: relative;
+		padding-right: 25px;
+		padding-left: 25px;
+		right: auto;
+		top: auto;
+		margin-top: 50px;
+		width: auto;
+		margin: 50px 20px;
+		height: auto;
+		min-height: 350px;
+	}
+
+	.registerArea__descr {
+		font-size: 1.3rem;
+	}
+
+	.quickInfoArea__wrap {
+		flex-direction: column;
+	}
+
+	#quickInfoArea .container {
+		padding-left: 0;
+		padding-right: 0
+	}
+
+	.quickInfoArea__header {
+		font-size: 1.4rem
+	}
+
+	.quickInfoArea__wrap table {
+		margin: 0 auto;
+	}
+
+	.rates-block {
+		height: auto;
+		padding-bottom: 45px;
+	}
+
+	#currencyRatesArea, #InvestingComInfoArea, #lmeInfoArea {
+		width: 100%;
+		margin-bottom: 10px
+	}
+
+	.currencyRatesArea__rates {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	#InvestingComInfoArea td {
+		padding: 6px 14px;
+		font-size: 15px;
+		font-family: 'Open Sans Condensed', sans-serif;
+	}
+
+	#InvestingComInfoArea .quickInfoArea__table-wrap, #lmeInfoArea .quickInfoArea__table-wrap {
+		padding: 0
+	}
+
+	.newsArea__wrap {
+		flex-direction: column;
+	}
+
+	.aboutProject, .newsBlock {
+		width: 100%;
+		max-width: 100%;
+		padding: 0
+	}
+
+	.aboutProject {
+		padding-bottom: 70px
+	}
+
+	.aboutProject__header {
+		padding-left: 10px;
+		padding-right: 10px
+	}
+
+	.aboutProject__bodytext {
+		padding-left: 10px;
+		padding-right: 10px;
+		font-size: 1.6rem
+	}
+
+	.aboutProject__sub-header {
+		padding-left: 10px;
+		padding-right: 10px
+	}
+
+	.aboutProject__buttons {
+		text-align: center;
+	}
+
+	.newsBlock__header-date {
+		font-family: 'Open Sans Condensed', sans-serif;
+	}
+
+	.newsBlock__header-title {
+		flex-shrink: 2
+	}
+}

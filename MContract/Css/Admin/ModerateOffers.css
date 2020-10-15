@@ -1,0 +1,63 @@
+﻿body {
+}
+
+.singleOfferContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-content: flex-start;
+    position: relative;
+    border: 1px solid black;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.singleOfferContainer .adInformationContainer {
+    flex: 10;
+}
+
+.singleOfferContainer .adPhotosContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.singleOfferContainer .adPhotosContainer > div {
+    position: relative;
+    width: 25%;
+    height: auto;
+    padding: 0 10px 10px 0;
+    box-sizing: border-box;
+    flex: 0 0 auto;
+}
+
+.singleOfferContainer .adPhotosContainer > div > img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
+.singleOfferContainer .adButtonsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.singleOfferContainer .moderateResultsContainer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(128, 128, 128, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.singleOfferContainer .moderateResultsContainer .moderateResult {
+    height: 100%;
+    width: auto;
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="240px" height="444px" viewBox="0 0 240 444" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>back</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="back" fill="#14355D" fill-rule="nonzero">
+            <path d="M41.492,221.863 L234.226,29.129 C240.889,22.465 240.889,11.661 234.226,4.997 C227.561,-1.665 216.758,-1.665 210.094,4.997 L5.294,209.797 C-1.368,216.461 -1.368,227.265 5.294,233.929 L210.094,438.729 C216.874,445.277 227.678,445.089 234.226,438.309 C240.613,431.695 240.613,421.21 234.226,414.597 L41.492,221.863 Z" id="Path"></path>
+        </g>
+    </g>
+</svg>

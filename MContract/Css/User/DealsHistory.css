@@ -1,0 +1,133 @@
+﻿.filterControls {
+	display: flex;
+	flex-direction: row;
+	margin-bottom: 20px;
+}
+
+	.filterControls .timePeriodContainer .typeOfTimePeriodContainer {
+		display: none;
+		position: absolute;
+		margin-top: 10px;
+		background-color: white;
+		border: 1px solid black;
+	}
+
+	.filterControls .timePeriodContainer .optionsContainer {
+		position: absolute;
+		margin-top: 10px;
+		background-color: white;
+		border: 1px solid black;
+	}
+
+		.filterControls .timePeriodContainer .specificMonthContainer {
+			display: none;
+		}
+
+		.filterControls .timePeriodContainer .specificMonthContainer .specificMonthSelectorContainer {
+			display: flex;
+			flex-direction: row;
+		}
+
+		.filterControls .timePeriodContainer .specificMonthSelectorContainer .monthContainer.selected {
+			color: white;
+			background-color: #337ab7;
+			border: 1px solid white;
+			border-collapse: collapse;
+		}
+
+		.filterControls .timePeriodContainer .specificMonthSelectorContainer .yearContainer.selected {
+			color: white;
+			background-color: #337ab7;
+			border: 1px solid white;
+			border-collapse: collapse;
+		}
+
+		.filterControls .timePeriodContainer .startAndEndPeriodContainer {
+			display: none;
+		}
+
+	.filterControls .productCategoriesContainer .optionsContainer {
+		display: none;
+		position: absolute;
+		margin-top: 10px;
+		background-color: white;
+		border: 1px solid black;
+	}
+
+		.filterControls .productCategoriesContainer .optionsContainer .categoryContainer.selected {
+			color: white;
+			background-color: #337ab7;
+			border: 1px solid white;
+			border-collapse: collapse;
+		}
+
+	.filterControls .counteragentsContainer .optionsContainer {
+		display: none;
+		position: absolute;
+		margin-top: 10px;
+		background-color: white;
+		border: 1px solid black;
+	}
+
+		.filterControls .counteragentsContainer .optionsContainer .counteragentSearchbar {
+			box-sizing: border-box;
+			width: 100%;
+		}
+
+		.filterControls .counteragentsContainer .optionsContainer .counteragentContainer.selected {
+			color: white;
+			background-color: #337ab7;
+			border: 1px solid white;
+			border-collapse: collapse;
+		}
+
+.dealsContainer .noMatches {
+	display: none;
+}
+
+.dealsContainer .singleDealContainer {
+	position: relative;
+	height: 200px;
+	width: 60%;
+	margin-bottom: 10px;
+	border: 1px solid black;
+	display: flex;
+	flex-direction: row;
+}
+
+	.dealsContainer .singleDealContainer .adInfoContainer {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.dealsContainer .singleDealContainer .adPhotoContainer {
+		margin-top: 10px;
+		margin-left: 10px;
+		height: 180px;
+		width: 180px;
+	}
+
+	.dealsContainer .singleDealContainer .counteragentLogo {
+		height: 100px;
+		width: 100px;
+	}
+
+	.dealsContainer .singleDealContainer .removeDealFromDealsHistory {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+	}
+
+	.dealsContainer .singleDealContainer .removeDealConfirmationContainer {
+		display: none;
+		height: 100%;
+		width: 100%;
+		position: absolute;
+		background-color: white;
+		flex-direction: column;
+	}
+
+	.dealsContainer .singleDealContainer .removeDealConfirmationContainer .removeDealButtonsContainer {
+		display: flex;
+		flex-direction: row;
+	}

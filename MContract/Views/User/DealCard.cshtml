@@ -1,0 +1,291 @@
+﻿@model MContract.Models.UserDealCardViewModel
+
+@{
+    ViewBag.Title = "Контракт №" + Model.Ad.Id;
+    Layout = "~/Views/Shared/_LayoutOld.cshtml";
+}
+
+@section Styles{
+    <link href="@Url.Content("~/css/User/DealCard.css")?p=20200715" rel="stylesheet" type="text/css" />
+    <link href="~/js/jquery-ui/jquery-ui.css?p=202006112" rel="stylesheet" type="text/css" />
+}
+@{
+    var personalAreaUser = ViewBag.L.PersonalAreaUser != null ? (MContract.Models.User)ViewBag.L.PersonalAreaUser : null;
+    @*if (personalAreaUser != null)
+        {
+            Html.RenderPartial("_PersonalAreaOld", personalAreaUser);
+        }*@
+
+    var counteragent = Model.Seller?.Id == ViewBag.L.PersonalAreaUser?.Id ? Model.Buyer : Model.Seller;
+}
+
+
+<span style="font-size: larger; font-weight: bold">Личный кабинет</span> | История сделок
+<div style="text-align: right"><a href="@ViewBag.L.SiteUrlClear">Главная</a> ></div>
+
+<div class="mainPrintContainer">
+    <div style="background-color: gainsboro; font-size: large">
+        Контракт № @Model.Ad.Id (@Model.DealDirection)
+    </div>
+
+<div style="font-size: larger">
+    <table style="margin-top: 15px">
+        <tr>
+            <td>Дата сделки:</td>
+            <td>@Model.DealDate.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <td>Покупатель:</td>
+			@{ 
+				var buyerStartA = Model.Buyer.Id != personalAreaUser.Id ? "<a href=\"" + Model.Buyer.Url + "\">" : "";
+				var buyerEndA =   Model.Buyer.Id != personalAreaUser.Id ? "</a>" : "";
+			}
+            <td>@Html.Raw(buyerStartA)
+					@Model.Buyer.CompanyNameWithTypeOfOwnership, @Model.Buyer.Town.NameAndRegionNameWithComma
+				@Html.Raw(buyerEndA)
+			</td>
+        </tr>
+        <tr>
+            <td>Продавец:</td>
+			@{ 
+				var sellerStartA = Model.Seller.Id != personalAreaUser.Id ? "<a href=\"" + Model.Seller.Url + "\">" : "";
+				var sellerEndA = Model.Seller.Id != personalAreaUser.Id ? "</a>" : "";
+			}
+			<td>
+				@Html.Raw(sellerStartA)
+					@Model.Seller.CompanyNameWithTypeOfOwnership, @Model.Seller.Town.NameAndRegionNameWithComma
+				@Html.Raw(sellerEndA)
+			</td>
+        </tr>
+        <tr>
+            <td>Место фактического нахождения груза:&nbsp;</td>
+            <td>@Model.Ad.City.NameAndRegionNameWithComma</td>
+        </tr>
+        <tr>
+            <td>Условия поставки:</td>
+            <td>@Model.DeliveryType</td>
+        </tr>
+        <tr>
+            <td>Погрузка:</td>
+            <td>@Model.DeliveryLoadType</td>
+        </tr>
+        <tr>
+            <td>Способ доставки:</td>
+            <td>@Model.DeliveryWay</td>
+        </tr>
+        <tr>
+            <td>Цена:</td>
+            <td>@Model.Nds</td>
+        </tr>
+        <tr>
+            <td>Условия оплаты:</td>
+            <td>@Model.TermsOfPayments</td>
+        </tr>
+    </table>
+
+        <div style="height: 30px">
+        </div>
+
+    <table border="1">
+        <thead>
+            <tr style="background-color: gainsboro; font-weight: bold">
+                <td>№</td>
+                <td>Категория товара</td>
+                <td>Вес (тн.)</td>
+                <td>Валюта</td>
+                <td>Цена за 1 тн. (минимальная)</td>
+                <td>Цена за 1 тн. (предложение)</td>
+                <td>Цена за всю позицию (предложение)</td>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int rowNum = 0;
+                float sumTotal = 0;
+            }
+            @foreach (var adProduct in Model.Ad.Products)
+            {
+                rowNum++;
+                var currency = adProduct.Currency == MContract.Models.Enums.Currencies.Dollar ? "Доллар" : "Рубль";
+                var pricePerWeight = adProduct.PricePerWeight > 0 ? adProduct.PricePerWeight.ToString() : "Не указано";
+                string pricePerWeightOffer = "Не указано";
+                var priceForWholePositionStr = "Не указано";
+                if (adProduct.OfferProduct != null)
+                {
+                    pricePerWeightOffer = adProduct.OfferProduct.PricePerWeight.ToString();
+                    var priceForWholePosition = adProduct.Weight * adProduct.OfferProduct.PricePerWeight;
+                    priceForWholePositionStr = priceForWholePosition.ToString();
+                    sumTotal += priceForWholePosition;
+                }
+                <tr>
+                    <td>@rowNum</td>
+                    <td>@adProduct.ProductCategoryName</td>
+                    <td>@adProduct.Weight</td>
+                    <td>@currency</td>
+                    <td>@pricePerWeight</td>
+                    <td>@pricePerWeightOffer</td>
+                    <td>@priceForWholePositionStr</td>
+                </tr>
+            }
+            <tr style="font-weight: bold">
+                <td></td>
+                <td>Итого:</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>@sumTotal</td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="height: 15px">
+    </div>
+    Описание: <span id="switchDescriptionVisibilityButton" style="cursor: pointer" onclick="switchDescriptionVisibility()">A</span> 
+	<br />
+    @{
+        var description = !String.IsNullOrWhiteSpace(Model.Ad.Description) ? Model.Ad.Description : "Не указано";
+    }
+    <div id="descriptionDiv" style="background-color: gainsboro; word-wrap: break-word; width: 60%">
+        <p>
+            @description
+        </p>
+    </div>
+    <div style="height: 30px">
+    </div>
+    <table class="noPrintContainer">
+        <tr>
+            <td class="extraPrintContainer" style="background-color:lightgreen">
+                M-Contract<br />
+                Подтверждено
+            </td>
+            <td>
+                Оцените контрагента: <br />
+                <div class="ratingOptionsContainer" value="@counteragent.Rating">
+                    <div class="ratingOption" value="1">★</div>
+                    <div class="ratingOption" value="2">★</div>
+                    <div class="ratingOption" value="3">★</div>
+                    <div class="ratingOption" value="4">★</div>
+                    <div class="ratingOption" value="5">★</div>
+                </div>
+                <a href="~/User/RateRules"> Правила оценки </a>
+            </td>
+            <td>
+                <a class="removeFromDealsHistory" href="#">УДАЛИТЬ ИЗ ИСТОРИИ СДЕЛОК</a><br /><br />
+                <a class="sendMessageToCounteragent" href="#">
+                    ОТПРАВИТЬ СООБЩЕНИЕ 
+                    @(Model.Seller?.Id == ViewBag.L.PersonalAreaUser?.Id
+                        ? "ПОКУПАТЕЛЮ"
+                        : "ПРОДАВЦУ")
+                        </a><br /><br />
+                        <a class="printDeal" href="#">РАСПЕЧАТАТЬ</a><br /><br />
+                        <a class="sendToEmail" href="" onclick="alert('еще не готово')">ОТПРАВИТЬ НА E-MAIL</a><br /><br />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        $(".removeFromDealsHistory").on("click", function () {
+            if (!confirm('Информация об этой сделке будет удалена без возможности восстановления. Вы подтверждаете это?'))
+                return;
+
+            var adId = @(Model.Ad?.Id);
+            var offerId = @(Model.ContractOffer?.Id);
+            $.post("@ViewBag.L.SiteUrlClear/User/RemoveDealFromDealsHistory", {
+                adId: adId,
+                offerId: offerId
+            })
+                .done(function (data) {
+                    if (data.toLowerCase() == "true")
+                        location.href = "@ViewBag.L.SiteUrlClear/User/DealsHistory";
+                    })
+        });
+
+        $(".sendMessageToCounteragent").on("click", function () {
+            var respondentId = @(counteragent?.Id);
+            var lastPageUrl = encodeURIComponent(location.href);
+            location.href = `@ViewBag.L.SiteUrlClear/User/Messages?respondentId=${respondentId}&lastPageUrl=${lastPageUrl}`;
+        });
+
+        $(".printDeal").on("click", function () {
+            var printContainerClone = $(".mainPrintContainer").clone();
+
+            $(printContainerClone).find(".noPrintContainer").remove();
+
+            var htmlToPrint = $(printContainerClone).html();
+            $(".extraPrintContainer").each(function () {
+                htmlToPrint += this.outerHTML;
+            });
+
+            console.log(htmlToPrint);
+            var windowToPrint = window.open();
+            windowToPrint.document.open("text/html");
+            windowToPrint.document.write(htmlToPrint);
+            windowToPrint.document.close();
+
+            windowToPrint.focus();
+            windowToPrint.print();
+            windowToPrint.close();
+        });
+
+        var ratingIsSet = false;
+
+        $(".ratingOptionsContainer").on("mouseenter", ".ratingOption", function () {
+            if (ratingIsSet == false) {
+                var highlightedOptions = $(this).prevAll(".ratingOption").add(this);
+                $(highlightedOptions).css("color", "gold");
+            }
+        });
+
+        $(".ratingOptionsContainer").on("mouseleave", ".ratingOption", function () {
+            if (ratingIsSet == false) {
+                $(".ratingOptionsContainer .ratingOption").css("color", "");
+            }
+        });
+
+        var setRating = $(".ratingOptionsContainer").attr("value")
+        if (setRating > 0)
+            $(`.ratingOptionsContainer .ratingOption[value=${setRating}]`).trigger("mouseenter");
+
+        ratingIsSet = setRating > 0;
+
+        $(".ratingOptionsContainer").on("click", ".ratingOption", function () {
+            if (ratingIsSet == false) {
+                var userId = @counteragent.Id;
+                var rating = $(this).attr("value");
+                var adId = @Model.Ad.Id;
+                $.post("@ViewBag.L.SiteUrlClear/User/AddUserRating", {
+                    userId: userId,
+                    rating: rating,
+                    adId: adId
+                })
+                    .done(function (data) {
+                        if (data.toLowerCase() == "true") {
+                            alert("Оценка сохранена!");
+                            $(`.ratingOptionsContainer .ratingOption[value=${rating}]`).trigger("mouseenter");
+                            ratingIsSet = true;
+                        } else {
+                            alert("Произошла ошибка. Оценка не была сохранена. Попробуйте позже.");
+                        }
+                    });
+            }
+        });
+	});
+
+	function switchDescriptionVisibility() {
+		var descriptionDiv = $('#descriptionDiv');
+		var switchDescriptionVisibilityButton = $('#switchDescriptionVisibilityButton');
+		if (descriptionDiv.is(":visible")) {
+			descriptionDiv.hide();
+			switchDescriptionVisibilityButton.html('V');
+		}
+		else {
+			descriptionDiv.show();
+			switchDescriptionVisibilityButton.html('A');
+		}
+	}
+</script>

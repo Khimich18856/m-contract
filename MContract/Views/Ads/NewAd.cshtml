@@ -1,0 +1,401 @@
+﻿@model MContract.Models.AdsNewAdViewModel
+
+@{
+	ViewBag.Title = ViewBag.Heading;
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+	<link href="@Url.Content("~/css/lk-layout.css")?p=2020-10-10-a" rel="stylesheet" type="text/css" />
+	<link href="@Url.Content("~/css/NewAd.css")?p=2020-10-10-a" rel="stylesheet" type="text/css" />
+}
+
+<section class="header-pc">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12 col-md-5 col-lg-4">
+				<div class="offer__title">
+					<h1>Личный кабинет</h1>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-5 col-lg-7">
+				<div class="offer__open">
+					<div class="open">
+						Новое объявление
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md col-lg-1 mobile-first">
+				<div class="product__crumbs">
+					<span class="page"><a href="@ViewBag.L.SiteUrlClear">Главная</a></span>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<main>
+	<!-- Новое объявление -->
+	<section class="lk__main__wrapper">
+		<div class="container">
+			<div class="row">
+				@{ 
+					Html.RenderPartial("_PersonalArea", Model.PersonalAreaUser); 
+				}
+				<div class="col-sm-12 mobile__off">
+					<div class="lk__main-title">
+						Новое объявление
+					</div>
+				</div>
+				<div class="col-sm-12 col-lg-9 add-margin">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="c__offer-title">
+								<div class="title">
+									Продажа №50
+								</div>
+								<div class="company">
+									<span>открытый запрос предложений</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12">
+							<div class="offer__about">
+								<div class="offer__about-item">
+									<div class="title">
+										Место фактического нахождения груза:
+									</div>
+									<div class="text-select required true-input">
+										<input type="text" placeholder="Город" required>
+									</div>
+								</div>
+								<div class="offer__about-item">
+									<div class="title">
+										Условия поставки:
+									</div>
+									<div class="text-select">
+										<span class="cat-span category-btn">Самовывоз покупателем</span>
+										<div class="ico"></div>
+										<ul class="filter-item-list closed">
+											<li>Самовывоз покупателем</li>
+											<li>Условие 2</li>
+											<li>Условие 3</li>
+											<li>Условие 4</li>
+										</ul>
+									</div>
+								</div>
+								<div class="offer__about-item">
+									<div class="title">
+										Погрузка:
+									</div>
+									<div class="text-select">
+										<span class="cat-span category-btn">Силами покупателя</span>
+										<div class="ico"></div>
+										<ul class="filter-item-list closed">
+											<li>Силами покупателя</li>
+											<li>Условие 2</li>
+											<li>Условие 3</li>
+											<li>Условие 4</li>
+										</ul>
+									</div>
+								</div>
+								<div class="offer__about-item">
+									<div class="title">
+										Способ доставки:
+									</div>
+									<div class="text-select">
+										<span class="cat-span category-btn">Не выбрано</span>
+										<div class="ico"></div>
+										<ul class="filter-item-list closed">
+											<li>Не выбрано</li>
+											<li>Условие 2</li>
+											<li>Условие 3</li>
+											<li>Условие 4</li>
+										</ul>
+									</div>
+								</div>
+								<div class="offer__about-item">
+									<div class="title">
+										Цена
+									</div>
+									<div class="text-select not-first">
+										<input type="number" placeholder="Цена" required>
+									</div>
+								</div>
+								<div class="offer__about-item">
+									<div class="title">
+										Условия оплаты
+									</div>
+									<div class="text-select">
+										<span class="cat-span category-btn">Не выбрано</span>
+										<div class="ico"></div>
+										<ul class="filter-item-list closed">
+											<li>Не выбрано</li>
+											<li>Условие 2</li>
+											<li>Условие 3</li>
+											<li>Условие 4</li>
+										</ul>
+									</div>
+								</div>
+								<div class="offer__about-item last-of-type">
+									<div class="title">
+										Подача предложений по части позиций:
+									</div>
+									<div class="text-select check-box-text">
+										<input type="checkbox" class="offer-check" name="yes" id="offerSend">
+										<label for="offerSend">
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12 mobile__off">
+							<div class="offer__position-item">
+								<div class="item-title">
+									<span class="title">
+										Позиция №1
+									</span>
+									<div class="close-position">
+
+									</div>
+								</div>
+								<div class="offer__position-block">
+									<div class="offer__position-block-item">
+										<div class="title">
+											Наименование товара
+										</div>
+										<div class="text-select">
+											<input type="text" placeholder="Имя товара" required>
+										</div>
+									</div>
+									<div class="offer__position-block-item">
+										<div class="title">
+											Дополнительное наименование
+										</div>
+										<div class="text-select input-select">
+											<input type="text" placeholder="Указать">
+										</div>
+									</div>
+									<div class="offer__position-block-item">
+										<div class="title required">
+											Вес(тн.)
+										</div>
+										<div class="text-select">
+											<input type="number" placeholder="1">
+										</div>
+									</div>
+									<div class="offer__position-block-item">
+										<div class="title required">
+											Валюта
+										</div>
+										<div class="text-select">
+											<select name="select" id="select">
+												<option value="value0">Рубль</option>
+												<option value="value1">Доллар</option>
+												<option value="value2">Евро</option>
+											</select>
+										</div>
+									</div>
+									<div class="offer__position-block-item">
+										<div class="title">
+											Цена за 1 тн. (минимальная)
+										</div>
+										<div class="text-select">
+											<input type="number" placeholder="50.000">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12 mobile__off">
+							<div class="offer__position-item">
+								<div class="item-title">
+									<span class="title">
+										Позиция №2
+									</span>
+									<div class="close-position">
+
+									</div>
+								</div>
+								<div class="offer__position-block">
+									<div class="offer__position-block-item">
+										<div class="title">
+											Наименование товара
+										</div>
+										<div class="text-select">
+											<input type="text" placeholder="Имя товара" required>
+										</div>
+									</div>
+									<div class="offer__position-block-item">
+										<div class="title">
+											Дополнительное наименование
+										</div>
+										<div class="text-select input-select">
+											<input type="text" placeholder="Указать">
+										</div>
+									</div>
+									<div class="offer__position-block-item">
+										<div class="title required">
+											Вес(тн.)
+										</div>
+										<div class="text-select">
+											<input type="number" placeholder="1">
+										</div>
+									</div>
+									<div class="offer__position-block-item">
+										<div class="title required">
+											Валюта
+										</div>
+										<div class="text-select">
+											<select name="select" id="select">
+												<option value="value0">Рубль</option>
+												<option value="value1">Доллар</option>
+												<option value="value2">Евро</option>
+											</select>
+										</div>
+									</div>
+									<div class="offer__position-block-item">
+										<div class="title">
+											Цена за 1 тн. (минимальная)
+										</div>
+										<div class="text-select">
+											<input type="number" placeholder="50.000">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12 only-desktop">
+							<table class="offer__position-table">
+								<tr>
+									<th>№</th>
+									<th>Категории товара</th>
+									<th>Точное наименование</th>
+									<th>Вес (тн.)</th>
+									<th>Валюта</th>
+									<th>Цена за 1 тн. (минимальная)</th>
+									<th></th>
+								</tr>
+								<tr>
+									<td>1</td>
+									<td>
+										<input type="text" placeholder="Название">
+									</td>
+									<td class="indicate">
+										<input type="text" placeholder="Указать">
+									</td>
+									<td>
+										<input type="text" placeholder="Вес">
+									</td>
+									<td>
+										<select name="select" id="select">
+											<option value="Не указано">Рубль</option>
+											<option value="Выбор 1">Евро</option>
+										</select>
+									</td>
+									<td>
+										<input type="text" placeholder="Цена">
+									</td>
+									<td class="delete"></td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td>
+										<input type="text" placeholder="Название">
+									</td>
+									<td class="indicate">
+										<input type="text" placeholder="Указать">
+									</td>
+									<td>
+										<input type="text" placeholder="Вес">
+									</td>
+									<td>
+										<select name="select" id="select">
+											<option value="Не указано">Рубль</option>
+											<option value="Выбор 1">Евро</option>
+										</select>
+									</td>
+									<td>
+										<input type="text" placeholder="Цена">
+									</td>
+									<td class="delete"></td>
+								</tr>
+								<tr>
+									<td class="add"></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-sm-12 mobile__off">
+							<div class="offer__position-item">
+								<div class="item-title">
+									<span>
+										Добавить позицию
+									</span>
+									<div class="add">
+
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="delete__draft closed draft-file">
+							<div class="delete__draft-wrapper">
+								<div class="delete__draft-title">
+									Позиция по данному объявлению будет удалена.
+								</div>
+								<div class="delete__draft-quest">
+									Вы подтверждаете это?
+								</div>
+								<div class="delete__draft-flex">
+									<a href="#" class="delete__draft-btn yes">Да</a>
+									<a href="#" class="delete__draft-btn no">Нет</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12">
+							<div class="offer__position-item">
+								<div class="item-title description">
+									Описание
+								</div>
+								<div class="offer__position-block">
+									<div class="offer__position-block-item input-item">
+										<textarea name="" id="">Тестовый текст комментария для образца и показа стиля  в макете.</textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12">
+							<div class="btn-wrapper">
+								<div class="offer__send-btn offer__send-upload mobile__off">
+									<a href="#">
+										<div class="ico"></div>
+										<span>Загрузить</span>
+									</a>
+								</div>
+								<div class="offer__send-btn offer__send-upload only-desktop">
+									<a href="#">
+										<span>Загрузить фото</span>
+									</a>
+								</div>
+								<div class="offer__send-btn offset-lg-1">
+									<a href="#">
+										<span>Далее</span>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- // Новое объявление -->
+</main>
+	
+<script src="../js/offer.js"></script>
+<script src="../js/lk-main.js"></script>
+<script src="../js/newad.js"></script>

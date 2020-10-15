@@ -1,0 +1,400 @@
+﻿@model MContract.Models.HomeIndexViewModel
+
+@{
+	ViewBag.Title = ViewBag.Heading;
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+	<link href="@Url.Content("~/css/main.css")?p=2020-10-10-a" rel="stylesheet" type="text/css" />
+	<link href="@Url.Content("~/css/User/slick.css")?p=2020-10-10-a" rel="stylesheet" type="text/css" />
+	<link href="@Url.Content("~/css/Home/tablesort.css")?p=2020-10-10-a" rel="stylesheet" type="text/css" />
+
+}
+
+
+
+<!-- Главная страница -->
+<main>
+	<!-- Первый экран -->
+	<section class="first__screen">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 col-md col-lg">
+					<div class="col-12 first__slider" data-slick='{"slidesToShow": 1, "slidesToScroll": 1}'>
+						<div class="slides">
+							<div class="row">
+								<div class="col p-0 m-0">
+									<h1 class="slides-h">
+										Заголовок слайда, первый можно о этой тоговой площадке
+									</h1>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col col-lg-12 p-0 m-0">
+									<p class="slides-t">
+										Текст в три строчки, описывающий суть данного слайда и переход
+										на эту статью.В данном случае, это краткое описание данного сервиса.
+										В фоне можно делать прозрачную картинку по теме слайда ...
+									</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col p-0 m-0">
+									<a href="#" class="slides-about">
+										Подробнее
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="slides">
+							<div class="row">
+								<div class="col p-0 m-0">
+									<h1 class="slides-h">
+										Заголовок второго слайда, можно о этой тоговой площадке
+									</h1>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col col-lg-5 p-0 m-0">
+									<a href="@(ViewBag.L.SiteUrlClear + (ViewBag.L.PersonalAreaUser?.Id > 0 ? "/Ads/NewAdStep0" : "/Registration"))" class="slides-btn">
+										Разместить объявление 2
+									</a>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col p-0 m-0">
+									<a href="#" class="slides-about">
+										Подробнее 2
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="slides">
+							<div class="row">
+								<div class="col p-0 m-0">
+									<h1 class="slides-h">
+										Заголовок третьего, можно о этой тоговой площадке
+									</h1>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col col-lg-5 p-0 m-0">
+									<a href="@(ViewBag.L.SiteUrlClear + (ViewBag.L.PersonalAreaUser?.Id > 0 ? "/Ads/NewAdStep0" : "/Registration"))" class="slides-btn">
+										Разместить объявление 3
+									</a>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col p-0 m-0">
+									<a href="#" class="slides-about">
+										Подробнее 3
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="slides">
+							<div class="row">
+								<div class="col p-0 m-0">
+									<h1 class="slides-h">
+										Заголовок четвертого, можно о этой тоговой площадке
+									</h1>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col col-lg-5 p-0 m-0">
+									<a href="@(ViewBag.L.SiteUrlClear + (ViewBag.L.PersonalAreaUser?.Id > 0 ? "/Ads/NewAdStep0" : "/Registration"))" class="slides-btn">
+										Разместить объявление 4
+									</a>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col p-0 m-0">
+									<a href="#" class="slides-about">
+										Подробнее 4
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md col-lg-4">
+					<div class="opport__wrapper">
+						<div class="row">
+							<div class="col">
+								<h2 class="opport__title">
+									Возможности личного кабинета
+								</h2>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<ul class="opport__ul">
+									<li class="opport__li">
+										<div class="ico"></div>
+										<span>
+											Текст о возможностях личного кабинета
+										</span>
+									</li>
+									<li class="opport__li">
+										<div class="ico"></div>
+										<span>
+											Текс о возможностях личного кабинета, когда более одной строчки
+										</span>
+									</li>
+									<li class="opport__li">
+										<div class="ico"></div>
+										<span>
+											Текст о возможностях личного кабинета
+										</span>
+									</li>
+									<li class="opport__li">
+										<div class="ico"></div>
+										<span>
+											Текст о возможностях личного кабинета
+										</span>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col p-0 m-0">
+								<div class="opport__btn-wrapper">
+									<a href="@ViewBag.L.SiteUrlClear/Login" class="opport__btn opport__btn-log">Вход</a>
+									<a href="@ViewBag.L.SiteUrlClear/Registration" class="opport__btn opport__btn-reg">Регистрация</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- //Первый экран -->
+	<!-- Второй экран -->
+	<section class="second__screen">
+		<div class="container">
+			<div class="row m-0">
+				<div class="col-sm-12 col-md-2">
+					<div class="row info__title-block">
+						<div class="col">
+							<div class="info__title">Курсы валют</div>
+						</div>
+					</div>
+					<div class="row info__course">
+						<div class="col-12">
+							<div class="info__course-text">
+								на @(DateTime.Now.ToShortDateString())
+							</div>
+						</div>
+						<div class="col col-md-12">
+							<div class="info__course-info dl">
+								<div class="ico">
+									<img src="/ico/dollar.png" alt="">
+								</div>
+								<span class="text">@(Model.TodayUsdQuote?.Value)</span> <span class="text-rub">&#8381;</span>
+							</div>
+						</div>
+						<div class="col col-md-12">
+							<div class="info__course-info eu">
+								<div class="ico">
+									<img src="/ico/evro.png" alt="">
+								</div>
+								<span class="text">@(Model.TodayEuroQuote?.Value)</span> <span class="text-rub">&#8381;</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md-7">
+					<div class="row cots__block p-0">
+						<div class="col-sm-12">
+							<span class="cots__block-text">
+								Котировки фьючерсов (CFD) в режиме реального времени
+							</span>
+						</div>
+						<div class="col-sm-12 p-0 m-0">
+							<table class="cots__table">
+								<tr>
+									<th class="cots__table-head">Товар</th>
+									<th class="cots__table-head">Цена</th>
+									<th class="cots__table-head">Изм.</th>
+									<th class="cots__table-head">% изм.</th>
+									<th class="cots__table-head">Время</th>
+								</tr>
+								@foreach (var quoteItem in Model.InvestingComQuotes)
+								{
+									<tr>
+										@*<td class="@quoteItem.CssClass cots__table-item"><a href="@quoteItem.ChartUrl" class="@quoteItem.CssClass" title="@quoteItem.ATitle">@quoteItem.TickerName</a></td>
+											<td class="@quoteItem.CssClass cots__table-item"><a class="@quoteItem.CssClass lastQuote-@quoteItem.TickerId" href="@quoteItem.ChartUrl" title="@quoteItem.ATitle">@quoteItem.Quote</a></td>
+											<td class="@quoteItem.CssClass cots__table-item"><a class="@quoteItem.CssClass changePercent-@quoteItem.TickerId" href="@quoteItem.ChartUrl" title="@quoteItem.ATitle">@quoteItem.ChangeStr</a></td>
+											<td class="@quoteItem.CssClass cots__table-item"><a class="@quoteItem.CssClass changePercent-@quoteItem.TickerId" href="@quoteItem.ChartUrl" title="@quoteItem.ATitle">@quoteItem.ChangePercentStr%</a></td>
+											<td class="@quoteItem.CssClass cots__table-item"><a class="@quoteItem.CssClass lastQuote-@quoteItem.TickerId" href="@quoteItem.ChartUrl" title="@quoteItem.ATitle">@quoteItem.TimeStr</a></td>*@
+										<td class="cots__table-item">@quoteItem.TickerName</td>
+										<td class="cots__table-item">@quoteItem.Quote</td>
+										<td class="cots__table-item @quoteItem.CssClass">@quoteItem.ChangeStr</td>
+										<td class="cots__table-item @quoteItem.CssClass">@quoteItem.ChangePercentStr%</td>
+										<td class="cots__table-item">@quoteItem.TimeStr</td>
+									</tr>
+								}
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md-3">
+					<div class="row lme__block p-0">
+						<div class="col-sm-12">
+							<div class="lme__block-text">
+								Рекомендуемые LME цены
+							</div>
+						</div>
+						<div class="col-sm-12 p-0 m-0">
+							<table class="lme__table">
+								<tr>
+									<th class="lme__table-h">LME</th>
+									<th class="lme__table-h">US$ @DateTime.Now.ToShortTimeString()</th>
+								</tr>
+								@foreach (var quoteItem in Model.LmeQuotes)
+								{
+									<tr>
+										<td class="lme__table-text">@quoteItem.TickerName</td>
+										<td class="lme__table-text">@quoteItem.Quote</td>
+									</tr>
+								}
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</section>
+	<!-- //Второй экран -->
+	<!-- Последний экран -->
+	<section class="third__screen">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 col-md info__block">
+					<div class="row info__block-first">
+						<div class="col">
+							<span class="info__block-title">Электронная торговая площадка</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<p class="info__block-text">
+								Это будет сервис, концепция мини
+								версии (ничего лишнего)  электронно
+								- торговой  площадки
+								ориентированной на рынок металла.
+								Задача  связать продавца  и
+								покупателя  и  автоматизировать
+								процесс  заключения сделки.
+								Тем  самым уйти от длительных
+								переговоров  по <span class="blue">телефону</span>  и
+								дублирования одной и  той же
+								информации, расширить  рынок
+								участия для каждого  пользователя.
+							</p>
+						</div>
+					</div>
+					<div class="row lt-padding">
+						<div class="col">
+							<span class="info__block-lt-title lt-padding">Это и есть основная задача проекта</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<p class="info__block-text">
+								По  мимо  компьютерной, также
+								нужно  будет
+								продумать мобильную версию сайта.
+								Во вложении <span class="blue">презентация</span>  в которой
+								описаны  основные
+								моменты, также скину пример
+								оформления который понравился (не
+								сайт), от туда можно взять  какие
+							</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col col-md-6 col-lg-4">
+							<a href="@(ViewBag.L.SiteUrlClear + (ViewBag.L.PersonalAreaUser?.Id > 0 ? "/Ads/NewAdStep0" : "/Registration"))" class="info__block-btn info__block-btn-purch">Продать</a>
+						</div>
+						<div class="col col-md-6 col-lg-4">
+							<a href="@(ViewBag.L.SiteUrlClear + (ViewBag.L.PersonalAreaUser?.Id > 0 ? "/Ads/NewAdStep0" : "/Registration"))" class="info__block-btn info__block-btn-buy">Купить</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md col-lg-5 news__block">
+					<div class="row">
+						<div class="col-8 news__block-header p-0">
+							<span class="news__block-header-item">Новости рынка металлов</span>
+						</div>
+						<div class="col news__block-date p-0">
+							<span class="news__block-date-item">25 сентября 2020</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<div class="news__block-items">
+								<div class="news__block-item">
+									<div class="date">09:28</div>
+									<div class="item">Власти Ирана ограничивают стальной экспорт</div>
+								</div>
+								<div class="news__block-item">
+									<div class="date">07:04</div>
+									<div class="item">Алексей Мордашов просит ввести карантин в 4х российских регионах</div>
+								</div>
+								<div class="news__block-item">
+									<div class="date">00:27</div>
+									<div class="item">США: стальной импорт в апреле снизился на 13,9% к марту</div>
+								</div>
+								<div class="news__block-item">
+									<div class="date">00:26</div>
+									<div class="item">Nippon Steel планирует новые сокращения производства с июля</div>
+								</div>
+								<div class="news__block-item">
+									<div class="date">00:25</div>
+									<div class="item">Китайский экспорт стали в апреле упал на 2,6%</div>
+								</div>
+								<div class="news__block-item">
+									<div class="date">00:24</div>
+									<div class="item">Прибыль Gerdau в первом квартале упала на 50%</div>
+								</div>
+								<div class="news__block-item">
+									<div class="date">00:23</div>
+									<div class="item">Поставки железной руды из Port Hedland в Китай в апреле выросли на 10.6%</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<div class="news__block-read-all">
+								<a href="#">Читать все новости</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- //Последний экран -->
+</main>
+<!-- //Главная страница -->
+
+<script src="@ViewBag.L.SiteUrlClear/js/slick.min.js" type="text/javascript"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/jquery.tablesorter.min.js" type="text/javascript"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/main.js?p=2020-10-10-a" type="text/javascript"></script>
+
+<script>
+	$(document).ready(function () {
+		$(window).scroll(function () {
+			if ($(window).scrollTop() < 400) {
+				$('.postInfo__mobile').stop(true, true).fadeIn();
+			} else {
+				$('.postInfo__mobile').stop(true, true).fadeOut();
+			}
+		});
+	});
+</script>

@@ -1,0 +1,95 @@
+﻿@model MContract.Models.AdminModerateAdsViewModel
+
+@{
+    ViewBag.Title = ViewBag.Heading;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link href="@Url.Content("~/css/Admin/ModerateAds.css")?p=202006112" rel="stylesheet" type="text/css" />
+}
+
+@if (Model.Ads.Any())
+{
+    foreach (var ad in Model.Ads)
+    {
+        <div class="singleAdContainer" id="@ad.Id">
+            <div class="adInformationContainer">
+                <a href="@ad.Url">@ad.Name</a>
+                <p>Описание:</p>
+                <p>@(ad.Description ?? "Не указано")</p>
+                <p>Адрес доставки:</p>
+                <p>@(ad.DeliveryAddress ?? "Не указано")</p>
+                @if (ad.Products.Any())
+                {
+                    var productNames = ad.Products.Select(p => p.Name).Where(n => n != null).ToList();
+                    if (productNames.Any())
+                    {
+                        <p>Названия товаров:</p>
+                        foreach (var name in productNames)
+                        {
+                            <p>@name</p>
+                        }
+                    }
+                }
+                @if (ad.Photos.Any())
+                {
+                    <p>Изображения:</p>
+                    <div class="adPhotosContainer">
+                        @foreach (var photo in ad.Photos)
+                        {
+                            <div>
+                                <img src="@photo.Url" class="adPhoto" />
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="adButtonsContainer">
+                <button class="acceptAd">Разрешить</button>
+                <button class="declineAd">Удалить</button>
+            </div>
+            <div class="moderateResultsContainer">
+                <img src="/ico/Checkmark.svg" class="moderateResult adAccepted" />
+                <img src="/ico/ico/CircledX.svg" class="moderateResult adDeclined" />
+            </div>
+        </div>
+    }
+}
+else
+{
+    <h3>Нет объявлений для модерации</h3>
+}
+
+<script src="~/js/user/viewImage.js?p=202006112" type="text/javascript"></script>
+<script>
+    jQuery(document).ready(function ($) {
+        $(".moderateResultsContainer").add(".moderateResult").hide();
+        prepareImageViewElements();
+        $(".adPhotosContainer").on("click", ".adPhoto", function () {
+            showImageView($(this));
+        });
+        $("body").on("click", ".acceptAd", function () {
+            var adId = $(this).closest(".singleAdContainer").attr("id");
+            var adModerateResultId = @((int)MContract.Models.ModerateResults.Accepted);
+            var moderateResultImage = $(this).closest(".singleAdContainer").find(".moderateResult.adAccepted");
+            $.post("@ViewBag.L.SiteUrlClear/Admin/UpdateAdModerateResult", {
+                adId: adId,
+                moderateResultId: adModerateResultId
+            }, function () {
+                $(moderateResultImage).show().closest(".moderateResultsContainer").show();
+            });
+        });
+        $("body").on("click", ".declineAd", function () {
+            var adId = $(this).closest(".singleAdContainer").attr("id");
+            var adModerateResultId = @((int)MContract.Models.ModerateResults.Declined);
+            var moderateResultImage = $(this).closest(".singleAdContainer").find(".moderateResult.adDeclined");
+            $.post("@ViewBag.L.SiteUrlClear/Admin/UpdateAdModerateResult", {
+                adId: adId,
+                moderateResultId: adModerateResultId
+            }, function () {
+                $(moderateResultImage).show().closest(".moderateResultsContainer").show();
+            });
+        });
+    });
+</script>

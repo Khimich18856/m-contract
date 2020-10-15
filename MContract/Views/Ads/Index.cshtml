@@ -1,0 +1,242 @@
+﻿@model MContract.Models.AdsIndexViewModel
+@{
+	ViewBag.Title = Model.Heading;
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	var currentUser = Model.PersonalAreaUser;
+	var currentUserId = Model.PersonalAreaUser != null ? Model.PersonalAreaUser.Id : 0;
+}
+
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/purch.css?p=2020-10-10-a">
+
+<main>
+	<section class="product__screen">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 desktop-order-s col-md-3 col-lg-3">
+					<div class="product__crumbs">
+						<span class="page"><a href="@ViewBag.L.SiteUrlClear">Главная</a></span>
+						<span class="page page-sel">@Model.Heading</span>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md col-lg product__view">
+					<div class="product__view-container">
+						<div class="product__view-type double">
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+						</div>
+						<div class="product__view-type single selected">
+							<div></div>
+							<div></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12  desktop-order-f col-md col-lg-3">
+					<div class="product__title">@Model.Heading</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="product__block">
+						<!-- Mobile -->
+						@foreach (var ad in Model.Ads)
+						{
+							<a href="@ad.UrlForAdsIndex" class="product__item singleAdContainer @(ad.IsContractSent ? "contractSent" : "") @(ad.IsBuy ? "isBuy" : "")" onclick="@ad.OnClickJsScript">
+								<div class="product__item-open">
+									<span class="number">@ad.NameWithoutOpenOrClose</span> @ad.OpenOrClose
+								</div>
+								<div class="product__item-info-block">
+									<div class="product__item-img">
+										<img src="@ad.SmallPhotoUrl" alt="image-first">
+									</div>
+									<div class="product__item-adress">
+										@if (ad.SenderId == Model.PersonalAreaUser?.Id || ad.AvailableForAllUsers)
+										{
+											@:@(ad.Sender?.CompanyNameWithTypeOfOwnership)
+											@:@(ad.Sender.Town != null ? ", " + ad.Sender?.TownName : "")<br />
+										}
+										@if (ad.City != null && ad.Sender != null && ad.Sender.Town != null && ad.City.Id != ad.Sender.Town.Id)
+										{
+											<span>Город нахождения груза: @(ad.City != null ? ad.City.NameAndRegionNameWithComma : "")</span>
+										}
+									</div>
+									<div class="product__item-favour"></div>
+								</div>
+								<div class="product__item-text-block">
+									@Html.Raw(ad.CategoriesMobileHtml)
+									<span class="weight">
+										<br> Общий вес:
+									</span>
+									<span class="consist">
+										@ad.SumOfProductWeights тн.
+									</span>
+									@*<br /><span class="consist">@ad.StatusTextForAdsIndex</span>*@
+								</div>
+								<div class="product__item-stats-block">
+									<p class="opened">
+										@if (ad.DateOfPosting != null)
+										{
+											@ad.DateOfPosting.ToString("o")
+										}
+									</p>
+									<div class="views">
+										<img src="@ViewBag.L.SiteUrlClear/ico/eye-w.svg" alt="">
+										<span>@ad.ViewsCount</span>
+									</div>
+									<div class="comments">
+										<img src="@ViewBag.L.SiteUrlClear/ico/message-w.svg" alt="">
+										<span>@ad.OffersCount</span>
+									</div>
+									<div class="favourites">
+										<img src="@ViewBag.L.SiteUrlClear/ico/star-w.svg" alt="">
+										<span>@ad.FavoritesCount</span>
+									</div>
+								</div>
+							</a>
+						}
+						<!-- //Mobile -->
+						<!-- Desktop -->
+						@foreach (var ad in Model.Ads)
+						{
+							<a href="@ad.UrlForAdsIndex" class="product__item_d singleAdContainer @(ad.IsContractSent ? "contractSent" : "") @(ad.IsBuy ? "isBuy" : "")" onclick="@ad.OnClickJsScript">
+									<div class="product__item_d-img">
+										<img src="@ad.SmallPhotoUrl" alt="">
+									</div>
+									<div class="product__item_d-info">
+										<div class="open">
+											<div class="open-status">
+												<span class="num">@ad.NameWithoutOpenOrClose</span> @ad.OpenOrClose
+											</div>
+
+										</div>
+										<div class="company">
+											@if (ad.SenderId == Model.PersonalAreaUser?.Id || ad.AvailableForAllUsers)
+											{
+												@:@(ad.Sender?.CompanyNameWithTypeOfOwnership)
+												@:@(ad.Sender.Town != null ? ", " + ad.Sender?.TownName : "")<br />
+											}
+											@if (ad.City != null && ad.Sender != null && ad.Sender.Town != null && ad.City.Id != ad.Sender.Town.Id)
+											{
+												<span>Город нахождения груза: @(ad.City != null ? ad.City.NameAndRegionNameWithComma : "")</span>
+											}
+										</div>
+										<div class="about">
+											@Html.Raw(ad.CategoriesDesktopHtml)<br>
+											<span class="title">Общий вес:</span>
+											<span class="text">@ad.SumOfProductWeights тн.</span>
+											@*<br />@ad.StatusTextForAdsIndex*@
+										</div>
+										<div class="stats">
+											<div class="time">
+												@if (ad.DateOfPosting != null)
+												{
+													@ad.DateOfPosting.ToString("o")
+												}
+											</div>
+											<div class="stats-items">
+												<div class="views">
+													<img src="@ViewBag.L.SiteUrlClear/ico/eye-w.svg" alt="">
+													<span class="view-text">Просмотров</span>
+													<span>@ad.ViewsCount</span>
+												</div>
+												<div class="comments">
+													<img src="@ViewBag.L.SiteUrlClear/ico/message-w.svg" alt="">
+													<span class="view-text">Предложений</span>
+													<span>@ad.OffersCount</span>
+												</div>
+												<div class="favourites">
+													<img src="@ViewBag.L.SiteUrlClear/ico/star-w.svg" alt="">
+													<span class="view-text">В избранном</span>
+													<span>@ad.FavoritesCount</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="open-favour">
+									</div>
+								</a>
+						}
+						<!-- //Desktop -->
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="pugination__block">
+						<div class="left"> &#60; </div>
+						<div class="right"> &#62; </div>
+						<div class="pages">
+							<div class="pages-item selected">
+								<a href="#" onclick="alert('Еще не готово')">1</a>
+							</div>
+							<div class="pages-item">
+								<a href="#" onclick="alert('Еще не готово')">2</a>
+							</div>
+							<div class="pages-item">
+								<a href="#" onclick="alert('Еще не готово')">3</a>
+							</div>
+							<div class="pages-item disabled">
+								...
+							</div>
+							<div class="pages-item">
+								<a href="#" onclick="alert('Еще не готово')">10</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</main>
+
+<script src="~/js/user/replaceIsoDateWithLocalDate.js?p=2020-08-29-a" type="text/javascript"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function ($) {
+		replaceIsoDateTimeWithLocalDateTime($(".opened,.time"));
+
+		$('.product__view-type').on('click', function () {
+			$('.product__view-container .selected').removeClass('selected');
+			$(this).addClass('selected');
+			let double = $('.product__view-container .double');
+			if (double.hasClass('selected')) {
+				$('.product__item_d').addClass('double__item');
+			} else {
+				$('.product__item_d').removeClass('double__item');
+			}
+		});
+		//$("#all-ads").on("click", function () {
+  //          $(".singleAdContainer").show();
+  //      });
+		//$("#is-buy").on("click", function () {
+  //          $(".singleAdContainer").each(function () {
+  //              if ($(this).hasClass("isBuy")) {
+  //                  $(this).show();
+  //              } else {
+  //                  $(this).hide();
+  //              }
+  //          });
+  //      });
+		//$("#is-sales").on("click", function () {
+  //          $(".singleAdContainer").each(function () {
+  //              if (!$(this).hasClass("isBuy")) {
+  //                  $(this).show();
+  //              } else {
+  //                  $(this).hide();
+  //              }
+  //          });
+  //      });
+	});
+
+	function sendRequestForJoinAd(adId) {
+		if (confirm('Это закрытое объявление, желаете отправить организатору свою заявку для участия?')) {
+            let currentUserId = @currentUserId;
+            $.post("@ViewBag.L.SiteUrlClear/Ads/RequestAdInvitation", {
+                adId: adId,
+                userId: currentUserId
+            }, function (result) {
+                alert(result);
+            });
+		}
+	}
+</script>

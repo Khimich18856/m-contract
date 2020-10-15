@@ -1,0 +1,188 @@
+﻿@model MContract.Models.User
+
+@{
+    ViewBag.Title = ViewBag.Heading;
+    Layout = "~/Views/Shared/_LayoutOld.cshtml";
+}
+
+@section Styles{
+    <link href="@Url.Content("~/css/User/Profile.css")?p=202006112" rel="stylesheet" type="text/css" />
+}
+
+<link rel="stylesheet" href="~/js/bootstrap-select-1.13.14/dist/css/bootstrap-select.css?p=202006112">
+<script src="~/js/bootstrap-select-1.13.14/dist/js/bootstrap-select.js?p=202006112"></script>
+
+@{ if (Model.Id == Model.PersonalAreaUser?.Id) { Html.RenderPartial("_PersonalAreaOld", Model.PersonalAreaUser); } }
+<div class="profileContainer">
+    <div class="companyInfoContainer">
+        <div class="companyQuickInfoContainer">
+            @if (Model.Id != Model.PersonalAreaUser?.Id)
+            {
+                var bestFitPhoto = new MContract.Models.Photo();
+                var originalPhoto = new MContract.Models.Photo();
+                if (Model.LogoGroup.Any())
+                {
+                    var requiredDimension = 200;
+                    var smallestDimensionDifference = Model.LogoGroup.Min(p => Math.Abs(p.HigherDimension.Value - requiredDimension));
+                    var maxDimension = Model.LogoGroup.Max(p => p.HigherDimension.Value);
+                    bestFitPhoto = Model.LogoGroup.Find(p => Math.Abs(p.HigherDimension.Value - requiredDimension) == smallestDimensionDifference);
+                    originalPhoto = Model.LogoGroup.Find(p => p.HigherDimension.Value == maxDimension);
+                }
+                <img class="companyLogo" src="@(Model.LogoGroup.Any() ? bestFitPhoto.Url : MContract.AppCode.PhotoHelper.NoLogoImageUrl)" 
+                     data-url="@(Model.LogoGroup.Any() ? originalPhoto.Url : MContract.AppCode.PhotoHelper.NoLogoImageUrl)" />
+            }
+            <div>
+				<p class="companyName">@Model.CompanyNameWithTypeOfOwnership, г. @Model.TownName</p>
+                <p class="rating"><span class="ratingStar"></span>@Model.Rating</p>
+                @if (Model.Id != Model.PersonalAreaUser?.Id)
+                {
+                    <div>
+                        <input type="checkbox" class="isRegular" @(Model.PersonalAreaUser?.RegularClients.Any(u => u.Id == Model.Id) == true ? "checked" : "") />
+                        <button class="isRegularButton btn btn-primary">
+                            @(Model.PersonalAreaUser?.RegularClients.Any(u => u.Id == Model.Id) == true
+                            ? "Удалить из списка постоянных клиентов"
+                            : "Добавить в список постоянных клиентов")
+                        </button>
+                        <p class="regularAdded">
+                            Новый контрагент добавлен в список Ваших постоянных клиентов
+                        </p>
+                        <p class="regularRemoved">
+                            Контрагент удален из списка Ваших постоянных клиентов
+                        </p>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="searchBarContainer">
+            <select class="selectpicker inviteUsers" title="Найти контрагента" data-style="btn-primary" data-live-search="true" data-selected-text-format="static">
+                @foreach (var user in Model.AllUsers)
+                {
+                    if (user.IsSystemNotifications || user.Id == Model.Id)
+                    {
+                        continue;
+                    }
+                    <option value="@user.Id" disabled>@user.CompanyNameWithTypeOfOwnership@(user.TownName != null ? ", " + user.TownName : "")</option>
+                }
+            </select>
+        </div>
+        <div class="companyDetailsContainer">
+            <table>
+                <tr>
+                    <td>Адрес электронной почты:</td>
+                    <td>@Model.Email</td>
+                </tr>
+                <tr>
+                    <td>ИНН:</td>
+                    <td>@Model.INN</td>
+                </tr>
+                <tr>
+                    <td>ОГРН:</td>
+                    <td>@Model.OGRN</td>
+                </tr>
+                <tr>
+                    <td>Мобильный телефон:</td>
+                    <td>@Model.PhoneNumber</td>
+                </tr>
+                @if (Model.PhoneNumberCity != null)
+                {
+                    <tr>
+                        <td>Дополнительный телефон:</td>
+                        <td>@Model.PhoneNumberCity</td>
+                    </tr>
+                }
+                @if (Model.Address != null)
+                {
+                    <tr>
+                        <td>Юр. адрес:</td>
+                        <td>@Model.Address</td>
+                    </tr>
+                }
+                @if (Model.FactualAddress != null)
+                {
+                    <tr>
+                        <td>Фактический адрес</td>
+                        <td>@Model.FactualAddress</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    @if (Model.Id == Model.PersonalAreaUser?.Id)
+    {
+        <div class="profileButtonsContainer">
+            <a class="singleButonContainer" href="@ViewBag.L.SiteUrlClear/Ads/NewAdStep0">
+                <img id="postNewAd" src="/ico/Migrate.svg" />
+                <label for="postNewAd">Добавить новое объявление</label>
+            </a>
+            <a class="singleButonContainer" href="@ViewBag.L.SiteUrlClear/Home/Calculator">
+                <img id="openCalculator" src="/ico/Log.svg" />
+                <label for="openCalculator">Открыть ломокалькулятор</label>
+            </a>
+            <a class="singleButonContainer" href="@ViewBag.L.SiteUrlClear/User/EditProfile">
+                <img id="editInfo" src="/ico/Network.svg" />
+                <label for="editInfo">Редактировать данные</label>
+            </a>
+            <a class="singleButonContainer">
+                <img id="changePassword" src="/ico/Password.svg" />
+                <label for="changePassword">Изменить пароль</label>
+            </a>
+        </div>
+    }
+    <div class="lastSeenAdsContainer">
+        <h3>Последние просмотренные объявления</h3>
+        <div class="lastSeenAdsFlexContainer">
+            @for (var i = 0; i < 10; i++)
+            {
+                <div class="singleAdContainer">
+                    <img src="@MContract.AppCode.PhotoHelper.NoLogoImageUrl" />
+                    <p>
+                        <span class="adName">Сайт в разработке</span>
+                        Интересное предложение!
+                    </p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="~/js/user/viewImage.js?p=202006112" type="text/javascript"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        $(".profileContainer .searchBarContainer").on("show.bs.dropdown", function () {
+            $(".profileContainer .searchBarContainer .inner").on("click", "li", function () {
+                var name = $(this).find("span").html();
+                var id = $(".profileContainer .searchBarContainer select option:contains('" + name + "')").val();
+                location.href = "@ViewBag.L.SiteUrlClear/User/Profile/" + id;
+            });
+        });
+        prepareImageViewElements();
+        $(".profileContainer").on("click", ".companyLogo", function () {
+            showImageView($(this));
+        });
+        $(".profileContainer").on("change", ".isRegular", function () {
+            var isChecked = false;
+            if ($(this).is(":checked")) {
+                isChecked = true;
+            }
+            var isDelete = !isChecked;
+            $.post("@ViewBag.L.SiteUrlClear/User/ChangeRegularClient", {
+                userId: @(Model.PersonalAreaUser?.Id),
+                clientId: @Model.Id,
+                isDelete: isDelete
+            }, function () {
+                    if (isChecked) {
+                        $(".isRegularButton").html("Удалить из списка постоянных клиентов");
+                        $(".regularRemoved").hide();
+                        $(".regularAdded").show();
+                    } else {
+                        $(".isRegularButton").html("Добавить в список постоянных клиентов");
+                        $(".regularAdded").hide();
+                        $(".regularRemoved").show();
+                    }
+            });
+        });
+        $(".isRegularButton").on("click", function () {
+            $(".isRegular").trigger("click");
+        });
+    });
+</script>

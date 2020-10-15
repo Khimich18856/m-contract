@@ -1,0 +1,148 @@
+﻿body {
+}
+
+.chatContainer {
+    border: 1px solid black;
+    width: 80%;
+    margin-right: auto;
+    height: 602px;
+    display: flex;
+    flex-direction: column;
+}
+
+.topBarContainer {
+    display: flex;
+    flex: 1 0;
+    flex-direction: row;
+    align-items: center;
+    min-height: 70px;
+    max-height: 70px;
+    width: 100%;
+    background-color: whitesmoke;
+}
+
+.respondentLogo {
+    height: 50px;
+    margin: 0 10px;
+    width: 50px;
+}
+
+.topBarContainer .respondentTextContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.topBarContainer .respondentTextContainer a {
+    color: black;
+}
+
+.topBarContainer .respondentTextContainer a:hover {
+    text-decoration: none;
+}
+
+.respondentName {
+    font-weight: bold;
+    font-size: larger;
+}
+
+.messagesContainer {
+    flex: 10 0;
+    height: 460px;
+    width: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.singleMessageContainer {
+    border-radius: 10px;
+    border: 1px solid black;
+    margin: 5px 20px 5px 20px;
+    padding: 10px;
+    max-width: 90%;
+    position: relative;
+}
+
+.singleMessageContainer p {
+    display: block;
+    margin: 0;
+}
+
+.senderName {
+    font-weight: bold;
+    font-size: larger;
+}
+
+.messageDate {
+    font-size: x-small;
+}
+
+.singleMessageContainer.incoming {
+    align-self: flex-start;
+}
+
+.singleMessageContainer.incoming p:not(.messageDate) {
+    text-align: left;
+    margin: 0 0 0 60px;
+}
+
+.singleMessageContainer.incoming .messageDate {
+    text-align: right;
+    float: right;
+}
+
+.singleMessageContainer.incoming .senderLogoContainer {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.singleMessageContainer.outgoing {
+    align-self: flex-end;
+}
+
+.singleMessageContainer.outgoing p:not(.messageDate) {
+    text-align: right;
+    margin: 0 60px 0 0;
+}
+
+.singleMessageContainer.outgoing .messageDate {
+    text-align: left;
+    float: left;
+}
+
+.singleMessageContainer.outgoing .senderLogoContainer {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.singleMessageContainer .senderLogo {
+    height: 50px;
+    width: 50px;
+    object-fit: contain;
+}
+
+.inputMessageContainer {
+    flex: 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 10px 0 10px 10px;
+    width: 100%;
+    min-height: 100px;
+    max-height: 100px;
+    box-sizing: border-box;
+    background-color: whitesmoke;
+}
+
+#fileSelect {
+    display: none;
+}
+
+.inputMessage {
+    width: 90%;
+    height: 80px;
+    box-sizing: border-box;
+    resize: none;
+}

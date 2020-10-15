@@ -1,0 +1,53 @@
+﻿body {
+}
+
+.dialogsContainer {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    width: 80%;
+    margin-right: auto;
+    height: 600px;
+    overflow-x: hidden;
+}
+
+.singleDialogContainer {
+    border-bottom: 1px solid black;
+    height: 110px;
+    max-height: 110px;
+}
+
+.singleDialogContainer.unread {
+    background-color: antiquewhite;
+}
+
+.singleDialogContainer:hover {
+    #background-color: whitesmoke;
+    background-color: ghostwhite;
+    text-decoration: none;
+}
+
+.singleDialogContainer .respondentLogo {
+    float: left;
+    margin: 5px;
+    height: 100px;
+    width: 100px;
+}
+
+.singleDialogContainer .textContainer {
+    margin-top: 5px;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    color: black;
+}
+
+.messagePreview {
+    margin: 0.5em 0 0 0;
+    flex: 0 0;
+    min-height: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: gray;
+}

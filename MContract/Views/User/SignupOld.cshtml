@@ -1,0 +1,498 @@
+﻿
+@{
+    ViewBag.Title = ViewBag.Heading;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link href="@Url.Content("~/css/User/Signup.css")?p=202006112" rel="stylesheet" type="text/css" />
+}
+
+<div class="signupFieldsContainer">
+    @using (Html.BeginForm("Signup", "User", FormMethod.Post, new { @class = "" }))
+    {
+        <table>
+            <tr>
+                <td>Адрес электронной почты:</td>
+				<td>
+					<input id="email" type="email" placeholder="ceo@awesome.org" name="Email" onblur="checkEmail();" autocomplete="off" onfocus="this.removeAttribute('readonly');" readonly />
+					<span class="requiredFieldMarker">*</span>
+				</td>
+                <td>
+                    <span id="needEmailSpan" class="needFieldSpan">Поле "Электронная почта" обязательно для заполнения</span>
+                    <span id="invalidEmailSpan" class="invalidFieldSpan">Введенный адрес не соответствует формату электронной почты</span>
+                    <img id="checkedEmailIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                </td>
+            </tr>
+            <tr>
+                <td>Пароль:</td>
+                <td>
+                    <input id="password" type="password" placeholder="********" name="Password" onblur="checkPassword();" autocomplete="off" onfocus="this.removeAttribute('readonly');" readonly />
+                    <span class="requiredFieldMarker">*</span>
+                </td>
+                <td>
+                    <span id="needPasswordSpan" class="needFieldSpan">Поле "Пароль" обязательно для заполнения</span>
+                    <span id="invalidPasswordSpan" class="invalidFieldSpan">@*placeholder*@</span>
+                    <img id="checkedPasswordIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                </td>
+            </tr>
+            <tr>
+                <td>Повторите пароль:</td>
+                <td>
+                    <input id="repeatPassword" type="password" placeholder="********" name="RepeatPassword"
+                           onblur="checkRepeatPassword();" autocomplete="off" onfocus="this.removeAttribute('readonly');" readonly />
+                    <span class="requiredFieldMarker">*</span>
+                </td>
+                <td>
+                    <span id="needRepeatPasswordSpan" class="needFieldSpan">Поле "Повторите пароль" обязательно для заполнения</span>
+                    <span id="invalidRepeatPasswordSpan" class="invalidFieldSpan">Пароли должны совпадать</span>
+                    <img id="checkedRepeatPasswordIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                </td>
+            </tr>
+            <tr>
+                <td>Ваше имя:</td>
+                <td>
+                    <input id="contactName" type="text" placeholder="Илон" name="ContactName" onblur="checkContactName();" autocomplete="off" />
+                    <span class="requiredFieldMarker">*</span>
+                </td>
+                <td>
+                    <span id="needContactNameSpan" class="needFieldSpan">Поле "Ваше имя" обязательно для заполнения</span>
+                    <span id="invalidContactNameSpan" class="invalidFieldSpan">Поле "Ваше имя" содержит недопустимые символы</span>
+                    <img id="checkedContactNameIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                </td>
+            </tr>
+            <tr>
+                <td>Форма собственности организации:</td>
+                <td>
+                    <input class="typeOfOwnership" type="radio" name="TypeOfOwnership" onchange="checkTypeOfOwnership();"
+                           value="1" id="radioTypeOfOwnership1" />
+                    <label for="radioTypeOfOwnership1">ООО</label>
+                    <input class="typeOfOwnership" type="radio" name="TypeOfOwnership" onchange="checkTypeOfOwnership();"
+                           value="2" id="radioTypeOfOwnership2" />
+                    <label for="radioTypeOfOwnership2">ОАО</label>
+                    <input class="typeOfOwnership" type="radio" name="TypeOfOwnership" onchange="checkTypeOfOwnership();"
+                           value="3" id="radioTypeOfOwnership3" />
+                    <label for="radioTypeOfOwnership3">ИП</label>
+                    <span class="requiredFieldMarker">*</span>
+                </td>
+                <td>
+                    <span id="needTypeOfOwnershipSpan" class="needFieldSpan">
+                        Поле "Форма собственности организации" обязательно для заполнения
+                    </span>
+                    <span id="invalidTypeOfOwnershipSpan" class="invalidFieldSpan">
+                        @*placeholder*@
+                    </span>
+                    <img id="checkedTypeOfOwnershipIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                </td>
+            </tr>
+            <tr>
+                <td>Юридическое название организации:</td>
+                <td>
+                    <input id="companyName" type="text" placeholder="Тесла компани" name="CompanyName"
+                           onblur="checkCompanyName();"  autocomplete="off" />
+                    <span class="requiredFieldMarker">*</span>
+                </td>
+                <td>
+                    <span id="needCompanyNameSpan" class="needFieldSpan">
+                        Поле "Юридическое название организации" обязательно для заполнения
+                    </span>
+                    <span id="invalidCompanyNameSpan" class="invalidFieldSpan">
+                        Поле "Юридическое название организации" содержит недопустимые символы
+                    </span>
+                    <img id="checkedCompanyNameIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                </td>
+            </tr>
+            <tr>
+                <td>Город:</td>
+                <td class="cityContainer" tabindex="12" onblur="checkCity();">
+                    <input class="cityInput" type="text" placeholder="Город" name="City" autocomplete="off" />
+                    <span class="requiredFieldMarker">*</span>
+                </td>
+                <td>
+                    <span id="needCitySpan" class="needFieldSpan">Поле "Город" обязательно для заполнения</span>
+                    <span id="invalidCitySpan" class="invalidFieldSpan">Поле "Город" содержит недопустимые символы</span>
+                    <img id="checkedCityIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                </td>
+            </tr>
+            <tr>
+                <td>ИНН:</td>
+                <td>
+                    <input id="INN" type="text" name="INN" onfocus="this.selectionStart = 0" onblur="checkINN();" autocomplete="off" />
+                    <span class="requiredFieldMarker">*</span>
+                </td>
+                <td>
+                    <span id="needINNSpan" class="needFieldSpan">Поле "ИНН" обязательно для заполнения</span>
+                    <span id="invalidINNSpan" class="invalidFieldSpan"></span>
+                    <img id="checkedINNIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                </td>
+            </tr>
+            <tr>
+                <td>ОГРН/ОГРНИП:</td>
+                <td>
+                    <input id="OGRN" type="text" name="OGRN" onfocus="this.selectionStart = 0" onblur="checkOGRN();"  autocomplete="off" />
+                    <span class="requiredFieldMarker">*</span>
+                </td>
+                <td>
+                    <span id="needOGRNSpan" class="needFieldSpan">Поле "ОГРН/ОГРНИП" обязательно для заполнения</span>
+                    <span id="invalidOGRNSpan" class="invalidFieldSpan">@*placeholder*@</span>
+                    <img id="checkedOGRNIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                </td>
+            </tr>
+            <tr>
+                <td>Контактный номер телефона:</td>
+                <td>
+                    <input id="phoneNumber" type="text" name="PhoneNumber" onfocus="this.selectionStart = 0"
+                           onblur="checkPhoneNumber();"  autocomplete="off" />
+                    <span class="requiredFieldMarker">*</span>
+                </td>
+                <td>
+                    <span id="needPhoneNumberSpan" class="needFieldSpan">Поле "Контактный номер телефона" обязательно для заполнения</span>
+                    <span id="invalidPhoneNumberSpan" class="invalidFieldSpan">@*placeholder*@</span>
+                    <img id="checkedPhoneNumberIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                </td>
+            </tr>
+            <tr>
+                <td>Дополнительный номер телефона:</td>
+                <td>
+                    <input id="phoneNumberCity" type="text" name="PhoneNumberCity" onfocus="this.selectionStart = 0"
+                           onblur="checkPhoneNumberCity();"  autocomplete="off" />
+                </td>
+                <td>
+                    <img id="checkedPhoneNumberIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="conditionsAgreement" type="checkbox" onchange="checkConditionsAgreement();" />
+                    <label for="conditionsAgreement">Я согласен с <a href="~/Views/User/Conditions">условиями</a></label>
+                </td>
+                <td>
+                    <button type="submit" id="submit" onclick="return checkFields();">
+                        Зарегистрироваться
+                    </button>
+                </td>
+                <td>
+                    <span id="needConditionsAgreementSpan" class="needFieldSpan">Согласие с условиями обязательно</span>
+                    <span id="invalidConditionsAgreementSpan" class="invalidFieldSpan">@*placeholder*@</span>
+                    <img id="checkedConditionsAgreementIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                </td>
+            </tr>
+        </table>
+    }
+</div>
+
+<script src="~/js/jquery.maskedinput.js" type="text/javascript"></script>
+<link href="~/js/jquery-ui/jquery-ui.css?p=202006112" rel="stylesheet" type="text/css" />
+<script src="~/js/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script src="~/js/user/cityAutocomplete.js?p=20200624" type="text/javascript"></script>
+<script>
+    jQuery(document).ready(function () {
+        $("#INN").mask("9999999999", { autoclear: false });
+        $("#INN").attr("placeholder", "9999999999");
+        $("#OGRN").mask("9-99-99-99-99999-9", { autoclear: false });
+        $("#OGRN").attr("placeholder", "9-99-99-99-99999-9");
+        $("#phoneNumber").mask("+7(999)999-99-99", { autoclear: false });
+        $("#phoneNumber").attr("placeholder", "+7(999)999-99-99");
+        $("#phoneNumberCity").mask("+7(999)999-99-99", { autoclear: false });
+        $("#phoneNumberCity").attr("placeholder", "+7(999)999-99-99");
+        $(".cityContainer").focus(function () {
+            $(this).css("outline", "0");
+        });
+    });
+    /*function checkFields() {
+        var inputsValidated = [];
+        var i = 0;
+        $(".signupFieldsContainer").find("input").each(function () {
+            $(this).blur();
+            if ($(this).parents("tr").find(".requiredFieldMarker").length > 0) {
+                inputsValidated[i] = checkThisField($(this));
+                i++;
+            };
+        });
+        alert(inputsValidated);
+        return inputsValidated.every(Boolean);
+    };*/
+
+    function checkEmail() {
+        var fieldName = $("#email").attr("name");
+        if (checkIsNotEmptyAndSetTipVisibility($("#email"))) {
+            if ($("#email").val().match(/^\b[A-Z0-9._%-]+@@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i)) {
+                $('#checked' + fieldName + 'Icon').siblings().hide();
+                $('#checked' + fieldName + 'Icon').show();
+                return true;
+            }
+            else {
+                $("#invalid" + fieldName + "Span").siblings().hide();
+                $("#invalid" + fieldName + "Span").show();
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+
+    };
+
+    function checkPassword() {
+        var fieldName = $("#password").attr("name");
+        if (checkIsNotEmptyAndSetTipVisibility($("#password"))) {
+            if ($("#repeatPassword").val().length != 0) {
+                checkRepeatPassword();
+            }
+            $('#checked' + fieldName + 'Icon').siblings().hide();
+            $('#checked' + fieldName + 'Icon').show();
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
+
+    function checkRepeatPassword() {
+        var fieldName = $("#repeatPassword").attr("name");
+        if (checkIsNotEmptyAndSetTipVisibility($("#repeatPassword"))) {
+            if ($("#repeatPassword").val() == $("#password").val()) {
+                $('#checked' + fieldName + 'Icon').siblings().hide();
+                $('#checked' + fieldName + 'Icon').show();
+                return true;
+            }
+            else {
+                $("#invalid" + fieldName + "Span").siblings().hide();
+                $("#invalid" + fieldName + "Span").show();
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    };
+
+    function checkContactName() {
+        var fieldName = $("#contactName").attr("name");
+        if (checkIsNotEmptyAndSetTipVisibility($("#contactName"))) {
+            if ($("#contactName").val().match(/[а-я]/i)) {
+                $('#checked' + fieldName + 'Icon').siblings().hide();
+                $('#checked' + fieldName + 'Icon').show();
+                return true;
+            }
+            else {
+                $("#invalid" + fieldName + "Span").siblings().hide();
+                $("#invalid" + fieldName + "Span").show();
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+
+
+    };
+
+    function checkTypeOfOwnership() {
+        var fieldName = $(".typeOfOwnership:first").attr("name");
+        if ($(".typeOfOwnership:checked").length > 0) {
+            if ($(".typeOfOwnership:checked").val() == @((int)MContract.Models.Enums.TypesOfOwnership.IP)) {
+                $("#INN").mask("999999999999");
+                $("#INN").attr("placeholder", "999999999999");
+                $("#OGRN").mask("9-99-99-999999999-9");
+                $("#OGRN").attr("placeholder", "9-99-99-999999999-9");
+            }
+            else {
+                $("#INN").mask("9999999999");
+                $("#INN").attr("placeholder", "9999999999");
+                $("#OGRN").mask("9-99-99-99-99999-9");
+                $("#OGRN").attr("placeholder", "9-99-99-99-99999-9");
+            }
+            $("#checkedINNIcon").parent().children().hide();
+            $("#checkedOGRNIcon").parent().children().hide();
+            $('#checked' + fieldName + 'Icon').siblings().hide();
+            $('#checked' + fieldName + 'Icon').show();
+            return true;
+        }
+        else {
+            $('#need' + fieldName + 'Span').siblings().hide();
+            $('#need' + fieldName + 'Span').show();
+            return false;
+        }
+    };
+
+    function checkCompanyName() {
+        var fieldName = $("#companyName").attr("name");
+        if (checkIsNotEmptyAndSetTipVisibility($("#companyName"))) {
+            if ($("#companyName").val().match(/[а-я\s0-9]/i)) {
+                $('#checked' + fieldName + 'Icon').siblings().hide();
+                $('#checked' + fieldName + 'Icon').show();
+                return true;
+            }
+            else {
+                $("#invalid" + fieldName + "Span").siblings().hide();
+                $("#invalid" + fieldName + "Span").show();
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    };
+
+    function checkCity() {
+        /*var fieldName = $("#city").attr("name");
+        if (checkIsNotEmptyAndSetTipVisibility($("#city").siblings(".selectedOptionsContainer"))) {
+            if ($("#city").val().match(/[а-я\s-]/i)) {
+                $('#checked' + fieldName + 'Icon').siblings().hide();
+                $('#checked' + fieldName + 'Icon').show();
+                return true;
+            }
+            else {
+                $("#invalid" + fieldName + "Span").siblings().hide();
+                $("#invalid" + fieldName + "Span").show();
+                return false;
+            }
+        }
+        else {
+            return false;
+        }*/
+        if ($("#city").siblings(".selectedOptionsContainer").is(":empty")) {
+            $('#needCitySpan').siblings().hide();
+            $('#needCitySpan').show();
+            return false;
+        } else {
+            $('#checkedCityIcon').siblings().hide();
+            $('#checkedCityIcon').show();
+            return true;
+        }
+    };
+
+    function checkINN() {
+        var field = $("#INN");
+        var fieldName = field.attr("name");
+        var checkedIcon = $('#checked' + fieldName + 'Icon');
+        var invalidSpan = $('#invalid' + fieldName + 'Span');
+        if (checkIsNotEmptyAndSetTipVisibility(field)) {
+            var value = field.val();
+            var placeholderChar = '_';
+            if (!value.includes(placeholderChar)) {
+                checkedIcon.show().siblings().hide();
+                return true;
+            }
+            else {
+                invalidSpan.text('ИНН должен содержать 10 цифр').show().siblings().hide();
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    };
+
+    function checkOGRN() {
+        var field = $("#OGRN");
+        var fieldName = field.attr("name");
+        var checkedIcon = $('#checked' + fieldName + 'Icon');
+        var invalidSpan = $('#invalid' + fieldName + 'Span');
+        if (checkIsNotEmptyAndSetTipVisibility(field)) {
+            var value = field.val();
+            var placeholderChar = '_';
+            if (!value.includes(placeholderChar)) {
+                checkedIcon.show().siblings().hide();
+                return true;
+            }
+            else {
+                invalidSpan.text('ОГРН (ОГРНИП) должен содержать 13 (15) цифр').show().siblings().hide();
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    };
+
+    function checkPhoneNumber() {
+        var field = $("#phoneNumber");
+        var fieldName = field.attr("name");
+        var checkedIcon = $('#checked' + fieldName + 'Icon');
+        var invalidSpan = $('#invalid' + fieldName + 'Span');
+        if (checkIsNotEmptyAndSetTipVisibility(field)) {
+            var value = field.val();
+            var placeholderChar = '_';
+            if (!value.includes(placeholderChar)) {
+                checkedIcon.show().siblings().hide();
+                return true;
+            }
+            else {
+                invalidSpan.text('Номер телефона должен содержать 10 цифр').show().siblings().hide();
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    };
+
+    function checkPhoneNumberCity() {
+        var field = $("#phoneNumberCity");
+        var fieldName = field.attr("name");
+        var checkedIcon = $('#checked' + fieldName + 'Icon');
+        var invalidSpan = $('#invalid' + fieldName + 'Span');
+        if (checkIsNotEmptyAndSetTipVisibility(field)) {
+            var value = field.val();
+            var placeholderChar = '_';
+            if (!value.includes(placeholderChar)) {
+                checkedIcon.show().siblings().hide();
+            }
+            /*else {
+                invalidSpan.text('Номер телефона должен содержать 10 цифр').show().siblings().hide();
+                return false;
+            }*/
+        }
+        return true;
+        /*else {
+            return false;
+        }*/
+    };
+
+    function checkConditionsAgreement() {
+        var fieldName = "ConditionsAgreement";
+        if ($("#conditionsAgreement").prop("checked")) {
+            $('#checked' + fieldName + 'Icon').siblings().hide();
+            $('#checked' + fieldName + 'Icon').show();
+            return true;
+        }
+        else {
+            $('#need' + fieldName + 'Span').siblings().hide();
+            $('#need' + fieldName + 'Span').show();
+            return false;
+        }
+    };
+
+    function checkFields() {
+        var inputsValidated = [];
+        inputsValidated.push(checkEmail());
+        inputsValidated.push(checkPassword());
+        inputsValidated.push(checkRepeatPassword());
+        inputsValidated.push(checkContactName());
+        inputsValidated.push(checkTypeOfOwnership());
+        inputsValidated.push(checkCompanyName());
+        inputsValidated.push(checkCity());
+        inputsValidated.push(checkINN());
+        inputsValidated.push(checkOGRN());
+        inputsValidated.push(checkPhoneNumber());
+        inputsValidated.push(checkPhoneNumberCity());
+        inputsValidated.push(checkConditionsAgreement());
+        var result = inputsValidated.every(Boolean);
+        return result;
+    };
+
+    function checkIsNotEmptyAndSetTipVisibility(obj) {
+        var fieldName = obj.attr("name");
+        if (obj.val().length == 0 || !obj.val().match(/[^-_+7()]/g)) {
+            $('#need' + fieldName + 'Span').siblings().hide();
+            $('#need' + fieldName + 'Span').show();
+            return false;
+        }
+        else {
+            $('#need' + fieldName + 'Span').hide();
+            return true;
+        };
+    };
+</script>

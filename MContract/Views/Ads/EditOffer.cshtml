@@ -1,0 +1,824 @@
+﻿@model MContract.Models.Offer
+
+@{
+    ViewBag.Title = Model.Name + " - редактировать";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link href="@Url.Content("~/css/Ads/EditOffer.css")?p=2020-10-10-a" rel="stylesheet" type="text/css" />
+    <link href="~/js/jquery-ui/jquery-ui.css" rel="stylesheet" />
+}
+
+@if (Model.Ad.IsCreateOfferAvailable)
+{
+	<table class="adDetails">
+		<tr>
+			<td>
+				@(Model.Ad.IsBuy ? "Покупатель:" : "Продавец:")
+			</td>
+			<td class="senderNameContainer">
+				@(Model.Ad.Sender?.CompanyNameWithTypeOfOwnership), @(Model.Ad.Sender?.TownName)
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				@(Model.Ad.IsBuy ? "Город:" : "Место фактического нахождения груза:")
+			</td>
+			<td>
+				<div class="cityContainer">
+					<span>@(Model.Ad.City?.FullNameAndRegionName)</span>
+				</div>
+			</td>
+		</tr>
+		@if (Model.Ad.IsBuy)
+		{
+			<tr class="deliveryAddressRow isBuy">
+				<td>
+					Адрес поставки товара:
+				</td>
+				<td>
+					<div class="deliveryAddressContainer">
+						@(Model.DeliveryAddress)
+					</div>
+				</td>
+				<td></td>
+			</tr>
+		}
+		<tr>
+			<td>
+				Условия поставки:
+			</td>
+			<td class="deliveryTypeContainer">
+				<select class="deliveryType">
+					<option name="deliveryType" value="0">Не выбрано</option>
+					<option name="deliveryType" value="1">Доставка продавцом</option>
+					<option name="deliveryType" value="2">Самовывоз покупателем</option>
+				</select>
+			</td>
+			<td class="tipsContainer">
+				<span class="requiredFieldMarker">*</span>
+				<div class="needContainer deliveryTypeNeedContainer">
+					<span>Поле "Условия поставки" обязательно для заполнения</span>
+				</div>
+				<div class="invalidContainer deliveryTypeInvalidContainer">
+					<span>Необходимо выбрать один из вариантов</span>
+				</div>
+				<div class="checkedContainer deliveryTypeCheckedContainer">
+					<img src="/ico/CheckmarkGreen.svg">
+				</div>
+			</td>
+		</tr>
+		@if (!Model.Ad.IsBuy)
+		{
+			<tr class="deliveryAddressRow">
+				<td>
+					Адрес поставки товара:
+				</td>
+				<td class="deliveryAddressContainer">
+					<input type="text" value="@Model.DeliveryAddress" />
+				</td>
+				<td class="tipsContainer">
+					<span class="requiredFieldMarker">*</span>
+					<div class="needContainer deliveryAddressNeedContainer">
+						<span>Поле "Адрес поставки товара" обязательно для заполнения</span>
+					</div>
+					<div class="invalidContainer deliveryAddressInvalidContainer">
+						<span></span>
+					</div>
+					<div class="checkedContainer deliveryAddressCheckedContainer">
+						<img src="/ico/CheckmarkGreen.svg">
+					</div>
+				</td>
+			</tr>
+		}
+		<tr>
+			<td>
+				Погрузка:
+			</td>
+			<td class="deliveryLoadTypeContainer">
+				<select class="deliveryLoadType">
+					<option name="deliveryLoadType" value="0">Не выбрано</option>
+					<option name="deliveryLoadType" value="1">Силами продавца</option>
+					<option name="deliveryLoadType" value="2">Силами покупателя</option>
+				</select>
+			</td>
+			<td class="tipsContainer">
+				<span class="requiredFieldMarker">*</span>
+				<div class="needContainer deliveryLoadTypeNeedContainer">
+					<span>Поле "Погрузка" обязательно для заполнения</span>
+				</div>
+				<div class="invalidContainer deliveryLoadTypeInvalidContainer">
+					<span>Необходимо выбрать один из вариантов</span>
+				</div>
+				<div class="checkedContainer deliveryLoadTypeCheckedContainer">
+					<img src="/ico/CheckmarkGreen.svg">
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Способ доставки:
+			</td>
+			<td class="deliveryWayContainer">
+				<select class="deliveryWay">
+					<option name="deliveryWay" value="0">Не выбрано</option>
+					<option name="deliveryWay" value="1">Авто</option>
+					<option name="deliveryWay" value="2">Ж/Д</option>
+				</select>
+			</td>
+			<td class="tipsContainer">
+				<span class="requiredFieldMarker">*</span>
+				<div class="needContainer deliveryWayNeedContainer">
+					<span>Поле "Способ доставки" обязательно для заполнения</span>
+				</div>
+				<div class="invalidContainer deliveryWayInvalidContainer">
+					<span>Необходимо выбрать один из вариантов</span>
+				</div>
+				<div class="checkedContainer deliveryWayCheckedContainer">
+					<img src="/ico/CheckmarkGreen.svg">
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Цена:
+			</td>
+			<td class="ndsContainer">
+				<select class="Nds">
+					<option name="Nds" value="0">Не выбрано</option>
+					<option name="Nds" value="1">C НДС</option>
+					<option name="Nds" value="2">Без НДС</option>
+				</select>
+			</td>
+			<td class="tipsContainer">
+				<span class="requiredFieldMarker">*</span>
+				<div class="needContainer ndsNeedContainer">
+					<span>Поле "НДС" обязательно для заполнения</span>
+				</div>
+				<div class="invalidContainer ndsInvalidContainer">
+					<span>Необходимо выбрать один из вариантов</span>
+				</div>
+				<div class="checkedContainer ndsCheckedContainer">
+					<img src="/ico/CheckmarkGreen.svg">
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Условия оплаты:
+			</td>
+			<td class="termsOfPaymentsContainer">
+				<select>
+					<option name="0" value="0">Не выбрано</option>
+					<option value="1">Отсрочка платежа</option>
+					<option value="2">100% предоплата</option>
+					<option value="3">Частичная предоплата</option>
+					<option value="4">По факту поставки</option>
+				</select>
+			</td>
+			<td class="tipsContainer">
+				<span class="requiredFieldMarker">*</span>
+				<div class="needContainer termsOfPaymentsNeedContainer">
+					<span>Поле "Условия оплаты" обязательно для заполнения</span>
+				</div>
+				<div class="invalidContainer termsOfPaymentsInvalidContainer">
+					<span>Необходимо выбрать один из вариантов</span>
+				</div>
+				<div class="checkedContainer termsOfPaymentsCheckedContainer">
+					<img src="/ico/CheckmarkGreen.svg">
+				</div>
+			</td>
+		</tr>
+		<tr class="defermentPeriodRow">
+			<td>
+				Максимальный срок оплаты:
+			</td>
+			<td class="defermentPeriodContainer">
+				<input type="text" value="@Model.DefermentPeriod" /><span> дней</span>
+			</td>
+			<td class="tipsContainer">
+				<span class="requiredFieldMarker">*</span>
+				<div class="needContainer defermentPeriodNeedContainer">
+					<span>Поле "Максимальный срок оплаты" обязательно для заполнения</span>
+				</div>
+				<div class="invalidContainer defermentPeriodInvalidContainer">
+					<span>Поле "Максимальный срок оплаты" должно содержать число</span>
+				</div>
+				<div class="checkedContainer defermentPeriodCheckedContainer">
+					<img src="/ico/CheckmarkGreen.svg">
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Подача предложений по части позиций:
+			</td>
+			<td class="partOffersAllowedContainer">
+				<input type="checkbox" name="partOffersAllowed" id="partOffersAllowed1" value="1" />
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				Ценовое предложение действительно до:
+			</td>
+			<td class="activeUntilDateContainer">
+				<input value="@Model.ActiveUntilDate.ToString("dd.MM.yyyy")" /> 23:59 МСК
+			</td>
+			<td class="tipsContainer">
+				<span class="requiredFieldMarker">*</span>
+				<div class="needContainer defermentPeriodNeedContainer">
+					<span>Поле "Ценовое предложение действительно до" обязательно для заполнения</span>
+				</div>
+				<div class="invalidContainer defermentPeriodInvalidContainer">
+					<span>Поле "Ценовое предложение действительно до" должно содержать дату</span>
+				</div>
+				<div class="checkedContainer defermentPeriodCheckedContainer">
+					<img src="/ico/CheckmarkGreen.svg">
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	<table class="productDetails">
+		<tr>
+			<td>
+				№
+			</td>
+			<td>
+				Категория товара
+			</td>
+			@{ int sumTotalColspan = 4; }
+			@if (Model.Ad.Products.Any(p => !string.IsNullOrEmpty(p.Name)))
+			{
+				<td>
+					Точное наименование
+				</td>
+				sumTotalColspan++;
+			}
+			<td>
+				Вес (тн.)
+			</td>
+			<td>
+				Валюта
+			</td>
+			@if (Model.Ad.Products.Any(p => p.PricePerWeight != 0))
+			{
+				<td>
+					Цена за 1 тн.<br />
+					@if (Model.Ad.IsBuy)
+					{
+						<span>(максимальная)</span>
+					}
+					else
+					{
+						<span>(минимальная)</span>
+					}
+				</td>
+				sumTotalColspan++;
+			}
+			<td>
+				Цена за 1 тн.<br />
+				(предложение)
+			</td>
+		</tr>
+		@{ var i = 1; }
+		@foreach (var product in Model.Ad.Products)
+		{
+			<tr>
+				<td class="productNumber">
+					@i
+				</td>
+				<td class="productId" style="display:none">@product.Id</td>
+				<td class="categoryContainer">@product.ProductCategoryName</td>
+				@if (!string.IsNullOrEmpty(product.Name))
+				{
+					<td class="specificCategoryContainer">
+						<span>@product.Name</span>
+					</td>
+				}
+				else if (Model.Ad.Products.Any(p => !string.IsNullOrEmpty(p.Name)))
+				{
+					<td></td>
+				}
+				<td class="weightContainer">
+					<span>@product.Weight.ToString("G")</span>
+				</td>
+				<td class="currencyContainer">
+					<select class="currency@(i - 1)">
+						<option name="currency@(i - 1)" value="@((int)MContract.Models.Enums.Currencies.Rouble)">Рубли</option>
+						<option name="currency@(i - 1)" value="@((int)MContract.Models.Enums.Currencies.Dollar)">Доллары</option>
+					</select>
+				</td>
+				@if (product.PricePerWeight != 0)
+				{
+					<td class="pricePerWeightOriginalContainer">
+						<span>@product.PricePerWeight</span>
+					</td>
+				}
+				else if (Model.Ad.Products.Any(p => p.PricePerWeight != 0))
+				{
+					<td></td>
+				}
+				@if (Model.ProductOffers.Any(o => o.ProductId == product.Id))
+				{
+					var productOffer = Model.ProductOffers.Find(o => o.ProductId == product.Id);
+					<td class="productOfferId" style="display: none">@(productOffer?.Id)</td>
+					<td class="pricePerWeightContainer">
+						<input value="@(productOffer?.PricePerWeight != 0 ? productOffer?.PricePerWeight.ToString() : "")" />
+					</td>
+				}
+				else
+				{
+					<td class="pricePerWeightContainer">
+						<input />
+					</td>
+				}
+			</tr>
+			<tr class="tipsRow">
+				<td></td>
+				<td class="tipsContainer">
+					<div class="needContainer pricePerWeightNeedContainer">
+						<span>Необходимо указать предлагаемую цену за тн. товара</span>
+					</div>
+					<div class="invalidContainer pricePerWeightInvalidContainer">
+						@if (Model.Ad.IsBuy)
+						{
+							<span>Предлагаемая цена за тн. товара не может быть выше максимальной цены, установленной покупателем</span>
+						}
+						else
+						{
+							<span>Предлагаемая цена за тн. товара не может быть ниже минимальной цены, установленной продавцом</span>
+						}
+					</div>
+				</td>
+			</tr>
+			i++;
+		}
+		<tr class="tipsRow">
+			<td></td>
+			<td class="tipsContainer">
+				<div class="needContainer productsSelectedNeedContainer">
+					<span>Необходимо выбрать хотя бы один товар</span>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	if (!string.IsNullOrEmpty(Model.Comment))
+	{
+		<div class="commentContainer">
+			Комментарий:<br />
+			<textarea class="comment">@Model.Comment</textarea>
+		</div>
+	}
+
+	<button class="saveChanges btn btn-primary" type="submit">Сохранить изменения и отправить предложение</button>
+	<button class="sendMessage btn btn-secondary" type="submit">Отправить личное сообщение</button>
+
+	if (!string.IsNullOrEmpty(Model.Ad.Description))
+	{
+		<div class="adDescriptionContainer">
+			Описание <button class="adDescriptionToggle expand">v</button><br />
+			<p class="adDescription">@Model.Ad.Description</p>
+		</div>
+	}
+
+	<span>Фотографии </span>
+	<button class="adPhotosToggle expand">v</button>
+	<div class="adPhotosContainer">
+		@if (!Model.Ad.Photos.Any())
+		{
+			@:Нет фотографий
+		}
+		else
+		{
+			var requiredDimension = 200;
+			foreach (var photoId in Model.Ad.Photos.GroupBy(p => p.GroupId.ToString()).Select(g => g.FirstOrDefault().Id))
+			{
+				var bestFitPhoto = Model.Ad.GetBestFitPhotoFromPhotoId(photoId, requiredDimension);
+				var originalPhoto = Model.Ad.GetOriginalPhotoFromPhotoId(photoId);
+				<div style="background: url(@bestFitPhoto.Url) 50% 50% no-repeat; background-size: 100% 100%;" data-url="@originalPhoto.Url" class="adPhoto" id="@bestFitPhoto.GroupId"></div>
+			}
+		}
+	</div>
+}
+else
+{
+	<h2>@Model.Ad.CreateOfferNotAvailableMessage</h2>
+}
+
+<script src="~/js/user/viewImage.js?p=202006112" type="text/javascript"></script>
+<script src="~/js/jquery-ui/jquery-ui.js"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        $(".activeUntilDateContainer input").datepicker({
+            dateFormat: "dd.mm.yy",
+            minDate: 0
+        });
+        $(".deliveryTypeContainer").find("option[value='" + @Convert.ToInt32(Model.DeliveryType) + "']").prop("selected", true);
+        if (@Convert.ToInt32(Model.Ad.DeliveryType) != 0) {
+            $(".deliveryTypeContainer select").prop("disabled", true);
+        }
+        $(".deliveryTypeContainer select").on("change", function () {
+            if ($(this).find("option:selected").val() == 1) {
+                $(this).closest("tr").siblings(".deliveryAddressRow").show();
+            } else {
+                $(this).closest("tr").siblings(".deliveryAddressRow").hide();
+            }
+        });
+        $(".deliveryLoadTypeContainer").find("option[value='" + @Convert.ToInt32(Model.DeliveryLoadType) + "']").prop("selected", true);
+        if (@Convert.ToInt32(Model.Ad.DeliveryLoadType) != 0) {
+            $(".deliveryLoadTypeContainer select").prop("disabled", true);
+        }
+        $(".deliveryWayContainer").find("option[value='" + @Convert.ToInt32(Model.DeliveryWay) + "']").prop("selected", true);
+        if (@Convert.ToInt32(Model.Ad.DeliveryWay) != 0) {
+            $(".deliveryWayContainer select").prop("disabled", true);
+        }
+        $(".ndsContainer").find("option[value='" + @Convert.ToInt32(Model.Nds) + "']").prop("selected", true);
+        if (@Convert.ToInt32(Model.Ad.Nds) != 0) {
+            $(".ndsContainer select").prop("disabled", true);
+        }
+        $(".termsOfPaymentsContainer").find("option[value='" + @Convert.ToInt32(Model.TermsOfPayments) + "']").prop("selected", true);
+        if (@Convert.ToInt32(Model.Ad.TermsOfPayments) != 0) {
+            $(".termsOfPaymentsContainer select").prop("disabled", true);
+        }
+        $(".termsOfPaymentsContainer select").on("change", function () {
+            if ($(this).find("option:selected").val() == 1) {
+                $(this).closest("tr").siblings(".defermentPeriodRow").show();
+            } else {
+                $(this).closest("tr").siblings(".defermentPeriodRow").hide();
+            }
+        });
+        $(".deliveryTypeContainer, .termsOfPaymentsContainer").find("select").trigger("change");
+        var i = 0;
+        $(".adDetails tr:visible").each(function () {
+            if (i % 2 == 0) {
+                //$(this).children().not(":last").css("background-color", "whitesmoke");
+                $(this).children().not(":last").css("background-color", "ghostwhite");
+            } else {
+                $(this).children().not(":last").css("background-color", "ghostwhite");
+            }
+            i++;
+        });
+        $(".adDetails .partOffersAllowedContainer").find("input[value=@Convert.ToInt32(Model.Ad.PartOffersAllowed)]").prop("checked", true);
+        $(".adDetails .partOffersAllowedContainer input").prop("disabled", true);
+        $(".adDetails select:disabled").each(function () {
+            $(this).hide();
+            $(this).closest("td").prepend($(this).find("option:selected").html());
+        });
+        var currencies = @Html.Raw(Json.Encode(Model.Ad.Products.Select(Product => (int)Product.Currency).ToList()));
+        var i = 0;
+        $(".productDetails tr:not(:first)").each(function () {
+            $(this).find(".currencyContainer").find("option[value='" + currencies[i] + "']").prop("selected", true);
+            i++;
+        });
+        var productsIdString = @Html.Raw(Json.Encode(Model.ProductOffers.Select(o => o.ProductId).ToList()));
+        var productsId = productsIdString.map(Number);
+        $(".productNumber").closest("tr").each(function () {
+            if (productsId.includes(Number($(this).closest("tr").find(".productId").html())) || @Model.Ad.PartOffersAllowed.ToString().ToLower() == false) {
+                $(this).children().css("opacity", "");
+            } else {
+                $(this).children().css("opacity", "0.75");
+            }
+        });
+        $(".currencyContainer select").prop("disabled", true);
+        $(".productNumber").each(function () {
+            if ($(this).html() % 2 == 0) {
+                //$(this).closest("tr").css("background-color", "whitesmoke");
+                $(this).closest("tr").css("background-color", "ghostwhite");
+            } else {
+                $(this).closest("tr").css("background-color", "ghostwhite");
+            }
+        });
+
+        $("body").on("keyup", ".productDetails .pricePerWeightContainer input", function () {
+            var regex = /^([0-9]*[\.,]?[0-9]*)$/;
+            if (!regex.test($(this).val())) {
+                alert("Недопустимые символы в поле \"Цена\"");
+            }
+        });
+
+        $(".adDescriptionToggle").click(function () {
+            if ($(this).hasClass("expand")) {
+                $(this).siblings(".adDescription").css("display", "initial");
+                $(this).removeClass("expand").addClass("contract");
+                $(this).html("-");
+            } else {
+                $(this).siblings(".adDescription").css("display", "");
+                $(this).removeClass("contract").addClass("expand");
+                $(this).html("v");
+            }
+        });
+
+        $(".adPhotosToggle").click(function () {
+            if ($(this).hasClass("expand")) {
+                $(this).siblings(".adPhotosContainer").css("display", "flex");
+                $(this).removeClass("expand").addClass("contract");
+                $(this).html("-");
+            } else {
+                $(this).siblings(".adPhotosContainer").css("display", "");
+                $(this).removeClass("contract").addClass("expand");
+                $(this).html("v");
+            }
+        });
+        prepareImageViewElements();
+        $(".adPhotosContainer").on("click", ".adPhoto", function () {
+            showImageView($(this));
+        });
+
+        function checkDeliveryType(obj) {
+            if ($(obj).find("option:selected").val() != 0) {
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").show();
+                return true;
+            } else {
+                $(obj).siblings(".tipsContainer").find(".needContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".needContainer").show();
+                return false;
+            }
+        }
+
+        function checkDeliveryAddress(obj) {
+            if ($(obj).find("input").length == 0) {
+                return true;
+            } else if ($(obj).find("input").val() != "") {
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").show();
+                return true;
+            } else {
+                $(obj).siblings(".tipsContainer").find(".needContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".needContainer").show();
+                return false;
+            }
+        }
+
+        function checkDeliveryLoadType(obj) {
+            if ($(obj).find("option:selected").val() != 0) {
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").show();
+                return true;
+            } else {
+                $(obj).siblings(".tipsContainer").find(".needContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".needContainer").show();
+                return false;
+            }
+        }
+
+        function checkDeliveryWay(obj) {
+            if ($(obj).find("option:selected").val() != 0) {
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").show();
+                return true;
+            } else {
+                $(obj).siblings(".tipsContainer").find(".needContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".needContainer").show();
+                return false;
+            }
+        }
+
+        function checkNds(obj) {
+            if ($(obj).find("option:selected").val() != 0) {
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").show();
+                return true;
+            } else {
+                $(obj).siblings(".tipsContainer").find(".needContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".needContainer").show();
+                return false;
+            }
+        }
+
+        function checkTermsOfPayments(obj) {
+            if ($(obj).find("option:selected").val() != 0) {
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").show();
+                return true;
+            } else {
+                $(obj).siblings(".tipsContainer").find(".needContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".needContainer").show();
+                return false;
+            }
+        }
+
+        function checkDefermentPeriod(obj) {
+            if ($(obj).find("input").val().length == 0) {
+                $(obj).siblings(".tipsContainer").find(".needContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".needContainer").show();
+                return false;
+            } else if (!$.isNumeric($(obj).find("input").val())) {
+                $(obj).siblings(".tipsContainer").find(".invalidContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".invalidContainer").show();
+                return false;
+            } else {
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").show();
+                return true;
+            }
+        }
+
+        function checkActiveUntilDate(obj) {
+            if ($(obj).find("input").val().length == 0) {
+                $(obj).siblings(".tipsContainer").find(".needContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".needContainer").show();
+                return false;
+            }/* else if (!$.isNumeric($(obj).find("input").val())) {
+                $(obj).siblings(".tipsContainer").find(".invalidContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".invalidContainer").show();
+                return false;
+            }*/ else {
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").show();
+                return true;
+            }
+        }
+
+        function checkProductsAndPrices(obj) {
+            var isBuy = Boolean(@Model.Ad.IsBuy.ToString().ToLower());
+            var partOffersAllowed = Boolean(@Model.Ad.PartOffersAllowed.ToString().ToLower());
+            var input;
+            if (partOffersAllowed == false) {
+                input = $(".pricePerWeightContainer input");
+            } else {
+                input = $(".productDetails .pricePerWeightContainer input").filter(function () { return this.value });
+                if (input.length == 0) {
+                    $(obj).find(".tipsRow").hide();
+                    $(obj).find(".tipsRow").children(".tipsContainer").children().hide;
+                    $(obj).find(".tipsRow").last().show();
+                    $(obj).find(".tipsRow").last().find(".needContainer").show();
+                    return false;
+                }
+                $(obj).find(".tipsRow").last().hide();
+                $(obj).find(".tipsRow").last().find(".needContainer").hide();
+            }
+            var isPriceEntered = $.map($(obj).find(input), function (input) {
+                var row = $(input).closest("tr");
+                var regex = /^([0-9]*[\.,]?[0-9]*)$/;
+                var pricePerWeightVal = $(input).val();
+                var originalPricePerWeight = $(row).find(".pricePerWeightOriginalContainer span").html();
+                if (!pricePerWeightVal && !partOffersAllowed) {
+                    $(row).css("border-bottom", "0");
+                    $(row).next(".tipsRow").css("border-top", "0");
+                    $(row).next(".tipsRow").show();
+                    $(row).next(".tipsRow").children(".tipsContainer").children().hide();
+                    $(row).next(".tipsRow").find(".needContainer").show();
+                    return false;
+                } else if (!regex.test(pricePerWeightVal)) {
+                    alert("Недопустимые символы в поле \"Цена\"");
+                    return false;
+                } else if (originalPricePerWeight && ((parseFloat(pricePerWeightVal.replace(",", ".")) > parseFloat(originalPricePerWeight.replace(",", ".")) && isBuy) || (parseFloat(pricePerWeightVal.replace(",", ".")) < parseFloat(originalPricePerWeight.replace(",", ".")) && !isBuy))) {
+                    if (partOffersAllowed) {
+                        if (!$(row)[0].hasAttribute("data-last-color")) {
+                            $(row).attr("data-last-color", $(row).css("background-color"));
+                        }
+                        $(row).css("background-color", "floralwhite");
+                    } else {
+                        $(row).next(".tipsRow").css("background-color", $(row).css("background-color"));
+                    }
+                    $(row).css("border-bottom", "0");
+                    $(row).next(".tipsRow").css("border-top", "0");
+                    $(row).next(".tipsRow").show();
+                    $(row).next(".tipsRow").children(".tipsContainer").children().hide();
+                    $(row).next(".tipsRow").find(".invalidContainer").show();
+                    return false;
+                } else {
+                    if (partOffersAllowed) {
+                        $(row).css("background-color", $(row).attr("data-last-color"));
+                        $(row).removeAttr("data-last-color");
+                    }
+                    $(row).css("border-bottom", "");
+                    $(row).next(".tipsRow").css("border-top", "");
+                    $(row).next(".tipsRow").hide();
+                    $(row).next(".tipsRow").children(".tipsContainer").children().hide();
+                    return true;
+                }
+            });
+            return isPriceEntered.every(Boolean);
+        }
+
+        $(".saveChanges").click(function () {
+            if (@((Model.PersonalAreaUser?.Id != Model.SenderId && Model.PersonalAreaUser?.IsAdmin != true).ToString().ToLower())) {
+                alert("Невозможно отредактировать предложение, отправленное другим пользователем");
+                return false;
+            } else if (@((Model.Ad.AdStatus == MContract.Models.Enums.AdStatuses.Expired).ToString().ToLower())) {
+                alert("Невозможно отредактировать предложение, по истекшему объявлению");
+				return false;
+			} else if (@((Model.Ad.AdStatus == MContract.Models.Enums.AdStatuses.Finished).ToString().ToLower())) {
+                alert("Невозможно отредактировать предложение, по объявлению заключен контракт");
+				return false;
+			} else if (@((Model.Ad.AdStatus == MContract.Models.Enums.AdStatuses.Deleted).ToString().ToLower())) {
+                alert("Невозможно отредактировать предложение, по удаленному объявлению");
+                return false;
+            } else if (@(Model.Ad.Offers.Any(o => o.ContractStatus == MContract.Models.Enums.ContractStatuses.Sent).ToString().ToLower())) {
+                alert("Невозможно отредактировать предложение по объявлению с отправленным контрактом");
+                return false;
+            }
+            var fieldsValidated = [];
+            fieldsValidated.push(checkDeliveryType($(".adDetails .deliveryTypeContainer")));
+            if ($(".adDetails .deliveryAddressRow").is(":visible")) {
+                fieldsValidated.push(checkDeliveryAddress($(".adDetails .deliveryAddressContainer")));
+            }
+            fieldsValidated.push(checkDeliveryLoadType($(".adDetails .deliveryLoadTypeContainer")));
+            fieldsValidated.push(checkDeliveryWay($(".adDetails .deliveryWayContainer")));
+            fieldsValidated.push(checkNds($(".adDetails .ndsContainer")));
+            fieldsValidated.push(checkTermsOfPayments($(".adDetails .termsOfPaymentsContainer")));
+            if ($(".adDetails .defermentPeriodRow").is(":visible")) {
+                fieldsValidated.push(checkDefermentPeriod($(".adDetails .defermentPeriodContainer")));
+            }
+            fieldsValidated.push(checkActiveUntilDate($(".adDetails .activeUntilDateContainer")));
+            fieldsValidated.push(checkProductsAndPrices($(".productDetails")));
+            if (fieldsValidated.every(Boolean)) {
+                var offerSenderId = parseInt(@(Model.PersonalAreaUser?.Id));
+                var offerAdId = parseInt(@Model.AdId);
+                var offerProductsId = [];
+                var offerProductsPricePerWeight = [];
+                if (@Model.Ad.PartOffersAllowed.ToString().ToLower()) {
+                    $(".productDetails .productNumber").closest("tr").each(function () {
+                        if ($(this).find(".pricePerWeightContainer input").val().length != 0) {
+                            offerProductsId.push($(this).find(".productId").html());
+                            offerProductsPricePerWeight.push($(this).find(".pricePerWeightContainer input").val().replace(".", ","));
+                        }
+                    });
+                } else {
+                    $(".productDetails .productNumber").closest("tr").each(function () {
+                        offerProductsId.push($(this).find(".productId").html());
+                        offerProductsPricePerWeight.push($(this).find(".pricePerWeightContainer input").val().replace(".", ","));
+                    });
+                }
+                var offerCityId = parseInt(@Model.CityId);
+                var offerDeliveryType = $(".adDetails .deliveryTypeContainer select").val();
+                var offerDeliveryAddress = "";
+                if ($(".adDetails .deliveryAddressContainer input").length != 0) {
+                    offerDeliveryAddress = $(".adDetails .deliveryAddressContainer input").val();
+                } else if ($(".adDetails .deliveryAddressContainer").length != 0) {
+                    offerDeliveryAddress = $(".adDetails .deliveryAddressContainer").html();
+                };
+                offerDeliveryAddress = $.trim(offerDeliveryAddress);
+                var offerDeliveryLoadType = $(".adDetails .deliveryLoadTypeContainer select").val();
+                var offerDeliveryWay = $(".adDetails .deliveryTypeContainer select").val();
+                var offerNds = $(".adDetails .ndsContainer select").val();
+                var offerTermsOfPayments = $(".adDetails .termsOfPaymentsContainer select").val();
+                var offerDefermentPeriod;
+                if ($(".adDetails .defermentPeriodContainer input").val().length != 0) {
+                    offerDefermentPeriod = $(".adDetails .defermentPeriodContainer input").val();
+                };
+                var offerActiveUntilDate = $(".adDetails .activeUntilDateContainer input").val();
+                var comment = $(".commentContainer textarea").val();
+                var products;
+                if (!@Model.Ad.PartOffersAllowed.ToString().ToLower()) {
+                    products = $(".pricePerWeightContainer input").closest("tr");
+                } else {
+                    products = $(".productDetails .pricePerWeightContainer input").filter(function () { return this.value }).closest("tr");
+                }
+                class ProductOffer {
+                    constructor(id, productId, pricePerWeight) {
+                        this.OfferId = @Model.Id;
+                        this.Id = id;
+                        this.ProductId = productId;
+                        this.PricePerWeight = pricePerWeight;
+                    }
+                };
+                var offerProductOffers = [];
+                $(products).each(function () {
+                    var id = parseInt($(this).find(".productOfferId").html());
+                    var productId = parseInt($(this).find(".productId").html());
+                    var pricePerWeight = $(this).find(".pricePerWeightContainer input").val().replace(".", ",");
+                    offerProductOffers.push(new ProductOffer(id, productId, pricePerWeight));
+                });
+                $.post("@ViewBag.L.SiteUrlClear/Ads/EditOffer", {
+                    Id: @Model.Id,
+                    SenderId: offerSenderId,
+                    AdId: offerAdId,
+                    ProductOffers: offerProductOffers,
+                    CityId: offerCityId,
+                    DeliveryType: offerDeliveryType,
+                    DeliveryAddress: offerDeliveryAddress,
+                    DeliveryLoadType: offerDeliveryLoadType,
+                    DeliveryWay: offerDeliveryWay,
+                    TermsOfPayments: offerTermsOfPayments,
+                    DefermentPeriod: offerDefermentPeriod,
+                    Nds: offerNds,
+                    ActiveUntilDate: offerActiveUntilDate,
+                    Comment: comment
+				}).done(function (url) {
+					var regexp = /[а-яё]/i;
+					if (regexp.test(url)) {
+						alert(url);
+						return;
+					}
+
+                    location.href = url;
+                });
+            } else {
+                return false;
+            }
+        });
+
+        $(".sendMessage").click(function () {
+            var thisPageUrl = encodeURIComponent(location.href);
+            location.href = `@ViewBag.L.SiteUrlClear/User/Messages?respondentId=@Model.Ad.SenderId&lastPageUrl=${thisPageUrl}`;
+        });
+    });
+</script>

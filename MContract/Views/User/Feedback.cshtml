@@ -1,0 +1,65 @@
+﻿
+@{
+	ViewBag.Title = "Обратная связь";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/help.css">
+
+<main>
+	<section class="offer__wrapper">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 col-md-4 order-md-4 mobile-first">
+					<div class="product__crumbs">
+						<span class="page"><a href="main.html">Главная</a></span>
+						<span class="page page-sel">Обратная связь</span>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md-8">
+					<div class="offer__title">
+						<h1>Обратная связь</h1>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form__wrapper">
+						<form action="">
+							<div class="select">
+								<div class="default-item">Тема обращения</div>
+								<div class="ico"></div>
+								<ul class="list-of-select closed">
+									<li class="selected">Тема обращения</li>
+									<li>Заголовок темы обращения</li>
+									<li>Какой-то текст заголовка</li>
+									<li>Образец стиля заголовка темы обращения</li>
+									<li>Заголовок темы обращения</li>
+									<li>Заголовок темы обращения</li>
+								</ul>
+							</div>
+							<label class="label-inp" for="name">Ваше имя: <sup>*</sup></label>
+							<input class="input-text" type="text" name="name" id="name" placeholder="Имя" required>
+							<label class="label-inp" for="email">E-Mail: <sup>*</sup></label>
+							<input class="input-text" type="email" name="email" id="email" placeholder="info@m-contract.ru" required>
+							<input class="checkbox-inp" type="checkbox" name="double" id="double" checked>
+							<label for="double" class="checkbox">Продублировать ответ на эл. почту</label>
+							<label class="label-inp">Ваш вопрос или обращение: <sup>*</sup></label>
+							<textarea class="input-text" name="question" id="question" required></textarea>
+							<label class="file-label" for="file">Файл не выбран</label>
+							<input class="file-inp" type="file" name="file" id="file">
+							<div class="form__text">
+								Нажимая на кнопку «Отправить», вы принимаете
+								условия <a href="#">Лицензионного соглашения</a> и даёте своё
+								согласие на обработку <a href="#">персональных данных</a>
+							</div>
+							<button type="submit" class="submit-button">Отправить</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</main>
+
+<script src="@ViewBag.L.SiteUrlClear/js/help.js"></script>

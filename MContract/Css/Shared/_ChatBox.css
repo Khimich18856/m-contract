@@ -1,0 +1,141 @@
+﻿/* старые стайлинги для чата */
+
+.chatBoxDialogsContainer {
+    z-index: 100;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+
+    .chatBoxDialogsContainer .chatBoxDialog {
+        position: relative;
+    }
+
+        .chatBoxDialogsContainer .chatBoxDialog .unreadMessagesFlag {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: url("/ico/SelectedOptionsCount.png") no-repeat;
+            background-size: 1.4em 1.4em;
+            height: 1.4em;
+            width: 1.4em;
+            display: none;
+        }
+
+        .chatBoxDialogsContainer .chatBoxDialog.unread .unreadMessagesFlag {
+            display: initial;
+        }
+
+        .chatBoxDialogsContainer .chatBoxDialog .removeDialog {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: black;
+            color: white;
+            display: none;
+        }
+
+    .chatBoxDialogsContainer .chatBoxDialogsToggle {
+        height: 50px;
+        width: 50px;
+        background-color: white;
+        border: 1px solid black;
+        #background-image: url("/Images/Placeholder.jpg");
+        #background-size: contain;
+    }
+
+    .chatBoxDialogsContainer .chatBoxDialogsFlexContainer {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .chatBoxDialogsContainer .chatBoxDialogsFlexContainer .chatBoxDialog {
+            width: 50px;
+            height: 50px;
+            background-size: contain;
+        }
+
+.chatBoxContainer {
+    z-index: 100;
+    position: fixed;
+    bottom: 10px;
+    right: 70px;
+    width: 200px;
+    background-color: white;
+    border: 1px solid black;
+}
+
+    .chatBoxContainer .chatBoxHeader {
+        height: 50px;
+    }
+
+    .chatBoxContainer .chatBoxMessagesBody, .chatBoxContainer .chatBoxDialogsBody {
+        height: 300px;
+    }
+
+    .chatBoxContainer .chatBoxMessagesContainer {
+        height: 250px;
+        overflow-x: hidden;
+    }
+
+    .chatBoxContainer .chatBoxMessage {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .chatBoxContainer .chatBoxMessage.incoming {
+            margin-left: 2%;
+            align-items: flex-start;
+        }
+
+        .chatBoxContainer .chatBoxMessage.outgoing {
+            margin-right: 2%;
+            align-items: flex-end;
+        }
+
+        .chatBoxContainer .chatBoxMessage .chatBoxMessageText {
+            max-width: 90%;
+            word-break: break-word;
+        }
+
+    .chatBoxContainer .chatBoxMessagesBody .chatBoxMessagePhoto {
+        height: 3em;
+        width: 3em;
+    }
+
+    .chatBoxContainer .chatBoxInputContainer {
+        height: 50px;
+    }
+
+        .chatBoxContainer .chatBoxInputContainer #chatBoxFileSelect {
+            display: none;
+        }
+
+        .chatBoxContainer .chatBoxInputContainer .chatBoxInput {
+            width: 100px;
+            height: 50px;
+            resize: none;
+        }
+
+.chatBoxUsersContainer {
+    z-index: 100;
+    position: fixed;
+    bottom: 10px;
+    right: 70px;
+    height: 350px;
+    width: 200px;
+    background-color: white;
+    border: 1px solid black;
+    display: none;
+}
+
+    .chatBoxUsersContainer .nonRegularClient {
+        display: none;
+    }
+
+    .chatBoxUsersContainer .chatBoxUsersInputContainer {
+        position: absolute;
+        bottom: 0;
+        height: 50px;
+        width: 200px;
+    }

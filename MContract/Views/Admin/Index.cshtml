@@ -1,0 +1,23 @@
+﻿@model MContract.Models.AdminIndexViewModel
+
+@{
+    ViewBag.Title = ViewBag.Heading;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link href="@Url.Content("~/css/Admin/Index.css")?p=202006112" rel="stylesheet" type="text/css" />
+}
+
+<div class="moderateNavigationContainer">
+    <a href="@ViewBag.L.SiteUrlClear/Admin/ModerateAds" class="moderateAds btn btn-primary">Модерация объявлений</a>
+    <a href="@ViewBag.L.SiteUrlClear/Admin/ModerateOffers" class="moderateOffers btn btn-primary">Модерация предложений</a>
+	<a href="@ViewBag.L.SiteUrlClear/Admin/UnregisteredUsers" class="btn btn-primary">Незарегистрированные пользователи</a>
+	@*<a href="@ViewBag.L.SiteUrlClear/Admin/ModerateUsers" class="btn btn-primary">Модерация пользователей</a>*@
+	
+</div>
+
+<script>
+    jQuery(document).ready(function ($) {
+    });
+</script>

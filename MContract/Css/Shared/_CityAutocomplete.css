@@ -1,0 +1,227 @@
+﻿.cityContainer {
+    position: relative;
+}
+
+    .cityContainer .cityInput {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .cityContainer .cityInput::placeholder {
+        color: black;
+    }
+
+    .cityContainer .selectedOptionsContainer {
+        /*position: absolute;
+top: 0;
+left: 0; */
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        align-items: flex-end;
+        margin-top: 20px
+    }
+
+        .cityContainer .selectedOptionsContainer .selectedOption {
+            height: 72%;
+            width: 100%;
+            white-space: nowrap;
+            border-radius: 9px;
+            padding-left: 5px;
+            padding-right: 5px;
+            margin-left: 5px;
+            /* border: 1px solid black; */
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            flex-direction: row-reverse;
+        }
+
+        .cityContainer .selectedOptionsContainer .selectedOptionRemove {
+            margin-left: 5px;
+            width: auto;
+            height: 12px;
+            width: 12px;
+            align-self: flex-end;
+            background: url('/ico/icon-close-items.svg') no-repeat center;
+            background-size: contain;
+        }
+
+            .cityContainer .selectedOptionsContainer .selectedOptionRemove:hover {
+                background: url('/ico/icon-close-items-red.svg') no-repeat center;
+            }
+
+    .cityContainer .optionsContainer {
+        /*position: absolute; AKfix */
+        position: relative;
+        left: 0px;
+        top: 100%;
+        background-color: white;
+        /*display: none; */
+        border-width: 0 1px 1px 1px;
+        border-style: solid;
+        border-color: gray;
+        box-sizing: border-box;
+        max-height: 1000%;
+        width: 100%;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+
+    .cityContainer:hover .optionsContainer {
+        /*  display: initial; AKfix */
+    }
+
+    .cityContainer .optionsContainer * {
+        margin: 0;
+    }
+
+    .cityContainer .optionsContainer .noMatches {
+        display: none;
+    }
+
+    .cityContainer .optionsContainer input:checked > span {
+        color: red
+    }
+
+    .cityContainer .optionsContainer > div:not(.regionInputContainer):not(.noMatches) {
+        display: flex;
+        align-items: center;
+        padding: 5px 0 5px 10px;
+        font-size: 1.2rem;
+    }
+
+.cityContainer .selectedCategories {
+    display: block;
+    padding: 35px 30px;
+    background-color: #f1f3f5;
+}
+
+    .cityContainer .selectedCategories .selectedCategories__title {
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+    .cityContainer .selectedCategories .nothingSelected {
+        color: #a5b1bf;
+        padding-top: 10px;
+    }
+
+.cityContainer .optionsContainer__footer img {
+    display: block;
+}
+
+.cityContainer .optionsContainer span {
+    flex: 10;
+}
+
+.cityContainer .cityContainer__inner {
+    position: absolute;
+    right: 0px;
+    top: 0;
+    border: 2px solid #14355d;
+    box-sizing: border-box;
+    visibility: hidden;
+    min-height: 100%;
+    width: 315px;
+    margin-top: 40px;
+    z-index: 999999;
+    color: #14355d;
+    background-color: #fff
+}
+
+    .cityContainer .cityContainer__inner .optionsContainer__close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+
+.cityContainer .optionsContainer {
+    background-color: white;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    max-height: 280px;
+    padding: 40px 10px 5px 5px;
+}
+
+    .cityContainer .optionsContainer > div:not(.noMatches):hover span {
+        color: #2b8ff1;
+        cursor: default;
+    }
+    
+.cityContainer.cityCheckbox .optionsContainer > div:not(.regionInputContainer) {
+    display: none;
+} 
+
+.cityContainer__inner input[type="checkbox"], .cityContainer__inner input[type="radio"] {
+    display: none
+}
+
+.regionInputContainer {
+    font-size: 1.2rem;
+    font-weight: 700;
+    padding: 15px 15px 5px;
+}
+
+    .regionInputContainer span {
+        text-decoration: underline;
+    }
+/* The emerging W3C standard
+   that is currently Firefox-only */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #2b8ff1 #c4ccd6;
+}
+
+    /* Works on Chrome/Edge/Safari */
+    *::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: #c4ccd6;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background-color: #2b8ff1;
+    }
+
+@media only screen and (min-device-width : 360px) and (max-device-width : 667px) and (orientation : landscape) {
+    .cityContainer .cityContainer__inner {
+        top: 0;
+        margin-top: 5px;
+        width: 100%;
+    }
+
+    .cityContainer {
+        position: inherit;
+    }
+}
+
+@media only screen and (max-width: 992px) and (min-width: 631px) {
+    .cityContainer {
+        /*margin-top: -30px;*/
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 630px) {
+    .cityContainer {
+        width: 100%;
+        /*margin: 20px 0;*/
+    }
+
+    .cityContainer {
+        width: 50%;
+        position: inherit;
+    }
+
+    .cityContainer .cityContainer__inner {
+        top: 0;
+        margin-top: 5px;
+        width: 100%;
+    }
+}

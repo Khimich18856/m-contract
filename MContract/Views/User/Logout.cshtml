@@ -1,0 +1,17 @@
+﻿@model MContract.Models.UserLogoutViewModel
+@{
+	ViewBag.Title = ViewBag.Heading;
+}
+<div style="text-align: center; padding-bottom: 30px">
+	@if (Model.DeletedCompany)
+	{
+		<span style="color: red">Удаление выполнено.</span>
+	}
+	else
+	{
+		<span style="color: red">Выход выполнен успешно, ждем Вас снова!</span>
+	}
+</div>
+
+	
+

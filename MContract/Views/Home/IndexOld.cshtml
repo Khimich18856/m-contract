@@ -1,0 +1,223 @@
+﻿@model MContract.Models.HomeIndexViewModel
+
+@{
+    ViewBag.Title = ViewBag.Heading;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link href="@Url.Content("~/css/Home/Index.css")?p=202006112" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/css/User/slick.css")?p=202006112" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/css/Home/tablesort.css")?p=202006112" rel="stylesheet" type="text/css" />
+
+}
+
+<script src="~/js/user/slick.min.js" type="text/javascript"></script>
+<script src="~/js/jquery.tablesorter.min.js" type="text/javascript"></script>
+
+<div class="slidesContainer__wrap">
+    <div class="slidesContainer__content container">
+        <div class="slidesContainer">
+            <div class="singleSlide">
+                <div id="slideOne">
+                    <div class="singleSlide__text-block">
+                        <div class="singleSlide__title">Заголовок слайда 1, можно об этой торговой площадке</div>
+                        <div class="singleSlide__descr">Текст в три строки, описывающий суть данного слайда и переход на эту статью. В данном случае, это описание сервиса. В фоне - картинка по теме слайда.</div>
+                        <button role="button" class="btn btn-outline">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+            <div class="singleSlide">
+                <div id="slideTwo">
+                    <div class="singleSlide__text-block">
+                        <div class="singleSlide__title">Слайд 2, текст заголовка слайда в две строки</div>
+                        <div class="singleSlide__descr">Другой текст в три строки, описывающий суть данного слайда и переход на эту статью. В фоне - картинка по теме слайда. В фоне - картинка по теме слайда.</div>
+                        <button role="button" class="btn btn-outline">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+            <div class="singleSlide">
+                <div id="slideThree">
+
+                    <div class="singleSlide__text-block">
+                        <div class="singleSlide__title">Заголовок слайда 3, еще один текст в две строки</div>
+                        <div class="singleSlide__descr">Ещё один текст на три строоки. В фоне - прозрачная картинка по теме слайда. В фоне - картинка по теме слайда. В фоне - картинка по теме слайда.</div>
+                        <button role="button" class="btn btn-outline">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="registerArea__content">
+            <div class="registerArea__title">Возможности<br />личного кабинета</div>
+            <ul class="registerArea__descr list-unstyled">
+                <li>Текст о возможностях личного кабинета</li>
+                <li>Текст о возможностях личного кабинета, когда более одной строчки</li>
+                <li>Много текста не нужно, просто короткие ёмкие фразы об удобстве, пользе и т.д.</li>
+                <li>Текст о возможностях личного кабинета</li>
+            </ul>
+            <div class="registerArea__buttons">
+                <a href="@ViewBag.L.LoginUrl">
+                    <button href="@ViewBag.L.LoginUrl" class="btn btn-color btn-blue">Вход</button>
+                </a>
+                <button onclick="location.href='@ViewBag.L.RegistrationUrl';" class="btn btn-color btn-red" style="cursor: pointer">Регистрация</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- slider init -->
+<script>
+    $(document).ready(function () {
+        $('.slidesContainer').slick({
+            dots: true,
+            arrows: false,
+            fade: true,
+            cssEase: 'linear'
+        });
+    });
+</script>
+
+<div id="quickInfoArea" style="margin-top: 50px">
+    <div class="container">
+        <div class="quickInfoArea__wrap">
+            <div id="currencyRatesArea" class="rates-block">
+                <div class="quickInfoArea__header">Курсы валют</div>
+                <div class="currencyRatesArea__date">на сегодня</div>
+                <div class="currencyRatesArea__rates">
+                    <div class="currencyRatesArea__value">
+                        <img src="~/Images/Icons/icon-usd.png" class="currency-icon" />
+                        <span class="cbTickerNameTd currencyName">USD ЦБ</span>
+                        <div class="cbTickerName__wrap"><span class="cbTickerNameTd">@(Model.TodayUsdQuote?.Value)</span><span class="rouble-mark">&#8381;</span></div>
+                    </div>
+                    <div class="currencyRatesArea__value">
+                        <img src="~/Images/Icons/icon-euro.png" class="currency-icon" />
+                        <span class="cbTickerNameTd currencyName">EUR ЦБ</span>
+                        <div class="cbTickerName__wrap"><span class="cbTickerNameTd">@(Model.TodayEuroQuote?.Value)</span><span class="rouble-mark">&#8381;</span></div>
+                    </div>
+                </div>
+            </div>
+            <div id="InvestingComInfoArea" class="rates-block">
+                <div class="quickInfoArea__header">Котировки фьючерсов (CFD) в режиме реального времени</div>
+                <div class="quickInfoArea__table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Товар</td>
+                                <td>Котировка</td>
+                                <td>изм.</td>
+                                <td>% изм.</td>
+                                <td>Время</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var quoteItem in Model.InvestingComQuotes)
+                            {
+                                <tr>
+                                    <td class="@quoteItem.CssClass metalTickerNameTd"><a href="@quoteItem.ChartUrl" class="@quoteItem.CssClass" title="@quoteItem.ATitle">@quoteItem.TickerName</a></td>
+                                    <td class="@quoteItem.CssClass metalTickerNameTd"><a class="@quoteItem.CssClass lastQuote-@quoteItem.TickerId" href="@quoteItem.ChartUrl" title="@quoteItem.ATitle">@quoteItem.Quote</a></td>
+                                    <td class="@quoteItem.CssClass metalTickerNameTd"><a class="@quoteItem.CssClass changePercent-@quoteItem.TickerId" href="@quoteItem.ChartUrl" title="@quoteItem.ATitle">@quoteItem.ChangeStr</a></td>
+                                    <td class="@quoteItem.CssClass metalTickerNameTd"><a class="@quoteItem.CssClass changePercent-@quoteItem.TickerId" href="@quoteItem.ChartUrl" title="@quoteItem.ATitle">@quoteItem.ChangePercentStr%</a></td>
+                                    <td class="@quoteItem.CssClass metalTickerNameTd"><a class="@quoteItem.CssClass lastQuote-@quoteItem.TickerId" href="@quoteItem.ChartUrl" title="@quoteItem.ATitle">@quoteItem.TimeStr</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="lmeInfoArea" class="rates-block">
+                <div class="lmeInfoArea">
+                    <div class="quickInfoArea__header">Рекомендуемые LME цены</div>
+                    <div class="quickInfoArea__table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>LME</td>
+                                    <td>US$ @DateTime.Today.ToString("dd MM yyyy")</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var quoteItem in Model.LmeQuotes)
+                                {
+                                    <tr>
+                                        <td>@quoteItem.TickerName</td>
+                                        <td>@quoteItem.Quote</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- AKfix tablesort init -->
+<script>
+    $(function () {
+        $("#InvestingComInfoArea table").tablesorter();
+    });
+</script>
+
+<div id="newsArea">
+    <div class="container">
+        <div class="newsArea__wrap">
+            <div class="aboutProject">
+                <h2 class="aboutProject__header">Электронная торговая площадка</h2>
+                <p class="aboutProject__bodytext">Это будет сервис, концепция мини-версии (ничего лишнего)электронно-торговой площадки, ориентированной на рынок металла.<br />Задача связать продавца и покупателя и автоматизировать процесс заключения сделки. Тем самым уйти от длительных переговоров по <a href="#" class="link in-text">телефону</a> и дублирования одной и той же информации, расширить рынок участия для каждого пользователя.</p>
+                <h3 class="aboutProject__sub-header">Это и есть основная задача проекта</h3>
+                <p class="aboutProject__bodytext">Помимо компьютерной надо будет продумать мобильную версию сайта. Во вложении <a href="#" class="link in-text">презентация.</a> Задача связать продавца и покупателя и автоматизировать процесс заключения сделки. Тем самым уйти от</p>
+                <div class="aboutProject__buttons">
+                    <button class="btn btn-color btn-darkblue">Продать</button>
+                    <button class="btn btn-color btn-blue">Купить</button>
+                </div>
+            </div>
+            <div class="newsBlock">
+                <div class="newsBlock__header">
+                    <div class="newsBlock__header-title">Новости рынка металлов</div>
+                    <div class="newsBlock__header-date">25 сентября 2020</div>
+                </div>
+                <div class="newsBlock__content">
+                    <ul class="newsBlock__list list-unstyled">
+                        <li class="newsBlock__item">
+                            <span class="newsBlock__item-time">09:25</span>
+                            <span class="newsBlock__item-header">Власти Ирана ограничивают стальной экспорт</span>
+                        </li>
+                        <li class="newsBlock__item">
+                            <span class="newsBlock__item-time">09:25</span>
+                            <span class="newsBlock__item-header">Nipon Steel планируют новые сокращения производства с июля</span>
+                        </li>
+                        <li class="newsBlock__item">
+                            <span class="newsBlock__item-time">09:25</span>
+                            <span class="newsBlock__item-header">Nipon Steel планируют новые сокращения производства с июля. Власти Ирана ограничивают стальной экспорт</span>
+                        </li>
+                        <li class="newsBlock__item">
+                            <span class="newsBlock__item-time">09:25</span>
+                            <span class="newsBlock__item-header">Власти Ирана ограничивают стальной экспорт</span>
+                        </li>
+                        <li class="newsBlock__item">
+                            <span class="newsBlock__item-time">09:25</span>
+                            <span class="newsBlock__item-header">Nipon Steel планируют новые сокращения производства с июля</span>
+                        </li>
+                        <li class="newsBlock__item">
+                            <span class="newsBlock__item-time">09:25</span>
+                            <span class="newsBlock__item-header">Nipon Steel планируют новые сокращения производства с июля. Власти Ирана ограничивают стальной экспорт</span>
+                        </li>
+                    </ul>
+                    <a class="newsBlock__more" href="">Читать все новости</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<button href="#" class="postInfo__mobile">Разместить объявление</button>
+<script>
+    $(document).ready(function () {
+        $(window).scroll(function () {
+            if ($(window).scrollTop() < 400) {
+                $('.postInfo__mobile').stop(true, true).fadeIn();
+            } else {
+                $('.postInfo__mobile').stop(true, true).fadeOut();
+            }
+        });
+    });
+</script>

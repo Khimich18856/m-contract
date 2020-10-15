@@ -1,0 +1,17 @@
+﻿@if (ViewBag.BreadCrumbs != null)
+{
+    <div class="breadcrumbsContainer">
+        <a href="@ViewBag.L.SiteUrlClear" title="Домой"><span class="breadcrumbHome"></span></a><span class="breadcrumbArrow"></span>
+        @foreach (var link in ViewBag.BreadCrumbs)
+        {
+            if (!link.EndPoint)
+            {
+                <a href="@link.Url" title="@link.Title">@link.Text</a><span class="breadcrumbArrow"></span>
+            }
+            else
+            {
+                <span>@link.Text</span>
+            }
+        }
+    </div>
+}

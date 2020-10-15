@@ -1,0 +1,24 @@
+USE [MContract]
+GO
+
+/****** Object:  Table [dbo].[Dialogs]    Script Date: 12.05.2020 16:19:48 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Dialogs](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[TopicId] [int] NOT NULL,
+	[DialogTypeId] [int] NOT NULL,
+	[SenderId] [int] NOT NULL,
+	[RecipientId] [int] NOT NULL,
+ CONSTRAINT [PK_Dialogs] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+

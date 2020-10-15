@@ -1,0 +1,194 @@
+﻿body {
+}
+
+.pageContentContainer > *:not(h2):not(.addProduct) {
+    margin-top: 10px;
+}
+
+.tipsContainer > div {
+    display: none;
+    float: left;
+}
+
+.adDetails .tipsContainer > div {
+    margin-left: 7px;
+}
+
+.tipsContainer .requiredFieldMarker {
+    margin-left: 4px;
+    float: left;
+}
+
+.tipsContainer .needContainer span {
+    background-color: tomato;
+}
+
+.tipsContainer .invalidContainer span {
+    background-color: darkorange;
+}
+
+.tipsContainer .checkedContainer img {
+    height: 20px;
+    width: auto;
+}
+
+.requiredFieldMarker {
+    color: tomato;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 10px 0 10px 0;
+}
+
+table td {
+    padding: 3px;
+}
+
+.adDetails .deliveryAddressRow:not(.isBuy), .adDetails .defermentPeriodRow {
+    display: none;
+}
+
+.adDetails {
+    width: 100%;
+}
+
+.adDetails td:nth-of-type(3n+1) {
+    width: 25%;
+}
+
+.adDetails td:nth-of-type(3n+2) {
+    width: 30%;
+}
+
+.adDetails td:nth-of-type(3n+3) {
+    width: 45%;
+}
+
+.adDetails tr td:nth-child(1) {
+    border-width: 1px 0 1px 1px;
+    border-style: solid;
+    border-color: black;
+}
+
+.adDetails tr td:nth-child(2) {
+    border-width: 1px 1px 1px 0;
+    border-style: solid;
+    border-color: black;
+}
+
+
+.adDetails td:nth-of-type(3n+3) > *:not(.requiredFieldMarker) {
+    display: none;
+}
+
+.adDetails .deliveryAddressContainer input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.productDetails, .productDetails tr {
+    border: 1px solid black;
+}
+
+.productDetails tr:nth-child(1) {
+    background-color: lightgray;
+}
+
+.adDetails tr:hover td:nth-child(-n+2), .productDetails tr:nth-child(n+2):hover {
+    background-color: floralwhite !important;
+}
+
+.productDetails td:nth-child(n+4) {
+    max-width: 5%;
+}
+
+.productDetails td:nth-child(n+6) {
+    max-width: 5%;
+}
+
+.productDetails input:not([type=radio]) {
+    width: 100%;
+}
+
+.productDetails .tipsRow {
+    display: none;
+}
+
+.productDetails .tipsRow:not(:last-child) {
+    background-color: floralwhite;
+}
+
+.commentContainer {
+    width: 100%;
+}
+
+.commentContainer textarea {
+    width: 55%;
+}
+
+.sendOffer {
+    margin-bottom: 10px;
+}
+
+.offerSentMessageContainer {
+    display: none;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+
+.offerSentMessageContainer .messageTextContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.offerSentMessageContainer img {
+    height: 200px;
+}
+
+.adDescriptionContainer {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.adDescriptionContainer p {
+    width: 60%;
+    box-sizing: border-box;
+    resize: none;
+    min-height: 5em;
+    word-wrap: break-word;
+}
+
+.adPhotosContainer {
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    width: 92%;
+    padding: 10px 0 0 10px;
+    box-sizing: border-box;
+}
+
+.adPhotosContainer {
+    border: 1px solid black;
+    display: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    width: 92%;
+    padding: 10px 0 0 10px;
+    box-sizing: border-box;
+}
+
+.adPhotosContainer .adPhoto {
+    position: relative;
+    width: 24%;
+    height: 0;
+    padding-bottom: 24%;
+    margin: 0 1% 1% 0;
+    box-sizing: border-box;
+    flex: 0 0 auto;
+}

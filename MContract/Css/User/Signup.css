@@ -1,0 +1,18 @@
+﻿.needFieldSpan {
+	background-color: tomato;
+	float: left;
+	display: none;
+}
+
+.invalidFieldSpan {
+	background-color: darkorange;
+	float: left;
+	display: none;
+}
+
+.checkedFieldIcon {
+	height: 20px;
+	width: auto;
+	float: left;
+	display: none;
+}

@@ -1,0 +1,385 @@
+﻿<link href="~/css/Shared/_SearchBar.css?p=2020-08-28" rel="stylesheet" type="text/css" />
+<link href="~/js/jquery-ui/jquery-ui.css?p=202006112" rel="stylesheet" type="text/css" />
+<script src="~/js/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+
+<div class="searchContainer">
+    <div class="modeSelectorContainer">
+        <a class="@((bool?)ViewBag.L.SearchbarIsBuy == false ? "checked" : "unchecked")" id="isSell">
+            Продажи
+        </a>
+        <a class="@((bool?)ViewBag.L.SearchbarIsBuy == true ? "checked" : "unchecked")" id="isBuy">
+            Закупки
+        </a>
+        <a class="@((bool?)ViewBag.L.SearchbarIsBuy == null ? "checked" : "unchecked")">
+            Все объявления
+        </a>
+    </div>
+    <div class="searchPromptContainer">
+        <div class="categoryContainer">
+            <input type="text" placeholder="Категории" />
+            <div class=" selectedCategoriesCount"></div>
+            <div class="arrowDown"></div>
+            <div class="categoryContainer__inner">
+                <div class="selectedCategories">
+                    <div class="optionsContainer__close">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14">
+                            <defs>
+                                <image width="14" height="14" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOAgMAAABiJsVCAAAAAXNSR0IB2cksfwAAAAxQTFRFFDVdFDVdFDVdFDVdNQaJ9wAAAAR0Uk5TAH7/geRnbQQAAAA4SURBVHicYxBhYHRgyGRgm8DwykFqA4PVhKwDDHxLVzMwMK9aw8DA8GoDlABzwRJgJWDFYG0gAwCbvxMb1nq0jgAAAABJRU5ErkJggg==" />
+                            </defs>
+                            <style>
+                                tspan {
+                                    white-space: pre
+                                }
+                            </style>
+                            <use id="icon-close" href="#img1" x="0" y="0" />
+                        </svg>
+                    </div>
+                    <div class="selectedCategories__title">Выбранные категории</div>
+                    <div class="selectedOptionsContainer"></div>
+                    <div class="nothingSelected">
+                        Пока здесь пусто<br />Выберите нужные категории для поиска
+                    </div>
+                    <a class="clearSelected">очистить</a>
+                </div>
+                <div class="optionsContainer">
+                    <div class="noMatches">
+                        Нет результатов
+                    </div>
+                    @foreach (var categoryLevel1 in ((List<MContract.Models.ProductCategory>)ViewBag.L.ProductCategories).Where(c => c.Level == 1))
+                    {
+                        <div class="categoryLevel1">
+                            <span class="expandOptions expand">+</span>
+                            <span class="categoryName">@categoryLevel1.Name</span>
+                            <input type="checkbox" name="category0" value="@categoryLevel1.Id" />
+                        </div>
+                        var categoriesLevel2 = ((List<MContract.Models.ProductCategory>)ViewBag.L.ProductCategories).Where(c => c.ParentId == categoryLevel1.Id).ToList();
+                        foreach (var categoryLevel2 in categoriesLevel2)
+                        {
+                            <div class="categoryLevel2">
+                                <span class="expandOptions expand">+</span>
+                                <span class="categoryName">@categoryLevel2.Name</span>
+                                <input type="checkbox" name="category0" value="@categoryLevel2.Id" />
+                            </div>
+                            var categoriesLevel3 = ((List<MContract.Models.ProductCategory>)ViewBag.L.ProductCategories).Where(c => c.ParentId == categoryLevel2.Id).ToList();
+                            foreach (var categoryLevel3 in categoriesLevel3)
+                            {
+                                <div class="categoryLevel3">
+                                <span class="categoryName">@categoryLevel3.Name</span>
+                                    <input type="checkbox" name="category0" value="@categoryLevel3.Id" />
+                                </div>
+                            }
+
+                        }
+                    }
+                </div>
+                <div class="optionsContainer__footer">
+                    <img width="12" height="12" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAMAAABhq6zVAAAAAXNSR0IB2cksfwAAAG9QTFRFpbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/pbG/tPHHdwAAACV0Uk5TS9X/0u3zoma66vxCABIGir1R9t4DGNuZG+QwnDOo+UjM2OE8VAPdp+kAAABbSURBVHicRc5HFoAwDENBIwKhmN57vf8ZMS8U7Wb1RWThmU2kAMfV2hP5BAQhRzEnIkHKWV6UlUHd2PDL1kDW9Tx8GHnCi5kX/Fi3HzsfBhKF0ndFoqd676jzAjS5BCmkGl1VAAAAAElFTkSuQmCC" alt="" />
+                    Если в списке нет подходящего материала, выберите наиболее подходящую категорию или вбейте наименование вручную.
+                </div>
+            </div>
+        </div>
+		<div class="searchTextContainer">
+			<input type="text" class="searchBar" placeholder="Поиск товара..." />
+			<button class="searchButton"></button>
+			@if (ViewBag.L.CurrentUserId != 0)
+			{
+
+				<div class="loginPrompt__mobile">
+					<a href="@ViewBag.L.PersonalAreaUrl" class="link">
+						<div class="avatar__wrap">
+							<img src="/ico/icon-user-none.png" alt="user avatar" />
+							<div class="notification-mark"></div>
+						</div>
+					</a>
+					<div>
+						<button type="button" class="btn btn-default" onclick="location.href='@ViewBag.L.LogoutUrl'">Выход</button>
+					</div>
+				</div>
+			}
+			else
+			{
+				<div class="loginPrompt__mobile">
+					<a href="@ViewBag.L.RegistrationUrl">
+						<div class="avatar__wrap">
+							<img src="/ico/icon-user-none-white.png" class="link-register" alt="user registration" />
+						</div>
+					</a>
+				</div>
+			}
+		</div>
+        <div class="cityContainer">
+            <input type="text" class="cityInput cityCheckbox" placeholder="Регион" autocomplete="off" />
+            <div class="selectedCitiesCount"></div>
+        </div>
+	</div>
+</div>
+
+<script src="~/js/user/cityAutocomplete.js?p=20200624" type="text/javascript"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        $(".searchContainer .modeSelectorContainer a").on("hover", function () {
+            $(this).css({ "background-color": "whitesmoke", "line-height": "1.4" });
+            $(this).siblings().css({ "background-color": "ghostwhite", "line-height": "1" });
+        }, function () {
+            $(this).parent("div").children("a").css({ "background-color": "", "line-height": "" });
+        });
+
+        $(".searchContainer .modeSelectorContainer a").on("click", function () {
+            $(this).attr("class", "checked");
+            $(this).siblings().attr("class", "unchecked");
+            $(".searchContainer .searchButton").trigger("click");
+        });
+
+        //AKfix start - show/hide panels on click
+        $(".categoryContainer input").click(function () {
+            if ($(".categoryContainer__inner").css('visibility') == 'hidden') {
+                $(".categoryContainer__inner").css('visibility', 'visible');
+            }
+            $(".categoryContainer__inner .optionsContainer__close").click(function () {
+                $(".categoryContainer").children("input").val("").trigger("keyup");
+                $(".categoryContainer__inner").css('visibility', 'hidden');
+            });
+        });
+		//AKfix end
+
+        $(".searchContainer .categoryContainer .optionsContainer .allCategories input").change(function () {
+            if ($(this).prop("checked") == true) {
+                $(".searchContainer .categoryContainer .optionsContainer div:not(.allCategories, .noMatches)").each(function () {
+                    $(this).children("input").prop("checked", true);
+                });
+            } else {
+                $(".searchContainer .categoryContainer .optionsContainer div:not(.allCategories, .noMatches)").each(function () {
+                    $(this).children("input").prop("checked", false);
+                });
+            }
+        });
+
+		//AKfix start - select Level3 items
+
+        $(".searchContainer").on("click", ".categoryContainer .optionsContainer div:not(.noMatches)", function (event) {
+            if (!$(event.target).closest(".expandOptions").length) {
+                $(this).find("input").prop("checked", !$(this).find("input").prop("checked"));
+                $(this).find("input").trigger("change");
+            }
+		});
+
+		@*$(".searchContainer").on("click", ".categoryContainer .optionsContainer div.categoryLevel3", function (event) {
+			if (!$(event.target).closest("button").length) {
+				if ($(this).children("input").prop("checked")) {
+					$(this).children("input").prop("checked", false);
+				} else {
+					$(this).children("input").prop("checked", true);
+				}
+				$(this).children("input").trigger("change");
+			}
+		});*@
+
+		//AKfix end
+
+        $(".searchContainer").on("click", ".categoryContainer .optionsContainer .expandOptions", function () {
+            var currentLevel;
+            if ($(this).closest("div").hasClass("categoryLevel1")) {
+                currentLevel = 1;
+            } else if ($(this).closest("div").hasClass("categoryLevel2")) {
+                currentLevel = 2;
+            } else {
+                currentLevel = 3;
+            }
+            if ($(this).hasClass("expand")) {
+                $(this).removeClass("expand").addClass("contract");
+                $(this).html("-");
+                $(this).closest("div").nextUntil("div[class*='" + currentLevel + "'], div[class*='" + (currentLevel - 1) + "']").each(function () {
+                    if ($(this).is("div[class*=" + (currentLevel + 1) + "]")) {
+                        $(this).css("display", "flex");
+                    }
+                });
+            } else if ($(this).hasClass("contract")) {
+                $(this).removeClass("contract").addClass("expand");
+                $(this).html("+");
+                $(this).closest("div").nextUntil("div[class*='" + currentLevel + "'], div[class*='" + (currentLevel - 1) + "']").each(function () {
+                    $(this).css("display", "none");
+                    $(this).find(".expandOptions.contract").trigger("click");
+                });
+            }
+        });
+
+        $(".searchContainer .categoryContainer .optionsContainer div:not(.allCategories) input").change(function () {
+            var allCategoriesSelected = true;
+            $(".searchContainer .categoryContainer .optionsContainer div:not(.allCategories) input").each(function () {
+                if ($(this).prop("checked") == false) {
+                    allCategoriesSelected = false;
+                    return false;
+                }
+            });
+            if (allCategoriesSelected) {
+                $(".searchContainer .categoryContainer .optionsContainer .allCategories input").prop("checked", true);
+            }
+            var currentLevel;
+            if ($(this).closest("div").hasClass("categoryLevel1")) {
+                currentLevel = 1;
+            } else if ($(this).closest("div").hasClass("categoryLevel2")) {
+                currentLevel = 2;
+            } else {
+                currentLevel = 3;
+            }
+            var option = $(this).closest("div").find(".categoryName").html();
+            if ($(this).prop("checked") == true) {
+                $(this).closest(".categoryContainer").find(".selectedCategories .selectedOptionsContainer").append(
+                    '<div class="selectedOption">' +
+                        '<span class="categoryName">' + option + '</span>' +
+                        '<span class="selectedOptionRemove"></span>' +
+                    '</div>');
+                if (currentLevel != 1) {
+                    var parentCategory = $(this).closest("div").prevAll("div[class*=" + (currentLevel - 1) + "]").first();
+                    var siblingCategories = $(parentCategory).nextUntil("div[class*=" + (currentLevel - 1) + "], div[class*=" + (currentLevel - 2) + "]").filter("div[class*=" + currentLevel + "]");
+                    var siblingCategoriesChecked = $(siblingCategories)
+                        .map((i, c) => {
+                            return $(c).find("input").prop("checked") == true;
+                        }).get();
+                    if (siblingCategoriesChecked.every(Boolean)) {
+                        $(siblingCategories).each(function () {
+                            $(this).find("input").prop("checked", false).trigger("change");
+                        });
+                        $(parentCategory).find("input").prop("checked", true).trigger("change");
+                    } else if ($(parentCategory).find("input").prop("checked") == true) {
+                        $(parentCategory).find("input").prop("checked", false).trigger("change");
+                        $(siblingCategories).not($(this).closest("div")).each(function () {
+                            $(this).find("input").prop("checked", true).trigger("change");
+                        });
+                    }
+                }
+                $(this).closest("div").nextUntil("div[class*='" + currentLevel + "'], div[class*='" + (currentLevel - 1) + "']").each(function () {
+                    var childOption = $(this).closest("div").find(".categoryName").html();
+                    $(this).closest(".categoryContainer").find(".selectedCategories .selectedOptionsContainer .selectedOption").each(function () {
+                        if ($(this).find(".categoryName").html().includes(childOption)) {
+                            $(this).remove();
+                        }
+                    });
+                    $(this).find("input").prop("checked", true);
+                });
+            } else {
+                $(this).closest(".categoryContainer").find(".selectedCategories .selectedOptionsContainer .selectedOption").each(function () {
+                    if ($(this).find(".categoryName").html().includes(option)) {
+                        $(this).remove();
+                    }
+                });
+                if (currentLevel == 3) {
+                    var grandparentCategory = $(this).closest("div").prevAll("div[class*=" + (currentLevel - 2) + "]").first();
+                    if ($(grandparentCategory).find("input").prop("checked") == true) {
+                        $(this).prop("checked", !$(this).prop("checked"));
+                        alert("Вы уже выбрали категорию верхнего уровня.");
+                        return false;
+                    }
+                }
+                if (currentLevel != 1) {
+                    var parentCategory = $(this).closest("div").prevAll("div[class*=" + (currentLevel - 1) + "]").first();
+                    if ($(parentCategory).find("input").prop("checked") == true) {
+                        $(this).prop("checked", !$(this).prop("checked"));
+                        alert("Вы уже выбрали категорию верхнего уровня.");
+                        return false;
+                        /*var checkedSiblingCategories = $(parentCategory).nextUntil("div[class*=" + (currentLevel - 1) + "], div[class*=" + (currentLevel - 2) + "]")
+                            .filter("div[class*=" + currentLevel + "]")
+                            .filter(function (i, c) {
+                                return $(c).find("input").prop("checked") == true;
+                            });
+                        $(parentCategory).find("input").prop("checked", false).trigger("change");
+                        $(checkedSiblingCategories).each(function () {
+                            $(this).find("input").prop("checked", true).trigger("change");
+                        });*/
+                    }
+                }
+                if (currentLevel != 3) {
+                    var childCategories = $(this).closest("div").nextUntil("div[class*=" + (currentLevel) + "], div[class*=" + (currentLevel - 1) + "]");
+                    $(childCategories).each(function () {
+                        $(this).find("input").prop("checked", false).trigger("change");
+                    });
+                }
+                @*var childCategories = $(this).closest("div")
+                    .nextUntil("div[class*='" + currentLevel + "'], div[class*='" + (currentLevel - 1) + "']")
+                    .filter("div[class*='" + (currentLevel + 1) + "']");
+                var parentCategorySelected = $(childCategories).map(function () {
+                    return $(this).find("input").prop("checked");
+                }).get();
+                if (parentCategorySelected.every(Boolean)) {
+                    childCategories.each(function () {
+                        $(this).find("input").prop("checked", false);
+                    });
+                }*@
+            }
+            var selectedCategoriesCount = $(this).closest(".categoryContainer").find(".selectedOptionsContainer .selectedOption").length;
+            if (selectedCategoriesCount > 0) {
+                $(this).closest(".categoryContainer").find(".selectedCategoriesCount").html(selectedCategoriesCount).css("display", "flex");
+                $(this).closest(".categoryContainer").find(".nothingSelected").hide();
+            } else {
+                $(this).closest(".categoryContainer").find(".selectedCategoriesCount").css("display", "");
+                $(this).closest(".categoryContainer").find(".nothingSelected").show();
+            }
+        });
+
+        $(".searchContainer .categoryContainer").on("click", ".selectedOptionRemove", function () {
+            var option = $.trim($(this).closest(".selectedOption").find(".categoryName").html());
+            $(this).closest(".categoryContainer").find(".optionsContainer .categoryName").each(function () {
+                if ($.trim($(this).html()).includes(option)) {
+                    $(this).closest("div").find("input").prop("checked", false).trigger("change");
+                }
+            });
+        });
+
+        $(".searchContainer").on("click", ".clearSelected", function () {
+            $(this).closest(".selectedCategories").find(".selectedOptionRemove").trigger("click");
+        });
+
+        $(".searchContainer .categoryContainer input").keyup(function () {
+            var searchValue = $(this).val().toLowerCase();
+            if (searchValue.length > 0) {
+                $(this).closest(".categoryContainer").find(".expandOptions").hide();
+                $(this).closest(".categoryContainer").find(".optionsContainer .allCategories").hide();
+                $(this).closest(".categoryContainer").find(".optionsContainer .noMatches").hide();
+                var matches = 0;
+                $(this).closest(".categoryContainer").find(".optionsContainer div:not(.allCategories, .noMatches)").each(function () {
+                    if ($(this).find(".categoryName").html().toLowerCase().indexOf(searchValue) >= 0) {
+                        matches++;
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+                if (matches == 0) {
+                    $(this).closest(".categoryContainer").find(".optionsContainer .noMatches").show();
+                }
+            } else {
+                $(this).closest(".categoryContainer").find(".expandOptions").show();
+                $(this).closest(".categoryContainer").find(".expandOptions.contract").trigger("click");
+                $(this).closest(".categoryContainer").find(".optionsContainer").children("div").hide();
+                $(this).closest(".categoryContainer").find(".optionsContainer .categoryLevel1").show();
+            }
+        });
+
+        var categoriesId = @Html.Raw(Json.Encode((List<int>)ViewBag.L.SearchbarCategoriesId));
+        categoriesId.forEach(id => {
+            $(".searchContainer .categoryContainer .optionsContainer input[value=" + id + "]").prop("checked", true).trigger("change");
+        });
+
+        var citiesId = @Html.Raw(Json.Encode((List<int>)ViewBag.L.SearchbarCitiesId));
+        citiesId.forEach(id => {
+            $(".searchContainer .cityContainer .optionsContainer input[value=" + id + "]").prop("checked", true).trigger("change");
+        });
+
+        $(".searchContainer .searchButton").click(function () {
+            var url = "@ViewBag.L.SiteUrlClear/Ads/Index?adStatusId=@((int)MContract.Models.Enums.AdStatuses.Published)";
+            if ($(".searchContainer .searchBar").val().length != 0) {
+                url += "&searchQuery=" + $(".searchContainer .searchBar").val().toLowerCase().replace(/[^а-яa-z0-9]/g, ",").replace(/,+/g, ",");
+            }
+            $(".searchContainer .categoryContainer .optionsContainer input:checked").each(function () {
+                url += "&categoriesId=" + $(this).val();
+            });
+            $(".searchContainer .cityContainer .optionsContainer *:not(.regionInputContainer) input:checked").each(function () {
+                url += "&citiesId=" + $(this).val();
+            });
+            if ($(".modeSelectorContainer a.checked[id]").length) {
+                url += "&isBuy=" + ($(".modeSelectorContainer a.checked").attr("id") == "isBuy");
+            }
+            location.href = url;
+        });
+    });
+</script>

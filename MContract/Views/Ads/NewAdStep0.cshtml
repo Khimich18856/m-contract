@@ -1,0 +1,53 @@
+﻿@model MContract.Models.Ad
+
+@{
+    ViewBag.Title = ViewBag.Heading;
+    Layout = "~/Views/Shared/_LayoutOld.cshtml";
+}
+
+@section Styles{
+    <link href="@Url.Content("~/css/Ads/NewAdStep0.css")?p=2020-10-10-a" rel="stylesheet" type="text/css" />
+}
+
+<table border="1" style="margin-top: 15px">
+    <tr class="newAdStep0Tr">
+        <td class="newAdStep0Td">
+            <a href="~/Ads/NewAdOld?isBuy=false&availableForAllUsers=false">Объявление о продаже (закрытый запрос предложений)</a>
+        </td>
+        <td class="newAdStep0Td">
+            Участвовать могут только покупатели, приглашенные вами
+        </td>
+    </tr>
+    <tr class="newAdStep0Tr">
+        <td class="newAdStep0Td">
+            <a href="~/Ads/NewAdOld?isBuy=false&availableForAllUsers=true">Объявление о продаже (открытый запрос предложений)</a>
+        </td>
+        <td class="newAdStep0Td">
+            Участвовать могут все пользователи сервиса
+        </td>
+    </tr>
+</table>
+<div>
+    * Участники отправляют свои ценовые предложения с учетом указанных критериев продавцом. Победителя определяет продавец, и это необязательно должен быть участник,
+    давший наибольшую цену, учитывается логистика, сроки расчета и условия приема материала
+</div>
+<br />
+
+<table border="1">
+    <tr class="newAdStep0Tr">
+        <td class="newAdStep0Td">
+            <a href="~/Ads/NewAdOld?isBuy=true&availableForAllUsers=false">Объявление о покупке (закрытый запрос предложений)</a>
+        </td>
+        <td class="newAdStep0Td">
+            Участвовать могут только поставщики приглашенные вами
+        </td>
+    </tr>
+    <tr class="newAdStep0Tr">
+        <td class="newAdStep0Td">
+            <a href="~/Ads/NewAdOld?isBuy=true&availableForAllUsers=true">Объявление о покупке (открытый запрос предложений)</a>
+        </td>
+        <td class="newAdStep0Td">
+            Участвовать могут все пользователи сервиса
+        </td>
+    </tr>
+</table>

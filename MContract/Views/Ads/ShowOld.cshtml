@@ -1,0 +1,1044 @@
+﻿@model MContract.Models.Ad
+
+@{
+	ViewBag.Title = ViewBag.Heading;
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+	<link href="@Url.Content("~/css/Ads/Show.css")?p=20200729" rel="stylesheet" type="text/css" />
+	<link href="~/js/jquery-ui/jquery-ui.css?p=20200729" rel="stylesheet" type="text/css" />
+}
+
+@{ if (Model.SenderId == Model.PersonalAreaUser?.Id) { Html.RenderPartial("_PersonalAreaOld", Model.PersonalAreaUser); } }
+
+@if (Model.AdStatus == MContract.Models.Enums.AdStatuses.Deleted)
+{
+	<h2>Объявление удалено</h2>
+}
+else
+{
+	<div class="adContainer">
+		<h2>
+			@ViewBag.HeadingMainPart<span class="headingExtraPart">@ViewBag.HeadingExtraPart</span>
+			@if (Model.AdStatus != MContract.Models.Enums.AdStatuses.Expired && Model.AdStatus != MContract.Models.Enums.AdStatuses.Finished)
+			{
+				<img class="favoriteAd @(Model.PersonalAreaUser?.FavoriteAds.Any(a => a.Id == Model.Id) == true ? "isFavorite" : "")"
+					 src="@(Model.PersonalAreaUser?.FavoriteAds.Any(a => a.Id == Model.Id) == true ? "/Images/Icons/CircledX.svg" : "/Images/Icons/Checkmark.svg")" />
+			}
+			@if (Model.Offers.Any() && Model.Offers.Any(o => o.ContractStatus == MContract.Models.Enums.ContractStatuses.Sent))
+			{
+				<br />
+				<span>
+					Ожидает подтверждения контракта
+				</span>
+			}
+			else if (Model.AdStatus == MContract.Models.Enums.AdStatuses.Published)
+			{
+				<br />
+				<span>
+					Активное
+				</span>
+			}
+			else if (Model.AdStatus == MContract.Models.Enums.AdStatuses.Finished)
+			{
+				<br />
+				<span>
+					Завершено (заключен контракт)
+				</span>
+			}
+			else if (Model.AdStatus == MContract.Models.Enums.AdStatuses.Expired)
+			{
+				<br />
+				<span>
+					Завершено (истек срок действия)
+				</span>
+			}
+			@if (Model.ModerateResult == MContract.Models.ModerateResults.NotChecked)
+			{
+				<span>&nbsp;(на модерации)</span>
+			}
+		</h2>
+		<h2>
+			@if (Model.SenderId == Model.PersonalAreaUser?.Id || Model.AvailableForAllUsers || Model.InvitedUsersId.Any(id => id == Model.PersonalAreaUser?.Id))
+			{
+				@:@(Model.Sender?.CompanyNameWithTypeOfOwnership),
+			}
+			@(Model.Sender?.TownName)
+			@if (Model.SenderId == Model.PersonalAreaUser?.Id || Model.AvailableForAllUsers || Model.InvitedUsersId.Any(id => id == Model.PersonalAreaUser?.Id))
+			{
+				@:, <span class="ratingStar"></span>@(Model.Sender?.Rating)
+			}
+		</h2>
+		@if (Model.SenderId == Model.PersonalAreaUser?.Id)
+		{
+			<a class="editAd btn @(Model.Offers.Any(o => o.ContractStatus == MContract.Models.Enums.ContractStatuses.Sent)
+                                || Model.AdStatus == MContract.Models.Enums.AdStatuses.Finished
+                                ? "btn-secondary"
+                                : "btn-primary")">
+				Редактировать объявление
+			</a>
+			if (Model.AdStatus == MContract.Models.Enums.AdStatuses.Finished || Model.AdStatus == MContract.Models.Enums.AdStatuses.Expired)
+			{
+				<a class="repeatAd btn btn-primary">Повторить</a>
+			}
+
+			if (Model.AdStatus == MContract.Models.Enums.AdStatuses.Expired)
+			{
+				<a class="prolongAd btn btn-primary">Продлить</a>
+				<div class="prolongAdDetailsContainer">
+					Продлить объявление до <input class="newActiveUntilDate" /> 23:59 МСК
+					<a class="prolongAdSubmit btn btn-primary">Подтвердить продление</a>
+				</div>
+			}
+
+			<a class="deleteAd btn btn-danger">Удалить</a>
+		}
+		<table class="adDetails">
+			@*<tr>
+					<td>
+						@(Model.IsBuy ? "Покупатель:" : "Продавец:")
+					</td>
+					<td class="senderNameContainer">
+						@(Model.Sender?.CompanyNameWithTypeOfOwnership), @(Model.Sender?.TownName)
+					</td>
+				</tr>*@
+			<tr>
+				<td>
+					@(Model.IsBuy ? "Город:" : "Место фактического нахождения груза:")
+				</td>
+				<td>
+					<div class="cityContainer">
+						<span>@(Model.City?.FullNameAndRegionName)</span>
+					</div>
+				</td>
+			</tr>
+			@if (Model.IsBuy)
+			{
+				<tr class="deliveryAddressRow isBuy">
+					<td>
+						Адрес поставки товара:
+					</td>
+					<td>
+						<div class="deliveryAddressContainer">
+							<span>@Model.DeliveryAddress</span>
+						</div>
+					</td>
+				</tr>
+			}
+			<tr>
+				<td>
+					Условия поставки:
+				</td>
+				<td class="deliveryTypeContainer">
+					<select class="deliveryType">
+						<option name="deliveryType" value="0">Не выбрано</option>
+						<option name="deliveryType" value="1">Доставка продавцом</option>
+						<option name="deliveryType" value="2">Самовывоз покупателем</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Погрузка:
+				</td>
+				<td class="deliveryLoadTypeContainer">
+					<select class="deliveryLoadType">
+						<option name="deliveryLoadType" value="0">Не выбрано</option>
+						<option name="deliveryLoadType" value="1">Силами продавца</option>
+						<option name="deliveryLoadType" value="2">Силами покупателя</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Способ доставки:
+				</td>
+				<td class="deliveryWayContainer">
+					<select class="deliveryWay">
+						<option name="deliveryWay" value="0">Не выбрано</option>
+						<option name="deliveryWay" value="1">Авто</option>
+						<option name="deliveryWay" value="2">Ж/Д</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Цена:
+				</td>
+				<td class="ndsContainer">
+					<select class="Nds">
+						<option name="Nds" value="0">Не выбрано</option>
+						<option name="Nds" value="1">C НДС</option>
+						<option name="Nds" value="2">Без НДС</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Условия оплаты:
+				</td>
+				<td class="termsOfPaymentsContainer">
+					<select>
+						<option value="0">Не выбрано</option>
+						<option value="1">Отсрочка платежа</option>
+						<option value="2">100% предоплата</option>
+						<option value="3">Частичная предоплата</option>
+						<option value="4">По факту поставки</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Подача предложений по части позиций:
+				</td>
+				<td class="partOffersAllowedContainer">
+					<input type="checkbox" name="partOffersAllowed" id="partOffersAllowed1" value="1" disabled />
+				</td>
+			</tr>
+		</table>
+
+		<table class="productDetails">
+			<tr>
+				<td>
+					№
+				</td>
+				<td>
+					Категория товара
+				</td>
+				@if (Model.Products.Any(p => !string.IsNullOrEmpty(p.Name)))
+				{
+					<td>
+						Точное наименование
+					</td>
+				}
+				<td>
+					Вес (тн.)
+				</td>
+				<td>
+					Валюта
+				</td>
+				@if (Model.Products.Any(Product => Product.PricePerWeight != 0))
+				{
+					<td>
+						Цена за 1 тн.<br />
+						@if (Model.IsBuy)
+						{
+							<span>(максимальная)</span>
+						}
+						else
+						{
+							<span>(минимальная)</span>
+						}
+					</td>
+				}
+			</tr>
+			@{ var i = 1; }
+			@foreach (var product in Model.Products)
+			{
+				<tr>
+					<td class="productNumber">
+						@i
+					</td>
+					<td class="productId" style="display: none">
+						@product.Id
+					</td>
+					<td class="categoryContainer">@product.ProductCategoryName</td>
+					@if (!string.IsNullOrEmpty(product.Name))
+					{
+						<td class="specificCategoryContainer">
+							<span>@product.Name</span>
+						</td>
+					}
+					else if (Model.Products.Any(p => !string.IsNullOrEmpty(p.Name)))
+					{
+						<td></td>
+					}
+					<td class="weightContainer">
+						<span>@product.Weight.ToString("0.###")</span>
+					</td>
+					<td class="currencyContainer">
+						<select class="currency@(i - 1)">
+							<option name="currency@(i - 1)" value="@((int)MContract.Models.Enums.Currencies.Rouble)">Рубли</option>
+							<option name="currency@(i - 1)" value="@((int)MContract.Models.Enums.Currencies.Dollar)">Доллары</option>
+						</select>
+					</td>
+					@if (product.PricePerWeight != 0)
+					{
+						<td class="pricePerWeightOriginalContainer">
+							<span>@product.PricePerWeight</span>
+						</td>
+					}
+					else if (Model.Products.Any(Product => Product.PricePerWeight != 0))
+					{
+						<td></td>
+					}
+				</tr>
+				i++;
+			}
+		</table>
+		@if (!string.IsNullOrEmpty(Model.Description))
+		{
+			<div class="adDescriptionContainer">
+				Описание:<br />
+				<p>@Model.Description</p>
+			</div>
+		}
+
+		@*<div class="adPhotosContainer @(!Model.Photos.Any() ? "isEmpty" : "")">
+				@{
+					foreach (var photo in Model.Photos)
+					{
+						<div class="singleAdPhotoContainer">
+							<img src="@photo.Url" class="adPhoto" id="@photo.Id" />
+						</div>
+					}
+				}
+			</div>*@
+
+		<div class="adPhotosContainer @(!Model.Photos.Any() ? "isEmpty" : "")">
+			@if (Model.Photos.Any())
+			{
+				var requiredDimension = 200;
+				foreach (var photoId in Model.Photos.GroupBy(p => p.GroupId.ToString()).Select(g => g.FirstOrDefault().Id))
+				{
+					var bestFitPhoto = Model.GetBestFitPhotoFromPhotoId(photoId, requiredDimension);
+					var originalPhoto = Model.GetOriginalPhotoFromPhotoId(photoId);
+					<div style="background: url(@bestFitPhoto.Url) 50% 50% no-repeat; background-size: 100% 100%;" data-url="@originalPhoto.Url" class="adPhoto" id="@bestFitPhoto.GroupId"></div>
+				}
+			}
+		</div>
+
+		@if (Model.AvailableForAllUsers == false && Model.SenderId == Model.PersonalAreaUser?.Id)
+		{
+			<link rel="stylesheet" href="~/js/bootstrap-select-1.13.14/dist/css/bootstrap-select.css">
+			<script src="~/js/bootstrap-select-1.13.14/dist/js/bootstrap-select.js"></script>
+			<div class="inviteUsersContainer">
+				<select class="selectpicker inviteUsers" title="Участники" data-style="btn-primary" data-live-search="true" data-selected-text-format="static" multiple>
+					@{ var invitedUsers = Model.InvitedUsersId; }
+					@foreach (var user in Model.AllUsers)
+					{
+						if (invitedUsers.Any(id => id == user.Id))
+						{
+							<option value="@user.Id" selected disabled>
+								@user.CompanyNameWithTypeOfOwnership@(user.TownName != null ? ", " + user.TownName : "")
+							</option>
+						}
+					}
+				</select>
+			</div>
+		}
+		@if (!Model.IsMy)
+		{
+			<button class="sendMessageForAd btn btn-primary" type="submit">Отправить личное сообщение</button>
+		}
+	</div>
+
+	if (Model.IsMy || Model.OffersVisibleToOtherUsers || Model.Offers.Any(o => o.IsMy))
+	{
+		if (Model.Offers.Any())
+		{
+			foreach (var offer in Model.Offers)
+			{
+				<div class="offerContainer @offer.Id">
+					<div class="offerId" style="display: none">@offer.Id</div>
+					<div class="senderId" style="display: none">@offer.SenderId</div>
+					<div class="offerStatus" style="display: none">@offer.OfferStatus</div>
+					<h3>
+						@*@if ((Model.Offers.All(o => o.ContractStatus == MContract.Models.Enums.ContractStatuses.NotSent)
+										|| offer.ContractStatus == MContract.Models.Enums.ContractStatuses.Sent
+										|| offer.ContractStatus == MContract.Models.Enums.ContractStatuses.Accepted)
+									&& (Model.SenderId == Model.PersonalAreaUser?.Id
+										|| offer.SenderId == Model.PersonalAreaUser?.Id))
+							{*@
+						@offer.Name от @(offer.Sender?.CompanyNameWithTypeOfOwnership), @(offer.City?.Name)
+					</h3>
+					@if (offer.IsMy &&
+						Model.AdStatus != MContract.Models.Enums.AdStatuses.Finished &&
+						Model.AdStatus != MContract.Models.Enums.AdStatuses.Expired)
+					{
+						<a class="editOffer btn btn-primary" href="@ViewBag.L.SiteUrlClear/Ads/EditOffer?id=@offer.Id">Редактировать</a>
+						<a class="deleteOffer btn btn-danger">Удалить</a>
+						<a class="prolongOffer btn btn-primary">Продлить</a>
+						<div class="prolongOfferDetailsContainer">
+							Продлить предложение до <input class="newActiveUntilDate" /> 23:59 МСК
+							<a class="prolongOfferSubmit btn btn-primary">Подтвердить продление</a>
+						</div>
+					}
+					<img class="closeOffer" src="~/Images/Icons/CircledX.svg" />
+					<table class="adDetails">
+						<tr>
+							<td>
+								@(Model.IsBuy ? "Покупатель:" : "Продавец:")
+							</td>
+							<td class="senderNameContainer">
+								@(Model.Sender?.CompanyNameWithTypeOfOwnership), @(Model.Sender?.TownName)
+							</td>
+						</tr>
+						<tr>
+							<td>
+								@(Model.IsBuy ? "Город:" : "Место фактического нахождения груза:")
+							</td>
+							<td>
+								<div class="cityContainer">
+									@(Model.City?.Name)
+								</div>
+							</td>
+						</tr>
+						@if (Model.IsBuy)
+						{
+							<tr class="deliveryAddressRow isBuy">
+								<td>
+									Адрес поставки товара:
+								</td>
+								<td>
+									<div class="deliveryAddressContainer">
+										@Model.DeliveryAddress
+									</div>
+								</td>
+							</tr>
+						}
+						<tr>
+							<td>
+								Условия поставки:
+							</td>
+							<td class="deliveryTypeContainer">
+								<select class="deliveryType">
+									<option name="deliveryType" value="0">Не выбрано</option>
+									<option name="deliveryType" value="1">Доставка продавцом</option>
+									<option name="deliveryType" value="2">Самовывоз покупателем</option>
+								</select>
+							</td>
+						</tr>
+						@if (!Model.IsBuy && offer.DeliveryType == MContract.Models.Enums.DeliveryTypes.DeliveryBySeller)
+						{
+							<tr class="deliveryAddressRow">
+								<td>
+									Адрес поставки товара:
+								</td>
+								<td class="deliveryAddressContainer">
+									@offer.DeliveryAddress
+								</td>
+							</tr>
+						}
+						<tr>
+							<td>
+								Погрузка:
+							</td>
+							<td class="deliveryLoadTypeContainer">
+								<select class="deliveryLoadType">
+									<option name="deliveryLoadType" value="0">Не выбрано</option>
+									<option name="deliveryLoadType" value="1">Силами продавца</option>
+									<option name="deliveryLoadType" value="2">Силами покупателя</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Способ доставки:
+							</td>
+							<td class="deliveryWayContainer">
+								<select class="deliveryWay">
+									<option name="deliveryWay" value="0">Не выбрано</option>
+									<option name="deliveryWay" value="1">Авто</option>
+									<option name="deliveryWay" value="2">Ж/Д</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Цена:
+							</td>
+							<td class="ndsContainer">
+								<select class="Nds">
+									<option name="Nds" value="0">Не выбрано</option>
+									<option name="Nds" value="1">C НДС</option>
+									<option name="Nds" value="2">Без НДС</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Условия оплаты:
+							</td>
+							<td class="termsOfPaymentsContainer">
+								<select>
+									<option value="0">Не выбрано</option>
+									<option value="1">Отсрочка платежа</option>
+									<option value="2">100% предоплата</option>
+									<option value="3">Частичная предоплата</option>
+									<option value="4">По факту поставки</option>
+								</select>
+							</td>
+						</tr>
+						@if (offer.DefermentPeriod != null)
+						{
+							<tr>
+								<td>
+									Максимальный срок оплаты:
+								</td>
+								<td class="defermentPeriodContainer">
+									<input type="text" value="@offer.DefermentPeriod" /> дней
+								</td>
+							</tr>
+						}
+						<tr>
+							<td>
+								Подача предложений по части позиций:
+							</td>
+							<td class="partOffersAllowedContainer">
+								<input type="checkbox" name="partOffersAllowed" id="partOffersAllowed1" value="1" disabled />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Ценовое предложение действительно до:
+							</td>
+							<td class="activeUntilDateContainer">
+								<input value="@offer.ActiveUntilDate.ToShortDateString()" /> 23:59 МСК
+							</td>
+						</tr>
+					</table>
+
+					<table class="productDetails">
+						<tr>
+							<td>
+								№
+							</td>
+							<td>
+								Категория товара
+							</td>
+							@{ int sumTotalColspan = 4; }
+							@if (Model.Products.Any(p => !string.IsNullOrEmpty(p.Name)))
+							{
+								<td>
+									Точное наименование
+								</td>
+								sumTotalColspan++;
+							}
+							<td>
+								Вес (тн.)
+							</td>
+							<td>
+								Валюта
+							</td>
+							@if (Model.Products.Any(p => p.PricePerWeight != 0))
+							{
+								<td>
+									Цена за 1 тн.<br />
+									@(Model.IsBuy ? "(максимальная)" : "(минимальная)")
+								</td>
+								sumTotalColspan++;
+							}
+							<td>
+								Цена за 1 тн.<br />
+								(предложение)
+							</td>
+							<td>
+								Цена за всю позицию<br />
+								(предложение)
+							</td>
+						</tr>
+						@{ i = 1; }
+						@foreach (var product in Model.Products)
+						{
+							<tr>
+								<td class="productNumber">
+									@i
+								</td>
+								<td class="productId" style="display:none">@product.Id</td>
+								<td class="categoryContainer">@product.ProductCategoryName</td>
+								@if (!string.IsNullOrEmpty(product.Name))
+								{
+									<td class="specificCategoryContainer">
+										@product.Name
+									</td>
+								}
+								else if (Model.Products.Any(p => !string.IsNullOrEmpty(p.Name)))
+								{
+									<td></td>
+								}
+								<td class="weightContainer">
+									@product.Weight.ToString("0.###")
+								</td>
+								<td class="currencyContainer">
+									<select class="currency@(i - 1)">
+										<option name="currency@(i - 1)" value="@((int)MContract.Models.Enums.Currencies.Rouble)">Рубли</option>
+										<option name="currency@(i - 1)" value="@((int)MContract.Models.Enums.Currencies.Dollar)">Доллары</option>
+									</select>
+								</td>
+								@if (product.PricePerWeight != 0)
+								{
+									<td class="pricePerWeightOriginalContainer">@product.PricePerWeight.ToString("0.00")</td>
+								}
+								else if (Model.Products.Any(p => p.PricePerWeight != 0))
+								{
+									<td></td>
+								}
+								@if (offer.ProductOffers != null && offer.ProductOffers.Any() && (!Model.PartOffersAllowed || offer.ProductOffers.Any(p => p.ProductId == product.Id)))
+								{
+									var productOffer = offer.ProductOffers.Find(o => o.ProductId == product.Id);
+									if (productOffer != null)
+									{
+										<td class="pricePerWeightContainer">@productOffer.PricePerWeight.ToString("0.00")</td>
+									}
+									else
+									{
+										<td class="pricePerWeightContainer"></td>
+									}
+								}
+								else
+								{
+									<td class="pricePerWeightContainer"></td>
+								}
+								<td class="pricePerProductContainer"></td>
+							</tr>
+							i++;
+						}
+						<tr class="sumTotalContainer">
+							<td></td>
+							<td colspan="@sumTotalColspan">Итого:</td>
+							<td class="sumTotal"></td>
+						</tr>
+					</table>
+					@if ((Model.IsMy || offer.IsMy) && offer.Comment != null && !offer.Comment.IsEmpty())
+					{
+						<div class="offerDescriptionContainer">
+							Комментарий:
+							<p>@offer.Comment</p>
+						</div>
+					}
+					@if (Model.IsMy && Model.AdStatus != MContract.Models.Enums.AdStatuses.Finished)
+					{
+						<button class="sendMessageForOffer btn btn-primary" type="submit">Отправить личное сообщение</button>
+						if (offer.ContractStatus == MContract.Models.Enums.ContractStatuses.Sent)
+						{
+							<button class="cancelContract btn btn-primary" type="submit">Отменить контракт</button>
+							<div class="contractCancelledMessageContainer">
+								<img src="~/Images/Icons/CheckmarkGreen.svg" />
+								<div class="messageTextContainer">
+									<p>Контракт отменен.</p>
+								</div>
+							</div>
+						}
+						else
+						{
+							<button class="sendContract btn btn-primary" type="submit">Контракт</button>
+							<div class="contractSentMessageContainer">
+								<img src="~/Images/Icons/CheckmarkGreen.svg" />
+								<div class="messageTextContainer">
+									<p>Контракт отправлен.</p>
+									<p>Вы получите оповещение об ответе.</p>
+								</div>
+							</div>
+						}
+					}
+				</div>
+			}
+		}
+	}
+
+	<div class="offersContainer">
+		<h2>Предложения</h2>
+		<div class="offersFlexContainer">
+			@if (Model.PersonalAreaUser?.Id == 0)
+			{
+				<div class="singleOfferContainer signUpToRequestAdInvitation" href="@ViewBag.L.SiteUrlClear/registration">
+					<p>
+						@*Зарегистрируйтесь, чтобы @(Model.AvailableForAllUsers ? "отправить предложение" : "подать заявку на участие")*@
+						Просмотр предложений доступен после <a href="@ViewBag.L.SiteUrlClear/registration">регистрации</a>
+					</p>
+				</div>
+			}
+			else if (Model.SenderId == Model.PersonalAreaUser?.Id || Model.AvailableForAllUsers || Model.InvitedUsersId.Any(id => id == Model.PersonalAreaUser?.Id))
+			{
+				if (!Model.OffersVisibleToOtherUsers && Model.SenderId != Model.PersonalAreaUser?.Id)
+				{
+					<div class="singleOfferContainer offersHidden">
+						<p>
+							@(Model.IsBuy ? "Покупатель" : "Продавец") скрыл предложения других участников
+						</p>
+					</div>
+				}
+				else if (Model.SenderId == Model.PersonalAreaUser?.Id || Model.OffersVisibleToOtherUsers)
+				{
+					if (!Model.Offers.Any(o =>
+						o.OfferStatus != MContract.Models.Enums.OfferStatuses.Draft &&
+						o.ContractStatus != MContract.Models.Enums.ContractStatuses.Declined))
+					{
+						<div class="singleOfferContainer noOffers">
+							<p>
+								Пока нет предложений
+							</p>
+						</div>
+					}
+				}
+				if (Model.SenderId != Model.PersonalAreaUser?.Id
+					&& Model.AdStatus != MContract.Models.Enums.AdStatuses.Expired
+					&& Model.AdStatus != MContract.Models.Enums.AdStatuses.Finished
+					&& !Model.Offers.Any(offer =>
+						offer.SenderId == Model.PersonalAreaUser?.Id
+						|| offer.ContractStatus == MContract.Models.Enums.ContractStatuses.Sent
+						|| offer.ContractStatus == MContract.Models.Enums.ContractStatuses.Accepted))
+				{
+					<a class="singleOfferContainer sendOffer" @(Model.PersonalAreaUser?.Id != 0 ? "href=" + ViewBag.L.SiteUrlClear + "/Ads/NewOffer/" + Model.Id : "")>
+						<p>
+							+ Отправить предложение
+						</p>
+					</a>
+				}
+				var myOffer = Model.Offers.Find(o => o.SenderId == Model.PersonalAreaUser?.Id);
+				if (myOffer != null)
+				{
+					var contractOfferId = Model.Offers.Find(o => o.ContractStatus == MContract.Models.Enums.ContractStatuses.Sent || o.ContractStatus == MContract.Models.Enums.ContractStatuses.Accepted)?.Id;
+					<div class="singleOfferContainer myOffer@(contractOfferId == myOffer.Id ? " contractOffer" : "")@(myOffer.OfferStatus == MContract.Models.Enums.OfferStatuses.Expired ? " expiredOffer" : "")" data-id="@myOffer.Id">
+						<p>
+							@(myOffer.Sender?.CompanyNameWithTypeOfOwnership), <span class="dateOfPosting">@((myOffer.Modified ?? myOffer.DateOfPosting).ToString("o"))</span>
+							<br />
+							@(myOffer.City?.Name), @myOffer.SumOffer.ToString("0") руб.
+							@if (myOffer.ContractStatus == MContract.Models.Enums.ContractStatuses.Sent)
+							{
+								@:<br />Ожидает подтверждения контракта
+							}
+							else if (myOffer.ContractStatus == MContract.Models.Enums.ContractStatuses.Accepted)
+							{
+								@:<br />Контракт подтвержден
+							}
+							else if (myOffer.ContractStatus == MContract.Models.Enums.ContractStatuses.Declined)
+							{
+								@:<br />Контракт отменен
+							}
+							else if (myOffer.OfferStatus == MContract.Models.Enums.OfferStatuses.Expired)
+							{
+								@:<br />Истек срок действия
+							}
+						</p>
+					</div>
+				}
+				if ((Model.SenderId == Model.PersonalAreaUser?.Id || Model.OffersVisibleToOtherUsers) && Model.Offers.Any())
+				{
+					var contractOfferId = Model.Offers.Find(o => o.ContractStatus == MContract.Models.Enums.ContractStatuses.Sent || o.ContractStatus == MContract.Models.Enums.ContractStatuses.Accepted)?.Id;
+					foreach (var offer in Model.Offers)
+					{
+						if (offer.SenderId == Model.PersonalAreaUser?.Id || offer.Sender == null)
+						{
+							continue;
+						}
+						<div class="singleOfferContainer
+                        @(contractOfferId == offer.Id ? "contractOffer" : "")
+                        @(offer.OfferStatus == MContract.Models.Enums.OfferStatuses.Expired ? "expiredOffer" : "")"
+							 @(Model.PersonalAreaUser?.Id != 0 && (contractOfferId == null || contractOfferId == offer.Id) ? "data-id=" + offer.Id : "")>
+							<p>
+								@(offer.Sender?.CompanyNameWithTypeOfOwnership), <span class="dateOfPosting">@((offer.Modified ?? offer.DateOfPosting).ToString("o"))</span>
+								<br />
+								@(offer.City?.Name), @offer.SumOffer.ToString("0") руб.
+								@if (offer.ContractStatus == MContract.Models.Enums.ContractStatuses.Sent)
+								{
+									@:<br />Ожидает подтверждение контракта
+								}
+								else if (offer.ContractStatus == MContract.Models.Enums.ContractStatuses.Accepted)
+								{
+									@:<br />Контракт подтвержден
+								}
+							</p>
+						</div>
+					}
+				}
+			}
+			else
+			{
+				<div class="singleOfferContainer requestAdInvitation">
+					<p>
+						Подать заявку на участие
+					</p>
+				</div>
+			}
+		</div>
+	</div>
+}
+
+
+<script src="~/js/user/viewImage.js?p=202006112" type="text/javascript"></script>
+<script src="~/js/user/replaceIsoDateWithLocalDate.js?p=20200714" type="text/javascript"></script>
+<script src="~/js/jquery-ui/jquery-ui.js"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        @foreach (var offer in Model.Offers)
+        {
+            @:$(".offerContainer.@offer.Id .adDetails .deliveryTypeContainer option[value='" + @Convert.ToInt32(offer.DeliveryType) + "']").prop("selected", true);
+            @:$(".offerContainer.@offer.Id .adDetails .deliveryLoadTypeContainer option[value='" + @Convert.ToInt32(offer.DeliveryLoadType) + "']").prop("selected", true);
+            @:$(".offerContainer.@offer.Id .adDetails .deliveryWayContainer option[value='" + @Convert.ToInt32(offer.DeliveryWay) + "']").prop("selected", true);
+            @:$(".offerContainer.@offer.Id .adDetails .ndsContainer option[value='" + @Convert.ToInt32(offer.Nds) + "']").prop("selected", true);
+            @:$(".offerContainer.@offer.Id .adDetails .termsOfPaymentsContainer option[value='" + @Convert.ToInt32(offer.TermsOfPayments) + "']").prop("selected", true);
+            @:$(".offerContainer.@offer.Id .adDetails .partOffersAllowedContainer").find("input[value=@Convert.ToInt32(Model.PartOffersAllowed)]").prop("checked", true);
+            @:var currencies = @Html.Raw(Json.Encode(Model.Products.Select(Product => (int)Product.Currency).ToList()));
+            @:var i = 0;
+            @:$(".offerContainer.@offer.Id .productDetails .productNumber").closest("tr").each(function () {
+            @:    $(this).find(".currencyContainer").find("option[value='" + currencies[i] + "']").prop("selected", true);
+            @:    i++;
+            @:});
+            @:var productsIdString = @Html.Raw(Json.Encode(offer.ProductOffers.Select(o => o.ProductId).ToList()));
+            @:var productsId = productsIdString.map(Number);
+            @:$(".offerContainer.@offer.Id .productNumber").closest("tr").each(function () {
+            @:    if (productsId.includes(Number($(this).closest("tr").find(".productId").html())) || !@Model.PartOffersAllowed.ToString().ToLower()) {
+            @:        $(this).find(".checkedForOfferContainer input").prop("checked", true);
+            @:        $(this).children().css("opacity", "");
+            @:        var weight = parseFloat($(this).find(".weightContainer").html().replace(",", ".").match(/\d+.?\d*/));
+            @:        var pricePerWeight = parseFloat($(this).find(".pricePerWeightContainer").html().replace(",", ".").match(/\d+.?\d*/));
+            @:        var pricePerProduct = (weight * pricePerWeight).toFixed(2).replace(".", ",");
+            @:        var currency = $(this).find(".currencyContainer option:selected").val();
+            @:        $(this).find(".pricePerProductContainer").html(pricePerProduct);
+            @:        if (currency == @((int)MContract.Models.Enums.Currencies.Rouble)) {
+            @:            $(this).find(".pricePerProductContainer, .pricePerWeightContainer, .pricePerWeightOriginalContainer").each(function () {
+            @:                $(this).html($(this).html().trim());
+            @:                $(this).append("₽");
+            @:            });
+            @:        } else {
+            @:            $(this).find(".pricePerProductContainer, .pricePerWeightContainer, .pricePerWeightOriginalContainer").each(function () {
+            @:                $(this).html($(this).html().trim());
+            @:                $(this).append("$");
+            @:            });
+            @:        }
+            @:    } else {
+            @:        $(this).children().css("opacity", "0.75");
+            @:    }
+            @:});
+            @:$(".offerContainer.@offer.Id .sumTotalContainer .sumTotal").html("@offer.SumOffer.ToString("0.00")" + "₽");
+        }
+        $(".adContainer .adDetails .deliveryTypeContainer option[value='" + @Convert.ToInt32(Model.DeliveryType) + "']").prop("selected", true);
+        $(".adContainer .adDetails .deliveryLoadTypeContainer option[value='" + @Convert.ToInt32(Model.DeliveryLoadType) + "']").prop("selected", true);
+        $(".adContainer .adDetails .deliveryWayContainer option[value='" + @Convert.ToInt32(Model.DeliveryWay) + "']").prop("selected", true);
+        $(".adContainer .adDetails .ndsContainer option[value='" + @Convert.ToInt32(Model.Nds) + "']").prop("selected", true);
+        $(".adContainer .adDetails .termsOfPaymentsContainer option[value='" + @Convert.ToInt32(Model.TermsOfPayments) + "']").prop("selected", true);
+        $(".adContainer .adDetails .partOffersAllowedContainer").find("input[value=@Convert.ToInt32(Model.PartOffersAllowed)]").prop("checked", true);
+        $(".adContainer .adDetails .offersVisibleToOtherUsersContainer").find("input[value=@Convert.ToInt32(Model.OffersVisibleToOtherUsers)]").prop("checked", true);
+        var currencies = @Html.Raw(Json.Encode(Model.Products.Select(Product => (int)Product.Currency).ToList()));
+        var i = 0;
+        $(".adContainer .productDetails .productNumber").closest("tr").each(function () {
+            $(this).find(".currencyContainer").find("option[value='" + currencies[i] + "']").prop("selected", true);
+            i++;
+        });
+        $(".adDetails, .productDetails").find("input, select").not("[name=partOffersAllowed]").each(function () {
+            $(this).prop("disabled", true).hide();
+            if ($(this).is("input")) {
+                $(this).before("<span>" + $(this).val() + "</span>")
+            } else if ($(this).is("select")) {
+                $(this).before("<span>" + $(this).find("option:selected").html() + "</span>");
+            }
+            if ($(this).prop("checked") == false && ($(this).attr("type") == "radio" || $(this).attr("type") == "checkbox")) {
+                $("body").find("span[for=" + $(this).attr("id") + "]").css("display", "none");
+            }
+        });
+        $(".prolongAdDetailsContainer .newActiveUntilDate").datepicker({
+            dateFormat: "dd.mm.yy",
+            minDate: 0
+        });
+        $(".prolongAd").on("click", function () {
+            $(this).hide();
+            $(this).siblings(".prolongAdDetailsContainer").show();
+        });
+        $(".prolongAdSubmit").on("click", function () {
+            var adId = @Model.Id;
+            var date = $(this).siblings(".newActiveUntilDate").val();
+            $.post("@ViewBag.L.SiteUrlClear/Ads/ProlongAd", {
+                id: adId,
+                date: date
+            })
+                .done(function (data) {
+                    $(".prolongAdDetailsContainer").hide().after(data);
+                });
+            $(this).closest(".prolongAdDetailsContainer").hide().after(``);
+        });
+        $(".prolongOfferDetailsContainer .newActiveUntilDate").datepicker({
+            dateFormat: "dd.mm.yy",
+            minDate: 0
+        });
+        $(".prolongOffer").on("click", function () {
+            $(this).hide();
+            $(this).siblings(".prolongOfferDetailsContainer").show();
+        });
+        $(".prolongOfferSubmit").on("click", function () {
+            var offerId = Number($(this).closest(".offerContainer").find(".offerId").html());
+            var date = $(this).siblings(".newActiveUntilDate").val();
+            $.post("@ViewBag.L.SiteUrlClear/Ads/ProlongOffer", {
+                id: offerId,
+                date: date
+            })
+                .done(function (data) {
+                    $(".prolongOfferDetailsContainer").hide().after(data);
+                });
+            $(this).closest(".prolongOfferDetailsContainer").hide().after(``);
+        });
+        replaceIsoDateTimeWithLocalDateTime($(".dateOfPosting"));
+        $(".favoriteAd").click(function () {
+            var isFavorite = false;
+            if ($(this).hasClass("isFavorite")) {
+                isFavorite = true;
+                $(this).removeClass("isFavorite");
+                $(this).attr("src", "/Images/Icons/Checkmark.svg");
+            } else {
+                $(this).addClass("isFavorite");
+                $(this).attr("src", "/Images/Icons/CircledX.svg");
+            }
+            var isDelete = isFavorite;
+            $.post("@ViewBag.L.SiteUrlClear/Ads/ChangeFavoriteAd", {
+                userId: @(Model.PersonalAreaUser?.Id),
+                adId: @Model.Id,
+                isDelete: isDelete
+            });
+        });
+        prepareImageViewElements();
+        $(".adPhotosContainer").on("click", ".adPhoto", function () {
+            showImageView($(this));
+        });
+        $(".deleteAd").on("click", function () {
+            var confirmationResult = confirm("Вы действительно хотите удалить объявление?");
+            if (confirmationResult == true) {
+                $.post("@ViewBag.L.SiteUrlClear/Ads/DeleteAd",
+                    { id: @Model.Id },
+                    function (data) {
+                        if (data.toLowerCase() == "true") {
+                            alert("Объявление удалено.");
+							location.href = "@ViewBag.L.SiteUrlClear/Ads/Index?my=true&adStatusId=3";
+                        } else {
+                            alert("Объявление не было удалено. Попробуйте позже.");
+                        }
+                    });
+            }
+        });
+        $(".editAd").click(function () {
+            if (@((Model.AdStatus == MContract.Models.Enums.AdStatuses.Finished || Model.AdStatus == MContract.Models.Enums.AdStatuses.Expired).ToString().ToLower())) {
+                alert("Невозможно отредактировать завершенное объявление. Сначала продлите или повторите его.");
+                return false;
+            } else if (@(Model.Offers.Any(o => o.ContractStatus == MContract.Models.Enums.ContractStatuses.Sent).ToString().ToLower())) {
+                alert("Невозможно отредактировать объявление с отправленным контрактом.");
+                return false;
+            } else {
+                location.href = "@ViewBag.L.SiteUrlClear/Ads/EditAd/@Model.Id";
+            }
+        });
+        $(".repeatAd").on("click", function () {
+            $.post("@ViewBag.L.SiteUrlClear/Ads/RepeatAd",
+                { id: @Model.Id },
+                function (newId) {
+                    if (newId != 0) {
+                        location.href = "@ViewBag.L.SiteUrlClear/Ads/NewAdFinalStep/" + newId;
+                    }
+                });
+        });
+        $(".singleOfferContainer").on("click", function () {
+            if ($(this).attr("data-id")) {
+                $(".singleOfferContainer.selected").removeClass("selected");
+                $(".adContainer").hide();
+                $(".offerContainer").hide();
+                $(".offerContainer." + $(this).attr("data-id")).show();
+                $(this).addClass("selected");
+            }
+        });
+        if (@((Model.OfferIdToShow != null).ToString().ToLower())) {
+            var offerId = parseInt(@Model.OfferIdToShow);
+            $(".singleOfferContainer[data-id=" + offerId + "]").trigger("click");
+        }
+        @*$(".signUpTorequestAdInvitation").on("click", function () {
+            location.href = "@ViewBag.L.SiteUrlClear/User/Signup";
+        });*@
+        $(".closeOffer").on("click", function () {
+            $(".singleOfferContainer.selected").removeClass("selected");
+            $(".offerContainer").hide();
+            $(".adContainer").show();
+        });
+        $(".deleteOffer").on("click", function () {
+            var offerId = Number($(this).closest(".offerContainer").find(".offerId").html());
+            $.post("@ViewBag.L.SiteUrlClear/Ads/CheckIfOfferHasContract", { id: offerId })
+                .done(function (data) {
+                    if (data.toLowerCase() == "true") {
+                        var confirmationResult = confirm("Вам отправили контракт по этому предложению. Вы уверены, что хотите удалить его?");
+                        if (confirmationResult == false)
+                            return false;
+                    }
+
+                    var isFromAd = $.trim($(".isFromAdHf").html()) == "true";
+                    $.post("@ViewBag.L.SiteUrlClear/Ads/DeleteOffer", {
+                        id: offerId,
+                        isFromAd: isFromAd
+                    })
+                        .done(function (data) {
+                            location.href = location.href;
+                        });
+                });
+
+        });
+        $(".sendMessageForAd").click(function () {
+            if (@((Model.PersonalAreaUser?.Id != 0).ToString().ToLower())) {
+                location.href = "@ViewBag.L.SiteUrlClear/User/Messages?respondentId=@Model.SenderId";
+            } else {
+                location.href = "@ViewBag.L.SiteUrlClear/login";
+            }
+        });
+        $(".sendMessageForOffer").click(function () {
+            var offerSenderId = parseInt($(this).closest(".offerContainer").find(".senderId").html());
+            location.href = "@ViewBag.L.SiteUrlClear/User/Messages?respondentId=" + offerSenderId;
+        });
+        $(".sendContract").click(function () {
+            if (@((Model.AdStatus == MContract.Models.Enums.AdStatuses.Expired).ToString().ToLower())) {
+                var confirmationResult = confirm("Автоматически обновить объявление и отправить контракт?");
+                if (confirmationResult == false)
+                    return;
+                else {
+                    var adId = @Model.Id;
+                    var now = new Date();
+                    var yy = now.getFullYear();
+                    var mm = now.getMonth();
+                    var dd = now.getDate() + 1;
+                    var date = new Date(`${yy}.${mm}.${dd}`);
+                    $.post("@ViewBag.L.SiteUrlClear/Ads/ProlongAd", {
+                        id: adId,
+                        date: date
+                    })
+                        .done(function (data) {
+                            alert(data);
+                        });
+                }
+            }
+            if ($(this).closest(".offerContainer").find(".offerStatus").html() == "Published") {
+                var offerId = parseInt($(this).closest(".offerContainer").find(".offerId").html());
+                $.post("@ViewBag.L.SiteUrlClear/Ads/SendContract", {
+                    offerId: offerId
+                }, function (result) {
+                    if (result.toLowerCase() == "true") {
+                        $(".sendContract").remove();
+                        $(".contractSentMessageContainer").css("display", "flex");
+                    }
+                });
+            } else {
+                alert("Срок действия предложения истек. Вы можете отправить личное сообщение участнику для возможного обновления предложения.");
+            }
+        });
+        $(".cancelContract").click(function () {
+            var offerId = parseInt($(this).closest(".offerContainer").find(".offerId").html());
+            $.post("@ViewBag.L.SiteUrlClear/Ads/ReviewContract", {
+                offerId: offerId,
+				isAccept: false,
+				isByAdCreator: true
+            }, function (result) {
+                    if (result.toLowerCase() == "true") {
+                        $(".cancelContract").remove();
+                        $(".contractCancelledMessageContainer").css("display", "flex");
+                    } else if (result.toLowerCase() == "false") {
+                        alert("Ошибка при отмене контракта. Попробуйте позже.")
+                    } else {
+                        alert(result);
+                    }
+            });
+        });
+        $(".requestAdInvitation").click(function () {
+            let currentUserId = @(ViewBag.L.PersonalAreaUser?.Id);
+            $.post("@ViewBag.L.SiteUrlClear/Ads/RequestAdInvitation", {
+                adId: @Model.Id,
+                userId: currentUserId
+            }, function (result) {
+                alert(result);
+            });
+        });
+    });
+</script>

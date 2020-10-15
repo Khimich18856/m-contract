@@ -1,0 +1,223 @@
+﻿body {
+}
+
+.pageContentContainer {
+    overflow-y: hidden;
+}
+
+.adContainer > *:not(h2) {
+    margin-top: 10px;
+}
+
+.viewbagHeading {
+    width: 70%;
+    float: left;
+    clear: none;
+    margin: 0;
+}
+
+.adContainer, .offerContainer {
+    width: 70%;
+    box-sizing: border-box;
+    float: left;
+    clear: left;
+    position: relative;
+}
+
+.offerContainer {
+    display: none;
+    border: 1px solid black;
+}
+
+.offersContainer {
+    width: 30%;
+    float: right;
+    clear: right;
+}
+
+.offersFlexContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.offersFlexContainer {
+    float: left;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.offersFlexContainer .singleOfferContainer {
+    height: 40px;
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+    padding: 15px;
+    box-sizing: border-box;
+    border-width: 1px 1px 1px 1px;
+    border-style: solid;
+    border-color: gray;
+}
+
+.offersFlexContainer .singleOfferContainer.myOffer {
+    #background-color: floralwhite !important;
+}
+
+.offersFlexContainer .singleOfferContainer.expiredOffer {
+    opacity: 0.3;
+}
+
+.offersFlexContainer .singleOfferContainer.contractOffer {
+    background-color: navajowhite !important;
+}
+
+.offersFlexContainer .singleOfferContainer.selected {
+    background-color: floralwhite !important;
+}
+
+.offersFlexContainer .singleOfferContainer p {
+    color: black;
+    margin: 0;
+}
+
+.offersFlexContainer .singleOfferContainer:nth-child(2n+1) {
+    #background-color: whitesmoke;
+    background-color: ghostwhite;
+}
+
+.offersFlexContainer .singleOfferContainer:nth-child(2n+2) {
+    background-color: ghostwhite;
+}
+
+.offersFlexContainer .singleOfferContainer:not(.noOffers):hover {
+    background-color: floralwhite !important;
+    text-decoration: none;
+}
+
+.favoriteAd {
+    display: inline;
+    height: 1em;
+}
+
+.adContainer table, .offerContainer table {
+    border-collapse: collapse;
+    width: 92%;
+    margin: 10px 0 10px 0;
+}
+
+.adContainer table, .adContainer table tr, .offerContainer table, .offerContainer table tr {
+    border: 1px solid black;
+}
+
+.adContainer table td, .offerContainer table td {
+    padding: 3px;
+}
+
+.adContainer table td:nth-child(4n+1), .offerContainer table td:nth-child(4n+1) {
+    #text-align: center;
+    padding-left: 5px;
+}
+
+.adContainer table tr:nth-child(2n+1), .offerContainer table tr:nth-child(2n+1) {
+    #background-color: whitesmoke;
+    background-color: ghostwhite;
+}
+
+.adContainer table tr:nth-child(2n+2), .offerContainer table tr:nth-child(2n+2) {
+    background-color: ghostwhite;
+}
+
+.adContainer table:not(.adDetails) tr:nth-child(1), .offerContainer table:not(.adDetails) tr:nth-child(1) {
+    background-color: lightgray;
+}
+
+.adContainer table tr:nth-child(n+2):hover, .offerContainer table tr:nth-child(n+2):hover {
+    background-color: floralwhite;
+}
+
+.sendMessage, .sendContract, .cancelContract {
+    margin-bottom: 10px;
+}
+
+.contractSentMessageContainer, .contractCancelledMessageContainer {
+    display: none;
+}
+
+.contractSentMessageContainer img, .contractCancelledMessageContainer img {
+    width: 30%;
+    height: auto;
+}
+
+.contractSentMessageContainer .messageTextContainer, .contractCancelledMessageContainer .messageTextContainer {
+    font-size: x-large;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.adContainer .productDetails td:nth-child(n+4), .offerContainer .productDetails td:nth-child(n+4) {
+    max-width: 5%;
+}
+
+.adContainer .productDetails td:nth-child(n+6), .offerContainer .productDetails td:nth-child(n+6) {
+    max-width: 5%;
+}
+
+.adContainer .productDetails input:not([type=radio]), .offerContainer .productDetails input:not([type=radio]) {
+    width: 100%;
+}
+
+.adContainer .adDescriptionContainer, .offerContainer .adDescriptionContainer {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.adContainer .adDescriptionContainer p, .offerContainer .adDescriptionContainer p {
+    width: 92%;
+    resize: none;
+    min-height: 5em;
+    word-wrap: break-word;
+}
+
+.adContainer .adPhotosContainer, .offerContainer .adPhotosContainer {
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    width: 92%;
+    padding: 10px 0 0 10px;
+    box-sizing: border-box;
+}
+
+.adContainer .adPhotosContainer.isEmpty, .offerContainer .adPhotosContainer.isEmpty {
+    display: none;
+}
+
+.adContainer .adPhotosContainer .adPhoto, .offerContainer .adPhotosContainer .adPhoto {
+    position: relative;
+    width: 24%;
+    height: 0;
+    padding-bottom: 24%;
+    margin: 0 1% 1% 0;
+    box-sizing: border-box;
+    flex: 0 0 auto;
+}
+
+.adContainer .inviteUsersContainer .bs-placeholder {
+    color: white !important;
+}
+
+.offerContainer .closeOffer {
+    position: absolute;
+    top: 0;
+    right: 8%;
+}
+
+.adContainer .prolongAdDetailsContainer {
+    display: none;
+}
+
+.offerContainer .prolongOfferDetailsContainer {
+    display: none;
+}

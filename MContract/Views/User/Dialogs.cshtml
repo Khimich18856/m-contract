@@ -1,0 +1,234 @@
+﻿@model MContract.Models.UserDialogsViewModel
+
+@{
+    ViewBag.Title = ViewBag.Heading;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Styles -->
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/Dialogs.css">
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/lk-layout.css">
+
+@{
+    Html.RenderPartial("_MobileMenu", Model.MobileMenuViewModel);
+}
+
+<section class="header-pc">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-5 col-lg-4">
+                <div class="offer__title">
+                    <h1>Личный кабинет</h1>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-5 col-lg-7">
+                <div class="offer__open">
+                    <div class="open">
+                        Сообщения
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md col-lg-1 mobile-first">
+                <div class="product__crumbs">
+                    <span class="page"><a href="@ViewBag.L.SiteUrlClear">Главная</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<main>
+    <section class="lk__main__wrapper">
+        <div class="container">
+			<div class="row">
+				@{
+					Html.RenderPartial("_LeftMenu", Model.LeftMenuViewModel);
+				}
+				<div class="col-sm-12 mobile__off">
+					<div class="lk__main-title">
+						Сообщения
+					</div>
+				</div>
+				<div class="col-sm-12 col-md-9">
+					<div class="message__header-wrapper">
+						<div class="message__header-find">
+							<div class="new-message">
+
+							</div>
+							<div class="find">
+								<input type="text" placeholder="Поиск по сообщениям ...">
+								<div class="find"></div>
+							</div>
+						</div>
+						<div class="message__header-clear">
+							<div class="clear">
+								Очистить все чаты
+							</div>
+							<div class="read">
+								Все как прочитанные
+							</div>
+						</div>
+						<div class="messgae__newchat-wrapper closed">
+							<div class="messgae__newchat-header">
+								<div class="close"></div>
+								<div class="title">Новый чат</div>
+								<div class="find">
+									<input type="text" placeholder="Поиск по списку ...">
+									<div class="ico"></div>
+								</div>
+							</div>
+							<div class="messgae__newchat-main">
+								@foreach (var user in Model.AllUsers)
+								{
+									<a class="messgae__newchat-main-item" href="@ViewBag.L.SiteUrlClear/User/Messages?respondentId=@user.Id">
+										<div class="oo">@(user.CompanyNameWithTypeOfOwnership)</div>
+										<div class="city">@(user.Town?.NameAndRegionNameWithComma)</div>
+									</a>
+								}
+							</div>
+						</div>
+					</div>
+					<div class="message__main-wrapper">
+						@if (Model.Dialogs != null && Model.Dialogs.Any())
+						{
+							foreach (var dialog in Model.Dialogs)
+							{
+								var lastMessage = dialog.Messages != null ? dialog.Messages.LastOrDefault() : null;
+								var hasLastMessage = lastMessage != null;
+								<div id="divForDialogWithRespondentId_@(dialog.Respondent?.Id)" class="message__main-item
+                                     @(dialog.NewMessagesCount > 0 ? "have-msg" : "")
+                                     @(dialog.Respondent.IsSystemNotifications ? " system" : "")">
+									@if (!string.IsNullOrEmpty(dialog.AllMessagesText))
+									{
+										@:@Html.Raw($"<div class='allMessagesTextHf' style='display: none'>{dialog.AllMessagesText}</div>")
+									}
+									<div class="img">
+										<img src="@(dialog.Respondent?.SmallPhotoUrl)" alt="">
+									</div>
+									<a class="info" href="@dialog.Url">
+										<div class="oo">@(dialog.Respondent?.CompanyNameWithTypeOfOwnership)</div>
+										<div class="city">@(dialog.Respondent?.Town?.NameAndRegionNameWithComma)</div>
+										<div class="last-msg">@(hasLastMessage ? lastMessage.Text : "")</div>
+										<div class="date">@(hasLastMessage ? lastMessage.Date.ToString("o") : "")</div>
+									</a>
+									<div class="close">
+
+									</div>
+									<div class="count-of-msg">@dialog.NewMessagesCount</div>
+									<div class="delete-msg closed">
+										<div class="title">Удалить этот чат безвозвратно?</div>
+										<div class="btns-block">
+											<div class="delete-btn yes" onclick="deleteChat(@(dialog.Respondent?.Id))">Да</div>
+											<div class="delete-btn no">Нет</div>
+										</div>
+									</div>
+								</div>
+							}
+
+						}
+
+						@{ var noMessagesSpanStyle = Model.Dialogs != null && Model.Dialogs.Any() ? "display: none" : ""; }
+						<span id="noMessagesSpan" style="@noMessagesSpanStyle">Нет сообщений</span>
+					</div>
+				</div>
+			</div>
+        </div>
+    </section>
+</main>
+
+<script src="@ViewBag.L.SiteUrlClear/js/user/replaceIsoDateWithLocalDate.js?p=20200714" type="text/javascript"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/Dialogs.js"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/lk-main.js?p=2020-10-10-a"></script>
+<script type="text/javascript">
+	function deleteChat(respondentId) {
+		if (respondentId == 0) {
+			alert('Не указан Id пользователя');
+			return;
+		}
+
+		$.post("@ViewBag.L.SiteUrlClear/User/DeleteChat", {
+			respondentId: respondentId
+		}, function (result) {
+			if (result == 'ok') {
+				$('#divForDialogWithRespondentId_' + respondentId).hide();
+			}
+			else
+				alert(result);
+        });
+	}
+
+    jQuery(document).ready(function ($) {
+        replaceIsoDateTimeWithLocalDateTime($(".date"));
+
+		//"Удаление" всех чатов
+		@{ var respondentIds = Model.Dialogs.Where(d => d.Respondent != null).Select(d => d.Respondent.Id).ToList(); }
+		$(".message__header-clear .clear").on("click", function () {
+			if (!confirm('Вы действительно хотите удалить ВСЕ сообщения без возможности восстановления?'))
+				return;
+
+			var respondentIds = "";
+			$.post("@ViewBag.L.SiteUrlClear/User/DeleteAllChats", {
+				respondentIdsStr: '@(String.Join(",", respondentIds))'
+			}, function (result) {
+				if (result == 'ok') {
+					$(".message__main-item").add(".chatBoxContainer .chatBoxMessage").remove();
+					$('#noMessagesSpan').show();
+				}
+				else
+					alert(result);
+			});
+        });
+
+        $(".message__header-clear .read").on("click", function () {
+            $.ajax({
+                type: "POST",
+                url: "@ViewBag.L.SiteUrlClear/User/MarkAllMessagesAsRead",
+                success: function (data) {
+                    if (!data.toLowerCase().includes("ошибка")) {
+                        $(".message__main-item.have-msg").removeClass("have-msg");
+                        $(".count-of-msg").html("");
+                        $(".chatBoxDialog.unread").removeClass("unread");
+                        alert(data);
+                    }
+                }
+            });
+        });
+
+        $(".messgae__newchat-wrapper .find input").on("keyup", function () {
+            var query = $(this).val().toLowerCase();
+            if (query.length == 0)
+                $(".messgae__newchat-wrapper .messgae__newchat-main-item").show();
+            else {
+                $(".messgae__newchat-wrapper .messgae__newchat-main-item").each(function () {
+                    var companyName = $(this).find(".oo").html().toLowerCase();
+                    var townName = $(this).find(".city").html().toLowerCase();
+                    var companyString = companyName + " " + townName;
+
+                    if (companyString.includes(query)) {
+                        $(this).show();
+                    } else
+                        $(this).hide();
+                });
+            }
+        });
+
+        $(".message__header-find .find input").on("keyup", function () {
+            var query = $(this).val().toLowerCase();
+            if (query.length == 0)
+                $(".message__main-item").show();
+            else {
+                $(".message__main-item").each(function () {
+                    var companyName = $(this).find(".oo").html().toLowerCase();
+                    var townName = $(this).find(".city").html().toLowerCase();
+                    var allMessagesText = $(this).find(".allMessagesTextHf").html().toLowerCase();
+                    var dialogString = companyName + " " + townName + " " + allMessagesText;
+
+                    if (dialogString.includes(query)) {
+                        $(this).show();
+                    } else
+                        $(this).hide();
+                });
+            }
+        });
+    });
+</script>

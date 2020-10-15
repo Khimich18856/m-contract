@@ -1,0 +1,71 @@
+﻿@model MContract.Models.AdminModerateOffersViewModel
+
+@{
+    ViewBag.Title = ViewBag.Heading;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link href="@Url.Content("~/css/Offermin/ModerateOffers.css")?p=202006112" rel="stylesheet" type="text/css" />
+}
+
+@if (Model.Offers.Any())
+{
+    foreach (var offer in Model.Offers)
+    {
+        <div class="singleOfferContainer" id="@offer.Id">
+            <div class="offerInformationContainer">
+                <a href="@offer.Url">@offer.Name</a>
+                <p>Комментарий:</p>
+                <p>@(offer.Comment ?? "Не указано")</p>
+                <p>Адрес доставки:</p>
+                <p>@(offer.DeliveryAddress ?? "Не указано")</p>
+            </div>
+            <div class="offerButtonsContainer">
+                <button class="acceptOffer">Разрешить</button>
+                <button class="declineOffer">Удалить</button>
+            </div>
+            <div class="moderateResultsContainer">
+                <img src="/ico/Checkmark.svg" class="moderateResult offerAccepted" />
+                <img src="/ico/CircledX.svg" class="moderateResult offerDeclined" />
+            </div>
+        </div>
+    }
+}
+else
+{
+    <h3>Нет предложений для модерации</h3>
+}
+
+<script src="~/js/user/viewImage.js?p=202006112" type="text/javascript"></script>
+<script>
+    jQuery(document).ready(function ($) {
+        $(".moderateResultsContainer").add(".moderateResult").hide();
+        prepareImageViewElements();
+        $(".offerPhotosContainer").on("click", ".offerPhoto", function () {
+            showImageView($(this));
+        });
+        $("body").on("click", ".acceptOffer", function () {
+            var offerId = $(this).closest(".singleOfferContainer").attr("id");
+            var offerModerateResultId = @((int)MContract.Models.ModerateResults.Accepted);
+            var moderateResultImage = $(this).closest(".singleOfferContainer").find(".moderateResult.offerAccepted");
+            $.post("@ViewBag.L.SiteUrlClear/Offermin/UpdateOfferModerateResult", {
+                offerId: offerId,
+                moderateResultId: offerModerateResultId
+            }, function () {
+                $(moderateResultImage).show().closest(".moderateResultsContainer").show();
+            });
+        });
+        $("body").on("click", ".declineOffer", function () {
+            var offerId = $(this).closest(".singleOfferContainer").attr("id");
+            var offerModerateResultId = @((int)MContract.Models.ModerateResults.Declined);
+            var moderateResultImage = $(this).closest(".singleOfferContainer").find(".moderateResult.offerDeclined");
+            $.post("@ViewBag.L.SiteUrlClear/Offermin/UpdateOfferModerateResult", {
+                offerId: offerId,
+                moderateResultId: offerModerateResultId
+            }, function () {
+                $(moderateResultImage).show().closest(".moderateResultsContainer").show();
+            });
+        });
+    });
+</script>

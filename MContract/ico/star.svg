@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512px" height="494px" viewBox="0 0 512 494" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>star</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="star" fill="#FFFFFF" fill-rule="nonzero">
+            <path d="M512,188.819 L326.067,176.591 L256,0.571 L185.933,176.592 L0,188.82 L142.658,309.75 L95.856,493.429 L256,392.214 L416.144,493.429 L369.344,309.758 L512,188.819 Z M256,356.724 L143.536,427.804 L176.363,298.973 L75.829,213.888 L206.8,205.285 L256,81.687 L305.2,205.286 L436.324,213.888 L335.635,298.965 L368.464,427.804 L256,356.724 Z" id="Shape"></path>
+        </g>
+    </g>
+</svg>

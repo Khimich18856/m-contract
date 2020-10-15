@@ -1,0 +1,949 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @*@Styles.Render("~/Content/css")*@
+
+    <!-- Slick -->
+    <link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/slick-theme.css?p=2020-10-10-a">
+    <link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/slick.css?p=2020-10-10-a">
+
+    <link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/bootstrap.min.css">
+    <link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/Offer.css?p=2020-10-10-a" type="text/css" />
+	<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/layout.css?p=2020-10-10-a">
+    <!--<link rel="stylesheet" href="/css/layoutOverride.css">-->
+    <link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/Shared/_ChatBox.css?p=2020-10-10-a">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    @RenderSection("Styles", false)
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    @using System.Linq
+    <script src="@ViewBag.L.SiteUrlClear/js/slick.min.js"></script>
+    <script type="text/javascript">
+	    //isMainChatPage = маркер нахождения на странице User/Messages
+	    //если он не определен, значит мы не на странице User/Messages
+	    if (typeof isMainChatPage === "undefined")
+            var isMainChatPage = false;
+
+        var getNewMessagesTimeoutId = 0;
+
+	    var placeholderLogoUrl =  "@MContract.AppCode.PhotoHelper.NoLogoImageUrl";
+
+        var newMessageAudio = new Audio("/Audio/NewMessageAudio.mp3");
+
+        var chatBoxIsSilent = @((ViewBag.L.PersonalAreaUser?.ChatBoxIsSilent == true).ToString().ToLower());
+
+        @*var lastMessageId = @(ViewBag.L.PersonalAreaUser != null && ViewBag.L.PersonalAreaUser.ChatBoxLastMessageId != null ? ViewBag.L.PersonalAreaUser.ChatBoxLastMessageId : 0);*@
+        var lastMessageId = @(ViewBag.L.PersonalAreaUser != null ? ViewBag.L.PersonalAreaUser.ChatBoxLastMessageId : 0);
+
+        function playNewMessageAudio() {
+            if (!chatBoxIsSilent)
+                newMessageAudio.play();
+        }
+
+	    function updateUnreadMessagesCount() {
+		    $.post(`@ViewBag.L.SiteUrlClear/User/GetUnreadMessagesCount`, function (unreadMessagesCount) {
+			    var count = Number(unreadMessagesCount);
+			    if (count == 0) {
+                    $(".unreadMessagesCount").hide();
+                    $(".nav__lk .user-img").removeClass("have__notice");
+                } else {
+                    $(".unreadMessagesCount").html(count).show();
+                    $(".nav__lk .user-img").addClass("have__notice");
+                }
+		    });
+	    }
+
+	    function showMessageInChatBox(messageText, messageDirection, messageId, messageFiles) {
+		    if (messageId == 0)
+			    messageId = "";
+		    var messageFilesString = "";
+            if (typeof messageFiles !== "undefined") {
+                messageFilesString += `<div class="messageFilesContainer">`;
+                $(messageFiles).each(function () {
+                    var file = this;
+                    var fileName = file.NameWithExtension;
+                    var fileUrl = file.Url;
+                    messageFilesString += `<a class="fileContainer" href="${fileUrl}" target="_blank">${fileName}</a>`
+                });
+                messageFilesString += `</div>`;
+            }
+            $(".chatBoxContainer .chatBoxMessagesContainer").append(
+                `<div class=\"chatBoxMessage ${messageDirection}\" data-id=\"${messageId}\">` +
+                "	<div class=\"chatBoxMessageText\">" +
+			    `			<p>${messageText}</p>` +
+			    "	</div>" +
+			    messageFilesString +
+                "</div>");
+            $(".chatBoxMessagesContainer").scrollTop($(".chatBoxMessagesContainer").prop("scrollHeight"));
+	    }
+
+        function getNewMessages() {
+		    var currentRespondentId = $(".chatBoxContainer .chatBoxHeader").attr("data-respondent-id");
+		    if (!currentRespondentId)
+                currentRespondentId = 0;
+
+            if (!lastMessageId)
+                lastMessageId = 0;
+
+		    var p = $.now().toString().replace(" ", "");
+            $.post(`@ViewBag.L.SiteUrlClear/User/GetNewMessagesForChatBox?p=${p}`, {
+                lastMessageId: lastMessageId,
+			    respondentId: currentRespondentId
+		    })
+		    .done(function (data) {
+                if (data == "") {
+                    return false;
+                }
+                var messages = JSON.parse(data);
+                if (messages.length == 0) {
+                    return;
+                }
+
+                var currentDialogMessages = [];
+			    if (isMainChatPage) {
+				    var currentMainPageRespondentId = $(".messageAppContainer .respondentName").attr("data-respondent-id");
+                }
+
+                var lastMessage = messages[messages.length - 1];
+                lastMessageId = lastMessage.Id;
+
+                var needToPlayNewMessageAudio = false;
+                $(messages).each(function () {
+                    if (this.SenderId != @(ViewBag.L.PersonalAreaUser?.Id))
+                        needToPlayNewMessageAudio = true;
+				    if (this.SenderId == currentRespondentId || this.RecipientId == currentRespondentId) {
+					    currentDialogMessages.push(this);
+				    } else {
+                        var dialog = $(".chatBoxDialogsContainer .chatBoxDialog[data-dialog-respondent-id=" + this.SenderId + "]");
+					    if ($(dialog).length > 0) {
+						    $(dialog).addClass("unread");
+					    } else {
+						    var respondent = this.Sender;
+						    if (respondent) {
+							    var respondentCompanyName = respondent.CompanyNameWithTypeOfOwnership;
+                                var respondentLogoUrl;
+                                if (respondent.LogoGroup && respondent.LogoGroup.length > 0) {
+                                    respondentLogoUrl = respondent.LogoGroup[0].Url;
+                                } else {
+                                    respondentLogoUrl = placeholderLogoUrl;
+                                }
+							    var respondentId = respondent.Id;
+                                $(".chatBoxDialogsContainer .chatBoxDialogsFlexContainer").append(
+                                    `<a href='#' title='${respondentCompanyName}'>` +
+                                    `	<div class='chatBoxDialog unread'` +
+                                    `		 style='background-image: url("${respondentLogoUrl}")'` +
+                                    `		 data-dialog-respondent-id=${respondentId}>` +
+                                    `		<div class='unreadMessagesFlag'></div>` +
+                                    `		<div class='removeDialog'>x</div>` +
+                                    `	</div>` +
+                                    `</a>`);
+                            }
+                        }
+				    }
+                    if (isMainChatPage && this.SenderId == currentMainPageRespondentId) {
+					    showMessage(this);
+				    }
+			    });
+                if (currentDialogMessages) {
+                    var personalAreaUserLogoUrl = "";
+			        @*if (@((ViewBag.L.PersonalAreaUser != null && ViewBag.L.PersonalAreaUser.LogoGroup != null && ((List<MContract.Models.Photo>)ViewBag.L.PersonalAreaUser.LogoGroup).Count != 0).ToString().ToLower())) {
+				        personalAreaUserLogoUrl = "@(ViewBag.L.PersonalAreaUser.LogoGroup[0].Url)";
+                    }*@
+				    @*if (dialog.Respondent.LogoGroup[0]) {
+                        var respondentLogoUrl = dialog.Respondent.LogoGroup[0].Url;
+                    }*@
+					var respondentLogoUrl = "@MContract.AppCode.PhotoHelper.NoLogoImageUrl";
+                    $(currentDialogMessages).each(function () {
+					    var messageDirection =
+						    this.SenderId == currentRespondentId
+							    ? "incoming"
+							    : "outgoing";
+
+					    var messageId = this.Id;
+
+					    @*var senderLogoUrl =
+						    messageDirection == "outgoing"
+							    ? personalAreaUserLogoUrl
+							    : respondentLogoUrl*@
+
+					    showMessageInChatBox(this.Text, messageDirection, messageId);
+				    });
+                    $(".chatBoxMessagesContainer").scrollTop($(".chatBoxMessagesContainer").prop("scrollHeight"));
+                }
+                if (needToPlayNewMessageAudio)
+                    playNewMessageAudio();
+                updateUnreadMessagesCount();
+		    });
+
+            getNewMessagesTimeoutId = setTimeout(getNewMessages, @MContract.AppCode.C.ChatBoxSecondsBetweenMessagesRefresh*1000);
+	    }
+
+        function openDialog(respondentId) {
+            var respondentChatBoxDialog = $(".chatBoxDialogsContainer .chatBoxDialog[data-dialog-respondent-id=" + respondentId + "]");
+            $.post("@ViewBag.L.SiteUrlClear/User/GetDialogForChatBox", {
+			    respondentId: respondentId
+            }).done(function (data) {
+			    if (data == "") {
+				    return false;
+                }
+			    var dialog = JSON.parse(data);
+			    var respondent = dialog.Respondent;
+			    var respondentId = respondent.Id;
+                var respondentCompanyName = respondent.CompanyNameWithTypeOfOwnership;
+			    var respondentLogoUrl;
+                if (respondent.LogoGroup && respondent.LogoGroup.length > 0) {
+                    respondentLogoUrl = respondent.LogoGroup[0].Url;
+			    } else {
+                    respondentLogoUrl = placeholderLogoUrl;
+                }
+                $(".chatBoxContainer .chatBoxHeader").attr("data-respondent-id", respondent.Id);
+			    $(".chatBoxContainer .chatBoxHeading").html(respondentCompanyName);
+                if (respondentCompanyName != respondent.CompanyNameWithTypeOfOwnership) {
+                    $(".chatBoxContainer .chatBoxInputContainer").hide();
+                } else {
+                    $(".chatBoxContainer .chatBoxInputContainer").show();
+                }
+			    $(".chatBoxContainer .chatBoxMessagesContainer").html("");
+			    var personalAreaUserId = "@(ViewBag.L.PersonalAreaUser?.Id)";
+                @*var personalAreaUserLogoUrl;
+			    if (@((ViewBag.L.PersonalAreaUser != null && ViewBag.L.PersonalAreaUser.LogoGroup != null && ((List<MContract.Models.Photo>)ViewBag.L.PersonalAreaUser.LogoGroup).Count != 0).ToString().ToLower())) {
+				    personalAreaUserLogoUrl = "@(ViewBag.L.PersonalAreaUser.LogoGroup[0].Url)";
+			    } else {
+				    personalAreaUserLogoUrl = placeholderLogoUrl;
+                }*@
+                $(dialog.Messages).each(function () {
+				    var messageDirection =
+					    this.SenderId == personalAreaUserId
+						    ? "outgoing"
+						    : "incoming";
+
+				    var messageId = this.Id;
+
+				    @*var senderLogoUrl =
+					    messageDirection == "outgoing"
+						    ? personalAreaUserLogoUrl
+						    : respondentLogoUrl*@
+
+                    showMessageInChatBox(this.Text, messageDirection, messageId);
+                });
+                $(".chatBoxUsersContainer").hide();
+                $(".chatBoxContainer").show();
+			    if ($(respondentChatBoxDialog).length > 0) {
+				    respondentChatBoxDialog.removeClass("unread");
+			    } else {
+				    $(".chatBoxDialogsContainer .chatBoxDialogsFlexContainer").append(
+					    `<a href='#' title='${respondentCompanyName}'>` +
+                        `	<div class='chatBoxDialog'` +
+                        `		 style='background-image: url("${respondentLogoUrl}")'` +
+                        `		 data-dialog-respondent-id=${respondentId}>` +
+                        `		<div class='unreadMessagesFlag'></div>` +
+                        `		<div class='removeDialog'>x</div>` +
+                        `	</div>` +
+                        `</a>`);
+                }
+                $(".chatBoxMessagesContainer").scrollTop($(".chatBoxMessagesContainer").prop("scrollHeight"));
+                updateUnreadMessagesCount();
+            });
+	    }
+	    function removeDialogFromChatBox(respondentId) {
+            $(".chatBoxDialogsContainer .chatBoxDialog[data-dialog-respondent-id=" + respondentId + "]").remove();
+        }
+        jQuery(document).ready(function ($) {
+            $(".category__wrapper .category__content-item.trigger-click").add(".region__wrapper .region__content-list-li.trigger-click").trigger("click");
+		    $("body").on("touchstart", function () {
+			    $(".personalAreaLink").attr("href", "");
+			    $(".personalAreaLink").on("touchstart", function () {
+				    $(".personalAreaMenu").css("z-index", $(".cityContainer__inner").css("z-index") + 1);
+			    });
+			    $(".cityContainer").on("touchstart", function () {
+				    $(".cityContainer__inner").css("z-index", $(".personalAreaMenu").css("z-index") + 1);
+			    });
+		    });
+            $(".chatBoxContainer .chatBoxSendMessage").on("click", function () {
+			    var messageText = $(this).closest(".chatBoxContainer").find(".chatBoxInput").val();
+			    var messageSenderId = @(ViewBag.L.PersonalAreaUser?.Id);
+			    var messageRecipientId = $(this).closest(".chatBoxContainer").find(".chatBoxHeader").attr("data-respondent-id");
+			    if (messageText) {
+				    $.post("@ViewBag.L.SiteUrlClear/User/AddMessage", {
+                        SenderId: messageSenderId,
+					    RecipientId: messageRecipientId,
+					    Text: messageText
+				    }).done(function (data) {
+                        $(".chatBoxContainer .chatBoxInput").val("");
+                        @*
+                        if (isMainChatPage) {
+                            var currentMainPageRespondentId = $(".messageAppContainer .respondentName").attr("data-respondent-id");
+						    if (messageRecipientId == currentMainPageRespondentId) {
+							    var messageSender = {
+								    Id: messageSenderId,
+								    CompanyNameWithTypeOfOwnership: "Я",
+								    LogoGroup: @Html.Raw(Json.Encode((ViewBag.L.PersonalAreaUser?.LogoGroup)))
+							    };
+							    var message = {
+								    SenderId: messageSenderId,
+								    Sender: messageSender,
+								    Text: messageText,
+								    Date: new Date($.now())
+							    };
+                                showMessage(message);
+                            }
+                        }
+                        showMessageInChatBox(messageText, "outgoing", 0);
+                        *@
+                        clearTimeout(getNewMessagesTimeoutId);
+                        getNewMessages();
+                        // clearTimeout
+                        // останавливает рекурсивный вызов функции, выполняющийся с задержкой, и запускает его заново,
+                        // чтобы получить новые сообщения, отправленные только что, без задержки
+				    });
+			    }
+		    });
+            $(".chatBoxDialogsContainer").on("click", ".chatBoxDialog", function (e) {
+			    e.preventDefault();
+			    var respondentId = $(this).closest(".chatBoxDialog").attr("data-dialog-respondent-id");
+			    if ($(e.target).closest(".removeDialog").length == 0) {
+				    openDialog(respondentId);
+                } else {
+                    var currentRespondentId = $(".chatBoxContainer .chatBoxHeader").attr("data-respondent-id");
+				    if (respondentId == currentRespondentId) {
+                        $(".chatBoxContainer .chatBoxDialogClose").trigger("click");
+                        $(".chatBoxContainer .chatBoxHeader").attr("data-respondent-id", "");
+                    }
+				    $.ajax({
+					    type: "POST",
+					    url: "@ViewBag.L.SiteUrlClear/User/RemoveDialogFromChatBox",
+					    data: { respondentId: respondentId }
+				    }).always(function (data) {
+					    //if (data.toLowerCase() == "true")
+						    removeDialogFromChatBox(respondentId);
+				    });
+			    }
+            });
+            $(".chatBoxDialogsContainer").on("mouseenter", ".chatBoxDialog", function () {
+                $(this).find(".removeDialog").show();
+            });
+            $(".chatBoxDialogsContainer").on("mouseleave", ".chatBoxDialog", function () {
+                $(this).find(".removeDialog").hide();
+            });
+			$(".chatBoxDialogsToggle").on("click", function () {
+                if ($(".chatBoxUsersContainer").is(":visible")) {
+                    $(".chatBoxUsersContainer").hide();
+                } else {
+                    $(".chatBoxContainer").hide();
+                    $(".chatBoxUsersContainer").show();
+                }
+		    });
+		    $(".chatBoxUsersContainer").on("keyup", ".chatBoxUsersInputContainer input", function () {
+			    var search = $(this).val().toLowerCase();
+                if (search.length > 0) {
+				    $(".chatBoxUsersContainer .chatBoxUserContainer").each(function () {
+					    if ($(this).find(".chatBoxUserName").html().toLowerCase().includes(search)) {
+						    $(this).show();
+					    } else {
+						    $(this).hide();
+                        }
+                    });
+			    } else {
+				    $(".chatBoxUsersContainer .chatBoxUserContainer").css("display", "");
+                }
+		    });
+            $(".chatBoxUsersContainer").on("click", ".chatBoxUserContainer", function () {
+			    var respondentId = $(this).attr("data-user-id");
+                openDialog(respondentId);
+                $(".chatBoxUsersContainer .chatBoxUsersInputContainer input").val("").trigger("keyup");
+		    });
+            $(".chatBoxContainer .chatBoxDialogOpenInSeparatePage").on("click", function () {
+			    var respondentId = $(".chatBoxContainer .chatBoxHeader").attr("data-respondent-id");
+                var thisPageUrl = encodeURIComponent(location.href);
+                location.href = `@ViewBag.L.SiteUrlClear/User/Messages?respondentId=${respondentId}&lastPageUrl=${thisPageUrl}`;
+		    });
+		    $(".chatBoxContainer .chatBoxDialogClose").on("click", function () {
+			    var respondentId = $(".chatBoxContainer .chatBoxHeader").attr("data-respondent-id");
+			    $.ajax({
+				    type: "POST",
+				    url: "@ViewBag.L.SiteUrlClear/User/CloseDialogInChatBox",
+				    data: { respondentId: respondentId }
+                }).always(function (data) {
+                    $(".chatBoxContainer").hide();
+                    $(".chatBoxContainer .chatBoxHeader").attr("data-respondent-id", "");
+			    });
+            })
+		    $(".chatBoxMessagesContainer").scrollTop($(".chatBoxMessagesContainer").prop("scrollHeight"));
+
+            $(".chatBoxUploadFiles").on("click", function () {
+                $("#chatBoxFileSelect").trigger("click");
+            });
+
+            $("#chatBoxFileSelect").on("change", function () {
+                //var input = document.getElementById("fileSelect");
+                var input = $(this)[0];
+                var files = input.files;
+
+                if (input.files.length == 0)
+                    return;
+
+                if (window.FormData !== undefined) {
+                    var data = new FormData();
+                    for (var i = 0; i < files.length; i++) {
+                        data.append("file" + i, files[i]);
+                    }
+                    var respondentId = $(".chatBoxContainer .chatBoxHeader").attr("data-respondent-id");
+                    data.append("respondentId", respondentId);
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("UploadFiles", "Files")",
+                        contentType: false,
+                        processData: false,
+                        data: data,
+                        success: function (result) {
+                            var files = [];
+                            result = result.slice(0, -1);
+                            splitResult = result.split('|');
+                            $(splitResult).each(function () {
+                                var splitPhotoInformation = this.split(',');
+                                if (splitPhotoInformation[0] == "ok") {
+                                    var fileName = splitPhotoInformation[1];
+                                    var fileUrl = splitPhotoInformation[2];
+                                    files.push({
+                                        NameWithExtension: fileName,
+                                        Url: fileUrl
+                                    });
+                                }
+						    });
+
+                            var messageText = "Прикрепленные файлы:";
+                            showMessageInChatBox(messageText, "outgoing", 0, files);
+
+                            if (typeof isMainChatPage === "undefined") {
+                                var currentMainChatPageRespondentId = $(".messageAppContainer .respondentName").attr("data-respondent-id");
+                                var messageRecipientId = $(".chatBoxContainer .chatBoxHeader").attr("data-respondent-id");
+                                if (messageRecipientId == currentMainChatPageRespondentId) {
+								    var messageSender = {
+									    Id: @(ViewBag.L.PersonalAreaUser?.Id),
+									    CompanyNameWithTypeOfOwnership: "Я",
+									    LogoGroup: @Html.Raw(Json.Encode((ViewBag.L.PersonalAreaUser?.LogoGroup)))
+								    };
+								    var message = {
+									    SenderId: messageSender.Id,
+									    Sender: messageSender,
+									    Text: messageText,
+									    Files: files,
+									    Date: new Date($.now())
+								    };
+								    showMessage(message);
+                                }
+                            }
+                        },
+                        error: function (xhr, status, p3) {
+                            alert("Error! " + xhr.responseText);
+                        }
+                    });
+                } else {
+                    alert("Браузер не поддерживает загрузку файлов HTML5! Установите современный браузер.");
+                }
+                $(this).val(null);
+            });
+
+            $(".chatBoxContainer .chatBoxToggleSilent").on("click", function () {
+                $.ajax({
+                    type: "POST",
+                    url: "@ViewBag.L.SiteUrlClear/User/ToggleChatBoxIsSilent",
+                    data: { chatBoxIsSilent: !chatBoxIsSilent }
+                });
+                if (chatBoxIsSilent) {
+                    $(this).removeClass("isSilent").html("🔊");
+                    chatBoxIsSilent = false;
+                } else {
+                    $(this).addClass("isSilent").html("🔇");
+                    chatBoxIsSilent = true;
+                }
+            });
+
+            $(".header__wrapper .nav__item").on("click", function () {
+                $(".header__wrapper .nav__item").removeClass("nav__selected");
+                $(this).addClass("nav__selected")
+            });
+
+            @*$(".header__search-button").on("click", function () {
+                var url = "@ViewBag.L.SiteUrlClear/Ads/Index?adStatusId=@((int)MContract.Models.Enums.AdStatuses.Published)";
+                $(".category__wrapper .category__content-item.selected").each(function () {
+                    url += "&categoriesId=" + $(this).attr("data-id");
+                });
+                $(".region__wrapper .region__content-list-li.selected-region").each(function () {
+                    url += "&citiesId=" + $(this).attr("data-town-id");
+                });
+                var searchInput = $(".header__search-wrapper .input__search");
+                if (searchInput.val().length != 0) {
+                    url += "&searchQuery=" + searchInput.val().toLowerCase().replace(/[^а-яa-z0-9]/g, ",").replace(/,+/g, ",");
+                }
+				if ($(".header__wrapper .nav__item[id]").length) {
+					var selectedNavId = $(".header__wrapper .nav__item.nav__selected").attr("id");
+					if (selectedNavId == 'is-buy')
+						url += "&isBuy=true";
+					else if (selectedNavId == 'is-sales')
+						url += "&isBuy=false";
+                }
+                location.href = url;
+            });*@
+
+            getNewMessages();
+	    });
+    </script>
+</head>
+<body class="log-in_window">
+	<input id="siteUrl" type="hidden" value="@ViewBag.L.SiteUrlClear" />
+	@if (!ViewBag.L.HideHead)
+	{
+		<!-- Header -->
+		<header>
+			<div class="container container__header">
+				<div class="row header__wrapper">
+					<div class="col-sm-12 col-md-2 header__logo-wrapper">
+						<!-- LOGO -->
+						<a class="logo" href="@ViewBag.L.SiteUrlClear">
+							<img src="/ico/logo.png" alt="">
+						</a>
+						<!-- // LOGO -->
+					</div>
+					<div class="w-100 only__mobile"></div>
+					<div class="col-sm-12 col-md-10 header__nav-wrapper">
+						<div class="row">
+							<div class="col-lg col-md-8 col-sm-12">
+								<!-- NAVIGATION -->
+								<nav>
+									<ul class="nav__list">
+										@*<li class="nav__item nav__first"><a href="@ViewBag.L.SiteUrlClear/Ads/Index?isBuy=false">Продажи</a></li>
+											<li class="nav__item nav__selected"><a href="@ViewBag.L.SiteUrlClear/Ads/Index?isBuy=true">Закупки</a></li>
+											<li class="nav__item nav__last"><a href="@ViewBag.L.SiteUrlClear/Ads/Index">Все объявления</a></li>*@
+										<li class="nav__item nav__first @(ViewBag.L.SearchbarIsBuy == false ? "nav__selected" : "")" id="is-sales"><a href="#">Продажи</a></li>
+										<li class="nav__item @(ViewBag.L.SearchbarIsBuy == true ? "nav__selected" : "")" id="is-buy"><a href="#">Закупки</a></li>
+										<li class="nav__item nav__last @(ViewBag.L.SearchbarIsBuy == null ? "nav__selected" : "")" id="all-ads"><a href="#">Все объявления</a></li>
+									</ul>
+								</nav>
+								<!-- // NAVIGATION -->
+							</div>
+							<div class="col-lg-6 col-md-4 col-sm-12 only-desktop">
+								<div class="nav__text-block">
+									<span class="nav__next nav__ad"><a href="@(ViewBag.L.SiteUrlClear + (ViewBag.L.PersonalAreaUser?.Id > 0 ? "/Ads/NewAdStep0" : "/Login"))">Разместить объявление</a></span>
+									<span class="nav__next nav__lk@(ViewBag.L.PersonalAreaUser?.Id > 0 ? " registered" : "")">
+										<div class="user-img @(ViewBag.L.PersonalAreaUser?.UnreadMessagesCount > 0 ? "have__notice" : "")">
+											<img src="@(ViewBag.L.PersonalAreaUser?.SmallPhotoUrl)" alt />
+										</div>
+										<a href="@(ViewBag.L.PersonalAreaUser?.Id > 0 ? "#" : ViewBag.L.SiteUrlClear + "/Login")">
+											Личный кабинет
+										</a>
+									</span>
+								</div>
+							</div>
+						</div>
+						<!-- КАТЕГОРИИ ПОИСК РЕГИОН-->
+						<div class="row header__search-wrapper">
+							<div class="col">
+								<div class="inputs__wrapper">
+									<div class="button__lk"><img src="/ico/lkWhite.png" alt="sch"></div>
+									<a href="#" class="inp btn btn__category">
+										<div class="count-of-cats">1</div>
+										<span>категории</span>
+										<span class="ico"></span>
+									</a>
+									<div class="inp inp__search">
+										<input class="input__search" type="text" placeholder="Поиск товара ...">
+										<div class="input__button header__search-button"><img src="/ico/search.png" alt="sch"></div>
+									</div>
+									<a href="#" class="inp btn btn__region">
+										<div class="count-of-regs">1</div>
+										<span>регион</span>
+										<span class="ico"></span>
+									</a>
+								</div>
+							</div>
+						</div>
+						<!-- // КАТЕГОРИИ ПОИСК РЕГИОН-->
+					</div>
+				</div>
+			</div>
+			<input type="hidden" id="selectedTownIds">
+            <input type="hidden" id="selectedCategoryIds">
+            <input type="hidden" id="selectedRegions">
+		</header>
+		<!-- // Header -->
+
+		<!-- Личный кабинет (всплывающее меню в шапке сайта при наведении на ссылку "Личный кабинет") -->
+		<section class="lk__wrapper closed-lk">
+			<div class="close__btn-lk"></div>
+			<div class="lk__main">
+				<ul class="lk__main-ul">
+					<li class="lk__main-li">
+						<div class="ico">
+							<img src="/ico/user.svg" alt="">
+						</div>
+						<a href="@ViewBag.L.SiteUrlClear/User/MyProfile">Данные профиля</a>
+					</li>
+					<li class="lk__main-li have-add">
+						<div class="ico">
+							<img src="/ico/list.svg" alt="">
+						</div>
+						<a href="@ViewBag.L.SiteUrlClear/User/MyAds">Мои объявления</a>
+						<span class="add">(@(ViewBag.L.PersonalAreaUser?.AdsCount))</span>
+					</li>
+					<li class="lk__main-li">
+						<div class="ico">
+							<img src="/ico/calendar.svg" alt="">
+						</div>
+						<a href="@ViewBag.L.SiteUrlClear/User/DealsHistory">История сделок</a>
+					</li>
+					<li class="lk__main-li">
+						<div class="ico">
+							<img src="/ico/star.svg" alt="">
+						</div>
+						<a href="@ViewBag.L.SiteUrlClear/User/Favorites">Избранное</a>
+					</li>
+					<li class="lk__main-li have-message">
+						<div class="ico">
+							<img src="/ico/email.svg" alt="">
+						</div>
+						<a href="@ViewBag.L.SiteUrlClear/User/Dialogs">Сообщения</a>
+						<span class="count-of-message" style="@(ViewBag.L.PersonalAreaUser?.UnreadMessagesCount == 0 ? "display: none" : "")">
+							@(ViewBag.L.PersonalAreaUser?.UnreadMessagesCount)
+						</span>
+					</li>
+					<li class="lk__main-li">
+						<div class="ico">
+							<img src="/ico/edit.svg" alt="">
+						</div>
+						<a href="@ViewBag.L.SiteUrlClear/User/Drafts">Черновики</a>
+					</li>
+					<li class="lk__main-li">
+						<div class="ico">
+							<img src="/ico/comment.svg" alt="">
+						</div>
+						<a href="@ViewBag.L.SiteUrlClear/User/MyOffers">Мои отклики</a>
+					</li>
+					<li class="lk__main-li">
+						<div class="ico">
+							<img src="/ico/contact.svg" alt="">
+						</div>
+						<a href="@ViewBag.L.SiteUrlClear/User/RegularClients">Постоянные клиенты</a>
+					</li>
+					@if (ViewBag.L.PersonalAreaUser?.IsAdmin)
+					{
+						<li class="lk__main-li">
+							<div class="ico">
+								<img src="/ico/contact.svg" alt="">
+							</div>
+							<a href="@ViewBag.L.SiteUrlClear/admin">Админка</a>
+						</li>
+					}
+				</ul>
+				<div class="lk__main-line">
+
+				</div>
+				<div class="lk__main-exit">
+					<div class="ico">
+						<img src="/ico/logout.svg" alt="">
+					</div>
+					<a clss="lk__main-exit-link" href="@ViewBag.L.SiteUrlClear/User/Logout">Выход</a>
+				</div>
+			</div>
+		</section>
+		<!-- Личный кабинет -->
+
+		<!-- Категории -->
+		<section class="category__wrapper closed">
+			<div class="category__header">
+				<div class="close__btn"></div>
+				<div class="category-title">
+					Выбранные категории
+				</div>
+				<div class="category-empty">
+					Пока здесь пусто <br> Выберите нужные категории для поиска
+				</div>
+				<div class="category-items dnthave-select-category">
+					<div class="clear-category">
+						Очистить
+					</div>
+				</div>
+			</div>
+			<div class="category__content">
+				<ul class="category__content-list">
+					@{
+						var allCategories = (List<MContract.Models.ProductCategory>)ViewBag.L.ProductCategories;
+						var allLevel1Categories = allCategories.Where(c => c.Level == 1).ToList();
+						var allLevel2Categories = allCategories.Where(c => c.Level == 2).ToList();
+						var allLevel3Categories = allCategories.Where(c => c.Level == 3).ToList();
+					}
+					@foreach (var categoryLevel1 in allLevel1Categories)
+					{
+						
+						<li class="category__content-item"
+							data-category-id="@categoryLevel1.Id">
+							<!-- 1 level -->
+							<div class="first-level">
+								<div class="ico no">+</div>
+								<div class="ico yes">-</div>
+								<span data-category-id="@categoryLevel1.Id">@categoryLevel1.Name</span>
+							</div>
+							<ul class="category__content-item-ul off">
+								@foreach (var categoryLevel2 in allLevel2Categories.Where(c => c.ParentId == categoryLevel1.Id))
+								{
+									<li class="category__content-item-ul-li"
+										data-category-id="@categoryLevel2.Id">
+										<!-- 2 level -->
+										<div class="second-level">
+											<div class="ico no">+</div>
+											<div class="ico yes">-</div>
+											<span data-category-id="@categoryLevel2.Id">@categoryLevel2.Name</span>
+										</div> 
+										<ul class="category__content-item-ul-li-ul off">
+											@foreach (var categoryLevel3 in allLevel3Categories.Where(c => c.ParentId == categoryLevel2.Id))
+											{
+												<li class="category__content-item-ul-li-ul-li" data-category-id="@categoryLevel3.Id">
+													<!-- 3 level -->
+													<span class="third-level" data-category-id="@categoryLevel3.Id">@categoryLevel3.Name</span>
+												</li>
+											}
+										</ul>
+									</li>
+								}
+							</ul>
+						</li>
+					}
+				</ul>
+			</div>
+			<div class="category__info">
+				<div class="category__info-ico">
+
+				</div>
+				<div class="category__info-text">
+					Если в списке нет подходящего материала,
+					выберите наиболее близкую категорию или
+					вбейте наименование в ручную
+				</div>
+			</div>
+		</section>
+		<!-- Категории -->
+
+		<!-- Регион -->
+		<section class="region__wrapper closed">
+			<div class="region__header">
+				<div class="close__btn-reg"></div>
+				<div class="region-title">
+					Выбранные регионы
+				</div>
+				<div class="region-empty">
+					Пока здесь пусто <br> Выберите нужные регионы для поиска
+				</div>
+				<div class="region-items dnthave-select-region">
+					<div class="clear-regions">
+						Очистить
+					</div>
+				</div>
+			</div>
+			<div class="region__content">
+				<div class="region__content-rus">
+					<div class="region__content-category-item">Россия</div>
+				</div>
+				<div class="region__content-list-wrapper">
+					@{
+						var towns = ((List<MContract.Models.Town>)ViewBag.L.Towns).OrderBy(t => t.RegionName).ToList();
+						var regions = ((List<MContract.Models.Region>)ViewBag.L.Regions);
+						var regionFirstLetters = regions.Select(r => r.Name[0]).Distinct().OrderBy(r => r).ToList();
+					}
+					@foreach (var letter in regionFirstLetters) // группирование по первым буквам области
+					{
+						var regionsForLetter = regions.Where(r => r.Name[0] == letter).ToList();
+						<div class="region__content-list-title">
+							@letter
+						</div>
+						<div class="region__content-list-ul">
+							@foreach (var region in regionsForLetter)
+							{
+								var townsForRegion = towns.Where(t => t.RegionName == region.Name).ToList();
+								<li class="region__content-list-li">
+									<span class="region-first-level" data-region-id="@region.Id">@region.Name</span>
+									<ul class="region__content-list-li-ul off">
+										@foreach (var town in townsForRegion)
+										{
+											<li class="region__content-list-li-ul-li" data-town-id="@town.Id">@town.Name</li>
+										}
+										<li class="region__content-list-li-ul-li select-all">Выбрать все</li>
+									</ul>
+								</li>
+							}
+						</div>
+					}
+				</div>
+				<div class="region__content-another">
+					<div class="region__content-category-item">Другая страна</div>
+				</div>
+			</div>
+		</section>
+		<!-- // Регион -->
+
+		<script src="/js/common.js?p=2020-10-10-a"></script><!--common.js отвечает за выбор категорий и регионов, поэтому там где не показывается шапка, он не нужен, поэтому он подключается здесь-->
+	}
+
+	@{ var bodyCssClass = ViewBag.L.HideHead ? "" : "body-content"; }
+
+	<div class="@bodyCssClass">
+		<div class="pageContentContainer">
+			@RenderBody()
+		</div>
+		@if (ViewBag.L.PersonalAreaUser != null && ViewBag.L.PersonalAreaUser.Id != 0)
+		{
+			<div class="chatBoxContainer" style="@(ViewBag.L.PersonalAreaUser?.CurrentRespondentId == 0 ? "display: none" : "")">
+				<div class="chatBoxHeader"
+					 data-respondent-id="@(ViewBag.L.PersonalAreaUser?.OpenDialog?.Respondent != null ? ViewBag.L.PersonalAreaUser.OpenDialog.Respondent.Id : 0)">
+					<span class="chatBoxHeading">
+						@(ViewBag.L.PersonalAreaUser?.OpenDialog?.Respondent?.CompanyNameWithTypeOfOwnership)
+					</span>
+					@if (ViewBag.L.PersonalAreaUser?.ChatBoxIsSilent == true)
+					{
+						<button class="chatBoxToggleSilent isSilent">🔇</button>
+					}
+					else
+					{
+						<button class="chatBoxToggleSilent">🔊</button>
+					}
+					<button class="chatBoxDialogOpenInSeparatePage">o</button>
+					<button class="chatBoxDialogClose">x</button>
+				</div>
+				<div class="chatBoxMessagesBody">
+					<div class="chatBoxMessagesContainer">
+						@{
+							var messages = (List<MContract.Models.Message>)ViewBag.L.PersonalAreaUser?.OpenDialog?.Messages;
+						}
+						@if (messages != null && messages.Any())
+						{
+							foreach (var message in messages)
+							{
+								<div class="chatBoxMessage @(message.SenderId == ViewBag.L.PersonalAreaUser?.Id ? "outgoing" : "incoming")" data-id="@message.Id">
+									<div class="chatBoxMessageText">
+										<p>@message.Text</p>
+									</div>
+									@if (message.Files != null && message.Files.Any())
+									{
+										<div class="messageFilesContainer">
+											@foreach (var file in message.Files)
+											{
+												<a class="fileContainer" href="@file.Url" target="_blank">@file.NameWithExtension</a>
+											}
+										</div>
+									}
+								</div>
+							}
+						}
+					</div>
+					<div class="chatBoxInputContainer">
+						<input type="file" name="chatBoxFileSelect" id="chatBoxFileSelect" multiple />
+						<button class="chatBoxUploadFiles">📎</button>
+						<textarea class="chatBoxInput"></textarea>
+						<button class="chatBoxSendMessage">→</button>
+					</div>
+				</div>
+				<div class="chatBoxDialogsBody" style="display: none">
+
+				</div>
+			</div>
+			<div class="chatBoxUsersContainer">
+				<div class="chatBoxUsersList">
+					@{
+						var regularClients = (List<MContract.Models.User>)ViewBag.L.PersonalAreaUser?.RegularClients;
+					}
+					@if (regularClients != null && regularClients.Any())
+					{
+						foreach (var user in regularClients)
+						{
+							<div class="chatBoxUserContainer" data-user-id="@user.Id">
+								<div class="chatBoxUserLogo"></div>
+								<span class="chatBoxUserName">@user.CompanyNameWithTypeOfOwnership</span>, @user.TownName
+							</div>
+						}
+					}
+					@{
+						var allUsers = (List<MContract.Models.User>)ViewBag.L.Users;
+					}
+					@if (allUsers != null && allUsers.Any())
+					{
+						foreach (var user in allUsers)
+						{
+							<div class="chatBoxUserContainer nonRegularClient" data-user-id="@user.Id">
+								<div class="chatBoxUserLogo"></div>
+								<span class="chatBoxUserName">@user.CompanyNameWithTypeOfOwnership</span>, @user.TownName
+							</div>
+						}
+					}
+				</div>
+				<div class="chatBoxUsersInputContainer">
+					<input />
+				</div>
+			</div>
+			<div class="chatBoxDialogsContainer">
+				<div class="chatBoxDialogsFlexContainer">
+					@{
+						var dialogs = (List<MContract.Models.Dialog>)ViewBag.L.PersonalAreaUser?.Dialogs;
+					}
+					@if (dialogs != null && dialogs.Count != 0)
+					{
+						foreach (var dialog in dialogs)
+						{
+							<a href="#" title="@(dialog.Respondent?.CompanyNameWithTypeOfOwnership)">
+								<div class="chatBoxDialog
+									 @(dialog.Respondent?.Id != ViewBag.L.PersonalAreaUser?.CurrentRespondentId
+									&& dialog.Messages.Count != 0
+									&& dialog.Messages[dialog.Messages.Count - 1].SenderId != ViewBag.L.PersonalAreaUser?.Id
+									&& !dialog.Messages[dialog.Messages.Count - 1].IsRead
+										? "unread"
+										: "")"
+									 style='background-image: url("@(dialog.Respondent?.SmallPhotoUrl)")'
+									 data-dialog-respondent-id="@(dialog.Respondent?.Id)">
+									<div class="unreadMessagesFlag"></div>
+									<div class="removeDialog">x</div>
+								</div>
+							</a>
+						}
+					}
+				</div>
+				<div class="chatBoxDialogsToggle">Чаты</div>
+			</div>
+		}
+		<!-- Footer -->
+		<footer>
+			<div class="footer__wrapper">
+				<div class="container">
+					<div class="row footer-column">
+						<div class="col-sm-12 col-md">
+							<div class="footer__nav">
+								<a href="@ViewBag.L.SiteUrlClear/User/Rules">Правила</a>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md">
+							<div class="footer__nav">
+								<a href="@ViewBag.L.SiteUrlClear/User/Help">Помощь</a>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-9">
+							<div class="footer__license">
+								<span class="copy">&copy; 2020 <span style="color: transparent">|</span> <span style="color: white">M-Contract</span></span>
+								<span class="rights">Все права защищены</span>
+								<a href="#" class="agree">Лицензионное соглашение</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+
+		<script src="/js/bootstrap.min.js"></script>
+		<!-- // Footer -->
+	</div>
+</body>
+</html>

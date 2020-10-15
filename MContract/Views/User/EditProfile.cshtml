@@ -1,0 +1,243 @@
+﻿@model MContract.Models.User
+
+@{
+    ViewBag.Title = ViewBag.Heading;
+    Layout = "~/Views/Shared/_LayoutOld.cshtml";
+}
+
+@section Styles{
+    <link href="@Url.Content("~/css/User/EditProfile.css")?p=202006112" rel="stylesheet" type="text/css" />
+}
+
+@{ Html.RenderPartial("_PersonalAreaOld", Model.PersonalAreaUser); }
+
+<div class="profileContainer">
+    <div class="companyInfoContainer">
+        <div class="companyQuickInfoContainer">
+            <div>
+                <p class="companyName">@Model.CompanyNameWithTypeOfOwnership</p>
+                <p class="rating"><span class="ratingStar"></span>@Model.Rating</p>
+                <table>
+                    <tr>
+                        <td>
+                            Город:
+                        </td>
+                        <td class="cityContainer">
+                            <input class="cityInput" type="text" autocomplete="off" />
+                        </td>
+                        <td class="tipsContainer">
+                            <span class="requiredFieldMarker">*</span>
+                            <div class="needContainer cityNeedContainer">
+                                <span>Поле "Город" обязательно для заполнения</span>
+                            </div>
+                            <div class="invalidContainer cityInvalidContainer">
+                                <span></span>
+                            </div>
+                            <div class="checkedContainer cityCheckedContainer">
+                                <img src="/ico/CheckmarkGreen.svg">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="companyDetailsContainer">
+            <table>
+                <tr>
+                    <td>Адрес электронной почты:</td>
+                    <td class="emailContainer"><input type="text" value="@Model.Email" /></td>
+                    <td>
+                        <span class="requiredFieldMarker">*</span>
+                        <span id="needEmailSpan" class="needFieldSpan">Поле "Электронная почта" обязательно для заполнения</span>
+                        <span id="invalidEmailSpan" class="invalidFieldSpan">Введенный адрес не соответствует формату электронной почты</span>
+                        <img id="checkedEmailIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                    </td>
+                </tr>
+                <tr>
+                    <td>ИНН:</td>
+                    <td>@Model.INN</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ОГРН:</td>
+                    <td>@Model.OGRN</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Мобильный телефон:</td>
+                    <td class="phoneNumberContainer"><input type="tel" value="@Model.PhoneNumber" /></td>
+                    <td>
+                        <span class="requiredFieldMarker">*</span>
+                        <span id="needPhoneNumberSpan" class="needFieldSpan">Поле "мобильный телефон" обязательно для заполнения</span>
+                        <span id="invalidPhoneNumberSpan" class="invalidFieldSpan">Введенный номер не соответствует формату номера телефона</span>
+                        <img id="checkedPhoneNumberIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Дополнительный телефон:</td>
+                    <td class="phoneNumberCityContainer"><input type="tel" value="@Model.PhoneNumberCity" /></td>
+                    <td>
+                        <span id="invalidPhoneNumberCitySpan" class="invalidFieldSpan">Введенный номер не соответствует формату номера телефона</span>
+                        <img id="checkedPhoneNumberCityIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Юр. адрес (город, улица, дом):</td>
+                    <td class="addressContainer"><input type="text" value="@Model.Address" /></td>
+                    <td>
+                        <span id="invalidAddressSpan" class="invalidFieldSpan"></span>
+                        <img id="checkedAddressIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Фактический адрес (город, улица, дом):</td>
+                    <td class="factualAddressContainer"><input type="text" value="@Model.FactualAddress" /></td>
+                    <td>
+                        <span id="invalidFactualAddressSpan" class="invalidFieldSpan"></span>
+                        <img id="checkedFactualAddressIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                    </td>
+                </tr>
+            </table>
+            <button class="saveChanges btn btn-primary">Сохранить изменения</button>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/jquery.maskedinput.js" type="text/javascript"></script>
+<link href="~/js/jquery-ui/jquery-ui.css?p=202006112" rel="stylesheet" type="text/css" />
+<script src="~/js/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script src="~/js/user/cityAutocomplete.js?p=20200624" type="text/javascript"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        $(".phoneNumberContainer input").mask("+7(999)999-99-99", { autoclear: false });
+        $(".phoneNumberContainer input").attr("placeholder", "+7(999)999-99-99");
+        $(".phoneNumberCityContainer input").mask("+7(999)999-99-99", { autoclear: false });
+        $(".phoneNumberCityContainer input").attr("placeholder", "+7(999)999-99-99");
+
+        var cityId = @Model.CityId;
+        $(".profileContainer .cityContainer .optionsContainer").find("input[value='" + cityId + "']").prop("checked", true).trigger("change");
+        checkCity($(".profileContainer .cityContainer"));
+
+        $(".emailContainer input").on("blur", checkEmail);
+        $(".phoneNumberContainer input").on("blur", checkPhoneNumber);
+        $(".phoneNumberCityContainer input").on("blur", checkPhoneNumberCity);
+        $(".addressContainer input").on("blur", checkAddress);
+        $(".factualAddressContainer input").on("blur", checkFactualAddress);
+
+        function checkCity(obj) {
+            var tipsContainer = $(obj).closest("td").siblings(".tipsContainer");
+            if ($(obj).closest("td").find(".selectedOptionsContainer .selectedOption").length == 0) {
+                $(tipsContainer).children(".needContainer").css("display", "block");
+                $(tipsContainer).children().not(".needContainer").css("display", "");
+                return false;
+            } else {
+                $(tipsContainer).children(".checkedContainer").css("display", "block");
+                $(tipsContainer).children().not(".checkedContainer").css("display", "");
+                return true;
+            }
+        };
+
+        function checkEmail() {
+            var fieldName = "Email";
+            var input = $(".emailContainer input");
+            if ($(input).val().length != 0) {
+                if ($(input).val().match(/^\b[A-Z0-9._%-]+@@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i)) {
+                    $('#checked' + fieldName + 'Icon').show().siblings().hide();
+                    return true;
+                }
+                else {
+                    $("#invalid" + fieldName + "Span").show().siblings().hide();
+                    return false;
+                }
+            }
+            else {
+                $("#need" + fieldName + "Span").show().siblings().hide();
+                return false;
+            }
+        };
+
+        function checkPhoneNumber() {
+            var fieldName = "PhoneNumber";
+            var input = $(".phoneNumberContainer input");
+            if ($(input).val().length != 0) {
+                $("#checked" + fieldName + "Icon").show().siblings().hide();
+                return true;
+            }
+            else {
+                $("#need" + fieldName + "Span").show().siblings().hide();
+                return false;
+            }
+        };
+
+        function checkPhoneNumberCity() {
+            var fieldName = "PhoneNumberCity";
+            var input = $(".phoneNumberCityContainer input");
+            if ($(input).val().length != 0) {
+                $("#checked" + fieldName + "Icon").show().siblings().hide();
+                return true;
+            }
+            else {
+                $("#checked" + fieldName + "Icon").hide().siblings().hide();
+                return true;
+            }
+        };
+
+        function checkAddress() {
+            var fieldName = "Address";
+            var input = $(".addressContainer input");
+            if ($(input).val().length != 0) {
+                $("#checked" + fieldName + "Icon").show().siblings().hide();
+                return true;
+            }
+            else {
+                $("#checked" + fieldName + "Icon").hide().siblings().hide();
+                return true;
+            }
+        };
+
+        function checkFactualAddress() {
+            var fieldName = "FactualAddress";
+            var input = $(".factualAddressContainer input");
+            if ($(input).val().length != 0) {
+                $("#checked" + fieldName + "Icon").show().siblings().hide();
+                return true;
+            }
+            else {
+                $("#checked" + fieldName + "Icon").hide().siblings().hide();
+                return true;
+            }
+        };
+
+        $(".saveChanges").on("click", function () {
+            var inputsValidated = [];
+            inputsValidated.push(checkCity($(".profileContainer .cityContainer")));
+            inputsValidated.push(checkEmail());
+            inputsValidated.push(checkPhoneNumber());
+            inputsValidated.push(checkPhoneNumberCity());
+            inputsValidated.push(checkAddress());
+            inputsValidated.push(checkFactualAddress());
+            if (inputsValidated.every(Boolean)) {
+                var userId = @Model.Id;
+                var userCityId = parseInt($(".cityContainer .optionsContainer div:not('.noMatches') input:checked").val());
+                var userEmail = $(".emailContainer input").val();
+                var userPhoneNumber = $(".phoneNumberContainer input").val();
+                var userPhoneNumberCity = $(".phoneNumberCityContainer input").val();
+                var userAddress = $(".addressContainer input").val();
+                var userFactualAddress = $(".factualAddressContainer input").val();
+                $.post("@Url.Action("EditProfile", "User")", {
+                    Id: userId,
+                    CityId: userCityId,
+                    Email: userEmail,
+                    PhoneNumber: userPhoneNumber,
+                    PhoneNumberCity: userPhoneNumberCity,
+                    Address: userAddress,
+                    FactualAddress: userFactualAddress
+                }, function () {
+                        location.href = "@ViewBag.L.SiteUrlClear/my";
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>

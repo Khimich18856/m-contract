@@ -1,0 +1,384 @@
+﻿@model MContract.Models.UserMyAdsViewModel
+
+@{
+	ViewBag.Title = ViewBag.Heading;
+	Layout = "~/Views/Shared/_Layout.cshtml";
+
+	var activeAds = Model.Ads.Where(a => a.AdStatus == MContract.Models.Enums.AdStatuses.Published).ToList();
+	var endedAds = Model.Ads.Where(a =>
+		a.AdStatus == MContract.Models.Enums.AdStatuses.Finished ||
+		a.AdStatus == MContract.Models.Enums.AdStatuses.Expired).ToList();
+
+	var dollarRate = MContract.AppCode.TickersHelper.GetTodayUsdQuote();
+	var rubleSignHtmlRawString = Html.Raw("&#x20bd;");
+	var dollarSignHtmlRawString = Html.Raw("$");
+	var emptyHtmlRawString = Html.Raw("");
+}
+
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/lk-layout.css?p=2020-10-10-a">
+
+@{
+	Html.RenderPartial("_MobileMenu", Model.MobileMenuViewModel);
+}
+
+<section class="header-pc">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12 col-md-4 col-lg-3">
+				<div class="offer__title">
+					<h1>Личный кабинет</h1>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md col-lg-8">
+				<div class="offer__open">
+					<div class="open">
+						Мои объявления
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md col-lg-1 mobile-first">
+				<div class="product__crumbs">
+					<span class="page"><a href="@ViewBag.L.SiteUrlClear">Главная</a></span>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<main>
+	<section class="lk__main__wrapper">
+		<div class="container">
+			<div class="row">
+				@if (ViewBag.L.PersonalAreaUser != null && ViewBag.L.PersonalAreaUser.Id != 0)
+				{
+					Html.RenderPartial("_LeftMenu", Model.LeftMenuViewModel);
+				}
+				<div class="col-sm-12 mobile__off">
+					<div class="lk__main-title">
+						Мои объявления
+					</div>
+				</div>
+				<div class="col-sm-12 p-0 col-md-9 padding-desktop">
+					<div class="lk__main-select">
+						<div class="lk__main-select-item actived-list selected">
+							<span id="myAdsActiveSpan" class="active">
+								Активные
+							</span>
+							<span class="count">(@activeAds.Count)</span>
+						</div>
+						<div class="lk__main-select-item ended-list">
+							<span class="ended">
+								Завершенные
+							</span>
+							<span class="count">(@endedAds.Count)</span>
+						</div>
+						<!-- этот div показывается только для desktop-версии -->
+						<div class="filter-name favour-filter-name only-desktop">
+							<ul class="filter-list-desktop">
+								<li class="selected-filter allFilter">Все объявления</li>
+								<li class="saleFilter">Продажи</li>
+								<li class="buyFilter">Закупки</li>
+							</ul>
+						</div>
+					</div>
+					<div class="lk__main-offers-block">
+
+						<div class="filter-name-mobile favour-filter-name mobile__off">
+							<span class="selected-filter-span">
+								Все объявления
+							</span>
+							<!-- этот div показывается только для мобильной версии -->
+							<div class="filter-block closed">
+								<ul class="filter-list">
+									<li id="filterAllAdsLink" class="filter-item allFilter selected">Все объявления</li>
+									<li id="filterSalesLink" class="filter-item saleFilter">Продажи</li>
+									<li id="filterPurchasesLink" class="filter-item buyFilter">Закупки</li>
+								</ul>
+							</div>
+						</div>
+
+						<!-- Active -->
+						<div class="lk__main-offers-block-wrapper first-wrapper active-wrapper active">
+							@if (activeAds.Any())
+							{
+								<!-- Mobile -->
+								foreach (var ad in activeAds)
+								{
+									<a href="@ad.Url" class="lk-product__item @(ad.IsBuy ? "buy-ad" : "sale-ad")">
+										<div class="lk-product__item-open">
+											<span class="number">@ad.NameWithoutOpenOrClose</span> @ad.OpenOrClose
+										</div>
+										<div class="lk-product__item-info-block">
+											<div class="lk-product__item-img">
+												<img src="@ad.SmallPhotoUrl" alt="image-first">
+											</div>
+											<div class="lk-product__item-adress">
+												@(ad.City?.NameAndRegionNameWithComma)
+											</div>
+											<div class="lk-product__item-edit">
+												<div class="lk-product__item-list-block">
+													<ul>
+														<li class="edit" onclick="redirectToEditAdPage(@ad.Id)">Редактировать</li>
+														<li onclick="unpublish(@ad.Id)">Снять с публикации</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										<div class="lk-product__item-text-block">
+											@Html.Raw(ad.CategoriesMobileHtml)
+											<span class="weight">
+												<br> Общий вес:
+											</span>
+											<span class="consist">
+												@ad.SumOfProductWeights тн.
+											</span>
+										</div>
+										<div class="lk-product__item-stats-block">
+											<div class="opened">
+												@ad.TimeFromDateOfPostingDescription
+											</div>
+											<div class="views">
+												<img src="/ico/eye-w.svg" alt="">
+												<span>@ad.ViewsCount</span>
+											</div>
+											<div class="comments">
+												<img src="/ico/message-w.svg" alt="">
+												<span>@ad.OffersCount</span>
+											</div>
+											<div class="favourites">
+												<img src="/ico/star-w.svg" alt="">
+												<span>@ad.FavoritesCount</span>
+											</div>
+										</div>
+									</a>
+								}
+								<!-- //Mobile -->
+								<!-- Desktop -->
+								foreach (var ad in activeAds)
+								{
+									<a href="@ad.Url" class="lk-product__item_d @(ad.IsBuy ? "buy-ad" : "sale-ad")">
+										<div class="lk-product__item_d-img">
+											<img src="@ad.SmallPhotoUrl" alt="">
+										</div>
+										<div class="lk-product__item_d-info">
+											<div class="open">
+												<div class="open-status">
+													<span class="num">@ad.NameWithoutOpenOrClose</span> @ad.OpenOrClose
+												</div>
+											</div>
+											<div class="company">
+												@(ad.City?.NameAndRegionNameWithComma)
+											</div>
+											<div class="lk-product__item-edit">
+												<div class="lk-product__item-list-block">
+													<ul>
+														<li class="edit" onclick="redirectToEditAdPage(@ad.Id)">Редактировать</li>
+														<li onclick="unpublish(@ad.Id)">Снять с публикации</li>
+													</ul>
+												</div>
+											</div>
+											<div class="about">
+												@Html.Raw(ad.CategoriesDesktopHtml)
+												<span class="title"><br>Общий вес:</span>
+												<span class="text">@ad.SumOfProductWeights тн.</span>
+											</div>
+											<div class="stats">
+												<div class="time">
+													@ad.TimeFromDateOfPostingDescription
+												</div>
+												<div class="stats-items">
+													<div class="views">
+														<img src="/ico/eye-w.svg" alt="">
+														<span>@ad.ViewsCount</span>
+													</div>
+													<div class="comments">
+														<img src="/ico/message-w.svg" alt="">
+														<span>@ad.OffersCount</span>
+													</div>
+													<div class="favourites">
+														<img src="/ico/star-w.svg" alt="">
+														<span>@ad.FavoritesCount</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</a>
+								}
+								<!-- //Desktop -->
+							}
+						</div>
+						<!-- //Active -->
+						<div class="dnt-have-products closed">
+							<span>Нет объявлений</span>
+						</div>
+						<!-- Ended -->
+						<div class="lk__main-offers-block-wrapper ended-wrapper disabled">
+							@if (endedAds.Any())
+							{
+								<!-- Mobile -->
+								foreach (var ad in endedAds)
+								{
+									<a href="@ad.Url" class="lk-product__item @(ad.IsBuy ? "buy-ad" : "sale-ad")">
+										<div class="lk-product__item-open">
+											<span class="number">@ad.NameWithoutOpenOrClose </span> @ad.OpenOrClose
+										</div>
+										<div class="lk-product__item-info-block">
+											<div class="lk-product__item-img">
+												<img src="@ad.SmallPhotoUrl" alt="image-first">
+											</div>
+											<div class="lk-product__item-adress">
+												@(ad.City?.NameAndRegionNameWithComma)
+											</div>
+											<div class="lk-product__item-edit">
+												<div class="lk-product__item-list-block">
+													<ul>
+														<li>Удалить</li>
+														<li onclick="repeatAd(@ad.Id)">Опубликовать повторно</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										<div class="lk-product__item-text-block">
+											@Html.Raw(ad.CategoriesMobileHtml)
+											<span class="weight">
+												<br> Общий вес:
+											</span>
+											<span class="consist">
+												@ad.SumOfProductWeights тн.
+											</span>
+										</div>
+										<div class="lk-product__item-stats-block">
+											<div class="time">
+												<span>Завершено: </span> <span class="bold">@ad.ActiveToDate.Value.ToShortDateString()</span>
+											</div>
+										</div>
+									</a>
+								}
+								<!-- //Mobile -->
+								<!-- Desktop -->
+								foreach (var ad in endedAds)
+								{
+									<a href="@ad.Url" class="lk-product__item_d @(ad.IsBuy ? "buy-ad" : "sale-ad")">
+										<div class="lk-product__item_d-img">
+											<img src="@ad.SmallPhotoUrl" alt="">
+										</div>
+										<div class="lk-product__item_d-info">
+											<div class="open">
+												<div class="open-status">
+													<span class="num">@ad.NameWithoutOpenOrClose</span> @ad.OpenOrClose
+												</div>
+											</div>
+											<div class="company">
+												@(ad.City?.NameAndRegionNameWithComma)
+											</div>
+											<div class="lk-product__item-edit">
+												<div class="lk-product__item-list-block">
+													<ul>
+														<li>Удалить</li>
+														<li onclick="repeatAd(@ad.Id)">Опубликовать повторно</li>
+													</ul>
+												</div>
+											</div>
+											<div class="about">
+												@Html.Raw(ad.CategoriesDesktopHtml)
+												<span class="title"><br>Общий вес:</span>
+												<span class="text">@ad.SumOfProductWeights тн.</span>
+											</div>
+											<div class="stats">
+												<div class="time">
+													<span>Завершено: </span> <span class="bold">@ad.ActiveToDate.Value.ToShortDateString()</span>
+												</div>
+											</div>
+										</div>
+									</a>
+								}
+								<!-- //Desktop -->
+							}
+						</div>
+						<!-- //Ended -->
+					</div>
+					<div class="lk__main-btn">
+						<a href="@ViewBag.L.SiteUrlClear/Ads/NewAdStep0" class="add__offer-btn">
+							Добавить объявление
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	@{
+		Html.RenderPartial("_AdsSlider", Model.AdsSliderViewModel);
+	}
+
+</main>
+
+
+<script src="/js/offer.js?p=2020-10-10-a"></script>
+<script src="/js/myads.js?p=2020-10-10-a"></script>
+<script src="/js/lk-main.js?p=2020-10-10-a"></script>
+@*<script src="/js/User/MyAds.js"></script>*@
+
+<script type="text/javascript">
+	function unpublish(adId) {
+		if (!confirm('Вы действительно хотите снять объявление с публикации?'))
+			return;
+
+		$.post("@ViewBag.L.SiteUrlClear/Ads/UnpublishAd", {
+				adId: adId
+		}, function (result) {
+			if (result == 'ok') {
+                alert('Объявление снято с публикации. Страница будет перезагружена');
+				location.href = location.href;
+			} else
+				alert(result);
+		});
+	}
+
+	function repeatAd(adId) {
+            $.post("@ViewBag.L.SiteUrlClear/Ads/RepeatAd",
+                { id: adId },
+                function (newId) {
+                    if (newId != 0) {
+                        location.href = "@ViewBag.L.SiteUrlClear/Ads/NewAdFinalStep/" + newId;
+                    }
+                });
+     }
+
+	//function showAllAdsDesktop() {
+	//	if ($('#myAdsActiveSpan').hasClass('active')) { //включены Активные объявления
+	//		$('.buy-ad,.sale-ad').show();
+	//	}
+	//	else { //включены завершенные объявления
+
+	//	}
+	//	$('.buy-ad,.sale-ad').show();
+
+	//	//$('#filterAllAdsLink').addClass('selected');
+	//	//$('#filterSalesLink').removeClass('selected');
+	//	//$('#filterPurchasesLink').removeClass('selected');
+	//}
+
+	//function showSalesDesktop() {
+	//	//alert('showSales() started');
+	//	$('.sale-ad-active-desktop').show();
+	//	$('.buy-ad-active-desktop').hide();
+
+	//	//$('#filterAllAdsLink').removeClass('selected');
+	//	//$('#filterSalesLink').addClass('selected');
+	//	//$('#filterPurchasesLink').removeClass('selected');
+	//}
+
+	//function showPurchases() {
+	//	$('.buy-ad').show();
+	//	$('.sale-ad').hide();
+	//}
+
+	function redirectToEditAdPage(adId) {
+		document.location.href = $('#siteUrl').val() + "/Ads/EditAd?id=" + adId;
+	}
+
+	//$('.edit').on('click', function () {
+
+	//});
+</script>

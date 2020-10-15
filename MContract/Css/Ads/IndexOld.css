@@ -1,0 +1,100 @@
+﻿body {
+}
+
+h2 {
+    margin-bottom: 10px;
+}
+
+.showAll, .showBuy, .showSell {
+    margin-bottom: 10px;
+}
+
+.singleAdContainer {
+    width: 100%;
+    min-height: 200px;
+    border: 1px solid black;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+}
+
+.singleAdContainer.contractSent {
+    opacity: 0.3;
+}
+
+.singleAdContainer .adPhotoContainer {
+    margin-top: 10px;
+    margin-left: 10px;
+    height: 180px;
+    width: 180px;
+}
+
+.singleAdContainer .adPhoto {
+    height: 180px;
+    width: 180px;
+    object-fit: contain;
+}
+
+.singleAdContainer .textContainer {
+    margin-top: 10px;
+    margin-left: 10px;
+    align-self: stretch;
+    flex: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.singleAdContainer .textContainer:hover {
+    text-decoration: none;
+}
+
+.singleAdContainer .textContainer p {
+    display: block;
+    align-self: stretch;
+    margin-bottom: 0.3em;
+}
+
+.singleAdContainer .textContainer p:not(.adNameContainer), .singleAdContainer .textContainer span {
+    color: black;
+}
+
+.singleAdContainer .textContainer .adNameContainer:hover {
+    text-decoration: underline;
+}
+
+.singleAdContainer .textContainer .dateOfPostingContainer {
+    margin-top: auto;
+}
+
+.singleAdContainer .adIconsContainer {
+    margin-left: 20px;
+    margin-bottom: auto;
+    display: inline;
+    height: 200px;
+    flex: 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-evenly;
+    margin-right: 40px;
+}
+
+.singleAdContainer .adIconsContainer .singleIconContainer {
+    height: 50px;
+    white-space: nowrap;
+}
+
+.singleAdContainer .adIconsContainer .singleIconContainer span {
+    line-height: 50px;
+    font-weight: bold;
+    color: black;
+}
+
+.singleAdContainer .adIconsContainer .singleIconContainer img {
+    margin: 20px;
+    height: 60px;
+    width: auto;
+    float: right;
+}

@@ -1,0 +1,128 @@
+﻿body {
+}
+
+.pageContentContainer > *:not(h2):not(.addProduct) {
+    margin-top: 10px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 10px 0 10px 0;
+}
+
+.adDetails {
+    width: 60%;
+}
+
+.adDetails input:not([type="checkbox"]), .adDetails select, .productDetails select {
+    display: none;
+}
+
+.adDetails td:nth-of-type(2n+1) {
+    width: 35%;
+}
+
+.adDetails .deliveryAddressContainer input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+table, table tr {
+    border: 1px solid black;
+}
+
+table td {
+    padding: 3px;
+}
+
+table tr:nth-child(2n+1) {
+    #background-color: whitesmoke;
+    background-color: ghostwhite;
+}
+
+table tr:nth-child(2n+2) {
+    background-color: ghostwhite;
+}
+
+.productDetails tr:nth-child(1) {
+    background-color: lightgray;
+}
+
+.adDetails tr:hover, .productDetails tr:nth-child(n+2):hover {
+    background-color: floralwhite;
+}
+
+.productDetails td:nth-child(n+4) {
+    max-width: 5%;
+}
+
+.productDetails td:nth-child(n+6) {
+    max-width: 5%;
+}
+
+.productDetails input:not([type=radio]) {
+    width: 100%;
+}
+
+.commentContainer {
+    width: 100%;
+}
+
+.commentContainer textarea {
+    width: 55%;
+}
+
+.sendMessage, .sendContract, .cancelContract {
+    margin-bottom: 10px;
+}
+
+.contractSentMessageContainer, .contractCancelledMessageContainer {
+    display: none;
+}
+
+.contractSentMessageContainer img, .contractCancelledMessageContainer img {
+    width: 30%;
+    height: auto;
+}
+
+.contractSentMessageContainer .messageTextContainer, .contractCancelledMessageContainer .messageTextContainer {
+    font-size: x-large;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.adDescriptionContainer {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.adDescriptionContainer p {
+    width: 60%;
+    box-sizing: border-box;
+    resize: none;
+    min-height: 5em;
+    word-wrap: break-word;
+}
+
+.adPhotosContainer {
+    border: 1px solid black;
+    display: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    width: 92%;
+    padding: 10px 0 0 10px;
+    box-sizing: border-box;
+}
+
+.adPhotosContainer .adPhoto {
+    position: relative;
+    width: 24%;
+    height: 0;
+    padding-bottom: 24%;
+    margin: 0 1% 1% 0;
+    box-sizing: border-box;
+    flex: 0 0 auto;
+}

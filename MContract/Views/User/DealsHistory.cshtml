@@ -1,0 +1,829 @@
+﻿@model MContract.Models.UserDealsHistoryViewModel
+
+@{
+    ViewBag.Title = ViewBag.Heading;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Styles -->
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/lk-layout.css">
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/dealshistory.css">
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/js/jquery-ui/jquery-ui.css" type="text/css" />
+
+@{
+    Html.RenderPartial("_MobileMenu", Model.MobileMenuViewModel);
+}
+
+<section class="header-pc">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-5 col-lg-4">
+                <div class="offer__title">
+                    <h1>Личный кабинет</h1>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-5 col-lg-7">
+                <div class="offer__open">
+                    <div class="open">
+                        История сделок
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md col-lg-1 mobile-first">
+                <div class="product__crumbs">
+                    <span class="page"><a href="@ViewBag.L.SiteUrlClear">Главная</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<main>
+
+    <!-- История сделок -->
+    <section class="lk__main__wrapper">
+        <div class="container">
+            <div class="row">
+                @{
+                    Html.RenderPartial("_LeftMenu", Model.LeftMenuViewModel);
+                }
+                <div class="col-sm-12 mobile__off">
+                    <div class="lk__main-title">
+                        История сделок
+                    </div>
+                </div>
+                <div class="col-sm-12 mobile__off">
+                    <div class="filter-block">
+                        <span class="filter-btn have-filter">
+                            <span>Фильтры</span>
+                            <div class="count-of-filters"></div>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-9">
+                    <div class="deals__wrapper">
+                        <div class="filter__wrapper-descktop only-desktop">
+                            <span class="filter-item-desk simple-desc-filter active">
+                                <span class="allDeals">Все объявления</span>
+                            </span>
+                            <span class="filter-item-desk simple-desc-filter">
+                                <span class="onlySells">Продажи</span>
+                            </span>
+                            <span class="filter-item-desk simple-desc-filter">
+                                <span class="onlyBuys">Закупки</span>
+                            </span>
+                            <span class="filter-item-desk have-list">
+                                <span class="filter-desk-text btn-period-desk">Период</span>
+                                <span class="filter-desk-text-selected" id="dateInputs"></span>
+                                <div class="ico"></div>
+                                <div class="desk-filter-item-list-date closed">
+                                    <div class="date-select-wrapper">
+                                        <span>С</span>
+                                        <input type="text" name="datefromDesk" id="datefromDesk" placeholder="дд.мм.гггг">
+                                        <span>По</span>
+                                        <input type="text" name="datetoDesk" id="datetoDesk" placeholder="дд.мм.гггг">
+                                    </div>
+                                    <div class="date-btns">
+                                        <div class="cancel">Отмена</div>
+                                        <div class="yes">ОК</div>
+                                    </div>
+                                </div>
+                                @*<div class="desk-select-date-year-wrapper closed">
+                                        @{
+                                            var currentDate = DateTime.Now;
+                                        }
+                                        <div class="date mounth">
+                                            <div class="title">
+                                                Месяц
+                                            </div>
+                                            <div class="item-list">
+                                                <div class="mounth-item@(currentDate.Month == 1 ? " selected" : "")" data-value="1">Январь</div>
+                                                <div class="mounth-item@(currentDate.Month == 2 ? " selected" : "")" data-value="2">Февраль</div>
+                                                <div class="mounth-item@(currentDate.Month == 3 ? " selected" : "")" data-value="3">Март</div>
+                                                <div class="mounth-item@(currentDate.Month == 4 ? " selected" : "")" data-value="4">Апрель</div>
+                                                <div class="mounth-item@(currentDate.Month == 5 ? " selected" : "")" data-value="5">Май</div>
+                                                <div class="mounth-item@(currentDate.Month == 6 ? " selected" : "")" data-value="6">Июнь</div>
+                                                <div class="mounth-item@(currentDate.Month == 7 ? " selected" : "")" data-value="7">Июль</div>
+                                                <div class="mounth-item@(currentDate.Month == 8 ? " selected" : "")" data-value="8">Август</div>
+                                                <div class="mounth-item@(currentDate.Month == 9 ? " selected" : "")" data-value="9">Сентябрь</div>
+                                                <div class="mounth-item@(currentDate.Month == 10 ? " selected" : "")" data-value="10">Октябрь</div>
+                                                <div class="mounth-item@(currentDate.Month == 11 ? " selected" : "")" data-value="11">Ноябрь</div>
+                                                <div class="mounth-item@(currentDate.Month == 12 ? " selected" : "")" data-value="12">Декабрь</div>
+                                            </div>
+                                            <div class="date-btn cancel">Отмена</div>
+                                        </div>
+                                        <div class="date year">
+                                            <div class="title">
+                                                Год
+                                            </div>
+                                            <div class="item-list">
+                                                @for (var i = 2010; i < currentDate.Year; i++)
+                                                {
+                                                    <div class="year-item" data-value="@i">@i</div>
+                                                }
+                                                <div class="year-item selected" data-value="@currentDate.Year">@currentDate.Year</div>
+                                            </div>
+                                            <div class="date-btn yes">Ок</div>
+                                        </div>
+                                    </div>
+                                    <div class="desk-select-date-calenar closed">
+                                        <div class="selected-date">
+                                            <span class="year">@currentDate.Year</span>
+                                            @{
+                                                var dayOfWeekString = currentDate.DayOfWeek == DayOfWeek.Monday ? "Понедельник" :
+                                                                      currentDate.DayOfWeek == DayOfWeek.Tuesday ? "Вторник" :
+                                                                      currentDate.DayOfWeek == DayOfWeek.Wednesday ? "Среда" :
+                                                                      currentDate.DayOfWeek == DayOfWeek.Thursday ? "Четверг" :
+                                                                      currentDate.DayOfWeek == DayOfWeek.Friday ? "Пятница" :
+                                                                      currentDate.DayOfWeek == DayOfWeek.Saturday ? "Суббота" :
+                                                                      currentDate.DayOfWeek == DayOfWeek.Sunday ? "Воскресенье" : "";
+                                            }
+                                            <span class="date-time">@dayOfWeekString, @currentDate.Day мая</span>
+                                        </div>
+                                        <div class="calendar-table">
+                                            <table>
+                                                @{
+                                                    var daysOffset = (int)currentDate.DayOfWeek - 1;
+                                                    var daysInMonth = DateTime.DaysInMonth(currentDate.Year, currentDate.Month);
+                                                }
+                                                <tr>
+                                                    <td>пн</td>
+                                                    <td>вт</td>
+                                                    <td>ср</td>
+                                                    <td>чт</td>
+                                                    <td>пт</td>
+                                                    <td>сб</td>
+                                                    <td>вс</td>
+                                                </tr>
+                                                @for (var i = 1 - daysOffset; i <= daysInMonth; i += 7)
+                                                {
+                                                    <tr>
+                                                        @for (var j = i; j < i + 7; j++)
+                                                        {
+                                                            <td data-value="@j">@(j > 0 && j <= daysInMonth ? j.ToString() : "")</td>
+                                                        }
+                                                    </tr>
+                                                }
+                                                <tr>
+                                                    <td></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="calendar-btns">
+                                            <div class="calendar-btn cancel">Отмена</div>
+                                            <div class="calendar-btn yes">ОК</div>
+                                        </div>
+                                    </div>*@
+                            </span>
+                            <span class="filter-item-desk have-list">
+                                <span class="selected-desk-text">Изделия черных металлов</span>
+                                <span class="filter-desk-text btn-cats-desk">Категория товара</span>
+                                <div class="ico"></div>
+                                <ul class="desk-filter-item-list cats-list-desktop closed">
+                                    @foreach (var category in Model.ProductCategories)
+                                    {
+                                        <li data-value="@category.Id">@category.Name</li>
+                                    }
+                                </ul>
+                            </span>
+                            @if (Model.Counteragents != null && Model.Counteragents.Count > 1)
+                            {
+                                <span class="filter-item-desk have-list">
+                                    <span class="filter-desk-text btn-counter-desk">Контрагент</span>
+                                    <div class="ico"></div>
+                                    <div class="desk-find__counter-wrapper closed">
+                                        <div class="input-block">
+                                            <input type="text" placeholder="Введите название...">
+                                        </div>
+                                        <div class="counter-list">
+                                            @foreach (var counteragent in Model.Counteragents)
+                                            {
+                                                <div class="counter-list-item" data-id="@counteragent.Id">
+                                                    <a href="#">@counteragent.CompanyNameWithTypeOfOwnership @(counteragent.Town?.FullNameAndRegionNameWithComma)</a>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </span>
+                            }
+                        </div>
+
+                        <!-- Mobile -->
+                        @if (Model.Deals != null && Model.Deals.Any())
+                        {
+                            var unixEpochStart = new DateTime(1970, 1, 1).Date;
+                            foreach (var deal in Model.Deals)
+                            {
+                                var ad = deal.Ad;
+                                var offer = deal.Offer;
+                                var counteragent = deal.Counteragent;
+                                if (ad == null || offer == null || counteragent == null)
+                                {
+                                    continue;
+                                }
+                                var unixDate = deal.Date != DateTime.MinValue ? (int)(deal.Date.Date.Subtract(unixEpochStart).TotalSeconds) : 0;
+                                <div class="product__item@(deal.IsDealForMyAd ? " dealForMyAd" : "")@(ad.IsBuy ? " adIsBuy" : "")"
+                                     data-ad-id="@ad.Id"
+                                     data-offer-id="@offer.Id"
+                                     data-product-category-ids="@string.Join(",", deal.ProductCategoryIds)"
+                                     data-counteragent-id="@counteragent.Id"
+                                     data-date="@unixDate">
+                                    <a href="@ad.DealCardUrl" class="product__item-info-block">
+                                        <div class="product__item-img">
+                                            <img src="@ad.SmallPhotoUrl" alt="image-first">
+                                        </div>
+                                        <div class="product__item-adress">
+                                            <div class="count">@ad.NameWithoutOpenOrClose</div>
+                                            <span>@ad.OpenOrClose</span>
+                                        </div>
+                                        <div class="product__item-close"></div>
+                                    </a>
+                                    <a href="@ad.DealCardUrl" class="product__item-text-block">
+                                        @if (ad.ProductCategoriesLevel1 != null && ad.ProductCategoriesLevel1.Any())
+                                        {
+                                            foreach (var categoryLevel1 in ad.ProductCategoriesLevel1)
+                                            {
+                                                var childCategoriesIsNotNull = categoryLevel1.ChildCategories != null && categoryLevel1.ChildCategories.Any();
+                                                <span class="name">
+                                                    @categoryLevel1.Name@(childCategoriesIsNotNull ? ": " : "")<br>
+                                                </span>
+                                                if (childCategoriesIsNotNull)
+                                                {
+                                                    <span class="text">
+                                                        @foreach (var childCategory in categoryLevel1.ChildCategories)
+                                                        {
+                                                            var isLastCategory = childCategory == categoryLevel1.ChildCategories.Last();
+                                                            @:@childCategory.Name@(isLastCategory ? "" : "; ")
+                                                        }
+                                                    </span>
+                                                }
+                                            }
+                                        }
+                                        <span class="weight">
+                                            <br> Общий вес:
+                                        </span>
+                                        <span class="consist">
+                                            @deal.TotalWeight тн.
+                                        </span>
+                                    </a>
+                                    <a href="@ad.DealCardUrl" class="product__item-cost-date">
+                                        <div class="date">@deal.Date</div>
+                                        <div class="cost">
+                                            <div class="title">Сумма: </div>
+                                            <div class="text"> @offer.SumOffer &#8381;</div>
+                                        </div>
+                                    </a>
+                                    <a href="@counteragent.Url" class="product__item-info-anty">
+                                        <div class="name">Контрагент</div>
+                                        <div class="info">@(counteragent.Town?.NameAndRegionNameWithComma) @counteragent.CompanyNameWithTypeOfOwnership</div>
+                                    </a>
+                                </div>
+                            }
+                        }
+                        <!-- //Mobile -->
+                        <!-- Desktop -->
+                        @if (Model.Deals != null && Model.Deals.Any())
+                        {
+                            var unixEpochStart = new DateTime(1970, 1, 1);
+                            foreach (var deal in Model.Deals)
+                            {
+                                var ad = deal.Ad;
+                                var offer = deal.Offer;
+                                var counteragent = deal.Counteragent;
+                                if (ad == null || offer == null || counteragent == null)
+                                {
+                                    continue;
+                                }
+                                var unixDate = deal.Date != DateTime.MinValue ? (int)(deal.Date.Subtract(unixEpochStart)).TotalSeconds : 0;
+                                <div class="product__item_d@(deal.IsDealForMyAd ? " dealForMyAd" : "")@(ad.IsBuy ? " adIsBuy" : "")"
+                                     data-ad-id="@ad.Id"
+                                     data-offer-id="@offer.Id"
+                                     data-product-category-ids="@string.Join(",", deal.ProductCategoryIds)"
+                                     data-counteragent-id="@counteragent.Id"
+                                     data-date="@unixDate">
+                                    <a href="@ad.DealCardUrl" class="product__item_d-img">
+                                        <img src="@ad.SmallPhotoUrl" alt="">
+                                    </a>
+                                    <a href="@ad.DealCardUrl" class="product__item_d-info">
+                                        <div class="open">
+                                            <div class="open-status">
+                                                <span class="num">@ad.NameWithoutOpenOrClose</span> @ad.OpenOrClose
+                                            </div>
+                                        </div>
+                                        <div class="company">
+                                            @(ad.City?.Name)
+                                        </div>
+                                        <div class="about">
+                                            @if (ad.ProductCategoriesLevel1 != null && ad.ProductCategoriesLevel1.Any())
+                                            {
+                                                foreach (var categoryLevel1 in ad.ProductCategoriesLevel1)
+                                                {
+                                                    var childCategoriesIsNotNull = categoryLevel1.ChildCategories != null && categoryLevel1.ChildCategories.Any();
+                                                    <span class="title">@categoryLevel1.Name@(childCategoriesIsNotNull ? ": " : "")<br></span>
+                                                    if (childCategoriesIsNotNull)
+                                                    {
+                                                        <span class="text">
+                                                            @foreach (var childCategory in categoryLevel1.ChildCategories)
+                                                            {
+                                                                var isLastCategory = childCategory == categoryLevel1.ChildCategories.Last();
+                                                                @:@childCategory.Name@(isLastCategory ? "" : "; ")
+                                                            }
+                                                        </span>
+                                                    }
+                                                }
+                                            }
+                                            <span class="title"><br>Общий вес:</span>
+                                            <span class="text">@deal.TotalWeight тн.</span>
+                                            <div class="result">
+                                                <div class="date">
+                                                    @(deal.Date != DateTime.MinValue ? deal.Date.ToShortDateString() : "")
+                                                </div>
+                                                <div class="cost">
+                                                    <div class="title">Сумма:</div>
+                                                    <div class="text">@offer.SumOffer &#8381;</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a href="@counteragent.Url" class="product__item_d-deal-info">
+                                        <div class="deal-title">
+                                            Контрагент
+                                        </div>
+                                        <div class="deal-img">
+                                            <img src="@counteragent.SmallPhotoUrl" alt="">
+                                        </div>
+                                        <div class="deal-city">
+                                            @(counteragent.Town?.Name)
+                                        </div>
+                                        <div class="deal-oo">
+                                            @counteragent.CompanyNameWithTypeOfOwnership
+                                        </div>
+                                    </a>
+                                    <div class="close-deal">
+                                    </div>
+                                </div>
+                            }
+                        }
+                        <!-- //Desktop -->
+
+
+                        <div class="delete__draft draft-file draft-history closed">
+                            <div class="delete__draft-wrapper">
+                                <div class="delete__draft-title">
+                                    Вся история ваших сделок будет удалена безвозвратно. Вы подтверждаете это?
+                                </div>
+                                <div class="delete__draft-flex">
+                                    <a href="#" class="delete__draft-btn yes">Да</a>
+                                    <a href="#" class="delete__draft-btn no">Нет</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="delete__draft draft-file draft-deal closed">
+                            <div class="delete__draft-wrapper">
+                                <div class="delete__draft-title">
+                                    Информация об этой сделке удаляется безвозвратно. Вы подтверждаете это?
+                                </div>
+                                <div class="delete__draft-flex">
+                                    <a href="#" class="delete__draft-btn yes">Да</a>
+                                    <a href="#" class="delete__draft-btn no">Нет</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-8">
+                                <div class="pugination__block">
+                                    <div class="left"> &#60; </div>
+                                    <div class="right"> &#62; </div>
+                                    <div class="pages">
+                                        <div class="pages-item selected">
+                                            <a href="#">1</a>
+                                        </div>
+                                        <div class="pages-item">
+                                            <a href="#">2</a>
+                                        </div>
+                                        <div class="pages-item">
+                                            <a href="#">3</a>
+                                        </div>
+                                        <div class="pages-item disabled">
+                                            ...
+                                        </div>
+                                        <div class="pages-item">
+                                            <a href="#">10</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="clear-history">
+                                    <span class="clear-btn">Очистить историю</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // История сделок -->
+
+</main>
+
+<script src="@ViewBag.L.SiteUrlClear/js/jquery.min.js"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/slick.min.js"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/offer.js"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/lk-main.js"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/dealhistory.js"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/jquery-ui/jquery-ui.js"></script>
+<script type="text/javascript">
+    var filterOptions = {
+        allDeals: true,
+        onlyBuys: false,
+        onlySells: false,
+        timePeriodStart: "",
+        timePeriodEnd: "",
+        productCategories: {},
+        counteragents: {}
+    }
+
+    var timeOffset = new Date().getTimezoneOffset() * 60;
+
+    function showDealsWithFilterOptions() {
+        var numberOfFilters = 0;
+        numberOfFilters += filterOptions["onlyBuys"] || filterOptions["onlySells"] ? 1 : 0;
+        numberOfFilters += filterOptions["timePeriodStart"] || filterOptions["timePeriodEnd"] ? 1 : 0;
+        numberOfFilters += filterOptions["productCategories"].length > 0 ? 1 : 0;
+        numberOfFilters += filterOptions["counteragents"].length > 0 ? 1 : 0;
+        if (numberOfFilters > 0)
+            $(".filter-block .count-of-filters").html(numberOfFilters);
+        else
+            $(".filter-block .count-of-filters").html("");
+
+        $(".deals__wrapper .product__item_d, deals__wrapper .product__item").each(function () {
+            var showThis = true;
+
+            if (filterOptions["allDeals"] == false) {
+                var thisIsDealForAd = $(this).hasClass("dealForMyAd");
+                var thisAdIsBuy = $(this).hasClass("adIsBuy");
+                var thisDealIsBuy =
+                    thisIsDealForAd == true && thisAdIsBuy == true
+                    || thisIsDealForAd == false && thisAdIsBuy == false;
+
+                if (filterOptions["onlyBuys"] == true && thisDealIsBuy == false || filterOptions["onlySells"] == true && thisDealIsBuy == true)
+                    showThis = false;
+            }
+
+            if (filterOptions["timePeriodStart"] || filterOptions["timePeriodEnd"]) {
+                var date = parseInt($(this).attr("data-date"));
+                if (date == 0
+                    || filterOptions["timePeriodStart"] != "" && date < filterOptions["timePeriodStart"]
+                    || filterOptions["timePeriodEnd"] != "" && date > filterOptions["timePeriodEnd"])
+                    showThis = false;
+            }
+
+            if (filterOptions["productCategories"].length > 0) {
+                var productCategories = $(this).attr("data-product-category-ids").split(",");
+
+                if (productCategories.length > 0 && !filterOptions["productCategories"].some(c => productCategories.includes(c)))
+                    showThis = false;
+            }
+
+            if (filterOptions["counteragents"].length > 0) {
+                var counteragentId = $(this).attr("data-counteragent-id");
+
+                if (counteragentId.length > 0 && !filterOptions["counteragents"].some(c => counteragentId == c))
+                    showThis = false;
+            }
+
+            if (showThis == true)
+                $(this).show();
+            else
+                $(this).hide();
+        });
+    }
+
+    jQuery(document).ready(function ($) {
+        $("#datefromDesk, #datetoDesk").datepicker({
+            dateFormat: "dd.mm.yy",
+            maxDate: 0
+        });
+
+        // выбор вида сделок - все, покупки, продажи
+
+        $(".allDeals").on("click", function () {
+            if (!$(this).hasClass("active")) {
+                $(this).addClass("active");
+                $(".onlyBuys").removeClass("active");
+                $(".onlySells").removeClass("active");
+            }
+            filterOptions["allDeals"] = true;
+            filterOptions["onlyBuys"] = false;
+            filterOptions["onlySells"] = false;
+            showDealsWithFilterOptions();
+        });
+
+        $(".onlyBuys").on("click", function () {
+            if (!$(this).hasClass("active")) {
+                $(this).addClass("active");
+                $(".allDeals").removeClass("active");
+                $(".onlySells").removeClass("active");
+            }
+            filterOptions["allDeals"] = false;
+            filterOptions["onlyBuys"] = true;
+            filterOptions["onlySells"] = false;
+            showDealsWithFilterOptions();
+        });
+
+        $(".onlySells").on("click", function () {
+            if (!$(this).hasClass("active")) {
+                $(this).addClass("active");
+                $(".allDeals").removeClass("active");
+                $(".onlyBuys").removeClass("active");
+            }
+            filterOptions["allDeals"] = false;
+            filterOptions["onlyBuys"] = false;
+            filterOptions["onlySells"] = true;
+            showDealsWithFilterOptions();
+        });
+
+        // выбор периода
+
+        /*$(".filterControls .timePeriod").on("click", function () {
+            var optionsContainer = $(".filterControls .timePeriodContainer .optionsContainer");
+            var typeOfTimePeriodContainer = $(".filterControls .timePeriodContainer .typeOfTimePeriodContainer");
+
+            if ($(optionsContainer).filter(":visible").length > 0) {
+                $(optionsContainer).hide();
+                $(typeOfTimePeriodContainer).show();
+                $(".filterControls").find(".productCategoriesContainer, .counteragentsContainer").find(".optionsContainer:visible").hide();
+            } else if ($(typeOfTimePeriodContainer).is(":visible")) {
+                $(typeOfTimePeriodContainer).hide();
+            } else if (!$(typeOfTimePeriodContainer).is(":visible")) {
+                $(typeOfTimePeriodContainer).show();
+            }
+        });*/
+
+        /*$(".filterControls .timePeriodContainer .specificMonthSelectorContainer").on("click", ".monthContainer", function () {
+            $(".filterControls .timePeriodContainer .specificMonthSelectorContainer .monthContainer.selected").removeClass("selected");
+            $(this).addClass("selected");
+            var mm = $(this).attr("data-value");
+            if (mm.length > 0) {
+                var yyyy = $(".filterControls .timePeriodContainer .specificMonthSelectorContainer .yearContainer.selected").attr("data-value");
+                if (yyyy.length > 0) {
+                    $(".filterControls .timePeriod").addClass("btn-primary");
+
+                    // дата начала выбранного месяца и следующего месяца
+                    var firstDayDate = new Date(`${mm}/${1}/${yyyy}`);
+                    var nextMm = parseInt(mm) + 1;
+                    var firstDayOfNextMonthDate = new Date(`${nextMm}/${1}/${yyyy}`);
+
+                    // даты в юникс времени
+                    var firstDayUnixTime = parseInt((firstDayDate.getTime() / 1000).toFixed(0));
+                    var firstDayOfNextMonthUnixTime = parseInt((firstDayOfNextMonthDate.getTime() / 1000).toFixed(0));
+
+                    // начало месяца и конец месяца
+                    // конец месяца = начало следующего месяца -1 секунда
+                    filterOptions["timePeriodStart"] = firstDayUnixTime - timeOffset;
+                    filterOptions["timePeriodEnd"] = firstDayOfNextMonthUnixTime - timeOffset - 1;
+                    showDealsWithFilterOptions();
+                }
+            }
+        });*/
+
+        /*$(".filterControls .timePeriodContainer .specificMonthSelectorContainer").on("click", ".yearContainer", function () {
+            $(".filterControls .timePeriodContainer .specificMonthSelectorContainer .yearContainer.selected").removeClass("selected");
+            $(this).addClass("selected");
+            var yyyy = $(this).attr("data-value");
+            if (yyyy.length > 0) {
+                var mm = $(".filterControls .timePeriodContainer .specificMonthSelectorContainer .monthContainer.selected").attr("data-value");
+                if (mm.length > 0) {
+                    $(".filterControls .timePeriod").addClass("btn-primary");
+
+                    // дата начала выбранного месяца и следующего месяца
+                    var firstDayDate = new Date(`${mm}/${1}/${yyyy}`);
+                    var nextMm = parseInt(mm) + 1;
+                    var firstDayOfNextMonthDate = new Date(`${nextMm}/${1}/${yyyy}`);
+
+                    // даты в юникс времени
+                    var firstDayUnixTime = parseInt((firstDayDate.getTime() / 1000).toFixed(0));
+                    var firstDayOfNextMonthUnixTime = parseInt((firstDayOfNextMonthDate.getTime() / 1000).toFixed(0));
+
+                    // начало месяца и конец месяца
+                    // конец месяца = начало следующего месяца -1 секунда
+                    filterOptions["timePeriodStart"] = firstDayUnixTime - timeOffset;
+                    filterOptions["timePeriodEnd"] = firstDayOfNextMonthUnixTime - timeOffset - 1;
+                    showDealsWithFilterOptions();
+                }
+            }
+        });*/
+
+        var acceptedDateSeparatorRegex = /[\/\-]/g;
+        var dateRegex = /[\d\.]*/;
+        var dotRegex = /\./g;
+        var nonZeroDigitRegex = /[1-9]/;
+
+        $("#datefromDesk, #datetoDesk").on("keyup", function () {
+            var filterName = $(this).attr("id") == "datefromDesk" ? "timePeriodStart" : "timePeriodEnd";
+
+            var value = $(this).val();
+
+            if (value.length == 0) {
+                filterOptions[filterName] = "";
+                showDealsWithFilterOptions();
+                return;
+            }
+
+            // заменяем / и - на .
+            value = value.replace(acceptedDateSeparatorRegex, ".");
+            // выбрасываем все кроме цифр и точек
+            var match = value.match(dateRegex);
+            if (match != value) {
+                value = match;
+                $(this).val(value);
+            }
+
+            // если введенная строка заканчивается точкой, не обрабатывать
+            if (value[value.length - 1] == "." && value.match(dotRegex).length < 3)
+                return;
+
+            var dateParts = value.split(".");
+
+            var dd = dateParts[0];
+            var ddInt = parseInt(dd);
+            var mm = dateParts.length > 1 ? dateParts[1] : "";
+            var mmInt = parseInt(mm);
+            var yyyy = dateParts.length > 2 ? dateParts[2] : "";
+            var yyyyInt = parseInt(yyyy);
+
+            // если введена дата длиннее 2 символов
+            if (dd && dd.length > 2) {
+                // если юзер начинает вводить месяц без точки
+                if (!mm && !yyyy) {
+                    mm = dd.slice(2);
+                    mmInt = parseInt(mm);
+                    dd = dd.slice(0, 2);
+                    ddInt = parseInt(dd);
+                    value = `${dd}.${mm}`;
+                    $(this).val(value);
+                }
+            }
+            if (dd && dd.length > 2) {
+                // если лишние нули в дате, убираем
+                if (dd[0] == "0") {
+                    dd = dd.slice(dd.indexOf(nonZeroDigitRegex));
+                    ddInt = parseInt(dd);
+                    value = dd;
+                    if (mm)
+                        value += `.${mm}`;
+                    if (yyyy)
+                        value += `.${yyyy}`;
+                    $(this).val(value);
+                }
+            }
+
+            // если введен месяц длиннее 2 символов
+            if (mm && mm.length > 2) {
+                // если юзер начинает вводить год без точки
+                if (!yyyy) {
+                    yyyy = mm.slice(2);
+                    yyyyInt = parseInt(yyyy);
+                    mm = mm.slice(0, 2);
+                    mmInt = parseInt(mm);
+                    value = `${dd}.${mm}.${yyyy}`;
+                    $(this).val(value);
+                }
+            }
+            if (mm && mm.length > 2) {
+                // если лишние нули в месяце, убираем
+                if (mm[0] == "0") {
+                    mm = mm.slice(mm.indexOf(nonZeroDigitRegex));
+                    mmInt = parseInt(mm);
+                    value = `${dd}.${mm}`;
+                    if (yyyy)
+                        value += `.${yyyy}`;
+                    $(this).val(value);
+                }
+            }
+
+            // если введен неверный день, ставим ближайший верный
+            if (ddInt && (ddInt < 1 || ddInt > 31)) {
+                ddInt = ddInt < 1 ? 1 : 31;
+                dd = ddInt + "";
+                value = dd;
+                if (mm)
+                    value += `.${mm}`;
+                if (yyyy)
+                    value += `.${yyyy}`;
+                $(this).val(value);
+            }
+
+            // если введен неверный месяц, ставим ближайший верный
+            if (mmInt && (mmInt < 1 || mmInt > 12)) {
+                mmInt = mmInt < 1 ? 1 : 12;
+                mm = mmInt + "";
+                value = `${dd}.${mm}`;
+                if (yyyy)
+                    value += `.${yyyy}`;
+                $(this).val(value);
+            }
+
+            // если введен неверный год, ставим ближайший верный
+            if (yyyyInt && (yyyyInt < 1 || yyyyInt > @DateTime.Now.Year)) {
+                yyyyInt = yyyyInt < 1 ? 1 : @DateTime.Now.Year;
+                yyyy = yyyyInt + "";
+                value = `${dd}.${mm}.${yyyy}`;
+                $(this).val(value);
+            }
+        });
+
+        $(".date-btns .yes").on("click", function () {
+            var dateString = $("#datefromDesk").val();
+            var dd = dateString.slice(0, dateString.indexOf("."));
+            var mm = dateString.slice(dd.length + 1, dateString.indexOf(".", dd.length + 1));
+            var yyyy = dateString.slice(dd.length + mm.length + 2);
+            var date = new Date(`${mm}/${dd}/${yyyy}`);
+            var unixTime = parseInt((date.getTime() / 1000).toFixed(0));
+            unixTime = unixTime - timeOffset;
+            filterOptions["timePeriodStart"] = unixTime;
+
+            dateString = $("#datetoDesk").val();
+            dd = (parseInt(dateString.slice(0, dateString.indexOf("."))) + 1) + "";
+            dd = dd.length == 1 ? "0" + dd : dd + "";
+            mm = dateString.slice(dd.length + 1, dateString.indexOf(".", dd.length + 1));
+            yyyy = dateString.slice(dd.length + mm.length + 2);
+            date = new Date(`${mm}/${dd}/${yyyy}`);
+            unixTime = parseInt((date.getTime() / 1000).toFixed(0));
+            unixTime = unixTime - timeOffset;
+            filterOptions["timePeriodEnd"] = unixTime;
+
+            showDealsWithFilterOptions();
+        });
+
+        $(".cats-list-desktop li").on("click", function () {
+            $(this).toggleClass("selected");
+
+            var selectedCategories = $(".cats-list-desktop li.selected");
+
+            if ($(selectedCategories).length > 0)
+                filterOptions["productCategories"] =
+                    $.map(
+                        $(selectedCategories),
+                        function (e) { return $(e).attr("data-value") });
+            else
+                filterOptions["productCategories"] = [];
+
+            showDealsWithFilterOptions();
+        });
+
+        $(".btn-cats-desk").siblings(".ico").on("click", function () {
+            $(".cats-list-desktop li.selected").toggleClass("selected");
+            filterOptions["productCategories"] = [];
+            showDealsWithFilterOptions();
+        });
+
+        $(".desk-find__counter-wrapper .counter-list-item").on("click", function () {
+            $(this).toggleClass("selected");
+
+            var selectedCounteragents = $(".desk-find__counter-wrapper .counter-list-item.selected");
+
+            if ($(selectedCounteragents).length > 0)
+                filterOptions["counteragents"] =
+                    $.map(
+                        $(selectedCounteragents),
+                        function (e) { return $(e).attr("data-id") });
+            else
+                filterOptions["counteragents"] = [];
+
+            showDealsWithFilterOptions();
+        });
+
+        $(".desk-find__counter-wrapper .input-block input").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+
+            if (value.length > 0)
+                $(".desk-find__counter-wrapper .counter-list-item").each(function () {
+                    if ($(this).html().toLowerCase().includes(value))
+                        $(this).show();
+                    else
+                        $(this).hide();
+                });
+            else
+                $(".desk-find__counter-wrapper .counter-list-item").show();
+        });
+
+        $(".draft-deal.delete__draft .yes").on("click", function () {
+            var adId = $(this).closest(".singleDealContainer").attr("data-ad-id");
+            var offerId = $(this).closest(".singleDealContainer").attr("data-offer-id");
+            $.post("@ViewBag.L.SiteUrlClear/User/RemoveDealFromDealsHistory", {
+                adId: adId,
+                offerId: offerId
+            })
+        });
+
+
+        $(".dealsContainer").on("click", ".singleDealContainer .declineRemoveDeal", function () {
+            $(this).closest(".singleDealContainer").find(".removeDealConfirmationContainer").hide();
+        });
+    });
+</script>

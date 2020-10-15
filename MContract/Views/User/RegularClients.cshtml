@@ -1,0 +1,157 @@
+﻿@model MContract.Models.UserRegularClients
+@{
+	ViewBag.Title = "Постоянные клиенты";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	var regularClients = Model.RegularClients;
+}
+
+
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/lk-layout.css?p=2020-10-10-a">
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/Companies.css?p=2020-10-10-a">
+
+@{
+	Html.RenderPartial("_MobileMenu", Model.MobileMenuViewModel);
+}
+
+<section class="header-pc">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12 col-md-5 col-lg-4">
+				<div class="offer__title">
+					<h1>Личный кабинет</h1>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-5 col-lg-7">
+				<div class="offer__open">
+					<div class="open">
+						Постоянные клиенты
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md col-lg-1 mobile-first">
+				<div class="product__crumbs">
+					<span class="page"><a href="@ViewBag.L.SiteUrlClear">Главная</a></span>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<main>
+	
+	<!-- Постоянные клиенты -->
+	<section class="lk__main__wrapper">
+		<div class="container">
+			<div class="row">
+				@{
+					Html.RenderPartial("_LeftMenu", Model.LeftMenuViewModel);
+				}
+				<div class="col-sm-12 mobile__off">
+					<div class="lk__main-title">
+						Постоянные клиенты
+					</div>
+				</div>
+				<div class="col-sm-12 col-md-9">
+					<div class="company__wrapper">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="company__count-block">
+									<div class="company__count-title">
+										Всего контрагентов:
+									</div>
+									<div class="company__count-num">
+										@regularClients.Count()
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 mobile__off">
+								<div class="company__find-block">
+									<div class="input">
+										<input type="text" placeholder="Поиск по списку ...">
+										<div class="ico"></div>
+									</div>
+								</div>
+							</div>
+							@if (!regularClients.Any())
+							{
+								<span id="noClientsYetSpan" style="margin-left: 30px">Вы еще не добавили постоянных клиентов.</span>
+							}
+							<div class="col-sm-12">
+								<div class="company__list-block">
+									@foreach (var user in regularClients)
+									{
+										<div class="company__list-item" id="divForRegClientUserId_@user.Id">
+											<div class="close">
+											</div>
+											<div class="img">
+												<img src="@user.SmallPhotoUrl" alt="">
+											</div>
+											<div class="info">
+												<div class="rate">
+													<div class="ico"></div>
+													<div class="num">@user.Rating</div>
+													@Html.Raw(user.RatingImagesViaDivsHtml)
+												</div>
+												<div class="oo">
+													@user.CompanyNameWithTypeOfOwnership
+												</div>
+												<div class="city">
+													@(user.Town?.NameAndRegionNameWithComma)
+												</div>
+											</div>
+											<div class="company__list-item-delete closed">
+												<div class="title">
+													Удалить из списка постоянных клиентов?
+												</div>
+												<div class="btns-block">
+													<div class="btn-item yes" onclick="deleteFromRegularClients(@user.Id)">
+														Да
+													</div>
+													<div class="btn-item no">
+														Нет
+													</div>
+												</div>
+											</div>
+										</div>
+									}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- // Постоянные клиенты -->
+	<!-- Слайдер "Вы недавно смотрели" -->
+	@{
+		Html.RenderPartial("_AdsSlider", Model.AdsSliderViewModel);
+	}
+</main>
+
+<script src="@ViewBag.L.SiteUrlClear/js/offer.js?p=2020-10-10-a"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/lk-main.js?p=2020-10-10-a"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/companies.js?p=2020-10-10-a"></script>
+
+<script type="text/javascript">
+	function deleteFromRegularClients(clientUserId) {
+		$.post("@ViewBag.L.SiteUrlClear/User/ChangeRegularClient", {
+                userId: @(Model.CurrentUserId),
+				clientId: clientUserId,
+				isDelete: true
+		}, function (result) {
+			if (result == "True") {
+				$('#divForRegClientUserId_' + clientUserId).hide();
+				let clientsCount = parseInt($('.company__count-num').html());
+				clientsCount--;
+				$('.company__count-num').html(clientsCount);
+				if (clientsCount == 0) {
+					$('#noClientsYetSpan').show();
+				}
+				
+			}
+			else
+				alert(result);
+		});
+	}
+
+</script>

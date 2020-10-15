@@ -1,0 +1,575 @@
+﻿@model MContract.Models.UserDealsHistoryViewModel
+@{
+    ViewBag.Title = ViewBag.Heading;
+    Layout = "~/Views/Shared/_LayoutOld.cshtml";
+}
+
+@section Styles{
+    <link href="@Url.Content("~/css/User/DealsHistory.css")?p=20200715" rel="stylesheet" type="text/css" />
+    <link href="~/js/jquery-ui/jquery-ui.css?p=202006112" rel="stylesheet" type="text/css" />
+}
+@{
+    var personalAreaUser = ViewBag.L.PersonalAreaUser != null ? (MContract.Models.User)ViewBag.L.PersonalAreaUser : null;
+    @*if (personalAreaUser != null)
+        {
+            Html.RenderPartial("_PersonalAreaOld", personalAreaUser);
+        }*@
+}
+
+
+<span style="font-size: larger; font-weight: bold">Личный кабинет</span> | История сделок
+<div style="text-align: right"><a href="@ViewBag.L.SiteUrlClear">Главная</a> ></div>
+
+<div class="filterControls">
+    <div class="allDeals btn btn-primary">
+        <span class="controlName">Все объявления</span>
+    </div>
+
+    <div class="onlySells btn">
+        <span class="controlName">Продажи</span>
+    </div>
+
+    <div class="onlyBuys btn">
+        <span class="controlName">Закупки</span>
+    </div>
+
+    <div class="timePeriodContainer">
+        <div class="timePeriod btn">
+            <span class="controlName">Период</span>
+            <div class="arrowDown"></div>
+        </div>
+
+        <div class="typeOfTimePeriodContainer">
+            <div class="timePeriodLastWeek">
+                За неделю
+            </div>
+            <div class="timePeriodSpecificMonth">
+                За месяц
+            </div>
+            <div class="timePeriodStartAndEnd">
+                За период...
+            </div>
+        </div>
+
+        <div class="specificMonthContainer optionsContainer">
+            <div class="specificMonthSelectorContainer">
+                <div class="monthsContainer">
+                    <div class="monthContainer" data-value="1">Январь</div>
+                    <div class="monthContainer" data-value="2">Февраль</div>
+                    <div class="monthContainer" data-value="3">Март</div>
+                    <div class="monthContainer" data-value="4">Апрель</div>
+                    <div class="monthContainer" data-value="5">Май</div>
+                    <div class="monthContainer" data-value="6">Июнь</div>
+                    <div class="monthContainer" data-value="7">Июль</div>
+                    <div class="monthContainer" data-value="8">Август</div>
+                    <div class="monthContainer" data-value="9">Сентябрь</div>
+                    <div class="monthContainer" data-value="10">Октябрь</div>
+                    <div class="monthContainer" data-value="11">Ноябрь</div>
+                    <div class="monthContainer" data-value="12">Декабрь</div>
+                </div>
+                <div class="yearsContainer">
+                    @{
+                        var startYear = 2020;
+                        var nowYear = DateTime.Now.Year;
+                        for (var i = startYear; i <= nowYear; i++)
+                        {
+                            <div class="yearContainer@(i == nowYear ? " selected" : "")" data-value="@i">@i</div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="startAndEndPeriodContainer optionsContainer">
+            <div class="chooseSpecificMonth">Выбрать месяц и год</div>
+            с <input class="timePeriodStart" /> по <input class="timePeriodEnd" />
+        </div>
+    </div>
+
+    <div class="productCategoriesContainer">
+        <div class="productCategories btn">
+            <span class="controlName">Категория товара</span>
+            <div class="arrowDown"></div>
+        </div>
+
+        <div class="optionsContainer">
+            @if (Model.ProductCategories.Any())
+            {
+                foreach (var category in Model.ProductCategories)
+                {
+                    <div class="categoryContainer" data-value="@category.Id">
+                        <span class="categoryName">@category.Name</span>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="counteragentsContainer">
+        <div class="counteragents btn">
+            <span class="controlName">Контрагент</span>
+            <div class="arrowDown"></div>
+        </div>
+
+        <div class="optionsContainer">
+            <input class="counteragentSearchbar" />
+            @foreach (var counteragent in Model.Counteragents)
+            {
+                <div class="counteragentContainer" data-value="@counteragent.Id">
+                    <span class="counteragentName">@counteragent.CompanyNameWithTypeOfOwnership, @counteragent.TownName</span>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div style="height: 160px">
+</div>
+<div class="dealsContainer">
+    <h2 class="noMatches">Нет сделок</h2>
+    @{
+        var placeholderUrl = MContract.AppCode.PhotoHelper.NoLogoImageUrl;
+        var unixEpochStart = new DateTime(1970, 1, 1);
+    }
+    @foreach (var deal in Model.Deals)
+	{
+		var ad = deal.Ad;
+		var offer = deal.Offer;
+		var counteragent = deal.Counteragent;
+		var currentUser = ViewBag.L.PersonalAreaUser;
+		var currentUserId = currentUser != null ? currentUser.Id : 0;
+		var unixDate = 0;
+		if (deal.Date != DateTime.MinValue)
+		{
+			unixDate = (int)(deal.Date.Subtract(unixEpochStart)).TotalSeconds;
+		}
+		if (ad == null)
+		{
+			continue;
+		}
+		var adBestFitPhotoUrl = "";
+		if (ad.MainPhotoGroup != null && ad.MainPhotoGroup.Any())
+		{
+			var requiredDimension = 200;
+			var smallestDimensionDifference = ad.MainPhotoGroup.Min(p => Math.Abs(p.HigherDimension.Value - requiredDimension));
+			var bestFitPhoto = ad.MainPhotoGroup.Find(p => Math.Abs(p.HigherDimension.Value - requiredDimension) == smallestDimensionDifference);
+			if (bestFitPhoto != null)
+			{
+				adBestFitPhotoUrl = bestFitPhoto.Url;
+			}
+		}
+		var counteragentBestFitPhotoUrl = placeholderUrl;
+		if (counteragent.LogoGroup != null && counteragent.LogoGroup.Any())
+		{
+			var requiredDimension = 200;
+			var smallestDimensionDifference = counteragent.LogoGroup.Min(p => Math.Abs(p.HigherDimension.Value - requiredDimension));
+			var bestFitPhoto = counteragent.LogoGroup.Find(p => Math.Abs(p.HigherDimension.Value - requiredDimension) == smallestDimensionDifference);
+			if (bestFitPhoto != null)
+			{
+				counteragentBestFitPhotoUrl = bestFitPhoto.Url;
+			}
+		}
+        <div class="singleDealContainer@(deal.IsDealForMyAd ? " dealForMyAd" : "")@(ad.IsBuy ? " adIsBuy" : "")"
+             data-ad-id="@ad.Id"
+             data-offer-id="@offer.Id"
+             data-product-category-ids="@string.Join(",", deal.ProductCategoryIds)"
+             data-counteragent-id="@counteragent.Id"
+             data-date="@unixDate">
+            <div class="adInfoContainer">
+                <a href="@(ad.DealCardUrl)" class="adPhotoContainer">
+                    <img src="@(adBestFitPhotoUrl != "" ? adBestFitPhotoUrl : placeholderUrl)" class="adPhoto" style="height: 180px; width: 180px" />
+                </a>
+                <a href="@(ad.DealCardUrl)" class="textContainer">
+                    <p class="adNameContainer">
+                        @ad.Name
+                    </p>
+                    <div class="informationContainer">
+                        <p class="senderInformation">
+                            @(ad.Sender?.CompanyNameWithTypeOfOwnership)
+                            @(ad.Sender.Town != null ? ", " + ad.Sender.TownName : "")<br />
+                            Город нахождения груза: @(ad.City != null ? ad.City.NameAndRegionName : "")
+                        </p>
+                        <p class="productCategoryNames">@Html.Raw(ad.ProductCategoryNames)</p>
+                        <p>Общий вес: @ad.Products.Sum(product => product.Weight) тн.</p>
+                    </div>
+                    <p>
+                        @if (deal.Date != DateTime.MinValue)
+                        {
+                            @:Дата сделки: <span class="dateOfDeal">@deal.Date.ToString("o")</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                        }
+                        Сумма: @offer.SumOffer.ToString("N") ₽
+                    </p>
+                </a>
+            </div>
+			
+            @if (deal.IsDealForMyAd == false)
+            {
+                counteragent = personalAreaUser;
+            }
+			@{ 
+				string startA = deal.IsDealForMyAd ? "<a class=\"counteragentContainer\" href=\"" + counteragent.Url + "\">" : "";
+				string endA = deal.IsDealForMyAd ? "</a>" : "";
+			}
+			@Html.Raw(startA)
+                <b>Контрагент</b><br />
+                <div class="counteragentLogoContainer">
+                    <img src="@counteragentBestFitPhotoUrl" class="counteragentLogo" /><br />
+                </div>
+                @(counteragent?.Town?.NameAndRegionNameWithComma)<br />
+                @counteragent.CompanyNameWithTypeOfOwnership
+            @Html.Raw(endA)
+            <a class="removeDealFromDealsHistory" style="font-size:xx-large; cursor: pointer" title="Удалить из списка">x</a>
+            <div class="removeDealConfirmationContainer">
+                <span class="removeDealText">
+                    Информация об этой сделке будет удалена без возможности восстановления.<br />
+                    Вы подтверждаете это?
+                </span>
+                <div class="removeDealButtonsContainer">
+                    <button class="confirmRemoveDeal btn btn-danger">Да</button>
+                    <button class="declineRemoveDeal btn btn-primary">Нет</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script src="~/js/user/replaceIsoDateWithLocalDate.js" type="text/javascript"></script>
+<script src="~/js/jquery-ui/jquery-ui.js"></script>
+<script type="text/javascript">
+    var filterOptions = {
+        allDeals: true,
+        onlyBuys: false,
+        onlySells: false,
+        timePeriodStart: "",
+        timePeriodEnd: "",
+        productCategories: {},
+        counteragents: {}
+    }
+    var timeOffset = new Date().getTimezoneOffset() * 60;
+    function showDealsWithFilterOptions() {
+        $(".singleDealContainer").each(function () {
+            var showThis = true;
+
+            if (filterOptions["allDeals"] == false) {
+                var thisIsDealForAd = $(this).hasClass("dealForMyAd");
+                var thisAdIsBuy = $(this).hasClass("adIsBuy")
+                var thisDealIsBuy =
+                    thisIsDealForAd == true && thisAdIsBuy == true
+                    || thisIsDealForAd == false && thisAdIsBuy == false;
+
+                if (filterOptions["onlyBuys"] == true && thisDealIsBuy == false || filterOptions["onlySells"] == true && thisDealIsBuy == true)
+                    showThis = false;
+            }
+
+            if (filterOptions["timePeriodStart"] != "" || filterOptions["timePeriodEnd"] != "") {
+                var date = parseInt($(this).attr("data-date"));
+                if (typeof date === "undefined"
+                    || filterOptions["timePeriodStart"] != "" && date < filterOptions["timePeriodStart"]
+                    || filterOptions["timePeriodEnd"] != "" && date > filterOptions["timePeriodEnd"])
+                    showThis = false;
+            }
+
+            if (filterOptions["productCategories"].length > 0) {
+                var productCategories = $(this).attr("data-product-category-ids").split(",");
+
+                if (productCategories.length > 0 && !filterOptions["productCategories"].some(c => productCategories.includes(c)))
+                    showThis = false;
+            }
+
+            if (filterOptions["counteragents"].length > 0) {
+                var counteragentId = $(this).attr("data-counteragent-id");
+
+                if (counteragentId.length > 0 && !filterOptions["counteragents"].some(c => counteragentId == c))
+                    showThis = false;
+            }
+
+            if (showThis == true)
+                $(this).show();
+            else
+                $(this).hide();
+        });
+        if ($(".singleDealContainer:visible").length == 0)
+            $(".dealsContainer .noMatches").show();
+        else
+            $(".dealsContainer .noMatches").hide();
+    }
+    jQuery(document).ready(function ($) {
+        replaceIsoDateTimeWithLocalDateTime($(".dateOfDeal"));
+        $(".filterControls .timePeriodContainer .optionsContainer").find(".timePeriodStart, .timePeriodEnd").datepicker({
+            dateFormat: "dd.mm.yy"
+        });
+
+        // выбор вида сделок - все, покупки, продажи
+
+        $(".filterControls .allDeals").on("click", function () {
+            if (!$(this).hasClass("btn-primary")) {
+                $(this).addClass("btn-primary");
+                $(".filterControls .onlyBuys").removeClass("btn-primary");
+                $(".filterControls .onlySells").removeClass("btn-primary");
+            }
+            filterOptions["allDeals"] = true;
+            filterOptions["onlyBuys"] = false;
+            filterOptions["onlySells"] = false;
+            showDealsWithFilterOptions();
+        });
+
+        $(".filterControls .onlyBuys").on("click", function () {
+            if (!$(this).hasClass("btn-primary")) {
+                $(this).addClass("btn-primary");
+                $(".filterControls .allDeals").removeClass("btn-primary");
+                $(".filterControls .onlySells").removeClass("btn-primary");
+            }
+            filterOptions["allDeals"] = false;
+            filterOptions["onlyBuys"] = true;
+            filterOptions["onlySells"] = false;
+            showDealsWithFilterOptions();
+        });
+
+        $(".filterControls .onlySells").on("click", function () {
+            if (!$(this).hasClass("btn-primary")) {
+                $(this).addClass("btn-primary");
+                $(".filterControls .allDeals").removeClass("btn-primary");
+                $(".filterControls .onlyBuys").removeClass("btn-primary");
+            }
+            filterOptions["allDeals"] = false;
+            filterOptions["onlyBuys"] = false;
+            filterOptions["onlySells"] = true;
+            showDealsWithFilterOptions();
+        });
+
+        // выбор периода
+
+        $(".filterControls .timePeriod").on("click", function () {
+            var optionsContainer = $(".filterControls .timePeriodContainer .optionsContainer");
+            var typeOfTimePeriodContainer = $(".filterControls .timePeriodContainer .typeOfTimePeriodContainer");
+
+            if ($(optionsContainer).filter(":visible").length > 0) {
+                $(optionsContainer).hide();
+                $(typeOfTimePeriodContainer).show();
+                $(".filterControls").find(".productCategoriesContainer, .counteragentsContainer").find(".optionsContainer:visible").hide();
+            } else if ($(typeOfTimePeriodContainer).is(":visible")) {
+                $(typeOfTimePeriodContainer).hide();
+            } else if (!$(typeOfTimePeriodContainer).is(":visible")) {
+                $(typeOfTimePeriodContainer).show();
+            }
+        });
+
+        $(".filterControls .timePeriodContainer .typeOfTimePeriodContainer .timePeriodLastWeek").on("click", function () {
+
+        });
+
+        $(".filterControls .timePeriodContainer .typeOfTimePeriodContainer .timePeriodSpecificMonth").on("click", function () {
+            $(".filterControls .timePeriodContainer .typeOfTimePeriodContainer").hide();
+            $(".filterControls .timePeriodContainer .specificMonthContainer").show();
+        });
+
+        $(".filterControls .timePeriodContainer .typeOfTimePeriodContainer .timePeriodStartAndEnd").on("click", function () {
+            $(".filterControls .timePeriodContainer .typeOfTimePeriodContainer").hide();
+            $(".filterControls .timePeriodContainer .startAndEndPeriodContainer").show();
+        });
+
+        $(".filterControls .timePeriodContainer .chooseSpecificMonth").on("click", function () {
+            $(".filterControls .timePeriodContainer .startAndEndPeriodContainer").hide();
+            $(".filterControls .timePeriodContainer .specificMonthContainer").show();
+        });
+
+        $(".filterControls .timePeriodContainer .specificMonthSelectorContainer").on("click", ".monthContainer", function () {
+            $(".filterControls .timePeriodContainer .specificMonthSelectorContainer .monthContainer.selected").removeClass("selected");
+            $(this).addClass("selected");
+            var mm = $(this).attr("data-value");
+            if (mm.length > 0) {
+                var yyyy = $(".filterControls .timePeriodContainer .specificMonthSelectorContainer .yearContainer.selected").attr("data-value");
+                if (yyyy.length > 0) {
+                    $(".filterControls .timePeriod").addClass("btn-primary");
+
+                    // дата начала выбранного месяца и следующего месяца
+                    var firstDayDate = new Date(`${mm}/${1}/${yyyy}`);
+                    var nextMm = parseInt(mm) + 1;
+                    var firstDayOfNextMonthDate = new Date(`${nextMm}/${1}/${yyyy}`);
+
+                    // даты в юникс времени
+                    var firstDayUnixTime = parseInt((firstDayDate.getTime() / 1000).toFixed(0));
+                    var firstDayOfNextMonthUnixTime = parseInt((firstDayOfNextMonthDate.getTime() / 1000).toFixed(0));
+
+                    // начало месяца и конец месяца
+                    // конец месяца = начало следующего месяца -1 секунда
+                    filterOptions["timePeriodStart"] = firstDayUnixTime - timeOffset;
+                    filterOptions["timePeriodEnd"] = firstDayOfNextMonthUnixTime - timeOffset - 1;
+                    showDealsWithFilterOptions();
+                }
+            }
+        });
+
+        $(".filterControls .timePeriodContainer .specificMonthSelectorContainer").on("click", ".yearContainer", function () {
+            $(".filterControls .timePeriodContainer .specificMonthSelectorContainer .yearContainer.selected").removeClass("selected");
+            $(this).addClass("selected");
+            var yyyy = $(this).attr("data-value");
+            if (yyyy.length > 0) {
+                var mm = $(".filterControls .timePeriodContainer .specificMonthSelectorContainer .monthContainer.selected").attr("data-value");
+                if (mm.length > 0) {
+                    $(".filterControls .timePeriod").addClass("btn-primary");
+
+                    // дата начала выбранного месяца и следующего месяца
+                    var firstDayDate = new Date(`${mm}/${1}/${yyyy}`);
+                    var nextMm = parseInt(mm) + 1;
+                    var firstDayOfNextMonthDate = new Date(`${nextMm}/${1}/${yyyy}`);
+
+                    // даты в юникс времени
+                    var firstDayUnixTime = parseInt((firstDayDate.getTime() / 1000).toFixed(0));
+                    var firstDayOfNextMonthUnixTime = parseInt((firstDayOfNextMonthDate.getTime() / 1000).toFixed(0));
+
+                    // начало месяца и конец месяца
+                    // конец месяца = начало следующего месяца -1 секунда
+                    filterOptions["timePeriodStart"] = firstDayUnixTime - timeOffset;
+                    filterOptions["timePeriodEnd"] = firstDayOfNextMonthUnixTime - timeOffset - 1;
+                    showDealsWithFilterOptions();
+                }
+            }
+        });
+
+        $(".filterControls .timePeriodContainer .timePeriodStart").on("change", function () {
+            var value = $(this).val();
+
+            if (value.length == 0) {
+                filterOptions["timePeriodStart"] = "";
+                return;
+            }
+
+            $(".filterControls .timePeriodContainer .specificMonthSelectorContainer .monthContainer.selected").removeClass("selected");
+
+            $(".filterControls .timePeriod").addClass("btn-primary");
+
+            var dateParts = value.split(".");
+            var dd = dateParts[0];
+            var mm = dateParts[1];
+            var yyyy = dateParts[2];
+
+            // формат mm/dd/yyyy
+            var date = new Date(`${mm}/${dd}/${yyyy}`);
+            var unixTime = parseInt((date.getTime() / 1000).toFixed(0));
+            unixTime = unixTime - timeOffset;
+
+            filterOptions["timePeriodStart"] = unixTime;
+            showDealsWithFilterOptions();
+        });
+
+        $(".filterControls .timePeriodContainer .timePeriodEnd").on("change", function () {
+            var value = $(this).val();
+
+            if (value.length == 0) {
+                filterOptions["timePeriodEnd"] = "";
+                return;
+            }
+
+            $(".filterControls .timePeriodContainer .specificMonthSelectorContainer .monthContainer.selected").removeClass("selected");
+
+            $(".filterControls .timePeriod").addClass("btn-primary");
+
+            var dateParts = value.split(".");
+            var dd = dateParts[0];
+            var mm = dateParts[1];
+            var yyyy = dateParts[2];
+
+            // формат mm/dd/yyyy
+            var date = new Date(`${mm}/${dd}/${yyyy}`);
+            var unixTime = parseInt((date.getTime() / 1000).toFixed(0));
+            unixTime = unixTime - timeOffset + (24 * 60 * 60 - 1); // 24*60*60 - 1 = 23:59:59, для получения конца выбранного дня дня
+
+            filterOptions["timePeriodEnd"] = unixTime;
+            showDealsWithFilterOptions();
+        });
+        // выбор категорий
+
+        $(".filterControls .productCategories").on("click", function () {
+            var optionsContainer = $(".filterControls .productCategoriesContainer .optionsContainer");
+
+            $(optionsContainer).toggle();
+
+            if ($(optionsContainer).is(":visible"))
+                $(".filterControls").find(".timePeriodContainer, .counteragentsContainer").find(".optionsContainer:visible").hide();
+        });
+
+        $(".filterControls .productCategoriesContainer .optionsContainer .categoryContainer").on("click", function () {
+            $(this).toggleClass("selected");
+
+            var selectedCategories = $(".filterControls .productCategoriesContainer .optionsContainer .categoryContainer.selected");
+
+            if ($(selectedCategories).length > 0)
+                $(".filterControls .productCategories").addClass("btn-primary");
+            else
+                $(".filterControls .productCategories").removeClass("btn-primary");
+
+            filterOptions["productCategories"] =
+                $.map(
+                    $(selectedCategories),
+                    function (e) { return $(e).attr("data-value") });
+
+            showDealsWithFilterOptions();
+        });
+
+        // выбор контрагентов
+
+        $(".filterControls .counteragents").on("click", function () {
+            var optionsContainer = $(".filterControls .counteragentsContainer .optionsContainer");
+
+            $(optionsContainer).toggle();
+
+            if ($(optionsContainer).is(":visible"))
+                $(".filterControls").find(".timePeriodContainer, .productCategoriesContainer").find(".optionsContainer:visible").hide();
+        });
+
+        $(".filterControls .counteragentsContainer .optionsContainer .counteragentContainer").on("click", function () {
+            $(this).toggleClass("selected");
+
+            var selectedCounteragents = $(".filterControls .counteragentsContainer .optionsContainer .counteragentContainer.selected");
+
+            if ($(selectedCounteragents).length > 0)
+                $(".filterControls .counteragents").addClass("btn-primary");
+            else
+                $(".filterControls .counteragents").removeClass("btn-primary");
+
+            filterOptions["counteragents"] =
+                $.map(
+                    $(selectedCounteragents),
+                    function (e) { return $(e).attr("data-value") });
+
+            showDealsWithFilterOptions();
+        });
+
+        $(".filterControls .counteragentsContainer .optionsContainer .counteragentSearchbar").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+
+            if (value.length > 0) {
+                $(".filterControls .counteragentsContainer .optionsContainer .counteragentContainer").each(function () {
+                    if ($(this).find(".counteragentName").html().toLowerCase().includes(value))
+                        $(this).show();
+                    else
+                        $(this).hide();
+                });
+            } else {
+                $(".filterControls .counteragentsContainer .optionsContainer .counteragentContainer").show();
+            }
+        });
+
+		$(".dealsContainer").on("click", ".singleDealContainer .removeDealFromDealsHistory", function () {
+            $(this).closest(".singleDealContainer").find(".removeDealConfirmationContainer").show();
+            return;
+        });
+
+        $(".dealsContainer").on("click", ".singleDealContainer .confirmRemoveDeal", function () {
+            var adId = $(this).closest(".singleDealContainer").attr("data-ad-id");
+            var offerId = $(this).closest(".singleDealContainer").attr("data-offer-id");
+            $.post("@ViewBag.L.SiteUrlClear/User/RemoveDealFromDealsHistory", {
+                adId: adId,
+                offerId: offerId
+            })
+                .done(function (data) {
+                    if (data.toLowerCase() == "true")
+                        $(`.dealsContainer .singleDealContainer[data-ad-id=${adId}]`).remove();
+                })
+        });
+
+
+        $(".dealsContainer").on("click", ".singleDealContainer .declineRemoveDeal", function () {
+            $(this).closest(".singleDealContainer").find(".removeDealConfirmationContainer").hide();
+        });
+    });
+</script>

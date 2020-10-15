@@ -1,0 +1,232 @@
+﻿@model MContract.Models.AdsIndexViewModel
+
+@{
+    ViewBag.Title = ViewBag.Heading;
+    Layout = "~/Views/Shared/_LayoutOld.cshtml";
+}
+
+@section Styles{
+    <link href="@Url.Content("~/css/Ads/IndexOld.css")?p=20200615" rel="stylesheet" type="text/css" />
+}
+
+@*@{ if (Model.IsMy == true) { Html.RenderPartial("_PersonalArea", Model.PersonalAreaUser); } }*@
+
+    <h2>
+        @ViewBag.HeadingMainPart<span class="headingExtraPart">@ViewBag.HeadingExtraPart</span>
+    </h2>
+
+    @if (!Model.Ads.Any())
+    {
+        <h3>Пока нет объявлений</h3>
+    }
+    else if (Model.IsDrafts)
+    {
+        <button class="clearDrafts btn btn-primary">Очистить черновики</button>
+    }
+    @*else if (!Model.IsSearch)
+        {
+            <button class="btn showAll btn-primary">Все</button>
+            <button class="btn showBuy btn-secondary">Объявления о покупке</button>
+            <button class="btn showSell btn-secondary">Объявления о продаже</button>
+            <h3 class="noBuy">Пока нет объявлений</h3>
+            <h3 class="noSell">Пока нет объявлений</h3>
+        }*@
+@{
+    var currentUser = Model.PersonalAreaUser;
+    var currentUserId = Model.PersonalAreaUser != null ? Model.PersonalAreaUser.Id : 0;
+}
+@foreach (var ad in Model.Ads)
+{
+    if (ad == null)
+    {
+        continue;
+    }
+    var bestFitPhoto = new MContract.Models.Photo();
+    if (ad.MainPhotoGroup != null)
+    {
+        var requiredDimension = 200;
+        var smallestDimensionDifference = ad.MainPhotoGroup.Min(p => Math.Abs(p.HigherDimension.Value - requiredDimension));
+        bestFitPhoto = ad.MainPhotoGroup.Find(p => Math.Abs(p.HigherDimension.Value - requiredDimension) == smallestDimensionDifference);
+    }
+    string adUrl = "#";
+    string adOnclick = "";
+    if (ad.AvailableForAllUsers/*если открытый запрос предложений*/ || ad.SenderId == currentUserId)
+    {
+        adUrl = ad.Url;
+    }
+    else//иначе закрытый запрос предложений
+    {
+        if (currentUser != null && ad.InvitedUsersId != null && ad.InvitedUsersId.Contains(currentUser.Id))
+        {
+            adUrl = ad.Url;
+        }
+        else
+        {
+            if (currentUser == null || currentUser.Id == 0)
+            {
+                adOnclick = "alert('Это закрытое объявление, чтобы отправить свою заявку к участию, сначала авторизуйтесь')";
+            }
+            else
+            {
+                adOnclick = $"sendRequestForJoinAd({ad.Id})";
+            }
+        }
+    }
+    <div class="singleAdContainer @(ad.IsBuy ? "isBuy" : "") @(ad.Offers.Any() && ad.Offers.Any(o => o.ContractStatus == MContract.Models.Enums.ContractStatuses.Sent) ? "contractSent" : "")">
+        <div class="adIdHf" style="display: none">@ad.Id</div>
+        <a href="@(adUrl)" onclick="@(adOnclick)" class="adPhotoContainer">
+            <img src="@(ad.MainPhotoGroup != null ? bestFitPhoto.Url : "/Images/NoLogo.png")" class="adPhoto" />
+        </a>
+        <a href="@(adUrl)" onclick="@(adOnclick)" class="textContainer">
+            <p class="adNameContainer">
+                @ad.Name
+            </p>
+            <div class="informationContainer">
+                <p class="senderInformation">
+                    @if (ad.SenderId == Model.PersonalAreaUser?.Id || ad.AvailableForAllUsers)
+                    {
+                        @:@(ad.Sender?.CompanyNameWithTypeOfOwnership)
+                        @:@(ad.Sender.Town != null ? ", " + ad.Sender?.TownName : "")<br />
+                    }
+                    Город нахождения груза: @(ad.City != null ? ad.City.NameAndRegionName : "")
+                </p>
+                <p class="productCategoryNames">@ad.ProductCategoryNames</p>
+                <p>Общий вес: @ad.Products.Sum(product => product.Weight) тн.</p>
+            </div>
+            @if (ad.DateOfPosting != null)
+            {
+                <p class="dateOfPostingContainer">
+                    @ad.DateOfPosting.ToString("o")
+                </p>
+            }
+        </a>
+        @if (ad.AdStatus != MContract.Models.Enums.AdStatuses.Draft)
+        {
+            <div class="adIconsContainer">
+                @if (ad.SenderId == Model.PersonalAreaUser?.Id || (ad.AvailableForAllUsers && ad.OffersVisibleToOtherUsers))
+                {
+                    <div class="singleIconContainer">
+                        <span>Предложения: @ad.OffersCount</span>
+                        @*<img src="/ico/Numbered.svg" class="adIcon" />*@
+                    </div>
+                }
+                <div class="singleIconContainer">
+                    <span>Просмотры: @ad.ViewsCount</span>
+                    @*<img src="/ico/Overview.svg" class="adIcon" />*@
+                </div>
+                @if (ad.AdStatus == MContract.Models.Enums.AdStatuses.Finished)
+                {
+                    <div class="singleIconContainer">
+                        <span>Заключен контракт</span>
+                        @*<img src="/ico/Outdent.svg" class="adIcon" />*@
+                    </div>
+                }
+                else if (ad.DaysTillExpiration < 0)
+                {
+                    <div class="singleIconContainer">
+                        <span>Объявление истекло</span>
+                        @*<img src="/ico/Outdent.svg" class="adIcon" />*@
+                    </div>
+                }
+                else
+                {
+                    <div class="singleIconContainer">
+                        <span>Истекает через: @ad.DaysTillExpiration дней</span>
+                        @*<img src="/ico/Outdent.svg" class="adIcon" />*@
+                    </div>
+                }
+				@if (Model.IsMy && ad.AdStatus == MContract.Models.Enums.AdStatuses.Published)
+				{
+					<div>
+						<a href="" onclick="unpublish(@ad.Id)">Снять с публикации</a>
+					</div>
+				}
+            </div>
+        }
+    </div>
+}
+
+<script src="~/js/user/replaceIsoDateWithLocalDate.js?p=20200714" type="text/javascript"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        $(".noBuy, .noSell").hide();
+        replaceIsoDateTimeWithLocalDateTime($(".dateOfPostingContainer"));
+        $(".showAll").on("click", function () {
+            $(this).removeClass("btn-secondary").addClass("btn-primary");
+            $(this).siblings(".showBuy").removeClass("btn-primary").addClass("btn-secondary");
+            $(this).siblings(".showSell").removeClass("btn-primary").addClass("btn-secondary");
+            $(".singleAdContainer").show();
+            $(".noBuy").hide();
+            $(".noSell").hide();
+        });
+        $(".showBuy").on("click", function () {
+            $(this).removeClass("btn-secondary").addClass("btn-primary");
+            $(this).siblings(".showAll").removeClass("btn-primary").addClass("btn-secondary");
+            $(this).siblings(".showSell").removeClass("btn-primary").addClass("btn-secondary");
+            if ($(".singleAdContainer.isBuy").length == 0 && $(".singleAdContainer:not(.isBuy)").length != 0) {
+                $(".noBuy").show();
+            }
+            $(".singleAdContainer").each(function () {
+                if ($(this).hasClass("isBuy")) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            $(".noSell").hide();
+        });
+        $(".showSell").on("click", function () {
+            $(this).removeClass("btn-secondary").addClass("btn-primary");
+            $(this).siblings(".showAll").removeClass("btn-primary").addClass("btn-secondary");
+            $(this).siblings(".showBuy").removeClass("btn-primary").addClass("btn-secondary");
+            if ($(".singleAdContainer:not(.isBuy)").length == 0 && $(".singleAdContainer.isBuy").length != 0) {
+                $(".noSell").show();
+            }
+            $(".singleAdContainer").each(function () {
+                if (!$(this).hasClass("isBuy")) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            $(".noBuy").hide();
+        });
+        $(".clearDrafts").on("click", function () {
+            var ids = [];
+            $(".adIdHf").each(function () {
+                ids.push($.trim($(this).html()));
+            });
+            $.post("@ViewBag.L.SiteUrlClear/Ads/DeleteAds", { ids }, function () {
+                $(".singleAdContainer").remove();
+                $(".clearDrafts").after("<div>Черновики очищены.</div>").remove();
+            });
+        });
+	});
+
+	function sendRequestForJoinAd(adId) {
+		if (confirm('Это закрытое объявление, желаете отправить организатору свою заявку для участия?')) {
+            let currentUserId = @currentUserId;
+            $.post("@ViewBag.L.SiteUrlClear/Ads/RequestAdInvitation", {
+                adId: adId,
+                userId: currentUserId
+            }, function (result) {
+                alert(result);
+            });
+		}
+	}
+
+	function unpublish(adId) {
+		if (!confirm('Вы действительно хотите снять объявление с публикации?'))
+			return;
+
+		$.post("@ViewBag.L.SiteUrlClear/Ads/UnpublishAd", {
+                adId: adId
+		}, function (result) {
+			if (result == 'ok') {
+				alert('Объявление снято с публикации. Страница будет перезагружена')
+				location.href = location.href;
+			} else 
+				alert(result);
+        });
+	}
+</script>

@@ -1,0 +1,315 @@
+﻿@model MContract.Models.Dialog
+
+@{
+    ViewBag.Title = ViewBag.Heading;
+    Layout = "~/Views/Shared/_LayoutOld.cshtml";
+}
+
+@section Styles{
+    <link href="@Url.Content("~/css/User/Messages.css")?p=20200629" rel="stylesheet" type="text/css" />
+}
+
+<div class="messageAppContainer">
+    <div class="chatContainer">
+        <div class="topBarContainer">
+            <button class="goToDialogs">←</button>
+            <img src="@(Model.Respondent?.SmallPhotoUrl)" class="respondentLogo" />
+            <div class="respondentTextContainer">
+                <a @(Model.Respondent?.IsSystemNotifications == true ? "" : "href=" + Model.Respondent?.Url) class="respondentName" data-respondent-id="@(Model.Respondent?.Id)">
+                    @(Model.Respondent?.IsSystemNotifications == true ? Model.Respondent?.CompanyName : Model.Respondent?.ContactName)
+                </a>
+                @*@if (Model.DialogType == MContract.Models.Enums.DialogTypes.Ad)
+                    {
+                        <a href="@(Model.Ad != null ? Model.Ad.Url : "")" class="adName">
+                            @(Model.Ad != null ? Model.Ad.Name : "")
+                        </a>
+                    }*@
+            </div>
+            @*@if (Model.IsFromNewOffer && Model.TopicId != 0)
+                {
+                    <a class="goBackToOffer btn btn-primary" href="@ViewBag.L.SiteUrlClear/Ads/NewOffer/@Model.TopicId">Вернуться к отправке предложения</a>
+                }*@
+            @if (Model.LastPageUrl != null && Model.LastPageUrl.Length > 0)
+            {
+                var backBtnText = Model.LastPageUrl.Contains("EditOffer") ? "Вернуться к предложению" : "Вернуться на предыдущую страницу";
+                <a class="goBackToLastPage btn btn-primary" href="@HttpUtility.UrlDecode(Model.LastPageUrl)">@backBtnText</a>
+            }
+        </div>
+        <div class="messagesContainer">
+            @if (Model.Messages.Any())
+            {
+                foreach (var message in Model.Messages)
+                {
+                    <div class="singleMessageContainer @message.Direction" data-id="@message.Id">
+                        <div class="senderLogoContainer">
+                            <img src=@(message.Sender?.SmallPhotoUrl) class="senderLogo" />
+                        </div>
+                        <p class="senderName">
+                            @(message.Sender?.IsSystemNotifications == true ? message.Sender?.CompanyName : message.Direction == "outgoing" ? "Я" : message.Sender?.CompanyNameWithTypeOfOwnership)
+                        </p>
+                        <p class="messageText">
+                            @message.Text
+                            @if (message.AdId != 0)
+                            {
+                                <a class="goToAd btn btn-default" href="@ViewBag.L.SiteUrlClear/Ads/Show/@message.AdId">Перейти к объявлению</a>
+                                <span class="adIdHf" style="display: none">@message.AdId</span>
+                            }
+                            @if (message.RequestJoinAdFromUserId != 0)
+                            {
+                                <br />
+                                <a class="goToUser btn btn-default">Посмотреть профиль контрагента</a>
+                                <a class="acceptAdInvitationRequest btn btn-primary">Разрешить</a>
+                                <a class="declineAdInvitationRequest btn btn-primary">Отказать</a>
+                                <span class="userIdHf" style="display: none">@message.RequestJoinAdFromUserId</span>
+
+                            }
+                            else if (message.OfferId != 0)
+                            {
+                                <a class="goToOffer btn btn-default" href="@ViewBag.L.SiteUrlClear/Ads/Show?id=@message.AdId&offerId=@message.OfferId">Перейти к предложению</a>
+                                if (message.Direction == "incoming" && message.IsReviewContractNotification && !message.IsContractReviewed)
+                                {
+                                    <br />
+                                    <a class="acceptContract btn btn-primary">Подтвердить контракт</a>
+                                    <a class="declineContract btn btn-primary">Отказаться от контракта и аннулировать предложение</a>
+                                    <span class="offerIdHf" style="display: none">@message.OfferId</span>
+                                }
+                            }
+                        </p>
+                        @if (message.Files != null && message.Files.Any())
+                        {
+                            <div class="messageFilesContainer">
+                                @foreach (var file in message.Files)
+                                {
+                                    <a class="fileContainer" href="@file.Url" target="_blank">@file.NameWithExtension</a>
+                                }
+                            </div>
+                        }
+                        <p class="messageDate">
+                            @message.Date.ToString("o")
+                        </p>
+                    </div>
+                }
+            }
+        </div>
+        @if (Model.Respondent?.IsSystemNotifications != true)
+        {
+            <div class="inputMessageContainer">
+                <input type="file" name="fileSelect" id="fileSelect" multiple />
+                <button class="uploadFiles">📎</button>
+                <textarea class="inputMessage"></textarea>
+                <button type="button" class="sendMessage">→</button>
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript" src="~/js/user/replaceIsoDateWithLocalDate.js?p=20200714"></script>
+<script type="text/javascript">
+    var isMainChatPage = true;
+    function showMessage(message) {
+        var messageDirection = message.SenderId == @(ViewBag.L.PersonalAreaUser?.Id) ? "outgoing" : "incoming";
+        var messageId = message.Id;
+        if (messageId == 0)
+            messageId = "";
+        var sender = message.Sender;
+        var messageText = message.Text;
+        var messageDateOfPosting = message.Date;
+        var messageFilesString = "";
+        if (message.Files && message.Files.length > 0) {
+            messageFilesString += `<div class="messageFilesContainer">`;
+            $(message.Files).each(function () {
+                var file = this;
+                var fileName = file["NameWithExtension"];
+                var fileUrl = file["Url"];
+                messageFilesString += `<a class="fileContainer" href="${fileUrl}" target="_blank">${fileName}</a>`
+            });
+            messageFilesString += `</div>`;
+        }
+
+        $(".messageAppContainer .messagesContainer").append(
+            `<div class="singleMessageContainer ${messageDirection}" data-id="${messageId}">` +
+            `    <div class="senderLogoContainer">` +
+			`        <img src="${message.SenderLogoUrl}" class="senderLogo" />` +
+            `    </div>` +
+            `    <p class="senderName">` +
+			`        ${sender.CompanyNameWithTypeOfOwnership}` +
+            `    </p>` +
+            `    <p class="messageText">` +
+            `        ${messageText}` +
+            `    </p>` +
+            messageFilesString +
+            `    <p class="messageDate">` +
+            `        ${messageDateOfPosting}` +
+            `    </p>` +
+            `</div>`);
+
+        replaceIsoDateTimeWithLocalDateTime($(".messageDate").last());
+        $(".messagesContainer").scrollTop($(".messagesContainer").prop("scrollHeight"));
+    }
+    jQuery(document).ready(function ($) {
+        replaceIsoDateTimeWithLocalDateTime($(".messageDate"));
+        $(".messagesContainer").scrollTop($(".messagesContainer").prop("scrollHeight"));
+        $(".goToDialogs").on("click", function () {
+            location.href = "@ViewBag.L.SiteUrlClear/User/Dialogs"
+        });
+        $(".sendMessage").on("click", function () {
+            var messageText = $(".inputMessage").val();
+            var messageSenderId = @(Model.PersonalAreaUser?.Id);
+            var messageRecipientId = $(".messageAppContainer .respondentName").attr("data-respondent-id");
+            if (messageText.length != 0) {
+                $.post("@ViewBag.L.SiteUrlClear/User/AddMessage", {
+                    SenderId: messageSenderId,
+                    RecipientId: messageRecipientId,
+                    Text: messageText
+                }, function (data) {
+                    $(".messageAppContainer .inputMessage").val("");
+					var messageSender = {
+						Id: messageSenderId,
+						CompanyNameWithTypeOfOwnership: "Я",
+						LogoGroup: @Html.Raw(Json.Encode((ViewBag.L.PersonalAreaUser?.LogoGroup)))
+					};
+					var message = {
+						SenderId: messageSenderId,
+						Sender: messageSender,
+						Text: messageText,
+						Date: new Date($.now())
+					};
+                    showMessage(message);
+                    var currentChatBoxRespondentId = $(".chatBoxContainer .chatBoxHeader").attr("data-respondent-id");
+                    if (messageRecipientId == currentChatBoxRespondentId) {
+                        showMessageInChatBox(messageText, "outgoing", 0);
+                    }
+                });
+            }
+        });
+        $(".uploadFiles").on("click", function () {
+            $("#fileSelect").trigger("click");
+        });
+        $("#fileSelect").on("change", function () {
+            //var input = document.getElementById("fileSelect");
+            var input = $(this)[0];
+            var files = input.files;
+
+            if (input.files.length == 0)
+                return;
+
+            if (window.FormData !== undefined) {
+                var data = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    data.append("file" + i, files[i]);
+                }
+                var respondentId = $(".messageAppContainer .respondentName").attr("data-respondent-id");
+                data.append("respondentId", respondentId);
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("UploadFiles", "Files")",
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (result) {
+                        var files = [];
+                        result = result.slice(0, -1);
+                        splitResult = result.split('|');
+                        $(splitResult).each(function () {
+                            var splitFileInformation = this.split(',');
+                            if (splitFileInformation[0] == "ok") {
+                                var fileName = splitFileInformation[1];
+                                var fileUrl = splitFileInformation[2];
+                                files.push({
+                                    NameWithExtension: fileName,
+                                    Url: fileUrl
+                                });
+                            }
+                        });
+
+					    var messageSender = {
+						    Id: @(Model.PersonalAreaUser?.Id),
+						    CompanyNameWithTypeOfOwnership: "Я",
+						    LogoGroup: @Html.Raw(Json.Encode((ViewBag.L.PersonalAreaUser?.LogoGroup)))
+					    };
+					    var message = {
+						    SenderId: messageSender["Id"],
+						    Sender: messageSender,
+                            Text: "Прикрепленные файлы:",
+                            Files: files,
+						    Date: new Date($.now())
+					    };
+                        showMessage(message);
+                        var currentChatBoxRespondentId = $(".chatBoxContainer .chatBoxHeader").attr("data-respondent-id");
+                        var messageRecipientId = $(".messageAppContainer .respondentName").attr("data-respondent-id");
+                        if (messageRecipientId == currentChatBoxRespondentId) {
+                            showMessageInChatBox(message["Text"], "outgoing", 0, files);
+                        }
+                    },
+                    error: function (xhr, status, p3) {
+                        alert("Error! " + xhr.responseText);
+                    }
+                });
+            } else {
+                alert("Браузер не поддерживает загрузку файлов HTML5! Установите современный браузер.");
+            }
+            $(this).val(null);
+        });
+
+        function reviewContract(button, isAccept) {
+            var offerId = parseInt($.trim($(button).siblings(".offerIdHf").html()));
+            $.post("@Url.Action("ReviewContract", "Ads")", {
+                offerId: offerId,
+                isAccept: isAccept,
+                isByAdCreator: false
+            }, function (result) {
+                if (result.toLowerCase() == "true"){
+                    location.href = location.href;
+                } else if (result.toLowerCase() == "false") {
+                    if (isAccept == true) {
+                        alert("Ошибка при подтверждении контракта. Попробуйте позже.")
+                    } else {
+                        alert("Ошибка при отмене контракта. Попробуйте позже.")
+                    }
+                } else {
+                    alert(result);
+                }
+            });
+        }
+        $(".acceptContract").on("click", function () {
+            return reviewContract($(this), true);
+        });
+        $(".declineContract").on("click", function () {
+            return reviewContract($(this), false);
+        });
+
+        function reviewAdInvitationRequest(button, isAccept) {
+            var adId = parseInt($.trim($(button).siblings(".adIdHf").html()));
+            var userId = parseInt($.trim($(button).siblings(".userIdHf").html()));
+            $.post("@Url.Action("ReviewAdInvitationRequest", "Ads")", {
+                adId: adId,
+                userId: userId,
+                isAccept: isAccept
+            }, function (result) {
+                if (result.toLowerCase() == "true"){
+                    location.href = location.href;
+                } else if (result.toLowerCase() == "false") {
+                    if (isAccept == true) {
+                        alert("Ошибка при принятии заявки на участие в объявлении. Попробуйте позже.")
+                    } else {
+                        alert("Ошибка при отмене заявки на участие в объявлении. Попробуйте позже.")
+                    }
+                } else {
+                    alert(result);
+                }
+            });
+        }
+        $(".goToUser").on("click", function () {
+            var userId = $(this).siblings(".userIdHf").html();
+            if (userId) {
+                location.href = "@ViewBag.L.SiteUrlClear/User/Profile/" + userId;
+            }
+        });
+        $(".acceptAdInvitationRequest").on("click", function () {
+            return reviewAdInvitationRequest($(this), true);
+        });
+        $(".declineAdInvitationRequest").on("click", function () {
+            return reviewAdInvitationRequest($(this), false);
+        });
+    });
+</script>

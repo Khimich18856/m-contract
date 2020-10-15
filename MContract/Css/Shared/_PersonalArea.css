@@ -1,0 +1,136 @@
+﻿.body-content {
+    position: relative;
+}
+
+.pageContentContainer {
+    margin-left: 220px;
+}
+
+.sideBarContainer {
+    position: absolute;
+    top: 170px;
+    left: 10px;
+    width: 200px;
+    #height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+@media only screen and (max-width: 992px) and (min-width: 631px) {
+    .sideBarContainer {
+        top: 0;
+    }
+}
+
+@media only screen and (max-width: 630px) {
+    .sideBarContainer {
+        top: 120px;
+    }
+}
+
+.sideBarContainer .companyQuickInfoContainer {
+    width: 100%;
+    height: auto;
+    position: relative;
+    flex: 1;
+}
+
+.sideBarContainer .companyQuickInfoContainer .companyLogoContainer {
+    width: 100%;
+    height: 200px;
+}
+
+.sideBarContainer .companyQuickInfoContainer .companyLogoContainer > img {
+    height: 100%;
+    width: 100%;
+    display: block;
+    object-fit: contain;
+}
+
+.sideBarContainer .companyQuickInfoContainer .uploadLogo {
+    position: absolute;
+    width: 100%;
+    height: 200px;
+    left: 0;
+    top: 0;
+    background-color: rgba(100, 100, 100, 0.2);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+#personalAreaImageSelect {
+    display: none;
+}
+
+.sideBarContainer .companyQuickInfoContainer p {
+    padding: 5px 5px 0;
+    margin: 0;
+    font-size: large;
+}
+
+.sideBarContainer .buttonsContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.sideBarContainer .buttonsContainer a {
+    height: auto;
+    width: 100%;
+    height: 40px;
+    display: block;
+    margin-top: 5px;
+    line-height: 40px;
+    border-width: 1px 1px 1px 1px;
+    border-style: solid;
+    border-color: gray;
+    box-sizing: border-box;
+}
+
+.sideBarContainer .buttonsContainer .myAdsButtonsContainer a:nth-child(n+2) {
+    width: 90%;
+    margin-left: 10%;
+    display: none;
+}
+
+.sideBarContainer .buttonsContainer a:nth-child(2n+2), .sideBarContainer .buttonsContainer .myAdsButtonsContainer a:nth-child(2n+2) {
+    #background-color: whitesmoke;
+    background-color: ghostwhite;
+}
+
+.sideBarContainer .buttonsContainer a:nth-child(2n+3), .sideBarContainer .buttonsContainer .myAdsButtonsContainer a:nth-child(2n+1) {
+    background-color: ghostwhite;
+}
+
+.sideBarContainer .buttonsContainer .myAdsButtonsContainer:hover a:nth-child(n+2) {
+    display: block;
+}
+
+.sideBarContainer .buttonsContainer a:hover, .sideBarContainer .buttonsContainer .myAdsButtonsContainer a:hover {
+    background-color: floralwhite;
+    text-decoration: none;
+}
+
+.sideBarContainer .buttonsContainer a span {
+    margin-left: 10%;
+    color: black;
+}
+
+.sideBarContainer .buttonsContainer a .messagesNotificationContainer, .sideBarContainer .buttonsContainer a .adsNotificationContainer {
+    float: right;
+    margin: 4px 4px 4px 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: seagreen;
+    border: 1px solid gray;
+    text-align: center;
+    line-height: 30px;
+    color: black;
+    font-size: large;
+}
+
+.sideBarContainer .buttonsContainer a .adsNotificationContainer {
+    background-color: lightgray;
+}

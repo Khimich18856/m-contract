@@ -1,0 +1,122 @@
+.new__btns-wrapper {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column; }
+  @media (min-width: 993px) {
+    .new__btns-wrapper {
+      margin-left: 30px;
+      margin-top: 30px; } }
+  .new__btns-wrapper .new__btn__item {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    margin-bottom: 35px; }
+    @media (min-width: 767px) {
+      .new__btns-wrapper .new__btn__item {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: row;
+            -ms-flex-direction: row;
+                flex-direction: row; } }
+    .new__btns-wrapper .new__btn__item-btn {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -webkit-flex-direction: column;
+          -ms-flex-direction: column;
+              flex-direction: column;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center;
+      background-color: #899aae;
+      width: 240px;
+      height: 63px;
+      -webkit-transition: 400ms ease-out background-color;
+      -o-transition: 400ms ease-out background-color;
+      transition: 400ms ease-out background-color;
+      margin-bottom: 14px; }
+      .new__btns-wrapper .new__btn__item-btn .title {
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase; }
+      .new__btns-wrapper .new__btn__item-btn .text {
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 400; }
+      .new__btns-wrapper .new__btn__item-btn:hover {
+        color: #ffffff;
+        text-decoration: none;
+        background-color: #2b8ff1; }
+      @media (min-width: 767px) {
+        .new__btns-wrapper .new__btn__item-btn {
+          margin-right: 30px;
+          min-width: 240px; } }
+    .new__btns-wrapper .new__btn__item-about {
+      color: #506175;
+      font-size: 13px;
+      width: 250px;
+      font-weight: 400; }
+      @media (min-width: 767px) {
+        .new__btns-wrapper .new__btn__item-about {
+          width: auto;
+          margin-top: 27px; } }
+    .new__btns-wrapper .new__btn__item-break {
+      width: 100%;
+      height: 2px;
+      background-color: white;
+      margin-bottom: 35px; }
+
+.quest__wrapper {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-bottom: 155px;
+  margin-top: 30px; }
+  @media (min-width: 993px) {
+    .quest__wrapper {
+      margin-left: 30px; } }
+  .quest__wrapper .ico {
+    width: 12px;
+    height: 12px;
+    background-image: url("http://m-contract.ru/ico/question.png");
+    background-size: 100% 100%;
+    margin-bottom: 7px; }
+  .quest__wrapper .text p {
+    margin: 0;
+    color: #a5b1bf;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px; }
+
+.lk__wrapper {
+  height: auto; }
+
+header.mobile__off .lk__wrapper {
+  height: 100%; }

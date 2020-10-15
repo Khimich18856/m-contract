@@ -1,0 +1,152 @@
+﻿.viewbagHeading {
+    display: none;
+}
+
+.profileContainer {
+    width: 80%;
+}
+
+.profileContainer .companyInfoContainer {
+    width: 80%;
+    min-height: 55vh;
+}
+
+.profileContainer .companyInfoContainer .companyQuickInfoContainer {
+    width: 75%;
+    height: auto;
+    padding-bottom: 30px;
+    display: flex;
+    flex-direction: row;
+}
+
+.profileContainer .companyInfoContainer .companyQuickInfoContainer .companyLogo {
+    cursor: pointer;
+    height: 100px;
+    width: auto;
+    float: left;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.profileContainer .companyInfoContainer .companyQuickInfoContainer > div {
+    display: inline-block;
+}
+
+.profileContainer .companyInfoContainer .companyQuickInfoContainer > div p {
+    font-size: large;
+}
+
+.profileContainer .companyInfoContainer .companyQuickInfoContainer > div p .companyName {
+    font-size: x-large;
+}
+
+.profileContainer .companyInfoContainer .companyQuickInfoContainer p img {
+    height: 1em;
+    display: inline-block;
+}
+
+.profileContainer .companyInfoContainer .companyDetailsContainer {
+    width: 100%;
+    height: auto;
+    font-size: large;
+}
+
+.profileContainer .companyInfoContainer .companyDetailsContainer table td:nth-child(2n+1) {
+    #text-align: right;
+    padding-right: 10px;
+}
+
+.companyDetailsContainer td:nth-child(3n) > * {
+    float: left;
+}
+
+.tipsContainer > div {
+    display: none;
+}
+
+.adDetails .tipsContainer > div {
+    margin-left: 7px;
+}
+
+.tipsContainer .requiredFieldMarker {
+    margin-left: 4px;
+}
+
+.tipsContainer .needContainer span {
+    background-color: tomato;
+}
+
+.tipsContainer .invalidContainer span {
+    background-color: darkorange;
+}
+
+.tipsContainer .checkedContainer img {
+    height: 20px;
+    width: auto;
+}
+
+.requiredFieldMarker {
+    color: tomato;
+    float: right;
+}
+
+.needFieldSpan {
+    background-color: tomato;
+    float: left;
+    display: none;
+}
+
+.invalidFieldSpan {
+    background-color: darkorange;
+    float: left;
+    display: none;
+}
+
+.checkedFieldIcon {
+    height: 20px;
+    width: auto;
+    float: left;
+    display: none;
+}
+
+.profileContainer .lastSeenAdsContainer {
+    float: left;
+    display: block;
+    width: 100%;
+}
+
+.profileContainer .lastSeenAdsFlexContainer {
+    width: 100%;
+    display: flex;
+    overflow-x: scroll;
+}
+
+.profileContainer .singleAdContainer {
+    width: 25%;
+    height: auto;
+    margin: 1% 0 1% 1%;
+    display: inline-block;
+    flex: 0 0 auto;
+    padding: 5px;
+    border: 1px solid black;
+    box-sizing: border-box;
+}
+
+.profileContainer .singleAdContainer img {
+    width: 30%;
+    height: auto;
+    float: left;
+}
+
+.profileContainer .singleAdContainer p {
+    float: right;
+    width: 70%;
+    padding-left: 1%;
+    font-size: small;
+    box-sizing: border-box;
+}
+
+.profileContainer .singleAdContainer p .adName{
+    font-size: large;
+    font-weight: bold;
+}

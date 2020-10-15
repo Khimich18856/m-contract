@@ -1,0 +1,91 @@
+﻿@model MContract.Models.AdminModerateUsersViewModel
+
+@{
+    ViewBag.Title = ViewBag.Heading;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model.Users.Any())
+{
+    foreach (var user in Model.Users.Where(u => u.ContactName != null))
+    {
+        <div class="singleUserContainer" id="@user.Id">
+            <div class="userInformationContainer">
+                <a href="@user.Url">@user.CompanyNameWithTypeOfOwnership</a>
+                <table border="1">
+                    <tr>
+                        <td>Поле</td>
+                        <td>Указано на сайте</td>
+                        <td>Указано в СБИС</td>
+                    </tr>
+                    <tr>
+                        <td>ИНН</td>
+                        <td>@user.INN</td>
+                        <td>@(user.SbisCompanyName != null ? user.INN : "Компания не найдена в СБИС")</td>
+                    </tr>
+                    <tr>
+                        <td>Форма собственности</td>
+							
+                        <td>@user.TypeOfOwnershipStr</td>
+						<td>@user.SbisTypeOfOwnershipStr</td>
+                    </tr>
+                    <tr>
+                        <td>Название компании</td>
+                        <td>@user.CompanyName</td>
+                        <td>@user.SbisCompanyName</td>
+                    </tr>
+                    <tr>
+                        <td>ОГРН</td>
+                        <td>@user.OGRN</td>
+                        <td>@user.SbisOGRN</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="userButtonsContainer">
+                <button class="acceptUser">Разрешить</button>
+                <button class="declineUser">Отклонить</button>
+            </div>
+            <div class="moderateResultsContainer">
+                <img src="/ico/Checkmark.svg" class="moderateResult userAccepted" />
+                <img src="/ico/CircledX.svg" class="moderateResult userDeclined" />
+            </div>
+        </div>
+    }
+}
+else
+{
+    <h3>Нет пользователей для модерации</h3>
+}
+
+<script src="~/js/user/viewImage.js?p=202006112" type="text/javascript"></script>
+<script>
+    jQuery(document).ready(function ($) {
+        $(".moderateResultsContainer").add(".moderateResult").hide();
+        prepareImageViewElements();
+        $(".userPhotosContainer").on("click", ".userPhoto", function () {
+            showImageView($(this));
+        });
+        $("body").on("click", ".acceptUser", function () {
+            var userId = $(this).closest(".singleUserContainer").attr("id");
+            var moderateResultImage = $(this).closest(".singleUserContainer").find(".moderateResult.userAccepted");
+            $.post("@ViewBag.L.SiteUrlClear/Admin/UpdateUserModerateResult", {
+                userId: userId,
+                moderateResultId: @((int)MContract.Models.ModerateResults.Accepted)
+            }, function () {
+				$('#' + userId).hide();
+                //$(moderateResultImage).show().closest(".moderateResultsContainer").show();
+            });
+        });
+        $("body").on("click", ".declineUser", function () {
+            var userId = $(this).closest(".singleUserContainer").attr("id");
+            var moderateResultImage = $(this).closest(".singleUserContainer").find(".moderateResult.userDeclined");
+            $.post("@ViewBag.L.SiteUrlClear/Admin/UpdateUserModerateResult", {
+                userId: userId,
+                moderateResultId: @((int)MContract.Models.ModerateResults.Declined)
+            }, function () {
+				$('#' + userId).hide();
+                //$(moderateResultImage).show().closest(".moderateResultsContainer").show();
+            });
+        });
+    });
+</script>

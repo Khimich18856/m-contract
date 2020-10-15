@@ -1,0 +1,6 @@
+USE [MContract]
+GO
+
+ALTER TABLE dbo.Ads
+ALTER COLUMN CityId int NULL
+GO

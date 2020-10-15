@@ -1,0 +1,167 @@
+﻿.viewbagHeading {
+    display: none;
+}
+
+.profileContainer {
+    width: 100%;
+    overflow: auto;
+}
+
+.profileContainer .searchBarContainer {
+    width: 25%;
+    float: right;
+    padding: 10px 0 10px 0;
+    font-size: larger;
+    display: inline-block;
+}
+
+.profileContainer .searchBarContainer a[role="option"] {
+    color: black;
+    cursor: pointer !important;
+}
+
+.profileContainer .companyInfoContainer {
+    width: 80%;
+    float: left;
+    min-height: 55vh;
+}
+
+.profileContainer .companyInfoContainer .companyQuickInfoContainer {
+    width: 75%;
+    height: auto;
+    overflow: hidden;
+    padding-bottom: 30px;
+    display: flex;
+    flex-direction: row;
+}
+
+.profileContainer .companyInfoContainer .companyQuickInfoContainer .companyLogo {
+    cursor: pointer;
+    height: 100px;
+    width: 100px;
+    object-fit: contain;
+    float: left;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.profileContainer .companyInfoContainer .companyQuickInfoContainer > div {
+    float: left;
+    display: inline-block;
+}
+
+.profileContainer .companyInfoContainer .companyQuickInfoContainer > div p {
+    font-size: large;
+}
+
+.profileContainer .companyInfoContainer .companyQuickInfoContainer > div p .companyName {
+    font-size: x-large;
+}
+
+.profileContainer .companyInfoContainer .companyQuickInfoContainer .isRegular,
+.profileContainer .companyInfoContainer .companyQuickInfoContainer .regularAdded,
+.profileContainer .companyInfoContainer .companyQuickInfoContainer .regularRemoved {
+    display: none;
+}
+
+.profileContainer .companyInfoContainer .companyQuickInfoContainer p img {
+    height: 1em;
+    display: inline-block;
+}
+
+.profileContainer .companyInfoContainer .companyDetailsContainer {
+    width: 100%;
+    height: auto;
+    font-size: large;
+}
+
+.profileContainer .companyInfoContainer .companyDetailsContainer table td:nth-child(2n+1) {
+    #text-align: right;
+    padding-right: 10px;
+}
+
+.profileContainer .profileButtonsContainer {
+    float: right;
+    display: inline-block;
+}
+
+.profileContainer .profileButtonsContainer {
+    height: 55vh;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center; 
+}
+
+.profileContainer .profileButtonsContainer a {
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    color: black;
+    text-decoration: none;
+    background-color: ghostwhite;
+    padding: 10px 10px 0 10px;
+    border-radius: 10px;
+    border: 1px solid gray;
+    white-space: nowrap;
+}
+
+.profileContainer .profileButtonsContainer a:hover * {
+    cursor: pointer;
+}
+
+.profileContainer .profileButtonsContainer img {
+    height: 45px;
+    width: 45px;
+    border: none;
+}
+
+.profileContainer .lastSeenAdsContainer {
+    float: left;
+    display: block;
+    width: 100%;
+}
+
+.profileContainer .lastSeenAdsFlexContainer {
+    width: 100%;
+    display: flex;
+    overflow-x: scroll;
+}
+
+.profileContainer .singleAdContainer {
+    width: 25%;
+    height: auto;
+    margin: 1% 0 1% 1%;
+    display: inline-block;
+    flex: 0 0 auto;
+    padding: 5px;
+    border: 1px solid black;
+    box-sizing: border-box;
+}
+
+.profileContainer .singleAdContainer img {
+    width: 30%;
+    height: auto;
+    float: left;
+}
+
+.profileContainer .singleAdContainer p {
+    float: right;
+    width: 70%;
+    padding-left: 1%;
+    font-size: small;
+    box-sizing: border-box;
+}
+
+.profileContainer .singleAdContainer p .adName{
+    font-size: large;
+    font-weight: bold;
+}
+
+.searchBarContainer .bs-placeholder {
+    color: white !important;
+}

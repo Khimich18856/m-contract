@@ -1,0 +1,507 @@
+﻿body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 1rem;
+	background: #f1f3f5;
+	color: #14355d
+}
+
+.body-content {
+	padding-top: 170px;
+}
+
+h1, h2, h3, h4, h5 {
+	margin: 0;
+}
+
+.invisible {
+	display: none;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists
+   will truncate terms that are too long to fit in the left column
+*/
+.dl-horizontal dt {
+	white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default
+input,
+select,
+textarea {
+    max-width: 280px;
+}*/
+.btn {
+	text-transform: uppercase;
+	font-weight: 700;
+	border-radius: 0;
+	padding: 11px 25px;
+	font-size: 1.4rem;
+	border: 2px solid #fff;
+}
+
+	.btn.btn-outline {
+		background-color: transparent;
+		color: #fff
+	}
+
+.btn-color {
+	color: #fff
+}
+
+	.btn-color.btn-blue {
+		background-color: #2b8ff1;
+		border-color: #2b8ff1
+	}
+
+	.btn-color.btn-darkblue {
+		background-color: #01305c;
+		border-color: #01305c
+	}
+
+	.btn-color.btn-red {
+		background-color: #e60f6f;
+		border-color: #e60f6f
+	}
+
+.navbar {
+	height: 170px;
+	background-color: #fff
+}
+
+.navbar-content {
+	display: flex;
+	align-items: flex-start;
+	position: relative;
+	margin-top: 30px
+}
+
+.navbar .projectName {
+	margin-left: 30px;
+}
+
+	.navbar .projectName img {
+		height: 75px;
+		width: auto
+	}
+
+.navbar .projectLogo img {
+	float: left;
+	height: 50px;
+	width: auto;
+	line-height: 50px;
+	margin-left: 15px;
+}
+
+.navbar .getHelp {
+	float: left;
+	height: 50px;
+	line-height: 50px;
+	margin-left: 15px;
+}
+
+.navbar .navbar-right {
+	position: absolute;
+	right: 15px;
+	top: 0;
+	display: flex;
+	align-items: center;
+}
+
+	.navbar .navbar-right .postInfo {
+		color: #459ef5;
+		font-size: 1.3rem;
+		text-decoration: underline;
+		margin-right: 55px;
+	}
+
+.navbar .loginPrompt a {
+	display: flex;
+	font-size: 1.3rem;
+	align-items: center;
+	color: #14355d;
+}
+
+.navbar .loginPrompt .avatar__wrap {
+	width: 30px;
+	height: 30px;
+	margin-right: 10px
+}
+
+.navbar .loginPrompt button {
+	height: 20px;
+	line-height: 20px;
+	box-sizing: border-box;
+	padding: 0 6px 0 6px;
+	background-color: gray;
+	color: white;
+}
+
+.navbar .personalAreaMenu {
+	display: none;
+	right: 0;
+	width: 150px;
+	padding: 20px;
+	position: absolute;
+	background-color: white;
+	border: 3px solid black;
+	z-index: 100;
+}
+
+	.navbar .personalAreaMenu > a {
+		text-decoration: underline;
+		flex: 0 1;
+	}
+
+		.navbar .personalAreaMenu > a:nth-child(n+2) {
+			margin-top: 0.5em;
+		}
+
+	.navbar .personalAreaMenu .adsCount {
+		margin-left: 0.5em;
+	}
+
+	.navbar .personalAreaMenu .unreadMessagesCount {
+		position: absolute;
+		right: 75px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: url("/ico/SelectedOptionsCount.png") no-repeat;
+		background-size: 1.4em 1.4em;
+		height: 1.4em;
+		width: 1.4em;
+		color: white;
+	}
+
+	.navbar .personalAreaMenu > a:hover {
+		color: #337ab7;
+	}
+
+	.navbar a:hover + .personalAreaMenu, .navbar .personalAreaMenu:hover {
+		display: initial;
+	}
+
+.breadcrumbsContainer {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+	.breadcrumbsContainer a {
+		display: inline;
+		line-height: 1em;
+		height: 1em;
+	}
+
+	.breadcrumbsContainer .breadcrumbArrow {
+		height: 1em;
+		margin-left: 3px;
+		margin-right: 3px;
+		content: url("/ico/ArrowRight.svg");
+	}
+
+	.breadcrumbsContainer .breadcrumbHome {
+		height: 1em;
+		content: url("/ico/Home.svg");
+	}
+
+.ratingStar, .ratingStar::after {
+	content: url("/ico/Star.svg");
+	height: 1em;
+	width: 1em;
+	display: inline;
+}
+
+.viewbagHeading {
+	margin: 0 0 10px 0;
+}
+
+.chatBoxDialogsContainer {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+}
+
+	.chatBoxDialogsContainer .chatBoxDialog {
+		position: relative;
+	}
+
+		.chatBoxDialogsContainer .chatBoxDialog .unreadMessagesFlag {
+			position: absolute;
+			top: 0;
+			left: 0;
+			background: url("/ico/SelectedOptionsCount.png") no-repeat;
+			background-size: 1.4em 1.4em;
+			height: 1.4em;
+			width: 1.4em;
+			display: none;
+		}
+
+		.chatBoxDialogsContainer .chatBoxDialog.unread .unreadMessagesFlag {
+			display: initial;
+		}
+
+		.chatBoxDialogsContainer .chatBoxDialog .removeDialog {
+			position: absolute;
+			top: 0;
+			right: 0;
+			background-color: black;
+			color: white;
+			display: none;
+		}
+
+	.chatBoxDialogsContainer .chatBoxDialogsToggle {
+		height: 50px;
+		width: 50px;
+		background-color: white;
+		border: 1px solid black;
+		#background-image: url("http://m-contract.ru/Images/Placeholder.jpg");
+		#background-size: contain;
+	}
+
+	.chatBoxDialogsContainer .chatBoxDialogsFlexContainer {
+		display: flex;
+		flex-direction: column;
+	}
+
+		.chatBoxDialogsContainer .chatBoxDialogsFlexContainer .chatBoxDialog {
+			width: 50px;
+			height: 50px;
+			background-size: contain;
+		}
+
+.chatBoxContainer {
+	position: fixed;
+	bottom: 10px;
+	right: 70px;
+	width: 200px;
+	background-color: white;
+	border: 1px solid black;
+}
+
+	.chatBoxContainer .chatBoxHeader {
+		height: 50px;
+	}
+
+	.chatBoxContainer .chatBoxMessagesBody, .chatBoxContainer .chatBoxDialogsBody {
+		height: 300px;
+	}
+
+	.chatBoxContainer .chatBoxMessagesContainer {
+		height: 250px;
+		overflow-x: hidden;
+	}
+
+	.chatBoxContainer .chatBoxMessage {
+		display: flex;
+		flex-direction: column;
+	}
+
+		.chatBoxContainer .chatBoxMessage.incoming {
+			margin-left: 2%;
+			align-items: flex-start;
+		}
+
+		.chatBoxContainer .chatBoxMessage.outgoing {
+			margin-right: 2%;
+			align-items: flex-end;
+		}
+
+	.chatBoxContainer .chatBoxMessage .chatBoxMessageText {
+		max-width: 90%;
+		word-break: break-word;
+	}
+
+	.chatBoxContainer .chatBoxMessagesBody .chatBoxMessagePhoto {
+		height: 3em;
+		width: 3em;
+	}
+
+	.chatBoxContainer .chatBoxInputContainer {
+		height: 50px;
+	}
+
+	.chatBoxContainer .chatBoxInputContainer #chatBoxFileSelect {
+		display: none;
+	}
+
+.chatBoxUsersContainer {
+	position: fixed;
+	bottom: 10px;
+	right: 70px;
+	height: 350px;
+	width: 200px;
+	background-color: white;
+	border: 1px solid black;
+	display: none;
+}
+
+.chatBoxUsersContainer .nonRegularClient {
+	display: none;
+}
+
+.chatBoxUsersContainer .chatBoxUsersInputContainer {
+	position: absolute;
+	bottom: 0;
+	height: 50px;
+	width: 200px;
+}
+
+footer {
+	background-color: #01305c
+}
+
+	footer .footer-top {
+		background-color: #fff;
+		height: 100px
+	}
+
+.footer-info {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-size: 1.3rem;
+	padding: 35px 0
+}
+
+.footer-left a:first-child {
+	margin-right: 30px
+}
+
+.footer-left a {
+	text-transform: uppercase;
+	color: #8fa4bd
+}
+
+.footer-info a:hover {
+	color: #fff
+}
+
+.footer-right {
+	display: flex;
+	color: #8fa4bd
+}
+
+	.footer-right .company-link a {
+		color: #fff;
+		margin-right: 10px
+	}
+
+	.footer-right a.licence-agreement {
+		text-decoration: underline;
+		margin-left: 30px;
+		color: #8fa4bd
+	}
+
+		.footer-right a.licence-agreement:hover {
+			color: #fff
+		}
+
+@media only screen and (min-device-width : 360px) and (max-device-width : 667px) and (orientation : landscape) {
+	.navbar .loginPrompt a {
+		font-size: 1.1rem
+	}
+
+	.navbar .navbar-right .postInfo {
+		font-size: 1.1rem
+	}
+}
+
+@media only screen and (max-width: 992px) and (min-width: 631px) {
+	.navbar {
+		position: relative;
+		margin-bottom: 0
+	}
+
+		.navbar .projectName {
+			margin-left: 0
+		}
+
+			.navbar .projectName img {
+				height: 60px
+			}
+
+	.navbar-content {
+		margin-top: 15px;
+		flex-direction: column;
+	}
+
+	.navbar-right {
+		flex-direction: column;
+		z-index: 9999;
+	}
+
+	.navbar .navbar-right .postInfo {
+		margin-right: 0
+	}
+
+	.body-content {
+		padding-top: 0
+	}
+
+	.footer-info {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+}
+
+@media only screen and (max-width: 630px) {
+	.navbar {
+		position: relative;
+		height: 120px
+	}
+
+		.navbar .projectName img {
+			height: 60px
+		}
+
+		.navbar .projectName {
+			margin-left: 0
+		}
+
+	.navbar-content {
+		flex-direction: column;
+		align-items: center;
+		margin-top: 10px
+	}
+
+	.navbar .navbar-right {
+		display: none;
+	}
+
+	.body-content {
+		padding-top: 120px;
+	}
+
+	.footer-info {
+		flex-direction: column;
+	}
+
+	.footer-left {
+		display: flex;
+		flex-direction: column;
+	}
+
+		.footer-left a {
+			margin-bottom: 20px;
+		}
+
+	.footer-right {
+		flex-direction: column;
+	}
+
+	.footer-left a:first-child {
+		margin-right: 0
+	}
+
+	.footer-right a.licence-agreement {
+		margin-left: 0;
+		margin-top: 20px;
+		text-align: center;
+	}
+
+	.company-link {
+		margin-top: 40px
+	}
+}
