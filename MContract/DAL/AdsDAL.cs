@@ -5,12 +5,10 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
-using System.Web;
-using System.Configuration;
 
 namespace MContract.DAL
 {
-	public class AdsDAL : BaseDataAccess
+    public class AdsDAL : BaseDataAccess
 	{
 		private static Ad ReadAdInfo(SqlDataReader reader)
 		{
@@ -766,7 +764,7 @@ DECLARE @newInvitedUserEntryId int;
 				return true;
 			var result = 0;
 			string query = "";
-			var i = 0;
+			//var i = 0;
 			foreach (var userId in usersId)
 			{
 				query += @"
@@ -776,7 +774,7 @@ values (" + adId + ", " + userId + ")";
 
 			var connect = new SqlConnection(connStr);
 			var sqlCommand = new SqlCommand(query, connect);
-			var parameters = sqlCommand.Parameters;
+			//var parameters = sqlCommand.Parameters;
 
 			try
 			{

@@ -2,12 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
 
 namespace MContract.DAL
 {
-	public class LogsDAL : BaseDataAccess
+    public class LogsDAL : BaseDataAccess
 	{
 		public static void AddError(string message)
 		{
@@ -74,7 +72,7 @@ namespace MContract.DAL
 				}
 				reader.Close();
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				//AddMessage("Exception in LogsDataAccess.GetTodayErrorsCount(): " + ex.ToString());
 			}
@@ -108,16 +106,18 @@ namespace MContract.DAL
 				SqlDataReader reader = sqlCommand.ExecuteReader();
 				while (reader.Read())
 				{
-					Log log = new Log();
-					log.ID = (int)reader["ID"];
-					log.LogTypeID = (int)reader["LogTypeID"];
-					log.Time = (DateTime)reader["Time"];
-					log.Message = (string)reader["Message"];
-					result.Add(log);
+                    Log log = new Log
+                    {
+                        ID = (int)reader["ID"],
+                        LogTypeID = (int)reader["LogTypeID"],
+                        Time = (DateTime)reader["Time"],
+                        Message = (string)reader["Message"]
+                    };
+                    result.Add(log);
 				}
 				reader.Close();
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				//LogsController.AddError("Exception in LogsDataAccess.GetLogs(): " + ex.ToString());
 			}

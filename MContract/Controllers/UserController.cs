@@ -1,4 +1,5 @@
-﻿using MContract.AppCode;
+﻿using krakosssecurity;
+using MContract.AppCode;
 using MContract.DAL;
 using MContract.Models;
 using MContract.Models.Enums;
@@ -292,8 +293,10 @@ namespace MContract.Controllers
             ViewBag.L.ShowSearchbar = false;
             ViewBag.Heading = "Регистрация";
             #region Хлебные крошки
-            var breadCrumbs = new List<BreadCrumbLink>();
-            breadCrumbs.Add(new BreadCrumbLink() { Text = ViewBag.Heading, EndPoint = true });
+            var breadCrumbs = new List<BreadCrumbLink>
+            {
+                new BreadCrumbLink() { Text = ViewBag.Heading, EndPoint = true }
+            };
             ViewBag.BreadCrumbs = breadCrumbs;
             #endregion
             return View();
@@ -317,6 +320,7 @@ namespace MContract.Controllers
 				#region Добавление пользователя в БД в таблицу Users
 				user.Created = DateTime.Now.ToUniversalTime();
 				user.LastOnline = DateTime.Now.ToUniversalTime();
+                user.Password = Krakoss.Encryption(user.Password);
 				#region Определение Id-города
 				//if (user.CityId != 0)
 				//{
@@ -394,7 +398,7 @@ namespace MContract.Controllers
 		public string SaveUserData(User formUser)
 		{
 			var currentUser = SM.CurrentUser;
-			var emailChanged = formUser.Email != currentUser.Email;
+			//var emailChanged = formUser.Email != currentUser.Email;
 
 			currentUser.ContactName = formUser.ContactName;
 			currentUser.Email = formUser.Email;
@@ -437,9 +441,11 @@ namespace MContract.Controllers
             };
             ViewBag.Heading = "Подтверждение регистрации";
             #region Хлебные крошки
-            var breadCrumbs = new List<BreadCrumbLink>();
-            breadCrumbs.Add(new BreadCrumbLink() { Text = "Регистрация", Url = Urls.Registration, Title = "Перейти к странице регистрации" });
-            breadCrumbs.Add(new BreadCrumbLink() { Text = "Подтверждение", EndPoint = true });
+            var breadCrumbs = new List<BreadCrumbLink>
+            {
+                new BreadCrumbLink() { Text = "Регистрация", Url = Urls.Registration, Title = "Перейти к странице регистрации" },
+                new BreadCrumbLink() { Text = "Подтверждение", EndPoint = true }
+            };
             ViewBag.BreadCrumbs = breadCrumbs;
             #endregion
             return View(viewModel);
@@ -452,9 +458,11 @@ namespace MContract.Controllers
             var viewModel = new User();
             ViewBag.Heading = "Вход";
             #region Хлебные крошки
-            var breadCrumbs = new List<BreadCrumbLink>();
-            breadCrumbs.Add(new BreadCrumbLink() { Text = "Личный кабинет", Url = Urls.PersonalArea, Title = "Перейти в личный кабинет" });
-            breadCrumbs.Add(new BreadCrumbLink() { Text = "Вход", EndPoint = true });
+            var breadCrumbs = new List<BreadCrumbLink>
+            {
+                new BreadCrumbLink() { Text = "Личный кабинет", Url = Urls.PersonalArea, Title = "Перейти в личный кабинет" },
+                new BreadCrumbLink() { Text = "Вход", EndPoint = true }
+            };
             ViewBag.BreadCrumbs = breadCrumbs;
             #endregion
             return View(viewModel);
@@ -506,8 +514,10 @@ namespace MContract.Controllers
 
             ViewBag.Heading = "Выход";
             #region Хлебные крошки
-            var breadCrumbs = new List<BreadCrumbLink>();
-            breadCrumbs.Add(new BreadCrumbLink() { Text = ViewBag.Heading, EndPoint = true });
+            var breadCrumbs = new List<BreadCrumbLink>
+            {
+                new BreadCrumbLink() { Text = ViewBag.Heading, EndPoint = true }
+            };
             ViewBag.BreadCrumbs = breadCrumbs;
             #endregion
             return View(viewModel);
@@ -570,9 +580,11 @@ namespace MContract.Controllers
             user.Town = TownsDAL.GetTown(user.CityId);
             ViewBag.Heading = user.CompanyNameWithTypeOfOwnership;
             #region Хлебные крошки
-            var breadCrumbs = new List<BreadCrumbLink>();
-            breadCrumbs.Add(new BreadCrumbLink() { Text = "Личный кабинет", Url = Urls.PersonalArea, Title = "Перейти в личный кабинет" });
-            breadCrumbs.Add(new BreadCrumbLink() { Text = "Редактирование", EndPoint = true });
+            var breadCrumbs = new List<BreadCrumbLink>
+            {
+                new BreadCrumbLink() { Text = "Личный кабинет", Url = Urls.PersonalArea, Title = "Перейти в личный кабинет" },
+                new BreadCrumbLink() { Text = "Редактирование", EndPoint = true }
+            };
             ViewBag.BreadCrumbs = breadCrumbs;
             #endregion
             return View(user);
@@ -592,9 +604,11 @@ namespace MContract.Controllers
             };
             ViewBag.Heading = "Поиск";
             #region Хлебные крошки
-            var breadCrumbs = new List<BreadCrumbLink>();
-            breadCrumbs.Add(new BreadCrumbLink() { Text = "Объявления", Url = Urls.Ads, Title = "Перейти к списку всех объявлений" });
-            breadCrumbs.Add(new BreadCrumbLink() { Text = ViewBag.Heading, EndPoint = true });
+            var breadCrumbs = new List<BreadCrumbLink>
+            {
+                new BreadCrumbLink() { Text = "Объявления", Url = Urls.Ads, Title = "Перейти к списку всех объявлений" },
+                new BreadCrumbLink() { Text = ViewBag.Heading, EndPoint = true }
+            };
             ViewBag.BreadCrumbs = breadCrumbs;
             #endregion
             return View(viewModel);
@@ -602,8 +616,10 @@ namespace MContract.Controllers
         public ActionResult Companies(bool isRegularClients = false)
         {
             ViewBag.L.ShowSearchbar = false;
-            var viewModel = new UserCompaniesViewModel();
-            viewModel.PersonalAreaUser = SM.GetPersonalAreaUser();
+            var viewModel = new UserCompaniesViewModel
+            {
+                PersonalAreaUser = SM.GetPersonalAreaUser()
+            };
             viewModel.PersonalAreaUser.RegularClients = UsersDAL.GetRegularClients(viewModel.PersonalAreaUser.Id);
             if (isRegularClients == false)
             {
@@ -637,8 +653,10 @@ namespace MContract.Controllers
             }
             ViewBag.Heading = heading.Substring(0, 1).ToUpper() + heading.Substring(1);
             #region Хлебные крошки
-            var breadCrumbs = new List<BreadCrumbLink>();
-            breadCrumbs.Add(new BreadCrumbLink() { Text = "Личный кабинет", Url = Urls.PersonalArea, Title = "Перейти в личный кабинет" });
+            var breadCrumbs = new List<BreadCrumbLink>
+            {
+                new BreadCrumbLink() { Text = "Личный кабинет", Url = Urls.PersonalArea, Title = "Перейти в личный кабинет" }
+            };
             if (isRegularClients == true)
             {
                 breadCrumbs.Add(new BreadCrumbLink() { Text = "Компании", Url = Urls.Companies, Title = "Перейти к списку компаний" });
@@ -963,11 +981,13 @@ namespace MContract.Controllers
                 return RedirectToAction("Dialogs");
             ViewBag.L.HideHead = true;
             var currentUser = SM.CurrentUser;
-			var viewModel = new UserMessagesViewModel(); 
-			viewModel.LastPageUrl = lastPageUrl;
-			viewModel.LeftMenuViewModel = LeftMenuViewModel.Get(currentUser, "Сообщения");
+            var viewModel = new UserMessagesViewModel
+            {
+                LastPageUrl = lastPageUrl,
+                LeftMenuViewModel = LeftMenuViewModel.Get(currentUser, "Сообщения")
+            };
 
-			var respondent = UsersDAL.GetUser(respondentId) ?? new User();
+            var respondent = UsersDAL.GetUser(respondentId) ?? new User();
 			respondent.SmallPhotoUrl = UserHelper.GetSmallPhotoUrl(respondentId);
 			currentUser.SmallPhotoUrl = UserHelper.GetSmallPhotoUrl(currentUser.Id);
 
@@ -1071,9 +1091,11 @@ namespace MContract.Controllers
             ViewBag.Heading = (dialog.Respondent?.IsSystemNotifications == true ? dialog.Respondent?.CompanyName : "Диалог с " + dialog.Respondent?.CompanyNameWithTypeOfOwnership) +
                 (dialog.DialogType == DialogTypes.Ad && dialog.Ad != null ? ", " + dialog.Ad.City?.Name + ", " + dialog.Ad.Name.ToLower() : "");
             #region Хлебные крошки
-            var breadCrumbs = new List<BreadCrumbLink>();
-            breadCrumbs.Add(new BreadCrumbLink() { Text = "Диалоги", Url = C.SiteUrl + "User/Dialogs", Title = "Перейти к списку диалогов" });
-            breadCrumbs.Add(new BreadCrumbLink() { Text = (dialog.Respondent?.IsSystemNotifications == true ? dialog.Respondent?.CompanyName : "Диалог с " + dialog.Respondent?.CompanyNameWithTypeOfOwnership), EndPoint = true });
+            var breadCrumbs = new List<BreadCrumbLink>
+            {
+                new BreadCrumbLink() { Text = "Диалоги", Url = C.SiteUrl + "User/Dialogs", Title = "Перейти к списку диалогов" },
+                new BreadCrumbLink() { Text = (dialog.Respondent?.IsSystemNotifications == true ? dialog.Respondent?.CompanyName : "Диалог с " + dialog.Respondent?.CompanyNameWithTypeOfOwnership), EndPoint = true }
+            };
             ViewBag.BreadCrumbs = breadCrumbs;
             #endregion
             return View(dialog);
@@ -1131,8 +1153,10 @@ namespace MContract.Controllers
             }
             ViewBag.Heading = "Диалоги";
             #region Хлебные крошки
-            var breadCrumbs = new List<BreadCrumbLink>();
-            breadCrumbs.Add(new BreadCrumbLink() { Text = ViewBag.Heading, EndPoint = true });
+            var breadCrumbs = new List<BreadCrumbLink>
+            {
+                new BreadCrumbLink() { Text = ViewBag.Heading, EndPoint = true }
+            };
             ViewBag.BreadCrumbs = breadCrumbs;
             #endregion
             return View(viewModel);
@@ -1186,9 +1210,11 @@ namespace MContract.Controllers
                 if (dialog == null)
                 {
                     // если диалог не найден в списке открытых, создаем новый
-                    dialog = new Dialog();
-                    // практически никогда не будет выполняться больше одного раза в цикле
-                    dialog.Messages = MessagesDAL.GetMessages(currentUserId, dialogRespondentId);
+                    dialog = new Dialog
+                    {
+                        // практически никогда не будет выполняться больше одного раза в цикле
+                        Messages = MessagesDAL.GetMessages(currentUserId, dialogRespondentId)
+                    };
                     var respondent = UsersDAL.GetUser(dialogRespondentId);
                     if (respondent == null)
                         continue;
@@ -1453,7 +1479,7 @@ namespace MContract.Controllers
 						}
 					}
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{
 
 				}
@@ -1478,7 +1504,7 @@ namespace MContract.Controllers
 				return "Передан пустой список respondentIds";
 
 			var respondentIdsStrParts = respondentIdsStr.Split(',');
-			var respondentIds = new List<int>();
+			//var respondentIds = new List<int>();
 			foreach (var respondentIdStr in respondentIdsStrParts)
 			{
 				var respondentId = Convert.ToInt32(respondentIdStr);

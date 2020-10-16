@@ -158,7 +158,7 @@ namespace MContract.AppCode
 		{
 			Bitmap cropBmp = null;
 			var selection = new Rectangle(x1, y1, x2, y2);
-			using (Bitmap bmp = image as Bitmap)
+            using (Bitmap bmp = image as Bitmap)
 			{
 				//var bmp = image as Bitmap;
 
@@ -172,7 +172,7 @@ namespace MContract.AppCode
 				{
 					cropBmp = bmp.Clone(selection, bmp.PixelFormat);
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{
 
 				}

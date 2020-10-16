@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Web;
 using System.Web.Script.Serialization;
 
 namespace MContract.AppCode
 {
-	public class TextHelper
+    public class TextHelper
 	{
-		private object content;
+		//private object content;
+
 		private static Dictionary<string, char> __unicodeChars;
 
 		static TextHelper()
@@ -19,85 +18,87 @@ namespace MContract.AppCode
 
 		private static void FillUnicodeChars()
 		{
-			//http://www.fileformat.info/info/unicode/char/430/index.htm
-			__unicodeChars = new Dictionary<string, char>();
-			__unicodeChars.Add(@"u0410", 'А');
-			__unicodeChars.Add(@"u0411", 'Б');
-			__unicodeChars.Add(@"u0412", 'В');
-			__unicodeChars.Add(@"u0413", 'Г');
-			__unicodeChars.Add(@"u0414", 'Д');
-			__unicodeChars.Add(@"u0415", 'Е');
-			__unicodeChars.Add(@"u0416", 'Ж');
-			__unicodeChars.Add(@"u0417", 'З');
-			__unicodeChars.Add(@"u0418", 'И');
-			__unicodeChars.Add(@"u0419", 'Й');
-			__unicodeChars.Add(@"u041a", 'К');
-			__unicodeChars.Add(@"u041b", 'Л');
-			__unicodeChars.Add(@"u041c", 'М');
-			__unicodeChars.Add(@"u041d", 'Н');
-			__unicodeChars.Add(@"u041e", 'О');
-			__unicodeChars.Add(@"u041f", 'П');
-			__unicodeChars.Add(@"u0420", 'Р');
-			__unicodeChars.Add(@"u0421", 'С');
-			__unicodeChars.Add(@"u0422", 'Т');
-			__unicodeChars.Add(@"u0423", 'У');
-			__unicodeChars.Add(@"u0424", 'Ф');
-			__unicodeChars.Add(@"u0425", 'Х');
-			__unicodeChars.Add(@"u0426", 'Ц');
-			__unicodeChars.Add(@"u0427", 'Ч');
-			__unicodeChars.Add(@"u0428", 'Ш');
-			__unicodeChars.Add(@"u0429", 'Щ');
-			__unicodeChars.Add(@"u042a", 'Ъ');
-			__unicodeChars.Add(@"u042b", 'Ы');
-			__unicodeChars.Add(@"u042c", 'Ь');
-			__unicodeChars.Add(@"u042d", 'Э');
-			__unicodeChars.Add(@"u042e", 'Ю');
-			__unicodeChars.Add(@"u042f", 'Я');
-			__unicodeChars.Add(@"u0430", 'а');
-			__unicodeChars.Add(@"u0431", 'б');
-			__unicodeChars.Add(@"u0432", 'в');
-			__unicodeChars.Add(@"u0433", 'г');
-			__unicodeChars.Add(@"u0434", 'д');
-			__unicodeChars.Add(@"u0435", 'е');
-			__unicodeChars.Add(@"u0436", 'ж');
-			__unicodeChars.Add(@"u0437", 'з');
-			__unicodeChars.Add(@"u0438", 'и');
-			__unicodeChars.Add(@"u0439", 'й');
-			__unicodeChars.Add(@"u043a", 'к');
-			__unicodeChars.Add(@"u043b", 'л');
-			__unicodeChars.Add(@"u043c", 'м');
-			__unicodeChars.Add(@"u043d", 'н');
-			__unicodeChars.Add(@"u043e", 'о');
-			__unicodeChars.Add(@"u043f", 'п');
-			__unicodeChars.Add(@"u0440", 'р');
-			__unicodeChars.Add(@"u0441", 'с');
-			__unicodeChars.Add(@"u0442", 'т');
-			__unicodeChars.Add(@"u0443", 'у');
-			__unicodeChars.Add(@"u0444", 'ф');
-			__unicodeChars.Add(@"u0445", 'х');
-			__unicodeChars.Add(@"u0446", 'ц');
-			__unicodeChars.Add(@"u0447", 'ч');
-			__unicodeChars.Add(@"u0448", 'ш');
-			__unicodeChars.Add(@"u0449", 'щ');
-			__unicodeChars.Add(@"u044a", 'ъ');
-			__unicodeChars.Add(@"u044b", 'ы');
-			__unicodeChars.Add(@"u044c", 'ь');
-			__unicodeChars.Add(@"u044d", 'э');
-			__unicodeChars.Add(@"u044e", 'ю');
-			__unicodeChars.Add(@"u044f", 'я');
-			__unicodeChars.Add(@"u0451", 'ё');
-		}
+            //http://www.fileformat.info/info/unicode/char/430/index.htm
+            __unicodeChars = new Dictionary<string, char>
+            {
+                { @"u0410", 'А' },
+                { @"u0411", 'Б' },
+                { @"u0412", 'В' },
+                { @"u0413", 'Г' },
+                { @"u0414", 'Д' },
+                { @"u0415", 'Е' },
+                { @"u0416", 'Ж' },
+                { @"u0417", 'З' },
+                { @"u0418", 'И' },
+                { @"u0419", 'Й' },
+                { @"u041a", 'К' },
+                { @"u041b", 'Л' },
+                { @"u041c", 'М' },
+                { @"u041d", 'Н' },
+                { @"u041e", 'О' },
+                { @"u041f", 'П' },
+                { @"u0420", 'Р' },
+                { @"u0421", 'С' },
+                { @"u0422", 'Т' },
+                { @"u0423", 'У' },
+                { @"u0424", 'Ф' },
+                { @"u0425", 'Х' },
+                { @"u0426", 'Ц' },
+                { @"u0427", 'Ч' },
+                { @"u0428", 'Ш' },
+                { @"u0429", 'Щ' },
+                { @"u042a", 'Ъ' },
+                { @"u042b", 'Ы' },
+                { @"u042c", 'Ь' },
+                { @"u042d", 'Э' },
+                { @"u042e", 'Ю' },
+                { @"u042f", 'Я' },
+                { @"u0430", 'а' },
+                { @"u0431", 'б' },
+                { @"u0432", 'в' },
+                { @"u0433", 'г' },
+                { @"u0434", 'д' },
+                { @"u0435", 'е' },
+                { @"u0436", 'ж' },
+                { @"u0437", 'з' },
+                { @"u0438", 'и' },
+                { @"u0439", 'й' },
+                { @"u043a", 'к' },
+                { @"u043b", 'л' },
+                { @"u043c", 'м' },
+                { @"u043d", 'н' },
+                { @"u043e", 'о' },
+                { @"u043f", 'п' },
+                { @"u0440", 'р' },
+                { @"u0441", 'с' },
+                { @"u0442", 'т' },
+                { @"u0443", 'у' },
+                { @"u0444", 'ф' },
+                { @"u0445", 'х' },
+                { @"u0446", 'ц' },
+                { @"u0447", 'ч' },
+                { @"u0448", 'ш' },
+                { @"u0449", 'щ' },
+                { @"u044a", 'ъ' },
+                { @"u044b", 'ы' },
+                { @"u044c", 'ь' },
+                { @"u044d", 'э' },
+                { @"u044e", 'ю' },
+                { @"u044f", 'я' },
+                { @"u0451", 'ё' }
+            };
+        }
 
-		private static char GetCharByUnicodeCode(string code)
-		{
-			if (__unicodeChars.ContainsKey(code))
-				return __unicodeChars[code];
-			else
-			{
-				//LogsDAL.AddError("in App_Code/TextHelper.GetCharByUnicodeCode() code=" + code);
-				return '?';
-			}
-		}
+		//private static char GetCharByUnicodeCode(string code)
+		//{
+		//	if (__unicodeChars.ContainsKey(code))
+		//		return __unicodeChars[code];
+		//	else
+		//	{
+		//		//LogsDAL.AddError("in App_Code/TextHelper.GetCharByUnicodeCode() code=" + code);
+		//		return '?';
+		//	}
+		//}
 
 		public static string GetStringFromUnicodeString(string text)
 		{
@@ -111,80 +112,82 @@ namespace MContract.AppCode
 			return result;
 		}
 
-		public static Dictionary<char, string> getTranslitRussianCharsRules()
+		public static Dictionary<char, string> GetTranslitRussianCharsRules()
 		{
-			Dictionary<char, string> translitRules = new Dictionary<char, string>();
-			translitRules.Add('а', "a");
-			translitRules.Add('А', "A");
-			translitRules.Add('б', "b");
-			translitRules.Add('Б', "B");
-			translitRules.Add('в', "v");
-			translitRules.Add('В', "V");
-			translitRules.Add('г', "g");
-			translitRules.Add('Г', "G");
-			translitRules.Add('д', "d");
-			translitRules.Add('Д', "D");
-			translitRules.Add('е', "e");
-			translitRules.Add('Е', "E");
-			translitRules.Add('ё', "yo");
-			translitRules.Add('Ё', "YO");
-			translitRules.Add('ж', "zh");
-			translitRules.Add('Ж', "ZH");
-			translitRules.Add('з', "z");
-			translitRules.Add('З', "Z");
-			translitRules.Add('и', "i");
-			translitRules.Add('И', "I");
-			translitRules.Add('й', "y");
-			translitRules.Add('Й', "Y");
-			translitRules.Add('к', "k");
-			translitRules.Add('К', "K");
-			translitRules.Add('л', "l");
-			translitRules.Add('Л', "L");
-			translitRules.Add('м', "m");
-			translitRules.Add('М', "M");
-			translitRules.Add('н', "n");
-			translitRules.Add('Н', "N");
-			translitRules.Add('о', "o");
-			translitRules.Add('О', "O");
-			translitRules.Add('п', "p");
-			translitRules.Add('П', "P");
-			translitRules.Add('р', "r");
-			translitRules.Add('Р', "R");
-			translitRules.Add('с', "s");
-			translitRules.Add('С', "S");
-			translitRules.Add('т', "t");
-			translitRules.Add('Т', "T");
-			translitRules.Add('у', "u");
-			translitRules.Add('У', "U");
-			translitRules.Add('ф', "f");
-			translitRules.Add('Ф', "F");
-			translitRules.Add('х', "h");
-			translitRules.Add('Х', "H");
-			translitRules.Add('ц', "ts");
-			translitRules.Add('Ц', "TS");
-			translitRules.Add('ч', "ch");
-			translitRules.Add('Ч', "CH");
-			translitRules.Add('ш', "sh");
-			translitRules.Add('Ш', "SH");
-			translitRules.Add('щ', "sch");
-			translitRules.Add('Щ', "SCH");
-			translitRules.Add('ъ', "");
-			translitRules.Add('Ъ', "");
-			translitRules.Add('ы', "y");
-			translitRules.Add('Ы', "Y");
-			translitRules.Add('ь', "");
-			translitRules.Add('Ь', "");
-			translitRules.Add('э', "e");
-			translitRules.Add('Э', "E");
-			translitRules.Add('ю', "yu");
-			translitRules.Add('Ю', "YU");
-			translitRules.Add('я', "ya");
-			translitRules.Add('Я', "YA");
+            Dictionary<char, string> translitRules = new Dictionary<char, string>
+            {
+                { 'а', "a" },
+                { 'А', "A" },
+                { 'б', "b" },
+                { 'Б', "B" },
+                { 'в', "v" },
+                { 'В', "V" },
+                { 'г', "g" },
+                { 'Г', "G" },
+                { 'д', "d" },
+                { 'Д', "D" },
+                { 'е', "e" },
+                { 'Е', "E" },
+                { 'ё', "yo" },
+                { 'Ё', "YO" },
+                { 'ж', "zh" },
+                { 'Ж', "ZH" },
+                { 'з', "z" },
+                { 'З', "Z" },
+                { 'и', "i" },
+                { 'И', "I" },
+                { 'й', "y" },
+                { 'Й', "Y" },
+                { 'к', "k" },
+                { 'К', "K" },
+                { 'л', "l" },
+                { 'Л', "L" },
+                { 'м', "m" },
+                { 'М', "M" },
+                { 'н', "n" },
+                { 'Н', "N" },
+                { 'о', "o" },
+                { 'О', "O" },
+                { 'п', "p" },
+                { 'П', "P" },
+                { 'р', "r" },
+                { 'Р', "R" },
+                { 'с', "s" },
+                { 'С', "S" },
+                { 'т', "t" },
+                { 'Т', "T" },
+                { 'у', "u" },
+                { 'У', "U" },
+                { 'ф', "f" },
+                { 'Ф', "F" },
+                { 'х', "h" },
+                { 'Х', "H" },
+                { 'ц', "ts" },
+                { 'Ц', "TS" },
+                { 'ч', "ch" },
+                { 'Ч', "CH" },
+                { 'ш', "sh" },
+                { 'Ш', "SH" },
+                { 'щ', "sch" },
+                { 'Щ', "SCH" },
+                { 'ъ', "" },
+                { 'Ъ', "" },
+                { 'ы', "y" },
+                { 'Ы', "Y" },
+                { 'ь', "" },
+                { 'Ь', "" },
+                { 'э', "e" },
+                { 'Э', "E" },
+                { 'ю', "yu" },
+                { 'Ю', "YU" },
+                { 'я', "ya" },
+                { 'Я', "YA" }
+            };
 
-			return translitRules;
+            return translitRules;
 		}
 
-		public static bool isEnglishLetter(char ch)
+		public static bool IsEnglishLetter(char ch)
 		{
 			if (ch >= 'A' && ch <= 'z')
 				return true;
@@ -200,12 +203,12 @@ namespace MContract.AppCode
 
 		public static string TranslitRussianStringToEnglish(string russianString)
 		{
-			Dictionary<char, string> translitRussianCharsRules = getTranslitRussianCharsRules();
+			Dictionary<char, string> translitRussianCharsRules = GetTranslitRussianCharsRules();
 
 			string englishString = string.Empty;
 			foreach (char ch in russianString)
 			{
-				if (isEnglishLetter(ch) || Char.IsDigit(ch))
+				if (IsEnglishLetter(ch) || Char.IsDigit(ch))
 				{
 					englishString += ch;
 					continue;

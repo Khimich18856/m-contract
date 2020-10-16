@@ -9,7 +9,7 @@ namespace MContract.DAL
 {
 	public class TickersDAL : BaseDataAccess
 	{
-		private static Ticker ReadTickerInfo(SqlDataReader reader, bool getTickerTypeInfo = false)
+		private static Ticker ReadTickerInfo(SqlDataReader reader /*,bool getTickerTypeInfo = false*/)
 		{
 			var result = new Ticker
 			{
@@ -71,7 +71,7 @@ namespace MContract.DAL
 				connection.Open();
 				var reader = sqlCommand.ExecuteReader();
 				if (reader.Read())
-					result = ReadTickerInfo(reader, getTickerTypeInfo: true);
+					result = ReadTickerInfo(reader/*, getTickerTypeInfo: true*/);
 
 				reader.Close();
 			}
@@ -103,7 +103,7 @@ namespace MContract.DAL
 				connection.Open();
 				var reader = sqlCommand.ExecuteReader();
 				if (reader.Read())
-					result = ReadTickerInfo(reader, getTickerTypeInfo: true);
+					result = ReadTickerInfo(reader/*, getTickerTypeInfo: true*/);
 
 				reader.Close();
 			}
@@ -198,7 +198,7 @@ namespace MContract.DAL
 				connect.Open();
 				sqlCommand.ExecuteNonQuery();
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				string methodName = MethodBase.GetCurrentMethod().Name;
 				//throw new Exception("in TickersDAL." + methodName + "(): " + ex);

@@ -54,15 +54,14 @@ namespace MContract.AppCode
 				{
 					var sinceStr = html.Substring(ind2 + "Действует с ".Length);
 					sinceStr = sinceStr.Remove("dd.mm.yyyy".Length);
-					DateTime workFrom;
-					if (DateTime.TryParse(sinceStr, out workFrom))
-						user.SbisWorksFrom = workFrom.ToUniversalTime();
-				}
+                    if (DateTime.TryParse(sinceStr, out DateTime workFrom))
+                        user.SbisWorksFrom = workFrom.ToUniversalTime();
+                }
 
 				user.CheckedInSbis = true;
 			}
-			catch (Exception ex)
-			{
+			catch (Exception)
+            {
 				
 			}
 		}
@@ -100,7 +99,7 @@ namespace MContract.AppCode
 					result.OGRN = ogrn;
 				}
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 
 			}
@@ -131,10 +130,9 @@ namespace MContract.AppCode
 						lastQuoteTdContent = lastQuoteTdContent.Substring(0, lastQuoteTdContent.IndexOf("</td>"));
 						lastQuoteTdContent = lastQuoteTdContent.Replace(",", "");
 						lastQuoteTdContent = lastQuoteTdContent.Replace(".", ",");
-						decimal lastQuote = 0;
-						if (!Decimal.TryParse(lastQuoteTdContent, out lastQuote))
-							continue;
-						var lastQuoteStr = lastQuote.ToString().Replace(',', '.');
+                        if (!Decimal.TryParse(lastQuoteTdContent, out decimal lastQuote))
+                            continue;
+                        var lastQuoteStr = lastQuote.ToString().Replace(',', '.');
 						var sqlDate = TextHelper.GetTSqlDate(DateTime.Now);
 						var updateLine = $"update dbo.Tickers " +
 							$"set LastQuote = {lastQuoteStr}, " +
@@ -145,7 +143,7 @@ namespace MContract.AppCode
 					var sql = updateLines.ToString();
 					TickersDAL.UpdateTickers(sql);
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{
 
 				}
@@ -175,12 +173,11 @@ namespace MContract.AppCode
 
 						var lastQuoteTdContent = html.Substring(indexOfLastQuoteTd + lastQuoteTd.Length);
 						lastQuoteTdContent = lastQuoteTdContent.Remove(lastQuoteTdContent.IndexOf("</td>")).Trim().Replace(".", "");
-						decimal lastQuote = 0;
-						if (!Decimal.TryParse(lastQuoteTdContent, out lastQuote))
-							continue;
+                        if (!Decimal.TryParse(lastQuoteTdContent, out decimal lastQuote))
+                            continue;
 
-						//<td class="bold greenFont pid-8831-pcp" >+0,85%</td>
-						var trContent = html.Substring(indexOfLastQuoteTd);
+                        //<td class="bold greenFont pid-8831-pcp" >+0,85%</td>
+                        var trContent = html.Substring(indexOfLastQuoteTd);
 						trContent = trContent.Remove(trContent.IndexOf("</tr>"));
 
 						#region Извлекаем значение из столбца "Изм."
@@ -193,13 +190,12 @@ namespace MContract.AppCode
 						changeTdContent = changeTdContent.Substring(changeTdContent.IndexOf(">") + ">".Length);
 						changeTdContent = changeTdContent.Remove(changeTdContent.IndexOf("</td>")).Trim().Replace(".", "");
 
-						decimal change = 0;
-						if (!Decimal.TryParse(changeTdContent, out change))
-							continue;
-						#endregion
+                        if (!Decimal.TryParse(changeTdContent, out decimal change))
+                            continue;
+                        #endregion
 
-						#region Извлекаем значение из столбца "Изм.%"
-						var changePercentTd = $"pid-{pairId}-pcp\"";
+                        #region Извлекаем значение из столбца "Изм.%"
+                        var changePercentTd = $"pid-{pairId}-pcp\"";
 						var indexOfChangePercentTd = trContent.IndexOf(changePercentTd);
 						if (indexOfChangePercentTd == -1)
 							continue;
@@ -208,13 +204,12 @@ namespace MContract.AppCode
 						changePercentTdContent = changePercentTdContent.Substring(changePercentTdContent.IndexOf(">") + ">".Length);
 						changePercentTdContent = changePercentTdContent.Remove(changePercentTdContent.IndexOf("</td>")).Trim().Replace(".", "").Replace("%", "");
 
-						decimal changePercent = 0;
-						if (!Decimal.TryParse(changePercentTdContent, out changePercent))
-							continue;
-						#endregion
+                        if (!Decimal.TryParse(changePercentTdContent, out decimal changePercent))
+                            continue;
+                        #endregion
 
-						#region Извлекаем значение из столбца "Время"
-						var timeTd = $"pid-{pairId}-time\"";
+                        #region Извлекаем значение из столбца "Время"
+                        var timeTd = $"pid-{pairId}-time\"";
 						var indexOfTimeTd = trContent.IndexOf(timeTd);
 						if (indexOfTimeTd == -1)
 							continue;
@@ -242,7 +237,7 @@ namespace MContract.AppCode
 					var sql = updateLines.ToString();
 					TickersDAL.UpdateTickers(sql);
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{
 
 				}
@@ -347,7 +342,7 @@ namespace MContract.AppCode
 					var sql = updateLines.ToString();
 					TickersDAL.UpdateTickers(sql);
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{
 
 				}
