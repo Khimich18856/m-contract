@@ -133,6 +133,37 @@ namespace MContract.DAL
 			return result;
 		}
 
+		public static User GetUserByINN(string inn)
+		{
+			User result = null;
+			const string query = @"select * from dbo.Users where INN=@INN";
+			var connection = new SqlConnection(connStr);
+			var sqlCommand = new SqlCommand(query, connection);
+			sqlCommand.Parameters.AddWithValue("INN", inn);
+
+			try
+			{
+				connection.Open();
+				var reader = sqlCommand.ExecuteReader();
+				if (reader.Read())
+					result = ReadUserInfo(reader);
+
+				reader.Close();
+			}
+			catch (Exception ex)
+			{
+				string methodName = MethodBase.GetCurrentMethod().Name;
+				throw new Exception("in UsersDAL." + methodName + "(): " + ex);
+			}
+			finally
+			{
+				connection.Close();
+			}
+
+			return result;
+		}
+
+
 		public static List<User> GetUsers(List<int> ids = null, bool? checkedInSbis = null, int? moderateResultId = null)
 		{
 			var result = new List<User>();

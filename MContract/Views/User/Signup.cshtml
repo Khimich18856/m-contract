@@ -1,234 +1,242 @@
 ﻿
 @{
-	ViewBag.Title = "Регистрация";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Регистрация";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Styles{
-	<link href="@Url.Content("~/css/User/Login.css")?p=2020-08-16_21-55" rel="stylesheet" type="text/css" />
-	<link href="@Url.Content("~/css/User/Signup.css")?p=2020-08-16_21-55" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/css/User/Login.css")?p=2020-08-16_21-55" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/css/User/Signup.css")?p=2020-08-16_21-55" rel="stylesheet" type="text/css" />
 }
 
-	<!-- Вход -->
-	<section class="log__page__wrapper">
-		<div class="container">
-			<div class="row">
-				<div class="col text-center">
-					<h1>Регистрация</h1>
-				</div>
-			</div>
+<!-- Вход -->
+<section class="log__page__wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <h1>Регистрация</h1>
+            </div>
+        </div>
 
-			<!-- Form inputs -->
-			@*@using (Html.BeginForm("Signup", "User", FormMethod.Post, new { @class = "" }))
-			{*@
-				<div class="row">
-					<div class="col-md-3"></div>
-					<div class="col-sm-12 col-md-6 input__col">
-						<div class="input__wrapper">
-							<label for="email">Логин:</label>
-							<input type="email" id="email" placeholder="E-Mail" name="Email" required onblur="checkEmail();" autocomplete="off" onfocus="this.removeAttribute('readonly');" readonly>
-							<span class="about-input">
-								Ваша электронная почта будет логином для входа в систему
-							</span>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<span id="needEmailSpan" class="needFieldSpan">Поле "Электронная почта" обязательно для заполнения</span>
-						<span id="invalidEmailSpan" class="invalidFieldSpan">Введенный адрес не соответствует формату электронной почты</span>
-						<img id="checkedEmailIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3"></div>
-					<div class="col-sm-12 col-md-6 input__col">
-						<div class="input__wrapper">
-							<label for="password">Пароль:</label>
-							<input type="password" id="password" placeholder=" " name="Password" required onblur="checkPassword();" autocomplete="off" onfocus="this.removeAttribute('readonly');" readonly>
-							<span class="about-input">
-								Пароль должен содержать от 6 до 24 символов, хотя бы один из которых - цифра
-							</span>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<span id="needPasswordSpan" class="needFieldSpan">Поле "Пароль" обязательно для заполнения</span>
-						<span id="invalidPasswordSpan" class="invalidFieldSpan">Пароль должен содержать от 6 до 24 символов, хотя бы один из которых - цифра</span>
-						<img id="checkedPasswordIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3"></div>
-					<div class="col-sm-12 col-md-6 input__col">
-						<div class="input__wrapper">
-							<label for="passwordRepeat">Повторить пароль:</label>
-							<input type="password" id="repeatPassword" placeholder=" " name="RepeatPassword" required onblur="checkRepeatPassword();" autocomplete="off" onfocus="this.removeAttribute('readonly');" readonly />
-						</div>
-					</div>
-					<div class="col-md-3">
-						<span id="needRepeatPasswordSpan" class="needFieldSpan">Поле "Повторите пароль" обязательно для заполнения</span>
-						<span id="invalidRepeatPasswordSpan" class="invalidFieldSpan">Пароли должны совпадать</span>
-						<img id="checkedRepeatPasswordIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3"></div>
-					<div class="col-sm-12 col-md-6 input__col">
-						<div class="input__wrapper name__wrapper">
-							<label for="name">Ваше имя:</label>
-							<input type="text" id="contactName" placeholder=" " name="ContactName" required onblur="checkContactName();" autocomplete="off">
-							<span class="about-input">Имя будет отображаться в системе для обращений от администрации и пользователей</span>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<span id="needContactNameSpan" class="needFieldSpan">Поле "Ваше имя" обязательно для заполнения</span>
-						<span id="invalidContactNameSpan" class="invalidFieldSpan">Поле "Ваше имя" содержит недопустимые символы</span>
-						<img id="checkedContactNameIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3"></div>
-					<div class="col-sm-12 col-md-6 input__col">
-						<div class="input__wrapper">
-							<label for="typeOfOwnership">Форма собственности:</label>
-							<select name="TypeOfOwnership" id="typeOfOwnership" onchange="checkTypeOfOwnership();">
-								<option value="">Выбрать</option>
-								<option value="1">ООО</option>
-								<option value="2">ОАО</option>
-								<option value="3">ИП</option>
-							</select>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<span id="needTypeOfOwnershipSpan" class="needFieldSpan">
-							Поле "Форма собственности организации" обязательно для заполнения
-						</span>
-						<span id="invalidTypeOfOwnershipSpan" class="invalidFieldSpan">
-							@*placeholder*@
-						</span>
-						<img id="checkedTypeOfOwnershipIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3"></div>
-					<div class="col-sm-12 col-md-6 input__col">
-						<div class="input__wrapper">
-							<label for="companyName">Название организации:</label>
-							<input type="text" id="companyName" placeholder=" " name="CompanyName" required onblur="checkCompanyName();" autocomplete="off">
-							<span class="about-input">Юридическое название организации (без формы собственности) <a href="#"> Подробнее</a></span>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<span id="needCompanyNameSpan" class="needFieldSpan">
-							Поле "Юридическое название организации" обязательно для заполнения
-						</span>
-						<span id="invalidCompanyNameSpan" class="invalidFieldSpan">
-							Поле "Юридическое название организации" содержит недопустимые символы
-						</span>
-						<img id="checkedCompanyNameIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3"></div>
-					<div class="col-sm-12 col-md-6 input__col">
-						<div class="input__wrapper cityContainer">
-							<label for="city">Город:</label>
-							<input type="text" id="city" placeholder=" " name="City" class="cityInput" onblur="checkCity();" autocomplete="off">
-						</div>
-					</div>
-					<div class="col-md-3">
-						<span id="needCitySpan" class="needFieldSpan">Поле "Город" обязательно для заполнения</span>
-						<span id="invalidCitySpan" class="invalidFieldSpan">Поле "Город" содержит недопустимые символы</span>
-						<img id="checkedCityIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3"></div>
-					<div class="col-sm-12 col-md-6 input__col">
-						<div class="input__wrapper">
-							<label for="inn">ИНН:</label>
-							<input type="text" id="INN" placeholder=" " name="INN" required onfocus="this.selectionStart = 0" onclick="checkCity();" onblur="checkINN(); autocomplete="off">
-						</div>
-					</div>
-					<div class="col-md-3">
-						<span id="needINNSpan" class="needFieldSpan">Поле "ИНН" обязательно для заполнения</span>
-						<span id="invalidINNSpan" class="invalidFieldSpan"></span>
-						<img id="checkedINNIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3"></div>
-					<div class="col-sm-12 col-md-6 input__col">
-						<div class="input__wrapper">
-							<label for="OGRN">ОГРН или ОГРНИП для ИП:</label>
-							<input type="text" id="OGRN" placeholder=" " name="OGRN" required onfocus="this.selectionStart = 0" onblur="checkOGRN();" autocomplete="off">
-						</div>
-					</div>
-					<div class="col-md-3">
-						<span id="needOGRNSpan" class="needFieldSpan">Поле "ОГРН/ОГРНИП" обязательно для заполнения</span>
-						<span id="invalidOGRNSpan" class="invalidFieldSpan">@*placeholder*@</span>
-						<img id="checkedOGRNIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3"></div>
-					<div class="col-sm-12 col-md-6 input__col">
-						<div class="input__wrapper">
-							<label for="phoneNumber">Номер Вашего моб. телефона:</label>
-							<input type="tel" id="phoneNumber" placeholder="+7 (___) ___-__-__" name="PhoneNumber" required onfocus="this.selectionStart = 0"
-								   onblur="checkPhoneNumber();" autocomplete="off">
-						</div>
-					</div>
-					<div class="col-md-3">
-						<span id="needPhoneNumberSpan" class="needFieldSpan">Поле "Контактный номер телефона" обязательно для заполнения</span>
-						<span id="invalidPhoneNumberSpan" class="invalidFieldSpan">@*placeholder*@</span>
-						<img id="checkedPhoneNumberIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3"></div>
-					<div class="col-sm-12 col-md-6 input__col">
-						<div class="input__wrapper">
-							<label for="telDop">Дополнительный телефон:</label>
-							<input type="tel" id="phoneNumberCity" placeholder="+7 (___) ___-__-__" name="PhoneNumberCity" onfocus="this.selectionStart = 0"
-								   onblur="checkPhoneNumberCity();" autocomplete="off">
-							<span class="about-input">Дополнительные контакты для связи с участниками</span>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<img id="checkedPhoneNumberIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
-					</div>
-				</div>
-				<!-- // Form inputs -->
+        <!-- Form inputs -->
+        @*@using (Html.BeginForm("Signup", "User", FormMethod.Post, new { @class = "" }))
+            {*@
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-sm-12 col-md-6 input__col">
+                <div class="input__wrapper">
+                    <label for="email">Логин:</label>
+                    <input type="email" id="email" placeholder="E-Mail" name="Email" required @*onblur="checkEmail();"*@ autocomplete="off" onfocus="this.removeAttribute('readonly');" readonly>
+                    <span class="about-input">
+                        Ваша электронная почта будет логином для входа в систему
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <span id="needEmailSpan" class="needFieldSpan">Поле "Электронная почта" обязательно для заполнения</span>
+                <span id="invalidEmailSpan" class="invalidFieldSpan">Введенный адрес не соответствует формату электронной почты</span>
+                @*================================== реализация проверки емайл на уникальность ======================================*@
+                <span id="invalidEmailIdSpan" class="needFieldSpan">
+                    Пользователь уже зарегистрирован
+                </span>
+                @*==================================  end реализация проверки емайл на уникальность================================== *@
+                <img id="checkedEmailIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-sm-12 col-md-6 input__col">
+                <div class="input__wrapper">
+                    <label for="password">Пароль:</label>
+                    <input type="password" id="password" placeholder=" " name="Password" required onblur="checkPassword();" autocomplete="off" onfocus="this.removeAttribute('readonly');" readonly>
+                    <span class="about-input">
+                        Пароль должен содержать от 6 до 24 символов, хотя бы один из которых - цифра
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <span id="needPasswordSpan" class="needFieldSpan">Поле "Пароль" обязательно для заполнения</span>
+                <span id="invalidPasswordSpan" class="invalidFieldSpan">Пароль должен содержать от 6 до 24 символов, хотя бы один из которых - цифра</span>
+                <img id="checkedPasswordIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-sm-12 col-md-6 input__col">
+                <div class="input__wrapper">
+                    <label for="passwordRepeat">Повторить пароль:</label>
+                    <input type="password" id="repeatPassword" placeholder=" " name="RepeatPassword" required onblur="checkRepeatPassword();" autocomplete="off" onfocus="this.removeAttribute('readonly');" readonly />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <span id="needRepeatPasswordSpan" class="needFieldSpan">Поле "Повторите пароль" обязательно для заполнения</span>
+                <span id="invalidRepeatPasswordSpan" class="invalidFieldSpan">Пароли должны совпадать</span>
+                <img id="checkedRepeatPasswordIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-sm-12 col-md-6 input__col">
+                <div class="input__wrapper name__wrapper">
+                    <label for="name">Ваше имя:</label>
+                    <input type="text" id="contactName" placeholder=" " name="ContactName" required onblur="checkContactName();" autocomplete="off">
+                    <span class="about-input">Имя будет отображаться в системе для обращений от администрации и пользователей</span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <span id="needContactNameSpan" class="needFieldSpan">Поле "Ваше имя" обязательно для заполнения</span>
+                <span id="invalidContactNameSpan" class="invalidFieldSpan">Поле "Ваше имя" содержит недопустимые символы</span>
+                <img id="checkedContactNameIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-sm-12 col-md-6 input__col">
+                <div class="input__wrapper">
+                    <label for="typeOfOwnership">Форма собственности:</label>
+                    <select name="TypeOfOwnership" id="typeOfOwnership" onchange="checkTypeOfOwnership();">
+                        <option value="">Выбрать</option>
+                        <option value="1">ООО</option>
+                        <option value="2">ОАО</option>
+                        <option value="3">ИП</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <span id="needTypeOfOwnershipSpan" class="needFieldSpan">
+                    Поле "Форма собственности организации" обязательно для заполнения
+                </span>
+                <span id="invalidTypeOfOwnershipSpan" class="invalidFieldSpan">
+                    @*placeholder*@
+                </span>
+                <img id="checkedTypeOfOwnershipIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-sm-12 col-md-6 input__col">
+                <div class="input__wrapper">
+                    <label for="companyName">Название организации:</label>
+                    <input type="text" id="companyName" placeholder=" " name="CompanyName" required onblur="checkCompanyName();" autocomplete="off">
+                    <span class="about-input">Юридическое название организации (без формы собственности) <a href="#"> Подробнее</a></span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <span id="needCompanyNameSpan" class="needFieldSpan">
+                    Поле "Юридическое название организации" обязательно для заполнения
+                </span>
+                <span id="invalidCompanyNameSpan" class="invalidFieldSpan">
+                    Поле "Юридическое название организации" содержит недопустимые символы
+                </span>
+                <img id="checkedCompanyNameIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-sm-12 col-md-6 input__col">
+                <div class="input__wrapper cityContainer">
+                    <label for="city">Город:</label>
+                    <input type="text" id="city" placeholder=" " name="City" class="cityInput" onblur="checkCity();" autocomplete="off">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <span id="needCitySpan" class="needFieldSpan">Поле "Город" обязательно для заполнения</span>
+                <span id="invalidCitySpan" class="invalidFieldSpan">Поле "Город" содержит недопустимые символы</span>
+                <img id="checkedCityIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-sm-12 col-md-6 input__col">
+                <div class="input__wrapper">
+                    <label for="inn">ИНН:</label>
+                    <input type="text" id="INN" placeholder=" " name="INN" required onfocus="this.selectionStart = 0" @*onclick="checkCity();" onblur="checkINN();"*@ autocomplete="off">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <span id="needINNSpan" class="needFieldSpan">Поле "ИНН" обязательно для заполнения</span>
+                <span id="invalidINNSpan" class="invalidFieldSpan"></span>
+                @*================================== реализация проверки ИНН на уникальность ======================================*@
+                <span id="invalidINNIdSpan" class="needFieldSpan"></span>
+                @*==================================  end реализация проверки ИНН на уникальность================================== *@
+                <img id="checkedINNIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-sm-12 col-md-6 input__col">
+                <div class="input__wrapper">
+                    <label for="OGRN">ОГРН или ОГРНИП для ИП:</label>
+                    <input type="text" id="OGRN" placeholder=" " name="OGRN" required onfocus="this.selectionStart = 0" onblur="checkOGRN();" autocomplete="off">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <span id="needOGRNSpan" class="needFieldSpan">Поле "ОГРН/ОГРНИП" обязательно для заполнения</span>
+                <span id="invalidOGRNSpan" class="invalidFieldSpan">@*placeholder*@</span>
+                <img id="checkedOGRNIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-sm-12 col-md-6 input__col">
+                <div class="input__wrapper">
+                    <label for="phoneNumber">Номер Вашего моб. телефона:</label>
+                    <input type="tel" id="phoneNumber" placeholder="+7 (___) ___-__-__" name="PhoneNumber" required onfocus="this.selectionStart = 0"
+                           onblur="checkPhoneNumber();" autocomplete="off">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <span id="needPhoneNumberSpan" class="needFieldSpan">Поле "Контактный номер телефона" обязательно для заполнения</span>
+                <span id="invalidPhoneNumberSpan" class="invalidFieldSpan">@*placeholder*@</span>
+                <img id="checkedPhoneNumberIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-sm-12 col-md-6 input__col">
+                <div class="input__wrapper">
+                    <label for="telDop">Дополнительный телефон:</label>
+                    <input type="tel" id="phoneNumberCity" placeholder="+7 (___) ___-__-__" name="PhoneNumberCity" onfocus="this.selectionStart = 0"
+                           onblur="checkPhoneNumberCity();" autocomplete="off">
+                    <span class="about-input">Дополнительные контакты для связи с участниками</span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <img id="checkedPhoneNumberIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+            </div>
+        </div>
+        <!-- // Form inputs -->
 
-				<div class="row">
-					<div class="col-md-3"></div>
-					<div class="col-sm-12 col-md-6 input__col">
-						<div class="input__wrapper">
-							<span class="alert__message">
-								Нажимая на кнопку «Зарегестрироваться», вы принимаете условия <a href="@ViewBag.L.SiteUrlClear/User/UserAgreement">Пользовательского соглашения</a>, соглашаетесь на <a href="@ViewBag.L.SiteUrlClear/User/ProcessingPersonalData">обработку персональных данных</a> и получение сообщений от M-contract
-							</span>
-						</div>
-					</div>
-					<div class="col-md-3"></div>
-				</div>
-				<div class="row">
-					<div class="col-md-3"></div>
-					<div class="col-sm-12 col-md-6 input__col">
-						<div class="input__wrapper btn__wrapper">
-							<button class="btn btn__register" id="submit" onclick="checkAndSaveUser();"> <span>Зарегистрироваться</span> </button>
-						</div>
-					</div>
-					<div class="col-md-3"></div>
-				</div>
-				<!--}-->
-		</div>
-	</section>
-	<!-- // Вход-->
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-sm-12 col-md-6 input__col">
+                <div class="input__wrapper">
+                    <span class="alert__message">
+                        Нажимая на кнопку «Зарегестрироваться», вы принимаете условия <a href="@ViewBag.L.SiteUrlClear/User/UserAgreement">Пользовательского соглашения</a>, соглашаетесь на <a href="@ViewBag.L.SiteUrlClear/User/ProcessingPersonalData">обработку персональных данных</a> и получение сообщений от M-contract
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-sm-12 col-md-6 input__col">
+                <div class="input__wrapper btn__wrapper">
+                    <button class="btn btn__register" id="submit" onclick="checkAndSaveUser();"> <span>Зарегистрироваться</span> </button>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+        <!--}-->
+    </div>
+</section>
+<!-- // Вход-->
 
-	<script src="~/js/jquery.maskedinput.js" type="text/javascript"></script>
-	<link href="~/js/jquery-ui/jquery-ui.css?p=202006112" rel="stylesheet" type="text/css" />
-	<script src="~/js/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-	<script src="~/js/user/cityAutocomplete.js?p=20200624" type="text/javascript"></script>
-	<script>
+<script src="~/js/jquery.maskedinput.js" type="text/javascript"></script>
+<link href="~/js/jquery-ui/jquery-ui.css?p=202006112" rel="stylesheet" type="text/css" />
+<script src="~/js/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script src="~/js/user/cityAutocomplete.js?p=20200624" type="text/javascript"></script>
+<script>
     jQuery(document).ready(function () {
         $("#INN").mask("9999999999", { autoclear: false });
         $("#INN").attr("placeholder", "9999999999");
@@ -256,25 +264,92 @@
         return inputsValidated.every(Boolean);
     };*/
 
-    function checkEmail() {
-        var fieldName = $("#email").attr("name");
-        if (checkIsNotEmptyAndSetTipVisibility($("#email"))) {
-            if ($("#email").val().match(/^\b[A-Z0-9._%-]+@@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i)) {
-                $('#checked' + fieldName + 'Icon').siblings().hide();
-                $('#checked' + fieldName + 'Icon').show();
-                return true;
-            }
-            else {
-                $("#invalid" + fieldName + "Span").siblings().hide();
-                $("#invalid" + fieldName + "Span").show();
-                return false;
-            }
-        }
-        else {
-            return false;
-        }
+//==   Лучшее решение состоит в том, чтобы создать слушатель события, вместо того, чтобы вставлять обработчик в строку ====== //
+    $(function () {
+        $("#email").blur(function () {
+            checkEmailId();
+        });
 
-    };
+        $("#INN").blur(function () {
+            checkINNId();
+        });
+    });
+//======================================= END ======================================= //
+
+    //function checkEmail() {
+    //    var fieldName = $("#email").attr("name");
+    //    if (checkIsNotEmptyAndSetTipVisibility($("#email"))) {
+    //        if ($("#email").val().match(/^\b[A-Z0-9._%-]+@@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i)) {
+    //            $('#checked' + fieldName + 'Icon').siblings().hide();
+    //            $('#checked' + fieldName + 'Icon').show();
+    //            return true;
+    //        }
+    //        else {
+    //            $("#invalid" + fieldName + "Span").siblings().hide();
+    //            $("#invalid" + fieldName + "Span").show();
+    //            return false;
+    //        }
+    //    }
+    //    else {
+    //        return false;
+    //    }
+
+    //};
+//================================== реализация проверки емайл на уникальность ====================================== //
+    function checkEmailId()
+    {//0
+        var fieldName = $('#email').attr('name');
+        var _email = $('#email').val();
+           // alert(_email);
+        if (checkIsNotEmptyAndSetTipVisibility($('#email')))
+        {//1.1
+            $.ajax('/User/UniqueEmail',
+                {//2
+                    type: 'POST',
+                    data: { 'newEmail': _email },
+                    success: function (data)
+                    {//3.1
+                        //alert(data);
+                        if (data == "False")
+                        {//4.1
+                            if ($("#email").val().match(/^\b[A-Z0-9._%-]+@@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i))
+                            {//5.1
+                                $('#checked' + fieldName + 'Icon').siblings().hide();
+                                $('#checked' + fieldName + 'Icon').show();
+                                return true;
+                            }//5.1
+                            else
+                            {//5.2
+                                $("#invalid" + fieldName + "Span").siblings().hide();
+                                $("#invalid" + fieldName + "Span").show();
+                                return false;
+                            }//5.2                               
+                        }//4.1
+                        else
+                        {//4.2
+                            $('#email').val(''); //очищаем данные поля email
+                            $('#email').focus();
+                            $('#invalid' + fieldName + 'IdSpan').siblings().hide();
+                            $('#invalid' + fieldName + 'IdSpan').show();
+                            _email.empty();
+                        return false;
+                        }//4.2
+                    },//3.1
+                    error: function (errormessage)
+                    {//3.2
+                     alert(errormessage.responseText);
+                    }//3.2
+              });//2
+
+        }//1.1
+        else
+        {//1.2
+            return false;
+        }//1.2
+    };//0
+//================================== END реализация проверки емайл на уникальность ====================================== //
+
+
 
     function checkPassword() {
         var fieldName = $("#password").attr("name");
@@ -291,7 +366,7 @@
 			else {
 				$('#invalidPasswordSpan').show();
 			}
-            
+
             return true;
         }
         else {
@@ -415,7 +490,7 @@
         else {
             return false;
         }*/
-		
+
 		//if ($("#city").siblings(".selectedOptionsContainer").is(":empty")) {
   //          $('#needCitySpan').siblings().hide();
   //          $('#needCitySpan').show();
@@ -426,6 +501,61 @@
   //          return true;
   //      }
     };
+
+//================================== реализация проверки ИНН на уникальность ====================================== //
+
+    function checkINNId() {//0
+        var field = $("#INN");
+        var fieldName = field.attr("name");
+        var checkedIcon = $('#checked' + fieldName + 'Icon');
+        var invalidSpan = $('#invalid' + fieldName + 'IdSpan');
+        //alert(field.val());
+
+        if (checkIsNotEmptyAndSetTipVisibility($(field))) {//1.1
+            $.ajax('/User/UniqueINN',
+                {//2
+                    type: 'POST',
+                    data: { 'newINN': field.val() },
+                    success: function (data) {//3.1
+                        
+                        if (data == "False") {//4.1
+                            var value = field.val();
+                            var placeholderChar = '_';
+                            if (!value.includes(placeholderChar)) {
+                                checkedIcon.show().siblings().hide();
+                                return true;
+                            }
+                            else {
+                                invalidSpan.text('ИНН должен содержать 10 цифр').show().siblings().hide();
+                                return false;
+                            }      
+                        }//4.1
+                        else {//4.2
+                            $('#INN').val(''); //очищаем данные поля INN
+                            $('#INN').focus();
+                            invalidSpan.text('Пользователь уже зарегистрирован').show().siblings().hide();
+                            return false;
+                        }//4.2
+                    },//3.1
+                    error: function (errormessage) {//3.2
+                        alert(errormessage.responseText);
+                    }//3.2
+                });//2
+
+        }//1.1
+        else {//1.2
+            return false;
+        }//1.2
+    };//0
+//================================== END реализация проверки емайл на уникальность ====================================== //
+
+
+
+
+
+
+
+
 
     function checkINN() {
         var field = $("#INN");
@@ -584,4 +714,4 @@
 				alert(result);
         });
 	}
-	</script>
+</script>

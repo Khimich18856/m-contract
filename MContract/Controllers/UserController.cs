@@ -15,6 +15,7 @@ namespace MContract.Controllers
 {
     public class UserController : Controller
     {
+        #region
         public UserController()
         {
             #region Общий код для всех контроллеров
@@ -23,270 +24,326 @@ namespace MContract.Controllers
             #endregion
         }
 
-		[MyAuthorize]
-		public ActionResult MyAds()
-		{
-			var viewModel = new UserMyAdsViewModel();
-			var currentUser = SM.CurrentUser;
-			var leftMenuViewModel = LeftMenuViewModel.Get(currentUser, "Мои объявления");
-			viewModel.LeftMenuViewModel = leftMenuViewModel;
-			viewModel.MobileMenuViewModel = MobileMenuViewModel.Get(leftMenuViewModel);
-			var currentUserId = currentUser.Id;
-			var adStatusIds = new List<int>() { (int)AdStatuses.Published, (int)AdStatuses.Expired, (int)AdStatuses.Finished };
-			var ads = AdsDAL.GetAds(adStatusIds: adStatusIds, senderId: currentUserId);
-			ads = ads.Where(a => a.ModerateResult == ModerateResults.Accepted).OrderByDescending(a => a.Id).ToList();
-			viewModel.Ads = AdHelper.GetAdsForView(currentUserId, ads: ads, needInvitedUserIds: true, needSender: true);
+        [MyAuthorize]
+        public ActionResult MyAds()
+        {
+            var viewModel = new UserMyAdsViewModel();
+            var currentUser = SM.CurrentUser;
+            var leftMenuViewModel = LeftMenuViewModel.Get(currentUser, "Мои объявления");
+            viewModel.LeftMenuViewModel = leftMenuViewModel;
+            viewModel.MobileMenuViewModel = MobileMenuViewModel.Get(leftMenuViewModel);
+            var currentUserId = currentUser.Id;
+            var adStatusIds = new List<int>() { (int)AdStatuses.Published, (int)AdStatuses.Expired, (int)AdStatuses.Finished };
+            var ads = AdsDAL.GetAds(adStatusIds: adStatusIds, senderId: currentUserId);
+            ads = ads.Where(a => a.ModerateResult == ModerateResults.Accepted).OrderByDescending(a => a.Id).ToList();
+            viewModel.Ads = AdHelper.GetAdsForView(currentUserId, ads: ads, needInvitedUserIds: true, needSender: true);
 
-			//заполнение модели для отображения блока "Вы недавно смотрели"
-			var recentlyViewedAds = AdHelper.GetRecentlyViewedAds(currentUserId);
-			viewModel.AdsSliderViewModel = new AdsSliderViewModel("Вы недавно смотрели", currentUserId, recentlyViewedAds);
+            //заполнение модели для отображения блока "Вы недавно смотрели"
+            var recentlyViewedAds = AdHelper.GetRecentlyViewedAds(currentUserId);
+            viewModel.AdsSliderViewModel = new AdsSliderViewModel("Вы недавно смотрели", currentUserId, recentlyViewedAds);
 
-			ViewBag.L.HideHead = true;
+            ViewBag.L.HideHead = true;
 
-			return View(viewModel);
-		}
+            return View(viewModel);
+        }
 
-		public ActionResult Help()
-		{
-			//ViewBag.L.HideHead = true;
+        public ActionResult Help()
+        {
+            //ViewBag.L.HideHead = true;
 
-			return View();
-		}
+            return View();
+        }
 
-		public ActionResult Feedback()
-		{
-			//ViewBag.L.HideHead = true;
+        public ActionResult Feedback()
+        {
+            //ViewBag.L.HideHead = true;
 
-			return View();
-		}
+            return View();
+        }
 
-		public ActionResult Rules()
-		{
-			//ViewBag.L.HideHead = true;
+        public ActionResult Rules()
+        {
+            //ViewBag.L.HideHead = true;
 
-			return View();
-		}
-
-		public ActionResult TestMail()
-		{
-			MailHelper.SendE_Mail("samoilenkosergey@mail.ru", "Тестовое письмо 222", "Текст тестового письма 333");
-
-			return View();
-		}
-
-		[MyAuthorize]
-		public ActionResult Favorites()
-		{
-			var viewModel = new UserFavoritesViewModel();
-			var currentUser = SM.CurrentUser;
-			var leftMenuViewModel = LeftMenuViewModel.Get(currentUser, "Избранное");
-			viewModel.LeftMenuViewModel = leftMenuViewModel;
-			viewModel.MobileMenuViewModel = MobileMenuViewModel.Get(leftMenuViewModel);
-			var currentUserId = currentUser.Id;
-			viewModel.CurrentUserId = currentUserId;
-			var ads = AdsDAL.GetFavoriteAds(currentUserId);
-
-			viewModel.Ads = AdHelper.GetAdsForView(currentUserId, ads: ads, needSender: true).OrderByDescending(a => a.Id).ToList();
-
-			//заполнение модели для отображения блока "Похожие объявления"
-			var recentlyViewedAds = AdHelper.GetRecentlyViewedAds(currentUserId);//TODO переделать, когда будет алгоритм получения похожих объявлений
-			viewModel.AdsSliderViewModel = new AdsSliderViewModel("Похожие объявления", currentUserId, recentlyViewedAds);
-
-			ViewBag.L.HideHead = true;
-
-			return View(viewModel);
-		}
-
-		[MyAuthorize]
-		public ActionResult MyOffers()
-		{
-			var viewModel = new UserMyOffersViewModel();
-			var currentUser = SM.CurrentUser;
-			var leftMenuViewModel = LeftMenuViewModel.Get(currentUser, "Мои отклики");
-			viewModel.LeftMenuViewModel = leftMenuViewModel;
-			viewModel.MobileMenuViewModel = MobileMenuViewModel.Get(leftMenuViewModel);
-			viewModel.OutgoingOffers = OffersDAL.GetOffersFromUser(currentUser.Id).OrderByDescending(o => (o.Modified ?? o.DateOfPosting)).ToList();
-			if (viewModel.OutgoingOffers.Any())
-			{
-				var allProductCategories = ProductCategoriesDAL.GetCategories();
-				var allProducts = AdProductsDAL.GetAdProducts();
-				//viewModel.OutgoingOffers = viewModel.OutgoingOffers.Where(o => o.OfferStatus != OfferStatuses.Expired).ToList();
-				var dollarRate = TickersHelper.GetTodayUsdQuote();
-				foreach (var offer in viewModel.OutgoingOffers)
-				{
-					offer.Sender = UsersDAL.GetUser(offer.SenderId);
-					offer.Ad = AdsDAL.GetAd(offer.AdId);
-					if (offer.Ad != null)
-					{
-						offer.Ad.Sender = UsersDAL.GetUser(offer.Ad.SenderId);
-						if (offer.Ad.Sender != null)
-							offer.Ad.Sender.Town = TownsDAL.GetTown(offer.Ad.Sender.CityId);
-					}
-					if (offer.CityId != null)
-						offer.City = TownsDAL.GetTown(offer.CityId.Value);
-					offer.SumProduct = new List<float>();
-					offer.ProductOffers = ProductOffersDAL.GetProductOffers(offer.Id);
-					if (offer.ProductOffers.Any())
-					{
-						offer.ProductOffersDescription = "";
-						var i = 0;
-						var numOfPreviewedProducts = 3;
-						foreach (var productOffer in offer.ProductOffers)
-						{
-							var product = allProducts.Find(p => p.Id == productOffer.ProductId);
-							if (product != null)
-							{
-								var sumProduct = product.Weight * productOffer.PricePerWeight * (product.Currency == Currencies.Dollar ? dollarRate : 1);
-								offer.SumProduct.Add(sumProduct);
-								if (i < numOfPreviewedProducts)
-								{
-									product.ProductCategoryName = allProductCategories.Find(c => c.Id == product.ProductCategoryId)?.Name;
-									if (product.Name != null)
-										product.Name = product.Name.Substring(0, 1).ToLower() + product.Name.Substring(1);
-
-									if (i > 0)
-									{
-										offer.ProductOffersDescription += ", ";
-										product.ProductCategoryName = product.ProductCategoryName.Substring(0, 1).ToLower() + product.ProductCategoryName.Substring(1);
-									}
-									if (product.Name != null)
-										offer.ProductOffersDescription += product.ProductCategoryName + " (" + product.Name + ") – " + offer.SumProduct[i] + " руб.";
-									else
-										offer.ProductOffersDescription += product.ProductCategoryName + " – " + offer.SumProduct[i] + " руб.";
-								}
-								else if (i == numOfPreviewedProducts)
-									offer.ProductOffersDescription += ", ...";
-								i++;
-							}
-						}
-					}
-				}
-				viewModel.OutgoingOffers = viewModel.OutgoingOffers
-					.Where(o =>
-					o.Ad != null
-					&& o.Ad.AdStatus != AdStatuses.Finished
-					&& (o.Ad.AdStatus != AdStatuses.Expired || (DateTime.Now.ToUniversalTime() - o.Ad.ActiveToDate).Value.Days < 60))
-					.ToList();
-			}
-
-			var ads = viewModel.OutgoingOffers.Select(o => o.Ad).ToList();
-			ads = AdHelper.GetAdsForView(currentUser.Id, ads: ads);
-			foreach (var offer in viewModel.OutgoingOffers)
-			{
-				offer.Ad = ads.FirstOrDefault(a => a.Id == offer.AdId);
-			}
-
-			ViewBag.L.HideHead = true;
-
-			ViewBag.Heading = "Мои отклики";
-			
-			return View(viewModel);
-		}
-
-		[MyAuthorize]
-		public ActionResult Drafts()
-		{
-			var viewModel = new UserDraftsViewModel();
-			var currentUser = SM.CurrentUser;
-			var leftMenuViewModel = LeftMenuViewModel.Get(currentUser, "Черновики");
-			viewModel.LeftMenuViewModel = leftMenuViewModel;
-			viewModel.MobileMenuViewModel = MobileMenuViewModel.Get(leftMenuViewModel);
-			viewModel.CurrentUser = currentUser;
-			var currentUserId = currentUser.Id;
-			var ads = AdsDAL.GetAds(adStatusId: (int)AdStatuses.Draft, senderId: currentUserId);
-
-			viewModel.Ads = AdHelper.GetAdsForView(currentUserId, ads: ads).OrderByDescending(a => a.Id).ToList();
-
-			//заполнение модели для отображения блока "Похожие объявления"
-			var similarAds = AdHelper.GetRecentlyViewedAds(currentUserId);//TODO сделать когда будет алгоритм получения похожих объявлений
-			viewModel.AdsSliderViewModel = new AdsSliderViewModel("Похожие объявления", currentUserId, similarAds);
-
-			ViewBag.L.HideHead = true;
-
-			return View(viewModel);
-		}
-
-		[MyAuthorize]
-		public ActionResult MyProfile()
-		{
-			var viewModel = new UserMyProfileViewModel();
-			var currentUser = SM.CurrentUser;
-			if (currentUser.Town == null)
-				currentUser.Town = TownsDAL.GetTown(currentUser.CityId);
-			
-			var leftMenuViewModel = LeftMenuViewModel.Get(currentUser, "Данные профиля");
-			viewModel.LeftMenuViewModel = leftMenuViewModel;
-			viewModel.MobileMenuViewModel = MobileMenuViewModel.Get(leftMenuViewModel);
-			viewModel.CurrentUser = currentUser;
-
-			//заполнение модели для отображения блока "Вы недавно смотрели"
-			var recentlyViewedAds = AdHelper.GetRecentlyViewedAds(currentUser.Id);
-			viewModel.AdsSliderViewModel = new AdsSliderViewModel("Вы недавно смотрели", currentUser.Id, recentlyViewedAds);
-
-			ViewBag.L.HideHead = true;
-
-			return View(viewModel);
-		}
-
-		[MyAuthorize]
-		public ActionResult CounteragentProfile()
-		{
-			var viewModel = new UserCounteragentProfileViewModel();
-			var currentUser = SM.CurrentUser;
-			var leftMenuViewModel = LeftMenuViewModel.Get(currentUser, "Данные контрагента");
-			viewModel.LeftMenuViewModel = leftMenuViewModel;
-			viewModel.MobileMenuViewModel = MobileMenuViewModel.Get(leftMenuViewModel);
-			viewModel.CurrentUser = currentUser;
+            return View();
+        }
 
 
-			ViewBag.L.HideHead = true;
 
-			return View(viewModel);
-		}
+        [MyAuthorize]
+        public ActionResult Favorites()
+        {
+            var viewModel = new UserFavoritesViewModel();
+            var currentUser = SM.CurrentUser;
+            var leftMenuViewModel = LeftMenuViewModel.Get(currentUser, "Избранное");
+            viewModel.LeftMenuViewModel = leftMenuViewModel;
+            viewModel.MobileMenuViewModel = MobileMenuViewModel.Get(leftMenuViewModel);
+            var currentUserId = currentUser.Id;
+            viewModel.CurrentUserId = currentUserId;
+            var ads = AdsDAL.GetFavoriteAds(currentUserId);
 
-		[MyAuthorize]
-		public ActionResult RegularClients() //бывшая User/Companies?isRegularClients=true
-		{
-			var viewModel = new UserRegularClients();
-			var currentUser = SM.CurrentUser;
-			var leftMenuViewModel = LeftMenuViewModel.Get(currentUser, "Постоянные клиенты");
-			viewModel.LeftMenuViewModel = leftMenuViewModel;
-			viewModel.MobileMenuViewModel = MobileMenuViewModel.Get(leftMenuViewModel);
-			var currentUserId = currentUser.Id;
-			viewModel.CurrentUserId = currentUserId;
-			var regularClients = UsersDAL.GetRegularClients(currentUserId);
-			if (regularClients.Any())
-			{
-				var towns = TownsDAL.GetTowns();
-				var regularClientUserIds = regularClients.Select(rc => rc.Id).ToList();
-				var logoPhotosAll = PhotosDAL.GetCompanyLogoGroup(userIds: regularClientUserIds);
-				foreach (var user in regularClients)
-				{
-					if (user.CityId > 0)
-						user.Town = towns.Find(t => user.CityId == t.Id);
+            viewModel.Ads = AdHelper.GetAdsForView(currentUserId, ads: ads, needSender: true).OrderByDescending(a => a.Id).ToList();
 
-					var logoPhoto = logoPhotosAll.Where(p => p.UserId == user.Id).OrderBy(p => p.Width).FirstOrDefault();
-					user.SmallPhotoUrl = logoPhoto != null ? logoPhoto.Url : PhotoHelper.NoLogoImageUrl;
-				}
-			}
-			viewModel.RegularClients = regularClients;
+            //заполнение модели для отображения блока "Похожие объявления"
+            var recentlyViewedAds = AdHelper.GetRecentlyViewedAds(currentUserId);//TODO переделать, когда будет алгоритм получения похожих объявлений
+            viewModel.AdsSliderViewModel = new AdsSliderViewModel("Похожие объявления", currentUserId, recentlyViewedAds);
 
-			//заполнение модели для отображения блока "Вы недавно смотрели"
-			var recentlyViewedAds = AdHelper.GetRecentlyViewedAds(currentUserId);
-			viewModel.AdsSliderViewModel = new AdsSliderViewModel("Вы недавно смотрели", currentUserId, recentlyViewedAds);
+            ViewBag.L.HideHead = true;
 
-			ViewBag.L.HideHead = true;
+            return View(viewModel);
+        }
 
-			return View(viewModel);
-		}
+        [MyAuthorize]
+        public ActionResult MyOffers()
+        {
+            var viewModel = new UserMyOffersViewModel();
+            var currentUser = SM.CurrentUser;
+            var leftMenuViewModel = LeftMenuViewModel.Get(currentUser, "Мои отклики");
+            viewModel.LeftMenuViewModel = leftMenuViewModel;
+            viewModel.MobileMenuViewModel = MobileMenuViewModel.Get(leftMenuViewModel);
+            viewModel.OutgoingOffers = OffersDAL.GetOffersFromUser(currentUser.Id).OrderByDescending(o => (o.Modified ?? o.DateOfPosting)).ToList();
+            if (viewModel.OutgoingOffers.Any())
+            {
+                var allProductCategories = ProductCategoriesDAL.GetCategories();
+                var allProducts = AdProductsDAL.GetAdProducts();
+                //viewModel.OutgoingOffers = viewModel.OutgoingOffers.Where(o => o.OfferStatus != OfferStatuses.Expired).ToList();
+                var dollarRate = TickersHelper.GetTodayUsdQuote();
+                foreach (var offer in viewModel.OutgoingOffers)
+                {
+                    offer.Sender = UsersDAL.GetUser(offer.SenderId);
+                    offer.Ad = AdsDAL.GetAd(offer.AdId);
+                    if (offer.Ad != null)
+                    {
+                        offer.Ad.Sender = UsersDAL.GetUser(offer.Ad.SenderId);
+                        if (offer.Ad.Sender != null)
+                            offer.Ad.Sender.Town = TownsDAL.GetTown(offer.Ad.Sender.CityId);
+                    }
+                    if (offer.CityId != null)
+                        offer.City = TownsDAL.GetTown(offer.CityId.Value);
+                    offer.SumProduct = new List<float>();
+                    offer.ProductOffers = ProductOffersDAL.GetProductOffers(offer.Id);
+                    if (offer.ProductOffers.Any())
+                    {
+                        offer.ProductOffersDescription = "";
+                        var i = 0;
+                        var numOfPreviewedProducts = 3;
+                        foreach (var productOffer in offer.ProductOffers)
+                        {
+                            var product = allProducts.Find(p => p.Id == productOffer.ProductId);
+                            if (product != null)
+                            {
+                                var sumProduct = product.Weight * productOffer.PricePerWeight * (product.Currency == Currencies.Dollar ? dollarRate : 1);
+                                offer.SumProduct.Add(sumProduct);
+                                if (i < numOfPreviewedProducts)
+                                {
+                                    product.ProductCategoryName = allProductCategories.Find(c => c.Id == product.ProductCategoryId)?.Name;
+                                    if (product.Name != null)
+                                        product.Name = product.Name.Substring(0, 1).ToLower() + product.Name.Substring(1);
 
-		public List<string> GetCompanyNamesByPart(string partName)
+                                    if (i > 0)
+                                    {
+                                        offer.ProductOffersDescription += ", ";
+                                        product.ProductCategoryName = product.ProductCategoryName.Substring(0, 1).ToLower() + product.ProductCategoryName.Substring(1);
+                                    }
+                                    if (product.Name != null)
+                                        offer.ProductOffersDescription += product.ProductCategoryName + " (" + product.Name + ") – " + offer.SumProduct[i] + " руб.";
+                                    else
+                                        offer.ProductOffersDescription += product.ProductCategoryName + " – " + offer.SumProduct[i] + " руб.";
+                                }
+                                else if (i == numOfPreviewedProducts)
+                                    offer.ProductOffersDescription += ", ...";
+                                i++;
+                            }
+                        }
+                    }
+                }
+                viewModel.OutgoingOffers = viewModel.OutgoingOffers
+                    .Where(o =>
+                    o.Ad != null
+                    && o.Ad.AdStatus != AdStatuses.Finished
+                    && (o.Ad.AdStatus != AdStatuses.Expired || (DateTime.Now.ToUniversalTime() - o.Ad.ActiveToDate).Value.Days < 60))
+                    .ToList();
+            }
+
+            var ads = viewModel.OutgoingOffers.Select(o => o.Ad).ToList();
+            ads = AdHelper.GetAdsForView(currentUser.Id, ads: ads);
+            foreach (var offer in viewModel.OutgoingOffers)
+            {
+                offer.Ad = ads.FirstOrDefault(a => a.Id == offer.AdId);
+            }
+
+            ViewBag.L.HideHead = true;
+
+            ViewBag.Heading = "Мои отклики";
+
+            return View(viewModel);
+        }
+
+        [MyAuthorize]
+        public ActionResult Drafts()
+        {
+            var viewModel = new UserDraftsViewModel();
+            var currentUser = SM.CurrentUser;
+            var leftMenuViewModel = LeftMenuViewModel.Get(currentUser, "Черновики");
+            viewModel.LeftMenuViewModel = leftMenuViewModel;
+            viewModel.MobileMenuViewModel = MobileMenuViewModel.Get(leftMenuViewModel);
+            viewModel.CurrentUser = currentUser;
+            var currentUserId = currentUser.Id;
+            var ads = AdsDAL.GetAds(adStatusId: (int)AdStatuses.Draft, senderId: currentUserId);
+
+            viewModel.Ads = AdHelper.GetAdsForView(currentUserId, ads: ads).OrderByDescending(a => a.Id).ToList();
+
+            //заполнение модели для отображения блока "Похожие объявления"
+            var similarAds = AdHelper.GetRecentlyViewedAds(currentUserId);//TODO сделать когда будет алгоритм получения похожих объявлений
+            viewModel.AdsSliderViewModel = new AdsSliderViewModel("Похожие объявления", currentUserId, similarAds);
+
+            ViewBag.L.HideHead = true;
+
+            return View(viewModel);
+        }
+
+        [MyAuthorize]
+        public ActionResult MyProfile()
+        {
+            var viewModel = new UserMyProfileViewModel();
+            var currentUser = SM.CurrentUser;
+            if (currentUser.Town == null)
+                currentUser.Town = TownsDAL.GetTown(currentUser.CityId);
+
+            var leftMenuViewModel = LeftMenuViewModel.Get(currentUser, "Данные профиля");
+            viewModel.LeftMenuViewModel = leftMenuViewModel;
+            viewModel.MobileMenuViewModel = MobileMenuViewModel.Get(leftMenuViewModel);
+            viewModel.CurrentUser = currentUser;
+
+            //заполнение модели для отображения блока "Вы недавно смотрели"
+            var recentlyViewedAds = AdHelper.GetRecentlyViewedAds(currentUser.Id);
+            viewModel.AdsSliderViewModel = new AdsSliderViewModel("Вы недавно смотрели", currentUser.Id, recentlyViewedAds);
+
+            ViewBag.L.HideHead = true;
+
+            return View(viewModel);
+        }
+
+        [MyAuthorize]
+        public ActionResult CounteragentProfile()
+        {
+            var viewModel = new UserCounteragentProfileViewModel();
+            var currentUser = SM.CurrentUser;
+            var leftMenuViewModel = LeftMenuViewModel.Get(currentUser, "Данные контрагента");
+            viewModel.LeftMenuViewModel = leftMenuViewModel;
+            viewModel.MobileMenuViewModel = MobileMenuViewModel.Get(leftMenuViewModel);
+            viewModel.CurrentUser = currentUser;
+
+
+            ViewBag.L.HideHead = true;
+
+            return View(viewModel);
+        }
+
+        [MyAuthorize]
+        public ActionResult RegularClients() //бывшая User/Companies?isRegularClients=true
+        {
+            var viewModel = new UserRegularClients();
+            var currentUser = SM.CurrentUser;
+            var leftMenuViewModel = LeftMenuViewModel.Get(currentUser, "Постоянные клиенты");
+            viewModel.LeftMenuViewModel = leftMenuViewModel;
+            viewModel.MobileMenuViewModel = MobileMenuViewModel.Get(leftMenuViewModel);
+            var currentUserId = currentUser.Id;
+            viewModel.CurrentUserId = currentUserId;
+            var regularClients = UsersDAL.GetRegularClients(currentUserId);
+            if (regularClients.Any())
+            {
+                var towns = TownsDAL.GetTowns();
+                var regularClientUserIds = regularClients.Select(rc => rc.Id).ToList();
+                var logoPhotosAll = PhotosDAL.GetCompanyLogoGroup(userIds: regularClientUserIds);
+                foreach (var user in regularClients)
+                {
+                    if (user.CityId > 0)
+                        user.Town = towns.Find(t => user.CityId == t.Id);
+
+                    var logoPhoto = logoPhotosAll.Where(p => p.UserId == user.Id).OrderBy(p => p.Width).FirstOrDefault();
+                    user.SmallPhotoUrl = logoPhoto != null ? logoPhoto.Url : PhotoHelper.NoLogoImageUrl;
+                }
+            }
+            viewModel.RegularClients = regularClients;
+
+            //заполнение модели для отображения блока "Вы недавно смотрели"
+            var recentlyViewedAds = AdHelper.GetRecentlyViewedAds(currentUserId);
+            viewModel.AdsSliderViewModel = new AdsSliderViewModel("Вы недавно смотрели", currentUserId, recentlyViewedAds);
+
+            ViewBag.L.HideHead = true;
+
+            return View(viewModel);
+        }
+
+        public List<string> GetCompanyNamesByPart(string partName)
         {
             var allUsers = UsersDAL.GetUsers();
             var result = allUsers.Where(u => u.CompanyName.Contains(partName)).Select(u => u.CompanyName).ToList();
             return result;
         }
 
+        #endregion
+
+        #region Проверка нового ЮЗЕРА на уникальность по ЕМАЙЛ и ИНН
+        //Проверка нового ЮЗЕРА на уникальность по ЕМАЙЛ 
+        /******************************************/
+
+        public bool UniqueEmail(string newEmail, bool _email = true)
+        {
+            /*  проверяем существование пользователя в базе данных с только что введенным емайл
+             */
+            var user = UsersDAL.GetUserByEmail(newEmail);
+            /*  
+              если такого пользователя нет то ничего не делаем \
+              если есть то сообщаем пользователю об этом 
+              блокируем внесение данных ... 
+          */
+            if (user != null && user.Email == newEmail)
+            {
+                return _email;
+            }
+            else
+            {
+                _email = false;
+                return _email;
+            }
+
+        }
+
+        public bool UniqueINN(string newINN, bool _inn = true)
+        {
+            /*  проверяем существование пользователя в базе данных с только что введенным емайл
+             */
+            var user = UsersDAL.GetUserByINN(newINN);
+            /*  
+              если такого пользователя нет то ничего не делаем \
+              если есть то сообщаем пользователю об этом 
+              блокируем внесение данных ... 
+          */
+            if (user != null && user.INN == newINN)
+            {
+                return _inn;
+            }
+            else
+            {
+                _inn = false;
+                return _inn;
+            }
+
+        }
+
+        #endregion
+        #region Потдверждение почтого ящика нового ЮЗЕРА
+        public ActionResult TestMail()
+        {
+            MailHelper.SendE_Mail("samoilenkosergey@mail.ru", "Тестовое письмо 222", "Текст тестового письма 333");
+
+            return View();
+        }
+        #endregion
+
+        #region Регистрация нового ЮЗЕРА 
         [HttpGet]
         public ActionResult Signup()
         {
@@ -302,136 +359,140 @@ namespace MContract.Controllers
             return View();
         }
 
-		[HttpPost]
+
+
+        [HttpPost]
         public string Signup(User user)
         {
-			//делаем запрос в СБИС, заполняем данные пользователя из СБИС
-			P.FillInformationFromSbis(user);
-			#region проверяем данные из СБИС с данными, предоставленными пользователем, и подтверждаем пользователя либо ничего не делаем и он автоматически появится на странице модерации
-			if (user.OGRN == null)
-				user.OGRN = "";
+            //делаем запрос в СБИС, заполняем данные пользователя из СБИС
+            P.FillInformationFromSbis(user);
+            #region проверяем данные из СБИС с данными, предоставленными пользователем, и подтверждаем пользователя либо ничего не делаем и он автоматически появится на странице модерации
+            if (user.OGRN == null)
+                user.OGRN = "";
 
-			if (user.OGRN.Replace("-", "") == user.SbisOGRN && user.CompanyName == user.SbisCompanyName && (int)user.TypeOfOwnership == user.SbisTypeOfOwnershipId)
-				user.ModerateResult = ModerateResults.Accepted;
-			#endregion
+            if (user.OGRN.Replace("-", "") == user.SbisOGRN && user.CompanyName == user.SbisCompanyName && (int)user.TypeOfOwnership == user.SbisTypeOfOwnershipId)
+                user.ModerateResult = ModerateResults.Accepted;
+            #endregion
 
-			if (user.ModerateResult == ModerateResults.Accepted)
-			{
-				#region Добавление пользователя в БД в таблицу Users
-				user.Created = DateTime.Now.ToUniversalTime();
-				user.LastOnline = DateTime.Now.ToUniversalTime();
+            if (user.ModerateResult == ModerateResults.Accepted)
+            {
+                #region Добавление пользователя в БД в таблицу Users
+                user.Created = DateTime.Now.ToUniversalTime();
+                user.LastOnline = DateTime.Now.ToUniversalTime();
                 user.Password = Krakoss.Encryption(user.Password);
-				#region Определение Id-города
-				//if (user.CityId != 0)
-				//{
-				//	user.Town = TownsDAL.GetTown(user.CityId);
-				//	int ind1 = user.TownName.IndexOf(" (");
-				//	if (ind1 != -1)
-				//	{
-				//		string townName = user.TownName.Remove(ind1);
-				//		string regionName = user.TownName.Substring(ind1 + " (".Length);
-				//		regionName = regionName.Remove(regionName.Length - 1);
-				//		var town = TownsDAL.GetTown(townName, regionName);
-				//		if (town != null)
-				//			user.CityId = town.Id;
-				//		else
-				//			LogsDAL.AddError("User/SignUp[post]: Не удалось определить город, user.SingUpCityStr = " + user.TownName);
-				//	}
-				//	else
-				//		LogsDAL.AddError("User/SignUp[post]: Не удалось определить город, user.SingUpCityStr = " + user.TownName);
-				//}
-				//else
-				//	LogsDAL.AddError("User/SignUp[post]: user.SingUpCityStr = null");
-				#endregion
-				var id = UsersDAL.AddUser(user);
-				if (id > 0)
-				{
-					CookiesHelper.SaveCookiesForHideAuthorization(user.Email, "", user.Password.TrimEnd());
-					return "user created";
-				}
-				else
-					throw new Exception("Не удалось создать пользователя, пожалуйста, попробуйте позже");
-				#endregion
-			}
-			else
-			{
-				#region Добавление незарегистрированного пользователя в БД в таблицу UnregisteredUsers
+                #region Определение Id-города
+                //if (user.CityId != 0)
+                //{
+                //	user.Town = TownsDAL.GetTown(user.CityId);
+                //	int ind1 = user.TownName.IndexOf(" (");
+                //	if (ind1 != -1)
+                //	{
+                //		string townName = user.TownName.Remove(ind1);
+                //		string regionName = user.TownName.Substring(ind1 + " (".Length);
+                //		regionName = regionName.Remove(regionName.Length - 1);
+                //		var town = TownsDAL.GetTown(townName, regionName);
+                //		if (town != null)
+                //			user.CityId = town.Id;
+                //		else
+                //			LogsDAL.AddError("User/SignUp[post]: Не удалось определить город, user.SingUpCityStr = " + user.TownName);
+                //	}
+                //	else
+                //		LogsDAL.AddError("User/SignUp[post]: Не удалось определить город, user.SingUpCityStr = " + user.TownName);
+                //}
+                //else
+                //	LogsDAL.AddError("User/SignUp[post]: user.SingUpCityStr = null");
+                #endregion
+                var id = UsersDAL.AddUser(user);
+                if (id > 0)
+                {
+                    CookiesHelper.SaveCookiesForHideAuthorization(user.Email, "", user.Password.TrimEnd());
+                    return "user created";
+                }
+                else
+                    throw new Exception("Не удалось создать пользователя, пожалуйста, попробуйте позже");
+                #endregion
+            }
+            else
+            {
+                #region Добавление незарегистрированного пользователя в БД в таблицу UnregisteredUsers
 
-				var unregisteredUser = user.ToUnregisteredUser();
-				unregisteredUser.Created = DateTime.Now.ToUniversalTime();
-				var id = UnregisteredUsersDAL.AddUnregisteredUser(unregisteredUser);
-				if (id > 0)
-				{
-					return "unregisteredUser created";
-				}
+                var unregisteredUser = user.ToUnregisteredUser();
+                unregisteredUser.Created = DateTime.Now.ToUniversalTime();
+                var id = UnregisteredUsersDAL.AddUnregisteredUser(unregisteredUser);
+                if (id > 0)
+                {
+                    return "unregisteredUser created";
+                }
 
-				#endregion
+                #endregion
 
-				return "Не удалось записать ваши данные, пожалуйста, попробуйте позже";
-			}
+                return "Не удалось записать ваши данные, пожалуйста, попробуйте позже";
+            }
 
-            
+
+        }
+        #endregion
+
+        #region
+        [HttpPost]
+        [MyAuthorize]
+        public string ChangePassword(string currentPassword, string newPassword)
+        {
+            var currentUser = SM.CurrentUser;
+            if (currentUser.Password != currentPassword)
+                return "Текущий пароль указан неверно";
+
+            var success = UsersDAL.UpdateUserPassword(currentUser.Id, newPassword);
+            if (success)
+            {
+                currentUser.Password = newPassword;
+                SM.CurrentUser = currentUser;
+                CookiesHelper.SaveCookiesForHideAuthorization(currentUser.Email, "", currentUser.Password);
+                return "ok";
+            }
+            else
+                return "Произошла ошибка при обновлениие пароля, попробуйте позже";
         }
 
-		[HttpPost]
-		[MyAuthorize]
-		public string ChangePassword(string currentPassword, string newPassword)
-		{
-			var currentUser = SM.CurrentUser;
-			if (currentUser.Password != currentPassword)
-				return "Текущий пароль указан неверно";
+        [HttpPost]
+        [MyAuthorize]
+        public string SaveUserData(User formUser)
+        {
+            var currentUser = SM.CurrentUser;
+            //var emailChanged = formUser.Email != currentUser.Email;
 
-			var success = UsersDAL.UpdateUserPassword(currentUser.Id, newPassword);
-			if (success)
-			{
-				currentUser.Password = newPassword;
-				SM.CurrentUser = currentUser;
-				CookiesHelper.SaveCookiesForHideAuthorization(currentUser.Email, "", currentUser.Password);
-				return "ok";
-			}
-			else
-				return "Произошла ошибка при обновлениие пароля, попробуйте позже";
-		}
+            currentUser.ContactName = formUser.ContactName;
+            currentUser.Email = formUser.Email;
+            currentUser.PhoneNumber = formUser.PhoneNumber;
+            currentUser.PhoneNumberCity = formUser.PhoneNumberCity;
+            currentUser.Address = formUser.Address;
+            currentUser.FactualAddress = formUser.FactualAddress;
 
-		[HttpPost]
-		[MyAuthorize]
-		public string SaveUserData(User formUser)
-		{
-			var currentUser = SM.CurrentUser;
-			//var emailChanged = formUser.Email != currentUser.Email;
+            var success = UsersDAL.UpdateUser(currentUser);
+            if (success)
+            {
+                CookiesHelper.SaveCookiesForHideAuthorization(currentUser.Email, "", currentUser.Password.TrimEnd());
+                return "ok";
+            }
+            else
+                return "Произошла ошибка при сохранении, попробуйте позже";
+        }
 
-			currentUser.ContactName = formUser.ContactName;
-			currentUser.Email = formUser.Email;
-			currentUser.PhoneNumber = formUser.PhoneNumber;
-			currentUser.PhoneNumberCity = formUser.PhoneNumberCity;
-			currentUser.Address = formUser.Address;
-			currentUser.FactualAddress = formUser.FactualAddress;
+        [HttpPost]
+        [MyAuthorize]
+        public string RemoveCompanyFromSite()
+        {
+            var currentUser = SM.CurrentUser;
 
-			var success = UsersDAL.UpdateUser(currentUser);
-			if (success)
-			{
-				CookiesHelper.SaveCookiesForHideAuthorization(currentUser.Email, "", currentUser.Password.TrimEnd());
-				return "ok";
-			}
-			else 
-				return "Произошла ошибка при сохранении, попробуйте позже";
-		}
+            var success = UsersDAL.UpdateUserDeleted(currentUser.Id, true);
 
-		[HttpPost]
-		[MyAuthorize]
-		public string RemoveCompanyFromSite()
-		{
-			var currentUser = SM.CurrentUser;
+            AdsDAL.UpdateNotFinishedAdsToDeleted(currentUser.Id);
+            OffersDAL.UpdateNotFinishedOffersToDeleted(currentUser.Id);
 
-			var success = UsersDAL.UpdateUserDeleted(currentUser.Id, true);
+            return success ? "ok" : "Произошла ошибка при удалении, попробуйте позже";
+        }
 
-			AdsDAL.UpdateNotFinishedAdsToDeleted(currentUser.Id);
-			OffersDAL.UpdateNotFinishedOffersToDeleted(currentUser.Id);
-
-			return success ? "ok" : "Произошла ошибка при удалении, попробуйте позже";
-		}
-
-		[HttpGet]
+        [HttpGet]
         public ActionResult SignupChecking()
         {
             ViewBag.L.ShowSearchbar = false;
@@ -499,10 +560,10 @@ namespace MContract.Controllers
 
         public ActionResult Logout(bool deletedCompany = false)
         {
-			var viewModel = new UserLogoutViewModel()
-			{
-				DeletedCompany = deletedCompany
-			};
+            var viewModel = new UserLogoutViewModel()
+            {
+                DeletedCompany = deletedCompany
+            };
 
             ViewBag.L.ShowSearchbar = false;
             if (Response.Cookies != null && Response.Cookies["ep"] != null)
@@ -523,17 +584,17 @@ namespace MContract.Controllers
             return View(viewModel);
         }
 
-		public ActionResult UserAgreement()
-		{
-			return View();
-		}
+        public ActionResult UserAgreement()
+        {
+            return View();
+        }
 
-		public ActionResult ProcessingPersonalData()
-		{
-			return View();
-		}
+        public ActionResult ProcessingPersonalData()
+        {
+            return View();
+        }
 
-		[MyAuthorize]
+        [MyAuthorize]
         public new ActionResult Profile(int? id)
         {
             ViewBag.L.ShowSearchbar = false;
@@ -560,7 +621,8 @@ namespace MContract.Controllers
             if (user.Id == user.PersonalAreaUser.Id)
             {
                 breadCrumbs.Add(new BreadCrumbLink() { Text = "Личный кабинет", EndPoint = true });
-            } else
+            }
+            else
             {
                 breadCrumbs.Add(new BreadCrumbLink() { Text = "Личный кабинет", Url = Urls.PersonalArea, Title = "Перейти в личный кабинет" });
                 breadCrumbs.Add(new BreadCrumbLink() { Text = "Профиль", EndPoint = true });
@@ -624,7 +686,8 @@ namespace MContract.Controllers
             if (isRegularClients == false)
             {
                 viewModel.Companies = UsersDAL.GetUsers();
-            } else
+            }
+            else
             {
                 viewModel.Companies = UsersDAL.GetRegularClients(viewModel.PersonalAreaUser.Id);
                 viewModel.IsRegularClients = true;
@@ -667,20 +730,20 @@ namespace MContract.Controllers
             return View(viewModel);
         }
 
-		[MyAuthorize]
+        [MyAuthorize]
         public ActionResult DealsHistory()
         {
-			ViewBag.L.HideHead = true;
-			var viewModel = new UserDealsHistoryViewModel();
+            ViewBag.L.HideHead = true;
+            var viewModel = new UserDealsHistoryViewModel();
             var currentUser = SM.CurrentUser;
             var leftMenuViewModel = LeftMenuViewModel.Get(currentUser, "История сделок");
             viewModel.LeftMenuViewModel = leftMenuViewModel;
             viewModel.MobileMenuViewModel = MobileMenuViewModel.Get(leftMenuViewModel);
-			var currentUserId = currentUser.Id;
+            var currentUserId = currentUser.Id;
 
-			//возьмем мои объявления, по которым заключен контракт
-			var ads = AdsDAL.GetAds(adStatusId: (int)AdStatuses.Finished, senderId: SM.CurrentUserId);
-			var adIds = ads.Select(a => a.Id).ToList();
+            //возьмем мои объявления, по которым заключен контракт
+            var ads = AdsDAL.GetAds(adStatusId: (int)AdStatuses.Finished, senderId: SM.CurrentUserId);
+            var adIds = ads.Select(a => a.Id).ToList();
             //возьмем предложения со статусом Заключен контракт по этим объявлениям
             var offers = OffersDAL.GetOffers(adIds: adIds, contractStatusId: (int)ContractStatuses.Accepted);
 
@@ -714,7 +777,7 @@ namespace MContract.Controllers
 
             var deals = new List<UserDealsHistoryItem>();
             // основываясь на объявлениях соберем сделки
-			foreach (var ad in ads)
+            foreach (var ad in ads)
             {
                 //в озьмем соответствующее предложение
                 var offer = offers.FirstOrDefault(o => o.AdId == ad.Id);
@@ -742,16 +805,16 @@ namespace MContract.Controllers
                 ad.Products = adProducts.Where(p => p.AdId == ad.Id).ToList();
                 ad.Photos = photos.Where(p => p.AdId == ad.Id && p.PhotoType == PhotoTypes.AdPhoto).ToList();
                 if (ad.Photos.Any())
-				{
-					var mainPhoto = ad.Photos.Where(p => p.IsMain).OrderBy(p => p.HigherDimension).FirstOrDefault();
-					ad.SmallPhotoUrl = mainPhoto != null ? mainPhoto.Url : PhotoHelper.NoLogoImageUrl;
-				}
-                    
+                {
+                    var mainPhoto = ad.Photos.Where(p => p.IsMain).OrderBy(p => p.HigherDimension).FirstOrDefault();
+                    ad.SmallPhotoUrl = mainPhoto != null ? mainPhoto.Url : PhotoHelper.NoLogoImageUrl;
+                }
+
                 ad.City = TownsDAL.GetTown(ad.CityId);
 
                 var productCategories = new List<ProductCategory>(allProductCategories.Select(c => c.Clone()));
                 var adProductCategoryIds = ad.Products.Select(p => p.ProductCategoryId).ToList();
-                var adProductCategories = 
+                var adProductCategories =
                     productCategories
                         .Where(c => adProductCategoryIds.Any(id => c.Id == id))
                         .OrderBy(c => c.Id).ToList();
@@ -766,9 +829,9 @@ namespace MContract.Controllers
                                                                 childCategory =>
                                                                 childCategory.Id == childCategoryId ||
                                                                 childCategory.ParentId == childCategoryId))).ToList());
-                ad.ProductCategoriesLevel1.ForEach(parentCategory => 
+                ad.ProductCategoriesLevel1.ForEach(parentCategory =>
                                                    parentCategory.ChildCategories = adProductCategories
-                                                                                    .Where(c => c.ParentId == parentCategory.Id || 
+                                                                                    .Where(c => c.ParentId == parentCategory.Id ||
                                                                                            parentCategory.ChildrenId.Any(id => id == c.ParentId)).ToList());
                 /*ad.ProductCategoryNames = "";
                 if (adProductCategories.Any())
@@ -830,7 +893,7 @@ namespace MContract.Controllers
                 counteragent.LogoGroup = photos.Where(p => p.UserId == counteragent.Id && p.PhotoType == PhotoTypes.CompanyLogo).ToList();
                 counteragent.Town = TownsDAL.GetTown(counteragent.CityId);
 
-                var productCategoryIds = 
+                var productCategoryIds =
                     ad.ProductCategoriesLevel1.Union(ad.ProductCategoriesLevel1.SelectMany(c => c.ChildCategories)).Select(c => c.Id).ToList();
 
                 var totalWeight =
@@ -842,8 +905,8 @@ namespace MContract.Controllers
                     .Select(p => p.Weight).Sum();
 
                 var deal = new UserDealsHistoryItem()
-				{
-					Ad = ad,
+                {
+                    Ad = ad,
                     Offer = offer,
                     Counteragent = counteragent,
                     Date = offer.ContractSendDate ?? DateTime.MinValue,
@@ -852,13 +915,13 @@ namespace MContract.Controllers
                     TotalWeight = totalWeight
                 };
 
-				deals.Add(deal);
-			}
+                deals.Add(deal);
+            }
 
-            deals = deals.OrderByDescending(d => 
-                d.Date != DateTime.MinValue ? d.Date : 
+            deals = deals.OrderByDescending(d =>
+                d.Date != DateTime.MinValue ? d.Date :
                 d.Offer.DateOfPosting != DateTime.MinValue ? d.Offer.DateOfPosting :
-                d.Ad.DateOfPosting != DateTime.MinValue ? d.Ad.DateOfPosting : 
+                d.Ad.DateOfPosting != DateTime.MinValue ? d.Ad.DateOfPosting :
                 DateTime.MinValue).ToList();
             viewModel.Deals = deals;
 
@@ -869,71 +932,71 @@ namespace MContract.Controllers
             return View(viewModel);
         }
 
-		[MyAuthorize]
-		public ActionResult DealCard(int adId)
-		{
-			ViewBag.L.HideHead = true;
-			var viewModel = new UserDealCardViewModel();
-			var currentUser = SM.GetPersonalAreaUser();
-			var currentUserId = currentUser.Id;
-			currentUser.SelectedMenu = "История сделок";
-			viewModel.PersonalAreaUser = currentUser;
+        [MyAuthorize]
+        public ActionResult DealCard(int adId)
+        {
+            ViewBag.L.HideHead = true;
+            var viewModel = new UserDealCardViewModel();
+            var currentUser = SM.GetPersonalAreaUser();
+            var currentUserId = currentUser.Id;
+            currentUser.SelectedMenu = "История сделок";
+            viewModel.PersonalAreaUser = currentUser;
 
-			var ad = AdsDAL.GetAd(adId);
-			if (ad == null)
-				throw new Exception("Не найдено объявление по Id = " + adId);
+            var ad = AdsDAL.GetAd(adId);
+            if (ad == null)
+                throw new Exception("Не найдено объявление по Id = " + adId);
 
-			ad.City = TownsDAL.GetTown(ad.CityId);
-			if (ad.City == null)
-				throw new Exception("Не удалось найти город фактического нахождения груза по Id города = " + ad.CityId);
-
-			
-			viewModel.DealDirection = ad.IsBuy ? "покупка" : "продажа";
-
-			var contractOffers = OffersDAL.GetOffers(adId: adId, contractStatusId: (int)ContractStatuses.Accepted);
-			if (!contractOffers.Any())
-				throw new Exception("Не найдено предложение, по которому заключен контракт, для объявления с Id = " + adId);
-
-			var contractOffer = contractOffers.First();
-
-			viewModel.ContractOffer = contractOffer;
-
-			var adProducts = AdProductsDAL.GetAdProducts(adId);
-			var productCategoriesIds = adProducts.Select(c => c.ProductCategoryId).Distinct().ToList();
-			var productCategories = ProductCategoriesDAL.GetCategories()/*из кэша*/.Where(c => productCategoriesIds.Contains(c.Id)).ToList();
-			var offerProducts = ProductOffersDAL.GetProductOffers(contractOffer.Id);
-			foreach (var adProduct in adProducts)
-			{
-				adProduct.ProductCategoryName = productCategories.FirstOrDefault(c => c.Id == adProduct.ProductCategoryId)?.Name;
-				adProduct.OfferProduct = offerProducts.FirstOrDefault(op => op.ProductId == adProduct.Id);
-			}
-
-			ad.Products = adProducts;
-
-			viewModel.Ad = ad;
-
-			viewModel.DealDate = contractOffer.ContractSendDate ?? DateTime.MinValue;
+            ad.City = TownsDAL.GetTown(ad.CityId);
+            if (ad.City == null)
+                throw new Exception("Не удалось найти город фактического нахождения груза по Id города = " + ad.CityId);
 
 
+            viewModel.DealDirection = ad.IsBuy ? "покупка" : "продажа";
 
-			var adCreator = UsersDAL.GetUser(ad.SenderId);
-			if (adCreator == null)
-				throw new Exception("Не удалось найти пользователя - организатора торгов по Id пользователя = " + ad.SenderId);
+            var contractOffers = OffersDAL.GetOffers(adId: adId, contractStatusId: (int)ContractStatuses.Accepted);
+            if (!contractOffers.Any())
+                throw new Exception("Не найдено предложение, по которому заключен контракт, для объявления с Id = " + adId);
 
-			var offerCreator = UsersDAL.GetUser(contractOffer.SenderId);
-			if (offerCreator == null)
-				throw new Exception("Не удалось найти пользователя - отправившего выигравшее предложение по Id пользователя = " + contractOffer.SenderId);
+            var contractOffer = contractOffers.First();
 
-			var buyer = ad.IsBuy ? adCreator : offerCreator;
-			var seller = ad.IsBuy ? offerCreator : adCreator;
+            viewModel.ContractOffer = contractOffer;
 
-			buyer.Town = TownsDAL.GetTown(buyer.CityId);
-			if (buyer.Town == null)
-				throw new Exception("Не удалось найти город покупателя по Id города = " + buyer.CityId);
+            var adProducts = AdProductsDAL.GetAdProducts(adId);
+            var productCategoriesIds = adProducts.Select(c => c.ProductCategoryId).Distinct().ToList();
+            var productCategories = ProductCategoriesDAL.GetCategories()/*из кэша*/.Where(c => productCategoriesIds.Contains(c.Id)).ToList();
+            var offerProducts = ProductOffersDAL.GetProductOffers(contractOffer.Id);
+            foreach (var adProduct in adProducts)
+            {
+                adProduct.ProductCategoryName = productCategories.FirstOrDefault(c => c.Id == adProduct.ProductCategoryId)?.Name;
+                adProduct.OfferProduct = offerProducts.FirstOrDefault(op => op.ProductId == adProduct.Id);
+            }
 
-			seller.Town = TownsDAL.GetTown(seller.CityId);
-			if (seller.Town == null)
-				throw new Exception("Не удалось найти город продавца по Id города = " + seller.CityId);
+            ad.Products = adProducts;
+
+            viewModel.Ad = ad;
+
+            viewModel.DealDate = contractOffer.ContractSendDate ?? DateTime.MinValue;
+
+
+
+            var adCreator = UsersDAL.GetUser(ad.SenderId);
+            if (adCreator == null)
+                throw new Exception("Не удалось найти пользователя - организатора торгов по Id пользователя = " + ad.SenderId);
+
+            var offerCreator = UsersDAL.GetUser(contractOffer.SenderId);
+            if (offerCreator == null)
+                throw new Exception("Не удалось найти пользователя - отправившего выигравшее предложение по Id пользователя = " + contractOffer.SenderId);
+
+            var buyer = ad.IsBuy ? adCreator : offerCreator;
+            var seller = ad.IsBuy ? offerCreator : adCreator;
+
+            buyer.Town = TownsDAL.GetTown(buyer.CityId);
+            if (buyer.Town == null)
+                throw new Exception("Не удалось найти город покупателя по Id города = " + buyer.CityId);
+
+            seller.Town = TownsDAL.GetTown(seller.CityId);
+            if (seller.Town == null)
+                throw new Exception("Не удалось найти город продавца по Id города = " + seller.CityId);
 
             if (seller.Id == currentUserId)
                 buyer.Rating = UsersDAL.GetUserRating(buyer.Id, seller.Id, adId);
@@ -941,41 +1004,41 @@ namespace MContract.Controllers
                 seller.Rating = UsersDAL.GetUserRating(seller.Id, buyer.Id, adId);
 
             viewModel.Buyer = buyer;
-			viewModel.Seller = seller;
+            viewModel.Seller = seller;
 
-			//Заполним строку Условия поставки
-			var deliveryType = ad.DeliveryType != DeliveryTypes.Any ? ad.DeliveryType : contractOffer.DeliveryType;
-			viewModel.DeliveryType = AdHelper.GetDeliveryTypeString(deliveryType);
+            //Заполним строку Условия поставки
+            var deliveryType = ad.DeliveryType != DeliveryTypes.Any ? ad.DeliveryType : contractOffer.DeliveryType;
+            viewModel.DeliveryType = AdHelper.GetDeliveryTypeString(deliveryType);
 
-			//Заполним строку Погрузка
-			var deliveryLoadType = ad.DeliveryLoadType != DeliveryLoadTypes.Any ? ad.DeliveryLoadType : contractOffer.DeliveryLoadType;
-			viewModel.DeliveryLoadType = AdHelper.GetDeliveryLoadTypeString(deliveryLoadType);
+            //Заполним строку Погрузка
+            var deliveryLoadType = ad.DeliveryLoadType != DeliveryLoadTypes.Any ? ad.DeliveryLoadType : contractOffer.DeliveryLoadType;
+            viewModel.DeliveryLoadType = AdHelper.GetDeliveryLoadTypeString(deliveryLoadType);
 
-			//Заполним строку Способ доставки
-			var deliveryWay = ad.DeliveryWay != DeliveryWays.Any ? ad.DeliveryWay : contractOffer.DeliveryWay;
-			viewModel.DeliveryWay = AdHelper.GetDeliveryWayString(deliveryWay);
+            //Заполним строку Способ доставки
+            var deliveryWay = ad.DeliveryWay != DeliveryWays.Any ? ad.DeliveryWay : contractOffer.DeliveryWay;
+            viewModel.DeliveryWay = AdHelper.GetDeliveryWayString(deliveryWay);
 
-			//Заполним строку Цена (с НДС/без НДС)
-			var nds = ad.Nds != Nds.Any ? ad.Nds : contractOffer.Nds;
-			viewModel.Nds = AdHelper.GetNdsString(nds);
+            //Заполним строку Цена (с НДС/без НДС)
+            var nds = ad.Nds != Nds.Any ? ad.Nds : contractOffer.Nds;
+            viewModel.Nds = AdHelper.GetNdsString(nds);
 
-			//Заполним строку Условия оплаты
-			var termOfPayment = ad.TermsOfPayments != TermsOfPayments.Any ? ad.TermsOfPayments : contractOffer.TermsOfPayments;
-			viewModel.TermsOfPayments = AdHelper.GetTermsOfPaymentsString(termOfPayment);
+            //Заполним строку Условия оплаты
+            var termOfPayment = ad.TermsOfPayments != TermsOfPayments.Any ? ad.TermsOfPayments : contractOffer.TermsOfPayments;
+            viewModel.TermsOfPayments = AdHelper.GetTermsOfPaymentsString(termOfPayment);
 
-			
 
-			return View(viewModel);
-		}
 
-		public ActionResult RateRules()
-		{
-			return View();
-		}
+            return View(viewModel);
+        }
 
-		[MyAuthorize]
-		//public ActionResult Messages(int respondentId, bool isFromNewOffer = false, int adId = 0)
-		public ActionResult Messages(int respondentId = 0, string lastPageUrl = "")
+        public ActionResult RateRules()
+        {
+            return View();
+        }
+
+        [MyAuthorize]
+        //public ActionResult Messages(int respondentId, bool isFromNewOffer = false, int adId = 0)
+        public ActionResult Messages(int respondentId = 0, string lastPageUrl = "")
         {
             if (respondentId == 0)
                 return RedirectToAction("Dialogs");
@@ -988,50 +1051,50 @@ namespace MContract.Controllers
             };
 
             var respondent = UsersDAL.GetUser(respondentId) ?? new User();
-			respondent.SmallPhotoUrl = UserHelper.GetSmallPhotoUrl(respondentId);
-			currentUser.SmallPhotoUrl = UserHelper.GetSmallPhotoUrl(currentUser.Id);
+            respondent.SmallPhotoUrl = UserHelper.GetSmallPhotoUrl(respondentId);
+            currentUser.SmallPhotoUrl = UserHelper.GetSmallPhotoUrl(currentUser.Id);
 
-			respondent.Town = TownsDAL.GetTown(respondent.CityId);
+            respondent.Town = TownsDAL.GetTown(respondent.CityId);
 
-			var messages = MessagesDAL.GetMessages(respondentId, currentUser.Id);
+            var messages = MessagesDAL.GetMessages(respondentId, currentUser.Id);
 
-			var deletedMessageIds = DeletedMessagesDAL.GetDeletedMessages(currentUser.Id, respondentId).Select(m => m.MessageId).ToList();
+            var deletedMessageIds = DeletedMessagesDAL.GetDeletedMessages(currentUser.Id, respondentId).Select(m => m.MessageId).ToList();
 
-			messages = messages.Where(m => !deletedMessageIds.Contains(m.Id)).ToList();
+            messages = messages.Where(m => !deletedMessageIds.Contains(m.Id)).ToList();
 
-			if (messages.Any())
-			{
-				var messageIds = messages.Select(m => m.Id).ToList();
-				var files = FilesDAL.GetFiles(messageIds: messageIds);
-				foreach (var message in messages)
-				{
-					if (message.SenderId == currentUser.Id)
-					{
-						message.Sender = currentUser;
-						message.Direction = "outgoing";
-					}
-					else
-					{
-						message.Sender = respondent;
-						message.Direction = "incoming";
-					}
+            if (messages.Any())
+            {
+                var messageIds = messages.Select(m => m.Id).ToList();
+                var files = FilesDAL.GetFiles(messageIds: messageIds);
+                foreach (var message in messages)
+                {
+                    if (message.SenderId == currentUser.Id)
+                    {
+                        message.Sender = currentUser;
+                        message.Direction = "outgoing";
+                    }
+                    else
+                    {
+                        message.Sender = respondent;
+                        message.Direction = "incoming";
+                    }
 
-					message.Files = files.Where(f => f.MessageId == message.Id).ToList();
-				}
+                    message.Files = files.Where(f => f.MessageId == message.Id).ToList();
+                }
 
-				MessagesDAL.MarkMessagesAsRead(currentUser.Id, respondent.Id);
-			}
+                MessagesDAL.MarkMessagesAsRead(currentUser.Id, respondent.Id);
+            }
 
-			viewModel.CurrentUser = currentUser;
-			viewModel.Respondent = respondent;
+            viewModel.CurrentUser = currentUser;
+            viewModel.Respondent = respondent;
             viewModel.Messages = messages;
 
-			return View(viewModel);
-		}
+            return View(viewModel);
+        }
 
-		[MyAuthorize]
-		//public ActionResult Messages(int respondentId, bool isFromNewOffer = false, int adId = 0)
-		public ActionResult MessagesOld(int? respondentId, string lastPageUrl = "")
+        [MyAuthorize]
+        //public ActionResult Messages(int respondentId, bool isFromNewOffer = false, int adId = 0)
+        public ActionResult MessagesOld(int? respondentId, string lastPageUrl = "")
         {
             ViewBag.L.ShowSearchbar = false;
             if (respondentId == null || respondentId == 0)
@@ -1042,14 +1105,14 @@ namespace MContract.Controllers
             if (isFromNewOffer == true)
                 dialog.TopicId = adId;*/
             dialog.PersonalAreaUser = SM.GetPersonalAreaUser();
-			dialog.PersonalAreaUser.SelectedMenu = "Сообщения";
-			dialog.Sender = UsersDAL.GetUser(dialog.SenderId);
+            dialog.PersonalAreaUser.SelectedMenu = "Сообщения";
+            dialog.Sender = UsersDAL.GetUser(dialog.SenderId);
             if (dialog.Sender != null)
             {
                 dialog.Sender.LogoGroup = PhotosDAL.GetCompanyLogoGroup(dialog.Sender.Id);
                 dialog.Sender.SmallPhotoUrl = dialog.Sender.GetBestFitLogoPhoto(1).Url;
             }
-			dialog.Recipient = dialog.PersonalAreaUser;
+            dialog.Recipient = dialog.PersonalAreaUser;
             if (dialog.SenderId == dialog.PersonalAreaUser.Id)
                 dialog.Respondent = dialog.Recipient;
             else
@@ -1066,10 +1129,10 @@ namespace MContract.Controllers
                     else
                         message.Sender = dialog.Recipient;
 
-					var logoGroup = message.Sender.LogoGroup;
-					message.SenderLogoUrl = logoGroup != null && logoGroup.Any() ? logoGroup[0].Url : PhotoHelper.NoLogoImageUrl;
+                    var logoGroup = message.Sender.LogoGroup;
+                    message.SenderLogoUrl = logoGroup != null && logoGroup.Any() ? logoGroup[0].Url : PhotoHelper.NoLogoImageUrl;
 
-					if (message.SenderId == dialog.Respondent?.Id)
+                    if (message.SenderId == dialog.Respondent?.Id)
                         message.Direction = "incoming";
                     else
                         message.Direction = "outgoing";
@@ -1077,9 +1140,9 @@ namespace MContract.Controllers
                     message.Files = files.Where(f => f.MessageId == message.Id).ToList();
                 }
 
-				var lastMessage = dialog.Messages.Last();
+                var lastMessage = dialog.Messages.Last();
 
-				if (lastMessage.Direction == "incoming" && !lastMessage.IsRead)
+                if (lastMessage.Direction == "incoming" && !lastMessage.IsRead)
                     MessagesDAL.MarkMessagesAsRead(dialog.RecipientId, dialog.SenderId);
             }
             if (dialog.DialogType == DialogTypes.Ad)
@@ -1101,24 +1164,24 @@ namespace MContract.Controllers
             return View(dialog);
         }
 
-		[MyAuthorize]
+        [MyAuthorize]
         public ActionResult Dialogs()
         {
             ViewBag.L.HideHead = true;
             var viewModel = new UserDialogsViewModel();
-			var currentUser = SM.CurrentUser;
-			var currentUserId = currentUser.Id;
+            var currentUser = SM.CurrentUser;
+            var currentUserId = currentUser.Id;
             var leftMenuViewModel = LeftMenuViewModel.Get(currentUser, "Сообщения");
             viewModel.LeftMenuViewModel = leftMenuViewModel;
             viewModel.MobileMenuViewModel = MobileMenuViewModel.Get(leftMenuViewModel);
 
-			//все сообщения, отправленные или полученные текущим пользователем
-			var allMessages = MessagesDAL.GetMessages(currentUserId);
+            //все сообщения, отправленные или полученные текущим пользователем
+            var allMessages = MessagesDAL.GetMessages(currentUserId);
 
-			//Отфильтруем сообщения с учетом нажатий кнопок "Удалить чат", "Удалить все чаты"
-			var filteredMessages = UserHelper.FilterMessagesFromDialogInfo(currentUserId, allMessages);
+            //Отфильтруем сообщения с учетом нажатий кнопок "Удалить чат", "Удалить все чаты"
+            var filteredMessages = UserHelper.FilterMessagesFromDialogInfo(currentUserId, allMessages);
 
-			viewModel.Dialogs = filteredMessages.GroupBy(m => m.SenderId).Where(g => g.Key != currentUserId)
+            viewModel.Dialogs = filteredMessages.GroupBy(m => m.SenderId).Where(g => g.Key != currentUserId)
                 .Select(g => new Dialog { SenderId = g.Key, RecipientId = currentUserId, Messages = g.ToList() }).ToList();
             viewModel.AllUsers = UsersDAL.GetUsers().Where(u => u.Id != currentUserId).ToList();
             var towns = TownsDAL.GetTowns();
@@ -1147,8 +1210,8 @@ namespace MContract.Controllers
                         dialog.Ad = AdsDAL.GetAd(dialog.TopicId);
                     }
                     dialog.AllMessagesText = string.Join(" ", dialog.Messages.Select(m => m.Text));
-					dialog.NewMessagesCount = dialog.Messages.Where(m => m.RecipientId == currentUserId && !m.IsRead).ToList().Count;
-				}
+                    dialog.NewMessagesCount = dialog.Messages.Where(m => m.RecipientId == currentUserId && !m.IsRead).ToList().Count;
+                }
                 viewModel.Dialogs = viewModel.Dialogs.Where(d => d.Messages.Any()).OrderByDescending(d => d.Messages.LastOrDefault().Date).ToList();
             }
             ViewBag.Heading = "Диалоги";
@@ -1165,10 +1228,10 @@ namespace MContract.Controllers
         [HttpPost]
         public string GetNewMessagesForChatBox(int lastMessageId = 0, int respondentId = 0)
         {
-			var currentUserId = SM.CurrentUserId;
-			UsersDAL.UpdateUserLastOnline(currentUserId, DateTime.Now.ToUniversalTime());
+            var currentUserId = SM.CurrentUserId;
+            UsersDAL.UpdateUserLastOnline(currentUserId, DateTime.Now.ToUniversalTime());
 
-			var messages = MessagesDAL.GetNewMessagesForChatBox(currentUserId, lastMessageId, respondentId);
+            var messages = MessagesDAL.GetNewMessagesForChatBox(currentUserId, lastMessageId, respondentId);
             if (!messages.Any())
                 return "";
 
@@ -1245,13 +1308,13 @@ namespace MContract.Controllers
                 }
 
                 foreach (var message in messageGroup)
-				{
-					var sender = message.SenderId == dialogRespondentId ? dialog.Respondent : user;
+                {
+                    var sender = message.SenderId == dialogRespondentId ? dialog.Respondent : user;
 
-					message.Sender = sender;
-					message.SenderLogoUrl = sender.LogoGroup.Any() ? sender.LogoGroup[0].Url : PhotoHelper.NoLogoImageUrl;
-				}
-                    
+                    message.Sender = sender;
+                    message.SenderLogoUrl = sender.LogoGroup.Any() ? sender.LogoGroup[0].Url : PhotoHelper.NoLogoImageUrl;
+                }
+
             }
 
             var openDialog = dialogs.FirstOrDefault(d => d.Respondent?.Id == user.CurrentRespondentId);
@@ -1265,7 +1328,7 @@ namespace MContract.Controllers
 
             SM.CurrentDialogs = dialogs;
 
-			return Newtonsoft.Json.JsonConvert.SerializeObject(messages);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(messages);
         }
 
         [HttpPost]
@@ -1317,7 +1380,7 @@ namespace MContract.Controllers
             if (dialog.Respondent == null)
             {
                 var respondent = UsersDAL.GetUser(respondentId);
-                
+
                 if (respondent == null)
                     return "";
 
@@ -1389,11 +1452,11 @@ namespace MContract.Controllers
         [HttpPost]
         public bool AddMessage(Message message)
         {
-			var result = UserHelper.AddMessage(message) > 0;
-			if (result)
-				SM.CurrentDialogs = null;
+            var result = UserHelper.AddMessage(message) > 0;
+            if (result)
+                SM.CurrentDialogs = null;
 
-			return result;
+            return result;
         }
 
         [HttpPost]
@@ -1417,7 +1480,7 @@ namespace MContract.Controllers
         }
 
         [HttpPost]
-        public bool ChangeRegularClient (int userId, int clientId, bool isDelete = false)
+        public bool ChangeRegularClient(int userId, int clientId, bool isDelete = false)
         {
             if (isDelete == false)
             {
@@ -1425,7 +1488,8 @@ namespace MContract.Controllers
                     return true;
                 else
                     return false;
-            } else
+            }
+            else
             {
                 if (UsersDAL.DeleteRegularClient(userId, clientId))
                     return true;
@@ -1450,43 +1514,43 @@ namespace MContract.Controllers
                 return false;
         }
 
-		/// <summary>
-		/// Добавляет оценки контрагенту за сделку по объявлению
-		/// </summary>
-		/// <param name="userId">Id-пользователя, которому выставляем оценку</param>
-		/// <param name="rating">Оценка</param>
-		/// <param name="adId">Id объявления</param>
-		/// <returns></returns>
+        /// <summary>
+        /// Добавляет оценки контрагенту за сделку по объявлению
+        /// </summary>
+        /// <param name="userId">Id-пользователя, которому выставляем оценку</param>
+        /// <param name="rating">Оценка</param>
+        /// <param name="adId">Id объявления</param>
+        /// <returns></returns>
         [HttpPost]
         public bool AddUserRating(int userId, int rating, int adId)
         {
             return UsersDAL.AddUserRating(userId, SM.CurrentUserId, rating, adId) > 0;
         }
 
-		public static void CheckUsersInSbis()
-		{
-			Thread.Sleep(11 * 60 * 1000);//11 минут
-			while (true)
-			{
-				try
-				{
-					var usersToCheck = UsersDAL.GetUsers(checkedInSbis: false);
-					foreach (var user in usersToCheck)
-					{
-						if (!String.IsNullOrWhiteSpace(user.INN))
-						{
-							var sbisUser = P.GetSbisInformationFromInn(user.INN);
-						}
-					}
-				}
-				catch (Exception)
-				{
+        public static void CheckUsersInSbis()
+        {
+            Thread.Sleep(11 * 60 * 1000);//11 минут
+            while (true)
+            {
+                try
+                {
+                    var usersToCheck = UsersDAL.GetUsers(checkedInSbis: false);
+                    foreach (var user in usersToCheck)
+                    {
+                        if (!String.IsNullOrWhiteSpace(user.INN))
+                        {
+                            var sbisUser = P.GetSbisInformationFromInn(user.INN);
+                        }
+                    }
+                }
+                catch (Exception)
+                {
 
-				}
-				Thread.Sleep(10 * 60 * 1000);//10 минут
-			}
-		}
-        
+                }
+                Thread.Sleep(10 * 60 * 1000);//10 минут
+            }
+        }
+
         [HttpPost]
         public string MarkAllMessagesAsRead()
         {
@@ -1500,84 +1564,84 @@ namespace MContract.Controllers
         [HttpPost]
         public string DeleteAllChats(string respondentIdsStr)
         {
-			if (String.IsNullOrWhiteSpace(respondentIdsStr))
-				return "Передан пустой список respondentIds";
+            if (String.IsNullOrWhiteSpace(respondentIdsStr))
+                return "Передан пустой список respondentIds";
 
-			var respondentIdsStrParts = respondentIdsStr.Split(',');
-			//var respondentIds = new List<int>();
-			foreach (var respondentIdStr in respondentIdsStrParts)
-			{
-				var respondentId = Convert.ToInt32(respondentIdStr);
-				var result = DeleteChat(respondentId);
-				if (result != "ok")
-					return result;
-			}
+            var respondentIdsStrParts = respondentIdsStr.Split(',');
+            //var respondentIds = new List<int>();
+            foreach (var respondentIdStr in respondentIdsStrParts)
+            {
+                var respondentId = Convert.ToInt32(respondentIdStr);
+                var result = DeleteChat(respondentId);
+                if (result != "ok")
+                    return result;
+            }
 
-			return "ok";
+            return "ok";
         }
 
-		[HttpPost]
-		public string DeleteChat(int respondentId)
-		{
-			if (respondentId == 0)
-				return "Необходимо передать respondentId";
+        [HttpPost]
+        public string DeleteChat(int respondentId)
+        {
+            if (respondentId == 0)
+                return "Необходимо передать respondentId";
 
-			var currentUserId = SM.CurrentUserId;
-			if (currentUserId == 0)
-				return "Необходимо авторизоваться";
+            var currentUserId = SM.CurrentUserId;
+            if (currentUserId == 0)
+                return "Необходимо авторизоваться";
 
-			var messages = MessagesDAL.GetMessages(currentUserId, respondentId);
-			if (!messages.Any())
-				return "Не найдены сообщения в чате, нечего удалять";
+            var messages = MessagesDAL.GetMessages(currentUserId, respondentId);
+            if (!messages.Any())
+                return "Не найдены сообщения в чате, нечего удалять";
 
-			var lastMessageId = messages.Last().Id;
+            var lastMessageId = messages.Last().Id;
 
-			//пометим в "Удаляемом чате" входящие непрочитанные сообщения прочитанными
-			var unreadMessageIds = messages.Where(m => m.RecipientId == currentUserId && !m.IsRead).Select(m => m.Id).ToList();
-			if (unreadMessageIds.Any())
-				MessagesDAL.UpdateMessageSetIsReadTrue(unreadMessageIds);
+            //пометим в "Удаляемом чате" входящие непрочитанные сообщения прочитанными
+            var unreadMessageIds = messages.Where(m => m.RecipientId == currentUserId && !m.IsRead).Select(m => m.Id).ToList();
+            if (unreadMessageIds.Any())
+                MessagesDAL.UpdateMessageSetIsReadTrue(unreadMessageIds);
 
-			var dialogInfo = DialogInfosDAL.GetDialogInfo(currentUserId, respondentId);
-			if (dialogInfo != null)
-			{
-				dialogInfo.ShowMessagesFromId = lastMessageId + 1;
-				var result = DialogInfosDAL.UpdateDialogInfo(dialogInfo);
-				if (!result)
-					return "Не удалось удалить чат, попробуйте позже";
-			}
-			else
-			{
-				var newDialogInfo = new DialogInfo()
-				{
-					UserId = currentUserId,
-					RespondentId = respondentId,
-					ShowMessagesFromId = lastMessageId + 1
-				};
-				DialogInfosDAL.AddDialogInfo(newDialogInfo);
-			}
+            var dialogInfo = DialogInfosDAL.GetDialogInfo(currentUserId, respondentId);
+            if (dialogInfo != null)
+            {
+                dialogInfo.ShowMessagesFromId = lastMessageId + 1;
+                var result = DialogInfosDAL.UpdateDialogInfo(dialogInfo);
+                if (!result)
+                    return "Не удалось удалить чат, попробуйте позже";
+            }
+            else
+            {
+                var newDialogInfo = new DialogInfo()
+                {
+                    UserId = currentUserId,
+                    RespondentId = respondentId,
+                    ShowMessagesFromId = lastMessageId + 1
+                };
+                DialogInfosDAL.AddDialogInfo(newDialogInfo);
+            }
 
-			return "ok";
-		}
+            return "ok";
+        }
 
-		[MyAuthorize]
+        [MyAuthorize]
         [HttpPost]
         public string DeleteMessage(int messageId)
         {
             if (messageId == 0)
                 return "Необходимо передать id сообщения";
 
-			var message = MessagesDAL.GetMessage(messageId);
-			if (message == null)
-				return "Не удалось найти сообщение по Id = " + messageId;
+            var message = MessagesDAL.GetMessage(messageId);
+            if (message == null)
+                return "Не удалось найти сообщение по Id = " + messageId;
 
-			var currentUserId = SM.CurrentUserId;
+            var currentUserId = SM.CurrentUserId;
 
-			var deletedMessage = new DeletedMessage()
-			{
-				UserId = currentUserId,
-				DialogWithUserId = message.SenderId == currentUserId ? message.RecipientId : message.SenderId,
-				MessageId = messageId
-			};
+            var deletedMessage = new DeletedMessage()
+            {
+                UserId = currentUserId,
+                DialogWithUserId = message.SenderId == currentUserId ? message.RecipientId : message.SenderId,
+                MessageId = messageId
+            };
 
             var result = DeletedMessagesDAL.AddDeletedMessage(deletedMessage);
             if (result > 0)
@@ -1585,5 +1649,6 @@ namespace MContract.Controllers
             else
                 return "Не удалось удалить сообщение, попробуйте позже";
         }
-	}
+        #endregion
+    }
 }
