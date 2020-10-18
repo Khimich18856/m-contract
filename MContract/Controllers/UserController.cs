@@ -306,7 +306,7 @@ namespace MContract.Controllers
                 return email;
             }
             else
-            {               
+            {
                 return email;
             }
         }
@@ -314,7 +314,7 @@ namespace MContract.Controllers
         /******************************************/
         public string UniqueINN(string newINN)
         {
-            string inn = "true"; 
+            string inn = "true";
             /*  проверяем существование пользователя в базе данных с только что введенным ИНН
              */
             var user = UsersDAL.GetUserByINN(newINN);
@@ -335,14 +335,7 @@ namespace MContract.Controllers
         }
 
         #endregion
-        #region Потдверждение почтого ящика нового ЮЗЕРА
-        public ActionResult TestMail()
-        {
-            MailHelper.SendE_Mail("samoilenkosergey@mail.ru", "Тестовое письмо 222", "Текст тестового письма 333");
 
-            return View();
-        }
-        #endregion
 
         #region Регистрация нового ЮЗЕРА 
         [HttpGet]
@@ -403,10 +396,32 @@ namespace MContract.Controllers
                 //else
                 //	LogsDAL.AddError("User/SignUp[post]: user.SingUpCityStr = null");
                 #endregion
+
+                //*************************************************************************************************************//
+                #region Потдверждение почтого ящика нового ЮЗЕРА
+
+               
+                // создаем урл с маркером VerificationCode
+                // VerificationEmail = "Подтверждение регистрации";
+                // получим e-mail прользователя
+                string sendTo = user.Email;
+                // отсылаем email                
+                string subscription = C.SiteUrl + "User/VerificationEmail?token=" + Krakoss.Encryption(user.INN).ToString();
+                string subject = "Подтверждение регистрации";               
+                string body = "Уважаемый новый пользователь портала M-contract.ru" + "<br/>" + "<br/>" +
+                "Вам необходимо подтвердить данные Вашего почтового ящика - " + "<b>" + sendTo + "</b>" + "<br/>" + "<br/>" +
+                "для подтверждения - перейдите по ссылке - " + "<a href=\'" + subscription + "'>Подтвердить e-mail</a>." + "<br/>"
+                + "<br/>" + "<i>" + "С уважением команда портала <a href=\'"+ C.SiteUrl + "'>m-contract.ru</a>" + "</i>";
+
+                MailHelper.SendMail(sendTo, subject, body);
+
+                #endregion
+                //*************************************************************************************************************//
+
                 var id = UsersDAL.AddUser(user);
                 if (id > 0)
                 {
-                    CookiesHelper.SaveCookiesForHideAuthorization(user.Email, "", user.Password.TrimEnd());
+                    CookiesHelper.SaveCookiesForHideAuthorization(user.Email, "", Krakoss.Decryption(user.Password).TrimEnd());
                     return "user created";
                 }
                 else

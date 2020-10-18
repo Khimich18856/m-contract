@@ -33,7 +33,8 @@ namespace MContract.DAL
 				EmailConfirmed = (bool)reader["EmailConfirmed"],
 				Deleted = (bool)reader["Deleted"],
 				CheckedInSbis = (bool)reader["CheckedInSbis"],
-				LastOnline = (DateTime)reader["LastOnline"]
+				LastOnline = (DateTime)reader["LastOnline"],
+				VerificationCode = ((string)reader["VerificationCode"]).Trim()
 			};
 			
 			if (reader["PhoneNumberCity"] != DBNull.Value) 
@@ -212,8 +213,8 @@ namespace MContract.DAL
 		public static int AddUser(User user)
 		{
 			int newUserId = 0;
-			const string query = @"insert into dbo.Users (ContactName, CompanyName, Email, Password, TypeOfOwnershipId, CityId, INN, OGRN, PhoneNumber, Rating, Address, FactualAddress, ModerateResultId, OpenDialogRespondentIds, CurrentRespondentId, Created, EmailConfirmed, SubscribeUntilDate, CheckedInSbis, SbisCompanyName, SbisTypeOfOwnershipId, SbisOGRN, SbisWorksFrom, SbisTownId, LastOnline) 
-values (@ContactName, @CompanyName, @Email, @Password, @TypeOfOwnershipId, @CityId, @INN, @OGRN, @PhoneNumber, @Rating, @Address, @FactualAddress, @ModerateResultId, @OpenDialogRespondentIds, @CurrentRespondentId, @Created, @EmailConfirmed, @SubscribeUntilDate, @CheckedInSbis, @SbisCompanyName, @SbisTypeOfOwnershipId, @SbisOGRN, @SbisWorksFrom, @SbisTownId, @LastOnline);
+			const string query = @"insert into dbo.Users (ContactName, CompanyName, Email, Password, TypeOfOwnershipId, CityId, INN, OGRN, PhoneNumber, Rating, Address, FactualAddress, ModerateResultId, OpenDialogRespondentIds, CurrentRespondentId, Created, EmailConfirmed, SubscribeUntilDate, CheckedInSbis, SbisCompanyName, SbisTypeOfOwnershipId, SbisOGRN, SbisWorksFrom, SbisTownId, LastOnline, VerificationCode) 
+values (@ContactName, @CompanyName, @Email, @Password, @TypeOfOwnershipId, @CityId, @INN, @OGRN, @PhoneNumber, @Rating, @Address, @FactualAddress, @ModerateResultId, @OpenDialogRespondentIds, @CurrentRespondentId, @Created, @EmailConfirmed, @SubscribeUntilDate, @CheckedInSbis, @SbisCompanyName, @SbisTypeOfOwnershipId, @SbisOGRN, @SbisWorksFrom, @SbisTownId, @LastOnline, @INN);
 DECLARE @newUserID int;
    SELECT @newUserID = SCOPE_IDENTITY();
    SELECT @newUserID";

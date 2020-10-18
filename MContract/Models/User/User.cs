@@ -52,6 +52,11 @@ namespace MContract.Models
 		/// </summary>
 		public DateTime LastOnline { get; set; }
 
+        /// <summary>
+        /// Krakoss.Encryption(user.INN).ToString() для подтверждения емайл нового пользователя
+        /// </summary>
+        public string VerificationCode { get; set; }
+
 		//вычисляемые поля:
 		public bool IsOnline
 		{
@@ -199,19 +204,19 @@ namespace MContract.Models
 		/// </summary>
 		public bool ChatBoxIsSilent { get; set; }
 		
-		public int _chatBoxLastMessageId { get; set; }
+		public int AchatBoxLastMessageId { get; set; }
 		public int ChatBoxLastMessageId
-		{
+        {
 			get
 			{
-				if (_chatBoxLastMessageId == 0)
-					_chatBoxLastMessageId = MessagesDAL.GetLastMessageId(SM.CurrentUserId);
+				if (AchatBoxLastMessageId == 0)
+					AchatBoxLastMessageId = MessagesDAL.GetLastMessageId(SM.CurrentUserId);
 
-				return _chatBoxLastMessageId;
+				return AchatBoxLastMessageId;
             }
 			set
 			{
-				_chatBoxLastMessageId = value;
+				AchatBoxLastMessageId = value;
 			}
 		}
 
