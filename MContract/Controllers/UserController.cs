@@ -289,8 +289,9 @@ namespace MContract.Controllers
         //Проверка нового ЮЗЕРА на уникальность по ЕМАЙЛ 
         /******************************************/
 
-        public bool UniqueEmail(string newEmail, bool _email = true)
+        public string UniqueEmail(string newEmail)
         {
+            string email = "true";
             /*  проверяем существование пользователя в базе данных с только что введенным емайл
              */
             var user = UsersDAL.GetUserByEmail(newEmail);
@@ -301,19 +302,20 @@ namespace MContract.Controllers
           */
             if (user != null && user.Email == newEmail)
             {
-                return _email;
+                email = "false";
+                return email;
             }
             else
-            {
-                _email = false;
-                return _email;
+            {               
+                return email;
             }
-
         }
-
-        public bool UniqueINN(string newINN, bool _inn = true)
+        //Проверка нового ЮЗЕРА на уникальность по ИНН
+        /******************************************/
+        public string UniqueINN(string newINN)
         {
-            /*  проверяем существование пользователя в базе данных с только что введенным емайл
+            string inn = "true"; 
+            /*  проверяем существование пользователя в базе данных с только что введенным ИНН
              */
             var user = UsersDAL.GetUserByINN(newINN);
             /*  
@@ -323,14 +325,13 @@ namespace MContract.Controllers
           */
             if (user != null && user.INN == newINN)
             {
-                return _inn;
+                inn = "false";
+                return inn;
             }
             else
             {
-                _inn = false;
-                return _inn;
+                return inn;
             }
-
         }
 
         #endregion

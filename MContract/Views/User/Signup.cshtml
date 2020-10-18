@@ -35,11 +35,6 @@
             <div class="col-md-3">
                 <span id="needEmailSpan" class="needFieldSpan">Поле "Электронная почта" обязательно для заполнения</span>
                 <span id="invalidEmailSpan" class="invalidFieldSpan">Введенный адрес не соответствует формату электронной почты</span>
-                @*================================== реализация проверки емайл на уникальность ======================================*@
-                <span id="invalidEmailIdSpan" class="needFieldSpan">
-                    Пользователь уже зарегистрирован
-                </span>
-                @*==================================  end реализация проверки емайл на уникальность================================== *@
                 <img id="checkedEmailIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg" />
             </div>
         </div>
@@ -150,15 +145,12 @@
             <div class="col-sm-12 col-md-6 input__col">
                 <div class="input__wrapper">
                     <label for="inn">ИНН:</label>
-                    <input type="text" id="INN" placeholder=" " name="INN" required onfocus="this.selectionStart = 0" @*onclick="checkCity();" onblur="checkINN();"*@ autocomplete="off">
+                    <input type="text" id="INN" placeholder=" " name="INN" required onfocus="this.selectionStart = 0" onclick="checkCity();" @*onblur="checkINN();"*@ autocomplete="off">
                 </div>
             </div>
             <div class="col-md-3">
                 <span id="needINNSpan" class="needFieldSpan">Поле "ИНН" обязательно для заполнения</span>
                 <span id="invalidINNSpan" class="invalidFieldSpan"></span>
-                @*================================== реализация проверки ИНН на уникальность ======================================*@
-                <span id="invalidINNIdSpan" class="needFieldSpan"></span>
-                @*==================================  end реализация проверки ИНН на уникальность================================== *@
                 <img id="checkedINNIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
             </div>
         </div>
@@ -267,87 +259,55 @@
 //==   Лучшее решение состоит в том, чтобы создать слушатель события, вместо того, чтобы вставлять обработчик в строку ====== //
     $(function () {
         $("#email").blur(function () {
-            checkEmailId();
+            checkEmail();
         });
 
         $("#INN").blur(function () {
-            checkINNId();
+            checkINN();
         });
     });
 //======================================= END ======================================= //
+    //================================== реализация проверки емайл на уникальность ====================================== //
+    function checkEmailID() {
+        $.ajax('/User/UniqueEmail',
+            {
+                type: 'POST',
+                data: { 'newEmail': $('#email').val() },
+                success: function (data) {
 
-    //function checkEmail() {
-    //    var fieldName = $("#email").attr("name");
-    //    if (checkIsNotEmptyAndSetTipVisibility($("#email"))) {
-    //        if ($("#email").val().match(/^\b[A-Z0-9._%-]+@@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i)) {
-    //            $('#checked' + fieldName + 'Icon').siblings().hide();
-    //            $('#checked' + fieldName + 'Icon').show();
-    //            return true;
-    //        }
-    //        else {
-    //            $("#invalid" + fieldName + "Span").siblings().hide();
-    //            $("#invalid" + fieldName + "Span").show();
-    //            return false;
-    //        }
-    //    }
-    //    else {
-    //        return false;
-    //    }
-
-    //};
-//================================== реализация проверки емайл на уникальность ====================================== //
-    function checkEmailId()
-    {//0
-        var fieldName = $('#email').attr('name');
-        var _email = $('#email').val();
-           // alert(_email);
-        if (checkIsNotEmptyAndSetTipVisibility($('#email')))
-        {//1.1
-            $.ajax('/User/UniqueEmail',
-                {//2
-                    type: 'POST',
-                    data: { 'newEmail': _email },
-                    success: function (data)
-                    {//3.1
-                        //alert(data);
-                        if (data == "False")
-                        {//4.1
-                            if ($("#email").val().match(/^\b[A-Z0-9._%-]+@@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i))
-                            {//5.1
-                                $('#checked' + fieldName + 'Icon').siblings().hide();
-                                $('#checked' + fieldName + 'Icon').show();
-                                return true;
-                            }//5.1
-                            else
-                            {//5.2
-                                $("#invalid" + fieldName + "Span").siblings().hide();
-                                $("#invalid" + fieldName + "Span").show();
-                                return false;
-                            }//5.2                               
-                        }//4.1
-                        else
-                        {//4.2
-                            $('#email').val(''); //очищаем данные поля email
-                            $('#email').focus();
-                            $('#invalid' + fieldName + 'IdSpan').siblings().hide();
-                            $('#invalid' + fieldName + 'IdSpan').show();
-                            _email.empty();
-                        return false;
-                        }//4.2
-                    },//3.1
-                    error: function (errormessage)
-                    {//3.2
-                     alert(errormessage.responseText);
-                    }//3.2
-              });//2
-
-        }//1.1
-        else
-        {//1.2
-            return false;
-        }//1.2
-    };//0
+                    if (data == "true") {
+                    }
+                    else {
+                        $('#email').val('');
+                        $('#email').focus();
+                        $("#needEmailSpan").text('Пользователь уже зарегистрирован').show().siblings().hide();
+                        $('#needPasswordSpan').hide();
+                    }
+                },
+            });
+    };
 //================================== END реализация проверки емайл на уникальность ====================================== //
+    function checkEmail() {
+        var fieldName = $("#email").attr("name");
+        if (checkIsNotEmptyAndSetTipVisibility($("#email"))) {
+            if ($("#email").val().match(/^\b[A-Z0-9._%-]+@@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i)) {
+                checkEmailID();
+                $('#checked' + fieldName + 'Icon').siblings().hide();
+                $('#checked' + fieldName + 'Icon').show();
+                return true;
+            }
+            else {
+                $("#invalid" + fieldName + "Span").siblings().hide();
+                $("#invalid" + fieldName + "Span").show();
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+
+    };
+
 
 
 
@@ -502,62 +462,28 @@
   //      }
     };
 
-//================================== реализация проверки ИНН на уникальность ====================================== //
 
-    function checkINNId() {//0
-        var field = $("#INN");
-        var fieldName = field.attr("name");
-        var checkedIcon = $('#checked' + fieldName + 'Icon');
-        var invalidSpan = $('#invalid' + fieldName + 'IdSpan');
-        //alert(field.val());
+    function checkINNID() {
+        $.ajax('/User/UniqueINN',
+            {
+                type: 'POST',
+                data: { 'newINN': $("#INN").val() },
+                success: function (data) {
+                    if (data == "true") {
+                    }
+                    else {                        
+                        $('#INN').val(''); 
+                        $('#INN').focus(); 
+                        $("#needINNSpan").text('Пользователь уже зарегистрирован').show().siblings().hide();
+                        $('#needOGRNSpan').hide();
+                    }
+                },
+            });
+    };
 
-        if (checkIsNotEmptyAndSetTipVisibility($(field))) {//1.1
-            $.ajax('/User/UniqueINN',
-                {//2
-                    type: 'POST',
-                    data: { 'newINN': field.val() },
-                    success: function (data) {//3.1
-                        
-                        if (data == "False") {//4.1
-                            var value = field.val();
-                            var placeholderChar = '_';
-                            if (!value.includes(placeholderChar)) {
-                                checkedIcon.show().siblings().hide();
-                                return true;
-                            }
-                            else {
-                                invalidSpan.text('ИНН должен содержать 10 цифр').show().siblings().hide();
-                                return false;
-                            }      
-                        }//4.1
-                        else {//4.2
-                            $('#INN').val(''); //очищаем данные поля INN
-                            $('#INN').focus();
-                            invalidSpan.text('Пользователь уже зарегистрирован').show().siblings().hide();
-                            return false;
-                        }//4.2
-                    },//3.1
-                    error: function (errormessage) {//3.2
-                        alert(errormessage.responseText);
-                    }//3.2
-                });//2
+//================================== Конец реализация проверки ИНН на уникальность ====================================== //
 
-        }//1.1
-        else {//1.2
-            return false;
-        }//1.2
-    };//0
-//================================== END реализация проверки емайл на уникальность ====================================== //
-
-
-
-
-
-
-
-
-
-    function checkINN() {
+ function checkINN() {
         var field = $("#INN");
         var fieldName = field.attr("name");
         var checkedIcon = $('#checked' + fieldName + 'Icon');
@@ -566,7 +492,9 @@
             var value = field.val();
             var placeholderChar = '_';
             if (!value.includes(placeholderChar)) {
+                checkINNID();
                 checkedIcon.show().siblings().hide();
+               
                 return true;
             }
             else {
@@ -578,7 +506,7 @@
             return false;
         }
     };
-
+//================================== 2 END реализация проверки ИНН на уникальность ====================================== //
     function checkOGRN() {
         var field = $("#OGRN");
         var fieldName = field.attr("name");
@@ -673,7 +601,7 @@
         inputsValidated.push(checkPhoneNumber());
         inputsValidated.push(checkPhoneNumberCity());
         //inputsValidated.push(checkConditionsAgreement());
-		var result = inputsValidated.every(Boolean);
+        var result = inputsValidated.every(Boolean);
         return result;
     };
 
@@ -691,7 +619,7 @@
     };
 
 	function checkAndSaveUser() {
-		if (!checkFields())
+        if (!checkFields())
 			return;
 
 		$.post("@ViewBag.L.SiteUrlClear/User/Signup", {
