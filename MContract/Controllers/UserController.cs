@@ -288,7 +288,6 @@ namespace MContract.Controllers
         #region Проверка нового ЮЗЕРА на уникальность по ЕМАЙЛ и ИНН
         //Проверка нового ЮЗЕРА на уникальность по ЕМАЙЛ 
         /******************************************/
-
         public string UniqueEmail(string newEmail)
         {
             string email = "true";
@@ -333,10 +332,7 @@ namespace MContract.Controllers
                 return inn;
             }
         }
-
         #endregion
-
-
         #region Регистрация нового ЮЗЕРА 
         [HttpGet]
         public ActionResult Signup()
@@ -352,8 +348,6 @@ namespace MContract.Controllers
             #endregion
             return View();
         }
-
-
 
         [HttpPost]
         public string Signup(User user)
@@ -396,32 +390,21 @@ namespace MContract.Controllers
                 //else
                 //	LogsDAL.AddError("User/SignUp[post]: user.SingUpCityStr = null");
                 #endregion
-
-                //*************************************************************************************************************//
-                #region Потдверждение почтого ящика нового ЮЗЕРА
-
-               
-                // создаем урл с маркером VerificationCode
-                // VerificationEmail = "Подтверждение регистрации";
-                // получим e-mail прользователя
-                string sendTo = user.Email;
-                // отсылаем email                
-                string subscription = C.SiteUrl + "User/VerificationEmail?token=" + Krakoss.Encryption(user.INN).ToString();
-                string subject = "Подтверждение регистрации";               
-                string body = "Уважаемый новый пользователь портала M-contract.ru" + "<br/>" + "<br/>" +
-                "Вам необходимо подтвердить данные Вашего почтового ящика - " + "<b>" + sendTo + "</b>" + "<br/>" + "<br/>" +
-                "для подтверждения - перейдите по ссылке - " + "<a href=\'" + subscription + "'>Подтвердить e-mail</a>." + "<br/>"
-                + "<br/>" + "<i>" + "С уважением команда портала <a href=\'"+ C.SiteUrl + "'>m-contract.ru</a>" + "</i>";
-
-                MailHelper.SendMail(sendTo, subject, body);
-
-                #endregion
-                //*************************************************************************************************************//
-
                 var id = UsersDAL.AddUser(user);
                 if (id > 0)
                 {
                     CookiesHelper.SaveCookiesForHideAuthorization(user.Email, "", Krakoss.Decryption(user.Password).TrimEnd());
+
+                    #region Потдверждение почтого ящика нового ЮЗЕРА
+                    string subscription = C.SiteUrl + "User/VerificationEmail?token=" + UsersDAL.GetUser(id).VerificationCode;
+                    string subject = "Подтверждение регистрации";
+                    string body = "Уважаемый новый пользователь портала M-contract.ru" + "<br/>" + "<br/>" +
+                    "Вам необходимо подтвердить данные Вашего почтового ящика - " + "<b>" + UsersDAL.GetUser(id).Email + "</b>" + "<br/>" + "<br/>" +
+                    "для подтверждения - перейдите по ссылке - " + "<a href=\'" + subscription + "'>Подтвердить e-mail</a>." + "<br/>"
+                    + "<br/>" + "<i>" + "С уважением команда портала <a href=\'" + C.SiteUrl + "'>m-contract.ru</a>" + "</i>";
+                    MailHelper.SendMail(UsersDAL.GetUser(id).Email, subject, body);
+                    #endregion
+
                     return "user created";
                 }
                 else
@@ -448,7 +431,52 @@ namespace MContract.Controllers
 
         }
         #endregion
+        #region Верификация емайл 
+        [HttpGet]
+        public ActionResult VerificationEmail(string token)
+        {
+            ViewData["tempdata"] = "Ваш емайл подтвержден или нет?";
+            ViewData["tempdata1"] = "Для подтверждения емайл - перейдите по ссылке в письме отправленном Вам после регистрации.";
 
+            if (token != null)
+            {
+                string _token = token;
+
+                var user = UsersDAL.GetUserByToken(_token);
+
+                if (user != null)
+                {
+
+                    string _email = user.Email;
+
+                    var _Id = UsersDAL.GetUserByToken(_token).Id;
+
+                    Guid g;
+
+                    g = Guid.NewGuid();
+
+                    string _g = Convert.ToString(g);
+
+                    if (UsersDAL.UpdateUserEmailConfirmed(_Id, _g) == true)
+                    {
+                        ViewData["tempdata"] = _email;
+                        ViewData["tempdata1"] = "Ваш емайл - подтвержден успешно";
+                    }
+                    else/* (UsersDAL.GetUserByEmail(_email).EmailConfirmed == true)*/
+                    {
+                        //ViewData["tempdata"] = "Вы уже подтвердили Ваш емайл. Не стоит делать это повторно.";
+                    }
+                }
+                else
+                {
+                    //ViewData["tempdata"] = "Ваш емайл не подтвержден";
+                }
+
+            }
+            return View();
+        }
+
+        #endregion
         #region
         [HttpPost]
         [MyAuthorize]

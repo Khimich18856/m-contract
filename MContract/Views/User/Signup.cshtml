@@ -269,6 +269,7 @@
 //======================================= END ======================================= //
     //================================== реализация проверки емайл на уникальность ====================================== //
     function checkEmailID() {
+        var fieldName = $("#email").attr("name");
         $.ajax('/User/UniqueEmail',
             {
                 type: 'POST',
@@ -276,6 +277,8 @@
                 success: function (data) {
 
                     if (data == "true") {
+                        $('#checked' + fieldName + 'Icon').siblings().hide();
+                        $('#checked' + fieldName + 'Icon').show();                        
                     }
                     else {
                         $('#email').val('');
@@ -291,9 +294,7 @@
         var fieldName = $("#email").attr("name");
         if (checkIsNotEmptyAndSetTipVisibility($("#email"))) {
             if ($("#email").val().match(/^\b[A-Z0-9._%-]+@@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i)) {
-                checkEmailID();
-                $('#checked' + fieldName + 'Icon').siblings().hide();
-                $('#checked' + fieldName + 'Icon').show();
+                checkEmailID();                
                 return true;
             }
             else {
@@ -464,12 +465,17 @@
 
 
     function checkINNID() {
+        var field = $("#INN");
+        var fieldName = field.attr("name");
+        var checkedIcon = $('#checked' + fieldName + 'Icon');
         $.ajax('/User/UniqueINN',
             {
                 type: 'POST',
                 data: { 'newINN': $("#INN").val() },
                 success: function (data) {
                     if (data == "true") {
+
+                        checkedIcon.show().siblings().hide();
                     }
                     else {                        
                         $('#INN').val(''); 
@@ -486,14 +492,13 @@
  function checkINN() {
         var field = $("#INN");
         var fieldName = field.attr("name");
-        var checkedIcon = $('#checked' + fieldName + 'Icon');
+        //var checkedIcon = $('#checked' + fieldName + 'Icon');
         var invalidSpan = $('#invalid' + fieldName + 'Span');
         if (checkIsNotEmptyAndSetTipVisibility(field)) {
             var value = field.val();
             var placeholderChar = '_';
             if (!value.includes(placeholderChar)) {
                 checkINNID();
-                checkedIcon.show().siblings().hide();
                
                 return true;
             }

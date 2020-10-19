@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Web;
 using System.Configuration;
 using System.Text;
+using MContract.AppCode;
 
 namespace MContract.DAL
 {
@@ -116,10 +117,13 @@ namespace MContract.DAL
 			{
 				connection.Open();
 				var reader = sqlCommand.ExecuteReader();
-				if (reader.Read())
-					result = ReadUserInfo(reader);
+				if (reader.HasRows) // если есть данные
+				{
+					if (reader.Read())
+						result = ReadUserInfo(reader);
 
-				reader.Close();
+					reader.Close();
+				}
 			}
 			catch (Exception ex)
 			{
@@ -133,6 +137,7 @@ namespace MContract.DAL
 
 			return result;
 		}
+		// для проверки нового пользователя на уникальный ИНН
 
 		public static User GetUserByINN(string inn)
 		{
@@ -146,10 +151,13 @@ namespace MContract.DAL
 			{
 				connection.Open();
 				var reader = sqlCommand.ExecuteReader();
-				if (reader.Read())
-					result = ReadUserInfo(reader);
+				if (reader.HasRows) // если есть данные
+				{
+					if (reader.Read())
+						result = ReadUserInfo(reader);
 
-				reader.Close();
+					reader.Close();
+				}
 			}
 			catch (Exception ex)
 			{
@@ -163,7 +171,40 @@ namespace MContract.DAL
 
 			return result;
 		}
+		// для проверки нового пользователя == верификации почты
 
+		public static User GetUserByToken(string token)
+		{
+			User result = null;
+			const string query = @"select * from dbo.Users where VerificationCode=@VerificationCode";
+			var connection = new SqlConnection(connStr);
+			var sqlCommand = new SqlCommand(query, connection);
+			sqlCommand.Parameters.AddWithValue("VerificationCode", token);
+
+			try
+			{
+				connection.Open();
+				var reader = sqlCommand.ExecuteReader();
+				if (reader.HasRows) // если есть данные
+				{
+					if (reader.Read())
+						result = ReadUserInfo(reader);
+
+					reader.Close();
+				}
+			}
+			catch (Exception ex)
+			{
+				string methodName = MethodBase.GetCurrentMethod().Name;
+				throw new Exception("in UsersDAL." + methodName + "(): " + ex);
+			}
+			finally
+			{
+				connection.Close();
+			}
+
+			return result;
+		}
 
 		public static List<User> GetUsers(List<int> ids = null, bool? checkedInSbis = null, int? moderateResultId = null)
 		{
@@ -212,9 +253,12 @@ namespace MContract.DAL
 
 		public static int AddUser(User user)
 		{
+			Guid g;
+			g = Guid.NewGuid();
+			string _g = Convert.ToString(g);
 			int newUserId = 0;
 			const string query = @"insert into dbo.Users (ContactName, CompanyName, Email, Password, TypeOfOwnershipId, CityId, INN, OGRN, PhoneNumber, Rating, Address, FactualAddress, ModerateResultId, OpenDialogRespondentIds, CurrentRespondentId, Created, EmailConfirmed, SubscribeUntilDate, CheckedInSbis, SbisCompanyName, SbisTypeOfOwnershipId, SbisOGRN, SbisWorksFrom, SbisTownId, LastOnline, VerificationCode) 
-values (@ContactName, @CompanyName, @Email, @Password, @TypeOfOwnershipId, @CityId, @INN, @OGRN, @PhoneNumber, @Rating, @Address, @FactualAddress, @ModerateResultId, @OpenDialogRespondentIds, @CurrentRespondentId, @Created, @EmailConfirmed, @SubscribeUntilDate, @CheckedInSbis, @SbisCompanyName, @SbisTypeOfOwnershipId, @SbisOGRN, @SbisWorksFrom, @SbisTownId, @LastOnline, @INN);
+values (@ContactName, @CompanyName, @Email, @Password, @TypeOfOwnershipId, @CityId, @INN, @OGRN, @PhoneNumber, @Rating, @Address, @FactualAddress, @ModerateResultId, @OpenDialogRespondentIds, @CurrentRespondentId, @Created, @EmailConfirmed, @SubscribeUntilDate, @CheckedInSbis, @SbisCompanyName, @SbisTypeOfOwnershipId, @SbisOGRN, @SbisWorksFrom, @SbisTownId, @LastOnline, @VerificationCode);
 DECLARE @newUserID int;
    SELECT @newUserID = SCOPE_IDENTITY();
    SELECT @newUserID";
@@ -226,6 +270,7 @@ DECLARE @newUserID int;
 			AddAddOrUpdateSqlParameters(parameters, user);
 			parameters.AddWithValue("OpenDialogRespondentIds", "");
 			parameters.AddWithValue("CurrentRespondentId", 0);
+			parameters.AddWithValue("VerificationCode", _g);
 
 			try
 			{
@@ -756,6 +801,37 @@ DECLARE @newUserID int;
 			return true;
 		}
 
+		#region Подтверждение ЕМАЙЛ 
+
+		public static bool UpdateUserEmailConfirmed(int userId, string token)
+		{
+			const string query = "update dbo.Users set EmailConfirmed=@EmailConfirmed, VerificationCode=@VerificationCode where Id=@Id";
+
+			var connect = new SqlConnection(connStr);
+			var sqlCommand = new SqlCommand(query, connect);
+
+			sqlCommand.Parameters.AddWithValue("Id", userId);
+			sqlCommand.Parameters.AddWithValue("EmailConfirmed", true);
+			sqlCommand.Parameters.AddWithValue("VerificationCode", token);
+
+			try
+			{
+				connect.Open();
+				sqlCommand.ExecuteNonQuery();
+			}
+			catch (Exception ex)
+			{
+				string methodName = MethodBase.GetCurrentMethod().Name;
+				throw new Exception("in UsersDAL." + methodName + "(): " + ex);
+			}
+			finally
+			{
+				connect.Close();
+			}
+
+			return true;
+		}
+		#endregion
 		public static bool UpdateUserLastOnline(int userId, DateTime lastOnline)
 		{
 			const string query = "update dbo.Users set LastOnline=@LastOnline where Id=@Id";
