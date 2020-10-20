@@ -15,10 +15,6 @@ namespace MContract.AppCode
         public static string Registration { get { return C.SiteUrl + RegistrationShort; } }
 
 
-        public static string ResendemailShort { get { return "resendemail"; } }
-        public static string Resendemail { get { return C.SiteUrl + ResendemailShort; } }
-
-
         public static string LoginShort { get { return "login"; } }
 		public static string Login { get { return C.SiteUrl + LoginShort; } }
 

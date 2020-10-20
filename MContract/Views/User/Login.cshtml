@@ -41,9 +41,12 @@
                             }
                             @if (errorMessage != null && errorMessage.Contains("повторно?"))
                             {
-                        <div class="false-mail">
-                            Вы не подтвердили Ваш E-Mail. Хотите <a href="@ViewBag.L.SiteUrlClear/resendemail">получить</a> письмо подтверждения повторно?
-                        </div>
+                        <div class="false-mail" id="divReSendEmail">
+                            Вы не подтвердили Ваш E-Mail. <br />
+                            Отправить письмо подтверждения повторно?
+                            <br />
+                                <button id="btnReSendEmail" type="button" href="#" class="btn"> <span>ДА</span> </button>
+                            </div>
                             }
                         </div>
 					</div>
@@ -113,4 +116,21 @@
 
         return result;
     }
+    //==   Лучшее решение состоит в том, чтобы создать слушатель события, вместо того, чтобы вставлять обработчик в строку ====== //
+    $(function () {
+        $("#btnReSendEmail").click(function () {
+            reSendEmail();
+        });
+    });
+    function reSendEmail() {
+        $.ajax('/User/Resendemail',
+            {
+                type: 'POST',
+                data: { 'email': $("#email").val() },
+                success: function () {
+                    $('#divReSendEmail').hide();
+                    alert("Письмо подтверждения отправлено повторно.");
+                },
+            });
+    };
 </script>

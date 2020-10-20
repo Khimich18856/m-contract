@@ -1046,7 +1046,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\User\SignupOld.cshtml" />
     <Content Include="Views\User\Profile.cshtml" />
     <Content Include="Views\User\MyAds.cshtml" />
     <Content Include="Views\User\DealsHistory.cshtml" />
@@ -1099,7 +1098,6 @@
     <Content Include="Views\User\Help.cshtml" />
     <Content Include="Views\User\Feedback.cshtml" />
     <Content Include="Views\User\Rules.cshtml" />
-    <Content Include="Views\User\TestMail.cshtml" />
     <Content Include="Scripts\jquery-3.5.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.5.1.min.map" />
     <Content Include="Scripts\umd\popper.min.js.map" />
@@ -1113,7 +1111,6 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\User\VerificationEmail.cshtml" />
-    <Content Include="Views\User\Resendemail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="obj\Debug\TempPE\" />

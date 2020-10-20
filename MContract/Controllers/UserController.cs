@@ -327,44 +327,31 @@ namespace MContract.Controllers
             }
         }
         #endregion
-        #region Повторная отправка запроса для подтверждения регистрации
-        [HttpGet]
-        public ActionResult Resendemail(string email)
+        #region Повторная отправка запроса для подтверждения регистрации == 630
+
+        public string Resendemail(string email)
         {
-            ViewBag.L.ShowSearchbar = false;
-            ViewBag.Heading = "Повторная отправка запроса для подтверждения регистрации";
-            #region Хлебные крошки
-            var breadCrumbs = new List<BreadCrumbLink>
-            {
-                new BreadCrumbLink() { Text = ViewBag.Heading, EndPoint = true }
-            };
-            ViewBag.BreadCrumbs = breadCrumbs;
-            #endregion            
-            
-            /*
-              
-              
-              НЕОБХОДИМО ПЕРЕДАТЬ емайл USERA !!!!
-              
-              
+            /* 
+              НЕОБХОДИМО ПЕРЕДАТЬ емайл USERA на клиенте == button
+             $.ajax('/User/Resendemail',
              */
 
+            var dbUser = UsersDAL.GetUserByEmail(email);
 
-            //var dbUser = UsersDAL.GetUserByEmail(email);
+            if (dbUser != null)
+            {
+                #region Повторное потдверждение почтового ящика зарегистрированного ЮЗЕРА
+                string subscription = C.SiteUrl + "User/VerificationEmail?token=" + dbUser.VerificationCode;
+                string subject = "Повторное подтверждение регистрации";
+                string body = "Уважаемый новый пользователь портала M-contract.ru" + "<br/>" + "<br/>" +
+                "Вам необходимо подтвердить данные Вашего почтового ящика - " + "<b>" + dbUser.Email + "</b>" + "<br/>" + "<br/>" +
+                "для подтверждения - перейдите по ссылке - " + "<a href=\'" + subscription + "'>Подтвердить e-mail</a>." + "<br/>"
+                + "<br/>" + "<i>" + "С уважением команда портала <a href=\'" + C.SiteUrl + "'>m-contract.ru</a>" + "</i>";
+                MailHelper.SendMail(dbUser.Email, subject, body);
+                #endregion
+            }
+            return "Письмо подтверждения отправлено повторно.";
 
-            //if (dbUser != null)
-            //{
-            //    #region Повторное потдверждение почтового ящика зарегистрированного ЮЗЕРА
-            //    string subscription = C.SiteUrl + "User/VerificationEmail?token=" + dbUser.VerificationCode;
-            //    string subject = "Повторное подтверждение регистрации";
-            //    string body = "Уважаемый новый пользователь портала M-contract.ru" + "<br/>" + "<br/>" +
-            //    "Вам необходимо подтвердить данные Вашего почтового ящика - " + "<b>" + dbUser.Email + "</b>" + "<br/>" + "<br/>" +
-            //    "для подтверждения - перейдите по ссылке - " + "<a href=\'" + subscription + "'>Подтвердить e-mail</a>." + "<br/>"
-            //    + "<br/>" + "<i>" + "С уважением команда портала <a href=\'" + C.SiteUrl + "'>m-contract.ru</a>" + "</i>";
-            //    MailHelper.SendMail(dbUser.Email, subject, body);
-            //    #endregion
-            //}
-            return View();
         }
         #endregion
         #region Регистрация нового ЮЗЕРА 
@@ -587,7 +574,14 @@ namespace MContract.Controllers
             };
             ViewBag.BreadCrumbs = breadCrumbs;
             #endregion
-            return View(viewModel);
+
+            /*
+             * а вот модель показывать не нужно == ЮЗЕР еще не подтвердил свой ЕМАЙЛ ...
+             * return View(viewModel);
+             * 
+             */
+
+            return View();
         }
 
         [HttpGet]
@@ -596,14 +590,14 @@ namespace MContract.Controllers
             ViewBag.L.ShowSearchbar = false;
             var viewModel = new User();
             ViewBag.Heading = "Вход";
-            #region Хлебные крошки
-            var breadCrumbs = new List<BreadCrumbLink>
-            {
-                new BreadCrumbLink() { Text = "Личный кабинет", Url = Urls.PersonalArea, Title = "Перейти в личный кабинет" },
-                new BreadCrumbLink() { Text = "Вход", EndPoint = true }
-            };
-            ViewBag.BreadCrumbs = breadCrumbs;
-            #endregion
+            //#region Хлебные крошки
+            //var breadCrumbs = new List<BreadCrumbLink>
+            //{
+            //    new BreadCrumbLink() { Text = "Личный кабинет", Url = Urls.PersonalArea, Title = "Перейти в личный кабинет" },
+            //    new BreadCrumbLink() { Text = "Вход", EndPoint = true }
+            //};
+            //ViewBag.BreadCrumbs = breadCrumbs;
+            //#endregion
             return View(viewModel);
         }
 
@@ -616,12 +610,22 @@ namespace MContract.Controllers
             {
                 if (Krakoss.Decryption(dbUser.Password) == formUser.Password)
                 {
+                    //успешная авторизация
                     if (dbUser.EmailConfirmed == true)
                     {
-                        //успешная авторизация
+                        //EMAIL подтвержден
                         SM.CurrentUser = dbUser;
                         SM.LoginTime = DateTime.Now;
                         CookiesHelper.SaveCookiesForHideAuthorization(dbUser.Email, "", Krakoss.Decryption(dbUser.Password).TrimEnd());
+                        // показать меню для личного кабинета 
+                        #region Хлебные крошки
+                            var breadCrumbs = new List<BreadCrumbLink>
+                                 {
+                                    new BreadCrumbLink() { Text = "Личный кабинет", Url = Urls.PersonalArea, Title = "Перейти в личный кабинет" },
+                                    new BreadCrumbLink() { Text = "Вход", EndPoint = true }
+                                 };
+                            ViewBag.BreadCrumbs = breadCrumbs;
+                            #endregion
                         var returnUrl = Request["ReturnUrl"];
                         if (!string.IsNullOrWhiteSpace(returnUrl))
                             return Redirect(returnUrl);
@@ -629,7 +633,8 @@ namespace MContract.Controllers
                             return Redirect(Urls.PersonalArea);
                     }
                     else
-                        formUser.ErrorMessage = "Вы не подтвердили Ваш емайл. Хотите <a href=\"" + Urls.Resendemail + "\">получить</a> письмо подтверждения повторно?";
+                        formUser.ErrorMessage = "Вы не подтвердили Ваш емайл. Хотите получить письмо подтверждения повторно?";
+                    //#region Повторная отправка запроса для подтверждения регистрации == 330
                 }
 
                 else
