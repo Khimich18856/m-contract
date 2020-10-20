@@ -47,21 +47,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Carbon.Data.Protection, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Carbon.Data.Protection.1.3.0\lib\netstandard2.0\Carbon.Data.Protection.dll</HintPath>
-    </Reference>
-    <Reference Include="Carbon.Packaging, Version=1.43.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Carbon.Packaging.1.43.0\lib\netstandard2.0\Carbon.Packaging.dll</HintPath>
-    </Reference>
-    <Reference Include="Carbon.Storage, Version=2.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Carbon.Storage.2.6.0\lib\netstandard2.0\Carbon.Storage.dll</HintPath>
-    </Reference>
-    <Reference Include="Carbon.VersionControl, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Carbon.VersionControl.2.3.0\lib\netstandard2.0\Carbon.VersionControl.dll</HintPath>
-    </Reference>
-    <Reference Include="Carbon.Versioning, Version=1.8.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Carbon.Versioning.1.8.1\lib\netstandard2.0\Carbon.Versioning.dll</HintPath>
-    </Reference>
     <Reference Include="krakos">
       <HintPath>..\..\Documents\sergeyS\OLD\krakoss\krakos.dll</HintPath>
     </Reference>
@@ -1009,7 +994,6 @@
     <Content Include="Scripts\umd\popper.min.js" />
     <None Include="Properties\PublishProfiles\Alexander.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <Content Include="js\bootstrap.js" />
     <Content Include="js\bootstrap.min.js" />
     <None Include="js\jquery-3.3.1.intellisense.js" />
