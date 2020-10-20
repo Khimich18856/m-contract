@@ -39,7 +39,7 @@ namespace MContract.AppCode
                 #region обработка изображения
                 //var resizedPhoto = PhotosController.GetResizedPhoto(uploadFile.InputStream, 130, 130);
 
-                System.Drawing.Image inputImage = new System.Drawing.Bitmap(uploadFile.InputStream);
+                Image inputImage = new Bitmap(uploadFile.InputStream);
                 var photo = new Photo()
                 {
                     UserId = userId,
@@ -186,7 +186,7 @@ namespace MContract.AppCode
 
 		public static Stream ToStream(this Image image, ImageFormat format)
 		{
-			var stream = new System.IO.MemoryStream();
+			var stream = new MemoryStream();
 			image.Save(stream, format);
 			stream.Position = 0;
 			return stream;

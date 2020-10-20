@@ -22,10 +22,10 @@ namespace MContract.AppCode
         //  SqlDataReader r = ...;
         //  String firstName = getString(r[COL_Firstname]);
 
-        public static String getString(Object o)
+        public static string getString(object o)
         {
             if (o == DBNull.Value) return null;
-            return (String)o;
+            return (string)o;
         }
     }
 }

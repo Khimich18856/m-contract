@@ -12,7 +12,7 @@ namespace MContract.AppCode
 		{
 			get
 			{
-				return ConfigurationManager.AppSettings["production"] == "true" ? "http://m-contract.ru" : "http://localhost:3254";
+				return ConfigurationManager.AppSettings["production"] == "true" ? "http://mc.krakoss.ru/" : "http://localhost:3254";//http://m-contract.ru/
 			}
 		}
 
@@ -20,7 +20,7 @@ namespace MContract.AppCode
 		{
 			get
 			{
-				return ConfigurationManager.AppSettings["production"] == "true" ? "http://m-contract.ru/" : "http://localhost:3254/";
+				return ConfigurationManager.AppSettings["production"] == "true" ? "http://mc.krakoss.ru/" : "http://localhost:3254/";//http://m-contract.ru/
 			}
 		}
 

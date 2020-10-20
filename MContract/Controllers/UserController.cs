@@ -291,15 +291,12 @@ namespace MContract.Controllers
         public string UniqueEmail(string newEmail)
         {
             string email = "true";
-            /*  проверяем существование пользователя в базе данных с только что введенным емайл
-             */
-            var user = UsersDAL.GetUserByEmail(newEmail);
-            /*  
-              если такого пользователя нет то ничего не делаем \
+            /*  проверяем существование пользователя в базе данных с только что введенным емайл               
+              если такого пользователя нет то ничего не делаем
               если есть то сообщаем пользователю об этом 
               блокируем внесение данных ... 
           */
-            if (user != null && user.Email == newEmail)
+            if (UsersDAL.UserEmailUnique(newEmail) == false)
             {
                 email = "false";
                 return email;
@@ -315,14 +312,11 @@ namespace MContract.Controllers
         {
             string inn = "true";
             /*  проверяем существование пользователя в базе данных с только что введенным ИНН
-             */
-            var user = UsersDAL.GetUserByINN(newINN);
-            /*  
               если такого пользователя нет то ничего не делаем \
               если есть то сообщаем пользователю об этом 
               блокируем внесение данных ... 
           */
-            if (user != null && user.INN == newINN)
+            if (UsersDAL.UserINNUnique(newINN) == false)
             {
                 inn = "false";
                 return inn;
@@ -331,6 +325,46 @@ namespace MContract.Controllers
             {
                 return inn;
             }
+        }
+        #endregion
+        #region Повторная отправка запроса для подтверждения регистрации
+        [HttpGet]
+        public ActionResult Resendemail(string email)
+        {
+            ViewBag.L.ShowSearchbar = false;
+            ViewBag.Heading = "Повторная отправка запроса для подтверждения регистрации";
+            #region Хлебные крошки
+            var breadCrumbs = new List<BreadCrumbLink>
+            {
+                new BreadCrumbLink() { Text = ViewBag.Heading, EndPoint = true }
+            };
+            ViewBag.BreadCrumbs = breadCrumbs;
+            #endregion            
+            
+            /*
+              
+              
+              НЕОБХОДИМО ПЕРЕДАТЬ емайл USERA !!!!
+              
+              
+             */
+
+
+            //var dbUser = UsersDAL.GetUserByEmail(email);
+
+            //if (dbUser != null)
+            //{
+            //    #region Повторное потдверждение почтового ящика зарегистрированного ЮЗЕРА
+            //    string subscription = C.SiteUrl + "User/VerificationEmail?token=" + dbUser.VerificationCode;
+            //    string subject = "Повторное подтверждение регистрации";
+            //    string body = "Уважаемый новый пользователь портала M-contract.ru" + "<br/>" + "<br/>" +
+            //    "Вам необходимо подтвердить данные Вашего почтового ящика - " + "<b>" + dbUser.Email + "</b>" + "<br/>" + "<br/>" +
+            //    "для подтверждения - перейдите по ссылке - " + "<a href=\'" + subscription + "'>Подтвердить e-mail</a>." + "<br/>"
+            //    + "<br/>" + "<i>" + "С уважением команда портала <a href=\'" + C.SiteUrl + "'>m-contract.ru</a>" + "</i>";
+            //    MailHelper.SendMail(dbUser.Email, subject, body);
+            //    #endregion
+            //}
+            return View();
         }
         #endregion
         #region Регистрация нового ЮЗЕРА 
@@ -483,15 +517,15 @@ namespace MContract.Controllers
         public string ChangePassword(string currentPassword, string newPassword)
         {
             var currentUser = SM.CurrentUser;
-            if (currentUser.Password != currentPassword)
+            if (Krakoss.Decryption(currentUser.Password) != currentPassword)
                 return "Текущий пароль указан неверно";
 
-            var success = UsersDAL.UpdateUserPassword(currentUser.Id, newPassword);
+            var success = UsersDAL.UpdateUserPassword(currentUser.Id, Krakoss.Encryption(newPassword));
             if (success)
             {
-                currentUser.Password = newPassword;
+                currentUser.Password = Krakoss.Encryption(newPassword);
                 SM.CurrentUser = currentUser;
-                CookiesHelper.SaveCookiesForHideAuthorization(currentUser.Email, "", currentUser.Password);
+                CookiesHelper.SaveCookiesForHideAuthorization(currentUser.Email, "", Krakoss.Decryption(currentUser.Password));
                 return "ok";
             }
             else
@@ -515,7 +549,7 @@ namespace MContract.Controllers
             var success = UsersDAL.UpdateUser(currentUser);
             if (success)
             {
-                CookiesHelper.SaveCookiesForHideAuthorization(currentUser.Email, "", currentUser.Password.TrimEnd());
+                CookiesHelper.SaveCookiesForHideAuthorization(currentUser.Email, "", Krakoss.Decryption(currentUser.Password).TrimEnd());
                 return "ok";
             }
             else
@@ -580,17 +614,22 @@ namespace MContract.Controllers
 
             if (dbUser != null)
             {
-                if (dbUser.Password == formUser.Password)
+                if (Krakoss.Decryption(dbUser.Password) == formUser.Password)
                 {
-                    //успешная авторизация
-                    SM.CurrentUser = dbUser;
-                    SM.LoginTime = DateTime.Now;
-                    CookiesHelper.SaveCookiesForHideAuthorization(dbUser.Email, "", dbUser.Password.TrimEnd());
-                    var returnUrl = Request["ReturnUrl"];
-                    if (!String.IsNullOrWhiteSpace(returnUrl))
-                        return Redirect(returnUrl);
+                    if (dbUser.EmailConfirmed == true)
+                    {
+                        //успешная авторизация
+                        SM.CurrentUser = dbUser;
+                        SM.LoginTime = DateTime.Now;
+                        CookiesHelper.SaveCookiesForHideAuthorization(dbUser.Email, "", Krakoss.Decryption(dbUser.Password).TrimEnd());
+                        var returnUrl = Request["ReturnUrl"];
+                        if (!string.IsNullOrWhiteSpace(returnUrl))
+                            return Redirect(returnUrl);
+                        else
+                            return Redirect(Urls.PersonalArea);
+                    }
                     else
-                        return Redirect(Urls.PersonalArea);
+                        formUser.ErrorMessage = "Вы не подтвердили Ваш емайл. Хотите <a href=\"" + Urls.Resendemail + "\">получить</a> письмо подтверждения повторно?";
                 }
 
                 else

@@ -130,7 +130,7 @@ namespace MContract.AppCode
 						lastQuoteTdContent = lastQuoteTdContent.Substring(0, lastQuoteTdContent.IndexOf("</td>"));
 						lastQuoteTdContent = lastQuoteTdContent.Replace(",", "");
 						lastQuoteTdContent = lastQuoteTdContent.Replace(".", ",");
-                        if (!Decimal.TryParse(lastQuoteTdContent, out decimal lastQuote))
+                        if (!decimal.TryParse(lastQuoteTdContent, out decimal lastQuote))
                             continue;
                         var lastQuoteStr = lastQuote.ToString().Replace(',', '.');
 						var sqlDate = TextHelper.GetTSqlDate(DateTime.Now);
@@ -173,7 +173,7 @@ namespace MContract.AppCode
 
 						var lastQuoteTdContent = html.Substring(indexOfLastQuoteTd + lastQuoteTd.Length);
 						lastQuoteTdContent = lastQuoteTdContent.Remove(lastQuoteTdContent.IndexOf("</td>")).Trim().Replace(".", "");
-                        if (!Decimal.TryParse(lastQuoteTdContent, out decimal lastQuote))
+                        if (!decimal.TryParse(lastQuoteTdContent, out decimal lastQuote))
                             continue;
 
                         //<td class="bold greenFont pid-8831-pcp" >+0,85%</td>
@@ -190,7 +190,7 @@ namespace MContract.AppCode
 						changeTdContent = changeTdContent.Substring(changeTdContent.IndexOf(">") + ">".Length);
 						changeTdContent = changeTdContent.Remove(changeTdContent.IndexOf("</td>")).Trim().Replace(".", "");
 
-                        if (!Decimal.TryParse(changeTdContent, out decimal change))
+                        if (!decimal.TryParse(changeTdContent, out decimal change))
                             continue;
                         #endregion
 
@@ -204,7 +204,7 @@ namespace MContract.AppCode
 						changePercentTdContent = changePercentTdContent.Substring(changePercentTdContent.IndexOf(">") + ">".Length);
 						changePercentTdContent = changePercentTdContent.Remove(changePercentTdContent.IndexOf("</td>")).Trim().Replace(".", "").Replace("%", "");
 
-                        if (!Decimal.TryParse(changePercentTdContent, out decimal changePercent))
+                        if (!decimal.TryParse(changePercentTdContent, out decimal changePercent))
                             continue;
                         #endregion
 

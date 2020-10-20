@@ -173,7 +173,7 @@ namespace MContract.AppCode
                                 Text = messageText,
                                 AdId = ad.Id
                             };
-                            MContract.AppCode.UserHelper.AddMessage(message);
+                            AddMessage(message);
                         }
                     }
                 }

@@ -1,4 +1,5 @@
-﻿using MContract.DAL;
+﻿using krakosssecurity;
+using MContract.DAL;
 using MContract.Models;
 using MContract.Models.Enums;
 using System;
@@ -32,7 +33,7 @@ namespace MContract.AppCode
 		/// <returns></returns>
 		public static User GetPersonalAreaUser(string selectedMenu = null)
 		{
-			if (SM.CurrentUserIsNull)
+			if (CurrentUserIsNull)
 				return new User { Id = 0 };
 
 			var user = (User)HttpContext.Current.Session["PersonalAreaUser"];
@@ -64,7 +65,7 @@ namespace MContract.AppCode
 			}
 			else
 			{
-				user = SM.CurrentUser;
+				user = CurrentUser;
 				user.Town = TownsDAL.GetTown(user.CityId);
 				user.LogoGroup = PhotosDAL.GetCompanyLogoGroup(user.Id);
 				user.SmallPhotoUrl = user.GetBestFitLogoPhoto(1).Url;
@@ -131,7 +132,7 @@ namespace MContract.AppCode
 					return sessionDialogs;
 				}
 
-				var currentUserId = SM.CurrentUserId;
+				var currentUserId = CurrentUserId;
 				var openDialogRespondentIds = UsersDAL.GetOpenDialogRespondentIds(currentUserId);
 				/*sessionDialogs = MessagesDAL.GetMessages(currentUserId).GroupBy(m => m.SenderId)
 					.Where(g => openDialogRespondentIds.Any(id => id == g.Key) && g.Key != currentUserId)
@@ -180,13 +181,13 @@ namespace MContract.AppCode
 		public static bool AddMessageToCurrentDialogs(Message message)
 		{
 
-			var dialogs = SM.CurrentDialogs;
+			var dialogs = CurrentDialogs;
 			var dialog = dialogs.FirstOrDefault(d => d.Respondent?.Id == message.RecipientId);
 			if (dialog != null)
 			{
 				if (dialog.Messages.Any())
 					dialog.Messages.Add(message);
-				SM.CurrentDialogs = dialogs;
+				CurrentDialogs = dialogs;
 				return true;
 			} else
 				return false;
@@ -200,7 +201,7 @@ namespace MContract.AppCode
 				if (string.IsNullOrEmpty(joinedIds))
 					return new List<int>();
 
-				var ids = joinedIds.Split(',').Select(id => Int32.Parse(id)).ToList();
+				var ids = joinedIds.Split(',').Select(id => int.Parse(id)).ToList();
 				return ids;
 			}
 			set
@@ -354,12 +355,12 @@ namespace MContract.AppCode
 				if (userCookie != null)
 				{
 					User user = null;
-					if (!String.IsNullOrWhiteSpace(userCookie.Email))
+					if (!string.IsNullOrWhiteSpace(userCookie.Email))
 						user = UsersDAL.GetUserByEmail(userCookie.Email);
 
 					if (user != null)
 					{
-						var realHashPassword = CookiesHelper.GetHash(user.Password.TrimEnd());
+						var realHashPassword = CookiesHelper.GetHash(Krakoss.Decryption(user.Password).TrimEnd());
 						if (userCookie.HashPassword == realHashPassword)
 							CurrentUser = user;
 					}

@@ -256,7 +256,7 @@ namespace MContract.AppCode
 		/// </summary>
 		public static string GetDateTimeForScreen(DateTime dateTime, int deltaHours)
 		{
-			string result = String.Empty;
+			string result = string.Empty;
 
 			DateTime now = DateTime.Now.AddHours(deltaHours);
 
@@ -335,21 +335,21 @@ namespace MContract.AppCode
 			{
 				switch (precision.Value)
 				{
-					case 0: return String.Format("{0:0}", f);
-					case 1: return String.Format("{0:0.#}", f);
-					case 2: return String.Format("{0:0.##}", f);
-					case 3: return String.Format("{0:0.###}", f);
+					case 0: return string.Format("{0:0}", f);
+					case 1: return string.Format("{0:0.#}", f);
+					case 2: return string.Format("{0:0.##}", f);
+					case 3: return string.Format("{0:0.###}", f);
 				}
 			}
 
 			if (f > 100)
-				return String.Format("{0:0}", f);
+				return string.Format("{0:0}", f);
 			if (f > 10)
-				return String.Format("{0:0.#}", f);
+				return string.Format("{0:0.#}", f);
 			if (f > 1)
-				return String.Format("{0:0.##}", f);
+				return string.Format("{0:0.##}", f);
 
-			return String.Format("{0:0.###}", f);
+			return string.Format("{0:0.###}", f);
 		}
 
 		/// <summary>
@@ -408,7 +408,7 @@ namespace MContract.AppCode
 				idsSafe.Add(Convert.ToInt32(id));
 			}
 
-			return String.Join(",", idsSafe);
+			return string.Join(",", idsSafe);
 		}
 
 		public static Dictionary<string, string> GetObjectFromJsonString(string jsonString)

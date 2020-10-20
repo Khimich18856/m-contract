@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
-using System.Web;
 
 namespace MContract.AppCode
 {
-	public class MailHelper
+    public class MailHelper
 	{
         //================= настройка данных потчового ящика ======================== //
         public static void SendMail(string sendTo, string subject, string body)
