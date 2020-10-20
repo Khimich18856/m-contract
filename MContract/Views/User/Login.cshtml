@@ -76,7 +76,7 @@
                     <div class="col-md-3"></div>
                     <div class="col-sm-12 col-md-6 input__col">
                         <div class="input__wrapper">
-                            <a class="input__forgot" href="#">Забыли пароль?</a>
+                            <span class="input__forgot" id="spanReSendPassword">Забыли пароль?</span>
                         </div>
                     </div>
                     <div class="col-md-3"></div>
@@ -121,6 +121,9 @@
         $("#btnReSendEmail").click(function () {
             reSendEmail();
         });
+        $("#spanReSendPassword").click(function () {
+            reSendPassword();
+        });
     });
     function reSendEmail() {
         $.ajax('/User/Resendemail',
@@ -128,8 +131,18 @@
                 type: 'POST',
                 data: { 'email': $("#email").val() },
                 success: function () {
-                    $('#divReSendEmail').hide();
+                    $('#btnReSendPassword').hide();
                     alert("Письмо подтверждения отправлено повторно.");
+                },
+            });
+    };
+    function reSendPassword() {
+        $.ajax('/User/Resendpassword',
+            {
+                type: 'POST',
+                data: { 'email': $("#email").val() },
+                success: function () {
+                    alert("Письмо с инструкцией по восстановлению пароля отправлено на Ваш емайл - " + $("#email").val());
                 },
             });
     };

@@ -354,6 +354,67 @@ namespace MContract.Controllers
 
         }
         #endregion
+
+
+        #region Отправка запроса - напоминаем пароль
+
+        public string Resendpassword(string email)
+        {
+            var dbUser = UsersDAL.GetUserByEmail(email);
+
+            if (dbUser != null)
+            {
+                #region Отправка письма - напоминаем пароль зарегистрированного ЮЗЕРА
+                string subscription = C.SiteUrl + "User/ResetPassword?token=" + dbUser.VerificationCode;
+                string subject = "Восстановление доступа";
+                string body = "Уважаемый пользователь портала M-contract.ru" + "<br/>" + "<br/>" +
+                "Для восстановления доступа к порталу - перейдите по ссылке - " + "<a href=\'" + subscription + "'>Восстановить пароль</a>." + "<br/>"
+                + "<br/>" + "<i>" + "С уважением команда портала <a href=\'" + C.SiteUrl + "'>m-contract.ru</a>" + "</i>"
+                + "<br/>" + "<br/>" +"Если это письмо пришло Вам ошибочно - просто проигнорируйте это письмо";
+                MailHelper.SendMail(dbUser.Email, subject, body);
+                #endregion
+            }
+            return "Отправка запроса - напоминаем пароль.";
+
+        }
+        #region Задать новый пароль по подобию == Верификация емайл ==  VerificationEmail
+        [HttpGet]
+        public ActionResult ResetPassword(string token, string newPassword)
+        {
+            ViewData["tempdata"] = " ";
+            ViewData["tempdata1"] = " ";
+
+            if (token != null)
+            {
+                string _token = token;
+
+                var user = UsersDAL.GetUserByToken(_token);
+
+                var _Id = UsersDAL.GetUserByToken(_token).Id;
+
+                Guid g;
+
+                g = Guid.NewGuid();
+
+                string _g = Convert.ToString(g);
+
+                var success = UsersDAL.UpdateUserResetPassword(_Id, _g, Krakoss.Decryption(newPassword));
+                if (success)
+                {
+                    ViewData["tempdata"] = user.ContactName + " - ваш пароль успешно обновлен";
+                    ViewData["tempdata1"] = "Для завершения процедуры - перейдите по ссылке отправленной на Ваш емайл - " + user.Email;
+                }
+                else
+                    ViewData["tempdata"] = "Произошла ошибка при обновлениие пароля, попробуйте позже";
+                    ViewData["tempdata1"] = "";
+
+               
+            }
+            return View();
+        }
+
+        #endregion
+        #endregion
         #region Регистрация нового ЮЗЕРА 
         [HttpGet]
         public ActionResult Signup()
@@ -577,11 +638,11 @@ namespace MContract.Controllers
 
             /*
              * а вот модель показывать не нужно == ЮЗЕР еще не подтвердил свой ЕМАЙЛ ...
-             * return View(viewModel);
-             * 
+             * вместо return View(viewModel); надо == return View();
+             * но пока оставим по прежмену 
              */
 
-            return View();
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -590,14 +651,14 @@ namespace MContract.Controllers
             ViewBag.L.ShowSearchbar = false;
             var viewModel = new User();
             ViewBag.Heading = "Вход";
-            //#region Хлебные крошки
-            //var breadCrumbs = new List<BreadCrumbLink>
-            //{
-            //    new BreadCrumbLink() { Text = "Личный кабинет", Url = Urls.PersonalArea, Title = "Перейти в личный кабинет" },
-            //    new BreadCrumbLink() { Text = "Вход", EndPoint = true }
-            //};
-            //ViewBag.BreadCrumbs = breadCrumbs;
-            //#endregion
+            #region Хлебные крошки
+            var breadCrumbs = new List<BreadCrumbLink>
+            {
+                new BreadCrumbLink() { Text = "Личный кабинет", Url = Urls.PersonalArea, Title = "Перейти в личный кабинет" },
+                new BreadCrumbLink() { Text = "Вход", EndPoint = true }
+            };
+            ViewBag.BreadCrumbs = breadCrumbs;
+            #endregion
             return View(viewModel);
         }
 
