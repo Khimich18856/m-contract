@@ -1,4 +1,4 @@
-﻿using krakosssecurity;
+﻿
 using MContract.DAL;
 using MContract.Models;
 using MContract.Models.Enums;
@@ -360,7 +360,7 @@ namespace MContract.AppCode
 
 					if (user != null)
 					{
-						var realHashPassword = CookiesHelper.GetHash(Krakoss.Decryption(user.Password).TrimEnd());
+						var realHashPassword = CookiesHelper.GetHash(SecurityHelper.Decryption(user.Password).TrimEnd());
 						if (userCookie.HashPassword == realHashPassword)
 							CurrentUser = user;
 					}

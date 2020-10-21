@@ -1,4 +1,4 @@
-﻿using krakosssecurity;
+﻿
 using MContract.AppCode;
 using MContract.DAL;
 using MContract.Models;
@@ -441,7 +441,7 @@ namespace MContract.Controllers
                 g = Guid.NewGuid();
                 string _g = Convert.ToString(g);
 
-                bool success = UsersDAL.UpdateUserResetPassword(user.Id, _g, Krakoss.Encryption(newPassword));
+                bool success = UsersDAL.UpdateUserResetPassword(user.Id, _g, SecurityHelper.Encryption(newPassword));
                 if (success)
                 {
                     //ViewData["tempdata"] = user.ContactName + " - ваш пароль успешно обновлен";
@@ -492,7 +492,7 @@ namespace MContract.Controllers
                 #region Добавление пользователя в БД в таблицу Users
                 user.Created = DateTime.Now.ToUniversalTime();
                 user.LastOnline = DateTime.Now.ToUniversalTime();
-                user.Password = Krakoss.Encryption(user.Password);
+                user.Password = SecurityHelper.Encryption(user.Password);
                 #region Определение Id-города
                 //if (user.CityId != 0)
                 //{
@@ -518,7 +518,7 @@ namespace MContract.Controllers
                 var id = UsersDAL.AddUser(user);
                 if (id > 0)
                 {
-                    CookiesHelper.SaveCookiesForHideAuthorization(user.Email, "", Krakoss.Decryption(user.Password).TrimEnd());
+                    CookiesHelper.SaveCookiesForHideAuthorization(user.Email, "", SecurityHelper.Decryption(user.Password).TrimEnd());
 
                     #region Потдверждение почтого ящика нового ЮЗЕРА
                     string subscription = C.SiteUrl + "User/VerificationEmail?token=" + UsersDAL.GetUser(id).VerificationCode;
@@ -563,15 +563,15 @@ namespace MContract.Controllers
         public string ChangePassword(string currentPassword, string newPassword)
         {
             var currentUser = SM.CurrentUser;
-            if (Krakoss.Decryption(currentUser.Password) != currentPassword)
+            if (SecurityHelper.Decryption(currentUser.Password) != currentPassword)
                 return "Текущий пароль указан неверно";
 
-            var success = UsersDAL.UpdateUserPassword(currentUser.Id, Krakoss.Encryption(newPassword));
+            var success = UsersDAL.UpdateUserPassword(currentUser.Id, SecurityHelper.Encryption(newPassword));
             if (success)
             {
-                currentUser.Password = Krakoss.Encryption(newPassword);
+                currentUser.Password = SecurityHelper.Encryption(newPassword);
                 SM.CurrentUser = currentUser;
-                CookiesHelper.SaveCookiesForHideAuthorization(currentUser.Email, "", Krakoss.Decryption(currentUser.Password));
+                CookiesHelper.SaveCookiesForHideAuthorization(currentUser.Email, "", SecurityHelper.Decryption(currentUser.Password));
                 return "ok";
             }
             else
@@ -595,7 +595,7 @@ namespace MContract.Controllers
             var success = UsersDAL.UpdateUser(currentUser);
             if (success)
             {
-                CookiesHelper.SaveCookiesForHideAuthorization(currentUser.Email, "", Krakoss.Decryption(currentUser.Password).TrimEnd());
+                CookiesHelper.SaveCookiesForHideAuthorization(currentUser.Email, "", SecurityHelper.Decryption(currentUser.Password).TrimEnd());
                 return "ok";
             }
             else
@@ -661,7 +661,7 @@ namespace MContract.Controllers
 
             if (dbUser != null)
             {
-                if (Krakoss.Decryption(dbUser.Password) == formUser.Password)
+                if (SecurityHelper.Decryption(dbUser.Password) == formUser.Password)
                 {
                     //успешная авторизация
                     if (dbUser.EmailConfirmed == true)
@@ -669,7 +669,7 @@ namespace MContract.Controllers
                         //EMAIL подтвержден
                         SM.CurrentUser = dbUser;
                         SM.LoginTime = DateTime.Now;
-                        CookiesHelper.SaveCookiesForHideAuthorization(dbUser.Email, "", Krakoss.Decryption(dbUser.Password).TrimEnd());
+                        CookiesHelper.SaveCookiesForHideAuthorization(dbUser.Email, "", SecurityHelper.Decryption(dbUser.Password).TrimEnd());
                         var returnUrl = Request["ReturnUrl"];
                         if (!string.IsNullOrWhiteSpace(returnUrl))
                             return Redirect(returnUrl);
