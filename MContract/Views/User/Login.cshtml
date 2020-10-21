@@ -137,13 +137,19 @@
             });
     };
     function reSendPassword() {
-        $.ajax('/User/Resendpassword',
-            {
-                type: 'POST',
-                data: { 'email': $("#email").val() },
-                success: function () {
-                    alert("Письмо с инструкцией по восстановлению пароля отправлено на Ваш емайл - " + $("#email").val());
-                },
-            });
+        if ($("#email").val().length > 6) {
+            $.ajax('/User/Resendpassword',
+                {
+                    type: 'POST',
+                    data: { 'email': $("#email").val() },
+                    success: function () {
+
+                        alert("Письмо с инструкцией по восстановлению пароля отправлено на Ваш емайл - " + $("#email").val())
+                    },
+                });
+        }
+        else {
+            alert("Вы не указали Ваш емайл")
+        }
     };
 </script>

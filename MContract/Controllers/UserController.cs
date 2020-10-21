@@ -286,8 +286,7 @@ namespace MContract.Controllers
         #endregion
 
         #region Проверка нового ЮЗЕРА на уникальность по ЕМАЙЛ и ИНН
-        //Проверка нового ЮЗЕРА на уникальность по ЕМАЙЛ 
-        /******************************************/
+
         public string UniqueEmail(string newEmail)
         {
             string email = "true";
@@ -306,8 +305,7 @@ namespace MContract.Controllers
                 return email;
             }
         }
-        //Проверка нового ЮЗЕРА на уникальность по ИНН
-        /******************************************/
+
         public string UniqueINN(string newINN)
         {
             string inn = "true";
@@ -354,8 +352,38 @@ namespace MContract.Controllers
 
         }
         #endregion
+        #region Верификация емайл 
+        [HttpGet]
+        public ActionResult VerificationEmail(string token)
+        {
+            if (token != null && token.Length == 36)
+            {
+                var user = UsersDAL.GetUserByToken(token);
 
+                if (user != null)
+                {
+                    Guid g;
+                    g = Guid.NewGuid();
+                    string _g = Convert.ToString(g);
 
+                    if (UsersDAL.UpdateUserEmailConfirmed(user.Id, _g) == true)
+                    {
+                        ViewData["tempdata"] = user.Email;
+                        ViewData["tempdata1"] = "Ваш емайл - подтвержден успешно";
+                    }
+                    else/* (UsersDAL.GetUserByEmail(_email).EmailConfirmed == true)*/
+                    {
+                        //ViewData["tempdata"] = "Вы уже подтвердили Ваш емайл. Не стоит делать это повторно.";
+                    }
+                    return View();
+                }
+                else
+                    return RedirectToAction("Index", "Home");
+            }
+            else
+                return RedirectToAction("Index", "Home");
+        }
+        #endregion
         #region Отправка запроса - напоминаем пароль
 
         public string Resendpassword(string email)
@@ -370,51 +398,66 @@ namespace MContract.Controllers
                 string body = "Уважаемый пользователь портала M-contract.ru" + "<br/>" + "<br/>" +
                 "Для восстановления доступа к порталу - перейдите по ссылке - " + "<a href=\'" + subscription + "'>Восстановить пароль</a>." + "<br/>"
                 + "<br/>" + "<i>" + "С уважением команда портала <a href=\'" + C.SiteUrl + "'>m-contract.ru</a>" + "</i>"
-                + "<br/>" + "<br/>" +"Если это письмо пришло Вам ошибочно - просто проигнорируйте это письмо";
+                + "<br/>" + "<br/>" + "Если это письмо пришло Вам ошибочно - просто проигнорируйте это письмо";
                 MailHelper.SendMail(dbUser.Email, subject, body);
                 #endregion
             }
             return "Отправка запроса - напоминаем пароль.";
 
         }
-        #region Задать новый пароль по подобию == Верификация емайл ==  VerificationEmail
+        #endregion
+        #region Задать новый пароль
         [HttpGet]
-        public ActionResult ResetPassword(string token, string newPassword)
+        public ActionResult ResetPassword(string token)
         {
-            ViewData["tempdata"] = " ";
-            ViewData["tempdata1"] = " ";
+            ViewBag.token = token;
+
+            if (token != null && token.Length == 36)
+            {
+                var user = UsersDAL.GetUserByToken(token);
+
+                if (user != null)
+                {
+                    ViewBag.ContactName = user.ContactName;
+                    ViewBag.Email = user.Email;
+                    return View();
+                }
+                else
+                    return RedirectToAction("Index", "Home");
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        public string ResetPassword(string token, string newPassword)
+        {
+            ViewData["tempdata"] = "";
+            ViewData["tempdata1"] = "";
 
             if (token != null)
             {
-                string _token = token;
-
-                var user = UsersDAL.GetUserByToken(_token);
-
-                var _Id = UsersDAL.GetUserByToken(_token).Id;
+                var user = UsersDAL.GetUserByToken(token);
 
                 Guid g;
-
                 g = Guid.NewGuid();
-
                 string _g = Convert.ToString(g);
 
-                var success = UsersDAL.UpdateUserResetPassword(_Id, _g, Krakoss.Decryption(newPassword));
+                bool success = UsersDAL.UpdateUserResetPassword(user.Id, _g, Krakoss.Encryption(newPassword));
                 if (success)
                 {
-                    ViewData["tempdata"] = user.ContactName + " - ваш пароль успешно обновлен";
-                    ViewData["tempdata1"] = "Для завершения процедуры - перейдите по ссылке отправленной на Ваш емайл - " + user.Email;
+                    //ViewData["tempdata"] = user.ContactName + " - ваш пароль успешно обновлен";
+                    //ViewData["tempdata1"] = "Для завершения процедуры - перейдите по ссылке отправленной на Ваш емайл - " + user.Email;
                 }
                 else
                     ViewData["tempdata"] = "Произошла ошибка при обновлениие пароля, попробуйте позже";
-                    ViewData["tempdata1"] = "";
+                ViewData["tempdata1"] = "";
 
-               
+
             }
-            return View();
+            return "ОК";
         }
 
         #endregion
-        #endregion
+
         #region Регистрация нового ЮЗЕРА 
         [HttpGet]
         public ActionResult Signup()
@@ -513,52 +556,7 @@ namespace MContract.Controllers
 
         }
         #endregion
-        #region Верификация емайл 
-        [HttpGet]
-        public ActionResult VerificationEmail(string token)
-        {
-            ViewData["tempdata"] = "Ваш емайл подтвержден или нет?";
-            ViewData["tempdata1"] = "Для подтверждения емайл - перейдите по ссылке в письме отправленном Вам после регистрации.";
 
-            if (token != null)
-            {
-                string _token = token;
-
-                var user = UsersDAL.GetUserByToken(_token);
-
-                if (user != null)
-                {
-
-                    string _email = user.Email;
-
-                    var _Id = UsersDAL.GetUserByToken(_token).Id;
-
-                    Guid g;
-
-                    g = Guid.NewGuid();
-
-                    string _g = Convert.ToString(g);
-
-                    if (UsersDAL.UpdateUserEmailConfirmed(_Id, _g) == true)
-                    {
-                        ViewData["tempdata"] = _email;
-                        ViewData["tempdata1"] = "Ваш емайл - подтвержден успешно";
-                    }
-                    else/* (UsersDAL.GetUserByEmail(_email).EmailConfirmed == true)*/
-                    {
-                        //ViewData["tempdata"] = "Вы уже подтвердили Ваш емайл. Не стоит делать это повторно.";
-                    }
-                }
-                else
-                {
-                    //ViewData["tempdata"] = "Ваш емайл не подтвержден";
-                }
-
-            }
-            return View();
-        }
-
-        #endregion
         #region
         [HttpPost]
         [MyAuthorize]
@@ -636,12 +634,6 @@ namespace MContract.Controllers
             ViewBag.BreadCrumbs = breadCrumbs;
             #endregion
 
-            /*
-             * а вот модель показывать не нужно == ЮЗЕР еще не подтвердил свой ЕМАЙЛ ...
-             * вместо return View(viewModel); надо == return View();
-             * но пока оставим по прежмену 
-             */
-
             return View(viewModel);
         }
 
@@ -678,15 +670,6 @@ namespace MContract.Controllers
                         SM.CurrentUser = dbUser;
                         SM.LoginTime = DateTime.Now;
                         CookiesHelper.SaveCookiesForHideAuthorization(dbUser.Email, "", Krakoss.Decryption(dbUser.Password).TrimEnd());
-                        // показать меню для личного кабинета 
-                        #region Хлебные крошки
-                            var breadCrumbs = new List<BreadCrumbLink>
-                                 {
-                                    new BreadCrumbLink() { Text = "Личный кабинет", Url = Urls.PersonalArea, Title = "Перейти в личный кабинет" },
-                                    new BreadCrumbLink() { Text = "Вход", EndPoint = true }
-                                 };
-                            ViewBag.BreadCrumbs = breadCrumbs;
-                            #endregion
                         var returnUrl = Request["ReturnUrl"];
                         if (!string.IsNullOrWhiteSpace(returnUrl))
                             return Redirect(returnUrl);

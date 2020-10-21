@@ -380,7 +380,6 @@
     <Content Include="css\User\Login.css" />
     <Content Include="css\User\Messages.css" />
     <Content Include="css\User\Signup.css" />
-    <Content Include="css\User\SignupOld.css" />
     <Content Include="css\User\Profile.css" />
     <Content Include="css\User\slick.css" />
     <Content Include="favicon.ico" />
