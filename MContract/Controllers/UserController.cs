@@ -1,5 +1,4 @@
-﻿
-using MContract.AppCode;
+﻿using MContract.AppCode;
 using MContract.DAL;
 using MContract.Models;
 using MContract.Models.Enums;
@@ -8,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Web;
 using System.Web.Mvc;
 
 namespace MContract.Controllers

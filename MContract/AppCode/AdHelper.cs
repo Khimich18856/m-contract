@@ -16,7 +16,7 @@ namespace MContract.AppCode
 		/// <param name="adIds"></param>
 		/// <returns></returns>
 		public static List<Ad> GetAdsForView(int currentUserId, List<int> adIds = null, List<Ad> ads = null, bool needInvitedUserIds = false, bool needSender = false)
-		{
+        {
 			if (adIds == null && ads == null)
 				throw new ArgumentNullException("Нужно передать или adIds или ads");
 
@@ -190,14 +190,14 @@ namespace MContract.AppCode
 		/// </summary>
 		public static string GetTermsOfPaymentsString(TermsOfPayments termOfPayment)
 		{
-			switch(termOfPayment)
+            switch (termOfPayment)
 			{
-				case TermsOfPayments.Any: return "Не выбрано";
+                case TermsOfPayments.Any: return "Не выбрано";
 				case TermsOfPayments.DefermentOfPayment: return "Отсрочка платежа";
 				case TermsOfPayments.FullPrePayment: return "100% предоплата";
 				case TermsOfPayments.PartialPrePayment: return "Частичная предоплата";
 				case TermsOfPayments.OnArrival: return "По факту поставки";
-				default: throw new NotImplementedException();
+                default: throw new NotImplementedException();
 			}
 		}
 	}

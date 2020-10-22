@@ -21,8 +21,10 @@ namespace MContract.AppCode
 
             PasswordDeriveBytes derivPass = new PasswordDeriveBytes(pass, solB, cryptographicAlgorithm, passIter);
             byte[] keyBytes = derivPass.GetBytes(keySize / 8);
-            RijndaelManaged symmK = new RijndaelManaged();
-            symmK.Mode = CipherMode.CBC;
+            RijndaelManaged symmK = new RijndaelManaged
+            {
+                Mode = CipherMode.CBC
+            };
 
             byte[] cipherTextBytes = null;
 
@@ -59,8 +61,10 @@ namespace MContract.AppCode
             PasswordDeriveBytes derivPass = new PasswordDeriveBytes(pass, solB, cryptographicAlgorithm, passIter);
             byte[] keyBytes = derivPass.GetBytes(keySize / 8);
 
-            RijndaelManaged symmK = new RijndaelManaged();
-            symmK.Mode = CipherMode.CBC;
+            RijndaelManaged symmK = new RijndaelManaged
+            {
+                Mode = CipherMode.CBC
+            };
 
             byte[] plainTextBytes = new byte[cipherTextBytes.Length];
             int byteCount = 0;
