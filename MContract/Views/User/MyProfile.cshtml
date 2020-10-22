@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/profile.css?p=2020-10-10-a">
 <link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/User/Login.css?p=2020-08-16_21-55">
 <link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/User/Signup.css?p=2020-08-16_21-55">
-<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/js/jquery-ui/jquery-ui.css?p=202006112"/>
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/js/jquery-ui/jquery-ui.css?p=202006112" />
 
 @{
     Html.RenderPartial("_MobileMenu", Model.MobileMenuViewModel);
@@ -1088,11 +1088,8 @@
                                 <div class="profile__edit-item">
                                     <label for="new">Новый пароль:</label>
                                     <div class="password-field">
-                                        <input id="new" name="newPassword" type="password" class="profile-input" autocomplete="off">
+                                        <input id="new" name="newPassword" type="password" class="profile-input" autocomplete="off" title="Новый пароль должен содержать от 6 до 24 символов, хотя бы один из которых - цифра">
                                         <div class="password-open"></div>
-                                        <span class="about-input">
-                                            Новый пароль должен содержать от 6 до 24 символов, хотя бы один из которых - цифра
-                                        </span>
                                     </div>
                                 </div>
                                 <div class="col-md-3">

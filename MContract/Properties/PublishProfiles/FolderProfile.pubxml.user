@@ -601,7 +601,7 @@
       <publishTime>10/16/2020 12:25:05</publishTime>
     </File>
     <File Include="css/profile.css">
-      <publishTime>10/16/2020 12:25:05</publishTime>
+      <publishTime>10/22/2020 17:26:04</publishTime>
     </File>
     <File Include="css/purch.css">
       <publishTime>10/16/2020 12:25:05</publishTime>
@@ -3097,7 +3097,7 @@
       <publishTime>10/16/2020 12:25:05</publishTime>
     </File>
     <File Include="Views/User/MyProfile.cshtml">
-      <publishTime>10/22/2020 16:16:41</publishTime>
+      <publishTime>10/22/2020 17:26:05</publishTime>
     </File>
     <File Include="Views/User/ProcessingPersonalData.cshtml">
       <publishTime>10/16/2020 12:25:05</publishTime>
