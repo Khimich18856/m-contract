@@ -9,6 +9,9 @@
     <_PublishTargetUrl>C:\Projects\M-Contract-publishS</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
+    <File Include="AppCode/C.cs">
+      <publishTime>10/22/2020 16:22:30</publishTime>
+    </File>
     <File Include="ApplicationInsights.config">
       <publishTime>10/16/2020 16:42:59</publishTime>
     </File>
@@ -25,10 +28,10 @@
       <publishTime>10/16/2020 16:42:59</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>10/22/2020 10:58:25</publishTime>
+      <publishTime>10/22/2020 16:35:28</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>10/22/2020 10:58:24</publishTime>
+      <publishTime>10/22/2020 16:35:28</publishTime>
     </File>
     <File Include="bin/cs/Microsoft.QualityTools.Testing.Fakes.resources.dll">
       <publishTime>10/15/2020 13:35:50</publishTime>
@@ -103,10 +106,10 @@
       <publishTime>10/15/2020 13:35:50</publishTime>
     </File>
     <File Include="bin/MContract.dll">
-      <publishTime>10/22/2020 10:58:05</publishTime>
+      <publishTime>10/22/2020 16:35:14</publishTime>
     </File>
     <File Include="bin/MContract.pdb">
-      <publishTime>10/22/2020 10:58:05</publishTime>
+      <publishTime>10/22/2020 16:35:14</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>10/16/2020 12:25:12</publishTime>
@@ -2467,7 +2470,7 @@
       <publishTime>10/16/2020 12:25:11</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>10/22/2020 10:58:13</publishTime>
+      <publishTime>10/22/2020 16:35:18</publishTime>
     </File>
     <File Include="Scripts/bootstrap.bundle.js">
       <publishTime>10/16/2020 16:42:59</publishTime>
@@ -3094,7 +3097,7 @@
       <publishTime>10/16/2020 12:25:05</publishTime>
     </File>
     <File Include="Views/User/MyProfile.cshtml">
-      <publishTime>10/16/2020 12:25:05</publishTime>
+      <publishTime>10/22/2020 16:16:41</publishTime>
     </File>
     <File Include="Views/User/ProcessingPersonalData.cshtml">
       <publishTime>10/16/2020 12:25:05</publishTime>
@@ -3118,7 +3121,7 @@
       <publishTime>10/16/2020 12:25:05</publishTime>
     </File>
     <File Include="Views/User/Signup.cshtml">
-      <publishTime>10/19/2020 08:15:39</publishTime>
+      <publishTime>10/22/2020 16:17:49</publishTime>
     </File>
     <File Include="Views/User/SignupChecking.cshtml">
       <publishTime>10/20/2020 10:21:19</publishTime>
@@ -3142,7 +3145,7 @@
       <publishTime>10/16/2020 12:25:06</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/22/2020 11:18:52</publishTime>
+      <publishTime>10/22/2020 15:19:08</publishTime>
     </File>
     <File Include="Верстка Максима/.DS_Store">
       <publishTime>09/14/2020 23:35:52</publishTime>

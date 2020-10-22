@@ -5,8 +5,15 @@
 }
 
 @section Styles{
-    <link href="@Url.Content("~/css/User/Login.css")?p=2020-08-16_21-55" rel="stylesheet" type="text/css" />
-    <link href="@Url.Content("~/css/User/Signup.css")?p=2020-08-16_21-55" rel="stylesheet" type="text/css" />
+    @*
+        так было на 22 октября 2020 года
+        <link href="@Url.Content("~/css/User/Login.css")?p=2020-08-16_21-55" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/css/User/Signup.css")?p=2020-08-16_21-55" rel="stylesheet" type="text/css" />
+        переделал по подобию == ViewBag.Title = "Мой профиль";
+    *@
+
+    <link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/User/Login.css?p=2020-08-16_21-55">
+    <link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/User/Signup.css?p=2020-08-16_21-55">
 }
 
 <!-- Вход -->
@@ -278,10 +285,10 @@
 
                     if (data == "true") {
                         $('#checked' + fieldName + 'Icon').siblings().hide();
-                        $('#checked' + fieldName + 'Icon').show();                        
+                        $('#checked' + fieldName + 'Icon').show();
                     }
                     else {
-                        $('#email').val('');
+                        //$('#email').val('');
                         $('#email').focus();
                         $("#needEmailSpan").text('Пользователь уже зарегистрирован').show().siblings().hide();
                         $('#needPasswordSpan').hide();
@@ -294,7 +301,7 @@
         var fieldName = $("#email").attr("name");
         if (checkIsNotEmptyAndSetTipVisibility($("#email"))) {
             if ($("#email").val().match(/^\b[A-Z0-9._%-]+@@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i)) {
-                checkEmailID();                
+                checkEmailID();
                 return true;
             }
             else {
@@ -477,9 +484,9 @@
 
                         checkedIcon.show().siblings().hide();
                     }
-                    else {                        
-                        $('#INN').val(''); 
-                        $('#INN').focus(); 
+                    else {
+                        //$('#INN').val('');
+                        $('#INN').focus();
                         $("#needINNSpan").text('Пользователь уже зарегистрирован').show().siblings().hide();
                         $('#needOGRNSpan').hide();
                     }
@@ -499,7 +506,7 @@
             var placeholderChar = '_';
             if (!value.includes(placeholderChar)) {
                 checkINNID();
-               
+
                 return true;
             }
             else {

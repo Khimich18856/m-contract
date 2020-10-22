@@ -31,6 +31,7 @@ namespace MContract.Models
 			get
 			{
 				if (IsNoLogoPlaceholder)
+					
 					return "ico/nonePhoto.svg";
 				else
 					return "DContent/user-photos/" + (UserId / 1000) + "/" + UserId + "/" + (AdId != null ? "Ads/" + AdId + "/" : "Logos/") + FileNameWithExtension;

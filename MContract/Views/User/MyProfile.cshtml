@@ -1,1194 +1,1217 @@
 ﻿@model MContract.Models.UserMyProfileViewModel
 
 @{
-	ViewBag.Title = "Мой профиль";
-	Layout = "~/Views/Shared/_Layout.cshtml";
-	var currentUser = Model.CurrentUser;
+    ViewBag.Title = "Мой профиль";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = Model.CurrentUser;
 }
 
 <!-- Styles -->
 <link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/lk-layout.css?p=2020-10-10-a">
 <link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/profile.css?p=2020-10-10-a">
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/User/Login.css?p=2020-08-16_21-55">
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/User/Signup.css?p=2020-08-16_21-55">
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/js/jquery-ui/jquery-ui.css?p=202006112"/>
 
 @{
-	Html.RenderPartial("_MobileMenu", Model.MobileMenuViewModel);
+    Html.RenderPartial("_MobileMenu", Model.MobileMenuViewModel);
 }
 
 
 
 <section class="header-pc">
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-12 col-md-5 col-lg-4">
-				<div class="offer__title">
-					<h1>Личный кабинет</h1>
-				</div>
-			</div>
-			<div class="col-sm-12 col-md-5 col-lg-7">
-				<div class="offer__open">
-					<div class="open">
-						Данные вашего профиля
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-12 col-md col-lg-1 mobile-first">
-				<div class="product__crumbs">
-					<span class="page"><a href="@ViewBag.L.SiteUrlClear">Главная</a></span>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-5 col-lg-4">
+                <div class="offer__title">
+                    <h1>Личный кабинет</h1>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-5 col-lg-7">
+                <div class="offer__open">
+                    <div class="open">
+                        Данные вашего профиля
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md col-lg-1 mobile-first">
+                <div class="product__crumbs">
+                    <span class="page"><a href="@ViewBag.L.SiteUrlClear">Главная</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 <!-- Поиск контрагента -->
 <section class="region__wrapper region__wrapper-mobile pc__off col-sm-12 p-0 closed">
-	<div class="region__header">
-		<div class="close__btn-reg"></div>
-		<div class="region-title">
-			Поиск контрагента
-		</div>
-		<div class="region-input">
-			<input type="text" placeholder="Введите название...">
-			<div class="ico-search"></div>
-		</div>
-	</div>
-	<div class="region__content">
-		<div class="region__content-rus">
-			<div class="region__content-category-item">Россия</div>
-		</div>
-		<div class="region__content-list-wrapper">
-			<div class="region__content-list-title">
-				А
-			</div>
-			<div class="region__content-list-ul">
-				<li class="region__content-list-li">
-					<span class="region-first-level">Aлтайский край</span>
-					<ul class="region__content-list-li-ul off">
-						<li class="region__content-list-li-ul-li">Алтай</li>
-						<li class="region__content-list-li-ul-li">Амур</li>
-					</ul>
-				</li>
-				<li class="region__content-list-li">
-					<span class="region-first-level">Амурская область</span>
-					<ul class="region__content-list-li-ul off">
-						<li class="region__content-list-li-ul-li">Алтай</li>
-						<li class="region__content-list-li-ul-li">Амур</li>
-					</ul>
-				</li>
-				<li class="region__content-list-li">
-					<span class="region-first-level">Архангельская область</span>
-					<ul class="region__content-list-li-ul off">
-						<li class="region__content-list-li-ul-li">Алтай</li>
-						<li class="region__content-list-li-ul-li">Амур</li>
-					</ul>
-				</li>
-				<li class="region__content-list-li">
-					<span class="region-first-level">Астраханская область</span>
-					<ul class="region__content-list-li-ul off">
-						<li class="region__content-list-li-ul-li">Алтай</li>
-						<li class="region__content-list-li-ul-li">Амур</li>
-					</ul>
-				</li>
-			</div>
-			<div class="region__content-list-title">
-				Б
-			</div>
-			<div class="region__content-list-ul">
-				<li class="region__content-list-li">
-					<span class="region-first-level">Белгородская область</span>
-					<ul class="region__content-list-li-ul off">
-						<li class="region__content-list-li-ul-li">Алтай</li>
-						<li class="region__content-list-li-ul-li">Амур</li>
-					</ul>
-				</li>
-				<li class="region__content-list-li">
-					<span class="region-first-level">Брянская область</span>
-					<ul class="region__content-list-li-ul off">
-						<li class="region__content-list-li-ul-li">Алтай</li>
-						<li class="region__content-list-li-ul-li">Амур</li>
-					</ul>
-				</li>
-			</div>
-		</div>
-		<div class="region__content-another">
-			<div class="region__content-category-item">Другая страна</div>
-		</div>
-		<div class="selected-region-main closed">
-			<div class="region__selected-category-item">
-				<span>Оренбург, Оренбургская обл.</span>
-				<div class="ico-close"></div>
-			</div>
-		</div>
-		<div class="selected-region-list closed">
-			<ul>
-				<li class="selected-region-item">
-					<a href="#">ООО "Тестовая компания" Оренбург, Оренбургская обл.</a>
-				</li>
-				<li class="selected-region-item">
-					<a href="#">ООО "Тесла" Оренбург, Оренбургская обл.</a>
-				</li>
-				<li class="selected-region-item">
-					<a href="#">ИП "Мурманск вторсырье" Оренбург, Оренбургская обл.</a>
-				</li>
-				<li class="selected-region-item">
-					<a href="#">ОАО "Супер-компания" Оренбург, Оренбургская обл.</a>
-				</li>
-				<li class="selected-region-item">
-					<a href="#">ООО "Тестовая компания" Оренбург, Оренбургская обл.</a>
-				</li>
-				<li class="selected-region-item">
-					<a href="#">ООО "Тесла" Оренбург, Оренбургская обл.</a>
-				</li>
-				<li class="selected-region-item">
-					<a href="#">ИП "Мурманск вторсырье" Оренбург, Оренбургская обл.</a>
-				</li>
-				<li class="selected-region-item">
-					<a href="#">ОАО "Супер-компания" Оренбург, Оренбургская обл.</a>
-				</li>
-				<li class="selected-region-item">
-					<a href="#">ООО "Тестовая компания" Оренбург, Оренбургская обл.</a>
-				</li>
-				<li class="selected-region-item">
-					<a href="#">ООО "Тесла" Оренбург, Оренбургская обл.</a>
-				</li>
-				<li class="selected-region-item">
-					<a href="#">ИП "Мурманск вторсырье" Оренбург, Оренбургская обл.</a>
-				</li>
-				<li class="selected-region-item">
-					<a href="#">ОАО "Супер-компания" Оренбург, Оренбургская обл.</a>
-				</li>
-			</ul>
-		</div>
-	</div>
+    <div class="region__header">
+        <div class="close__btn-reg"></div>
+        <div class="region-title">
+            Поиск контрагента
+        </div>
+        <div class="region-input">
+            <input type="text" placeholder="Введите название...">
+            <div class="ico-search"></div>
+        </div>
+    </div>
+    <div class="region__content">
+        <div class="region__content-rus">
+            <div class="region__content-category-item">Россия</div>
+        </div>
+        <div class="region__content-list-wrapper">
+            <div class="region__content-list-title">
+                А
+            </div>
+            <div class="region__content-list-ul">
+                <li class="region__content-list-li">
+                    <span class="region-first-level">Aлтайский край</span>
+                    <ul class="region__content-list-li-ul off">
+                        <li class="region__content-list-li-ul-li">Алтай</li>
+                        <li class="region__content-list-li-ul-li">Амур</li>
+                    </ul>
+                </li>
+                <li class="region__content-list-li">
+                    <span class="region-first-level">Амурская область</span>
+                    <ul class="region__content-list-li-ul off">
+                        <li class="region__content-list-li-ul-li">Алтай</li>
+                        <li class="region__content-list-li-ul-li">Амур</li>
+                    </ul>
+                </li>
+                <li class="region__content-list-li">
+                    <span class="region-first-level">Архангельская область</span>
+                    <ul class="region__content-list-li-ul off">
+                        <li class="region__content-list-li-ul-li">Алтай</li>
+                        <li class="region__content-list-li-ul-li">Амур</li>
+                    </ul>
+                </li>
+                <li class="region__content-list-li">
+                    <span class="region-first-level">Астраханская область</span>
+                    <ul class="region__content-list-li-ul off">
+                        <li class="region__content-list-li-ul-li">Алтай</li>
+                        <li class="region__content-list-li-ul-li">Амур</li>
+                    </ul>
+                </li>
+            </div>
+            <div class="region__content-list-title">
+                Б
+            </div>
+            <div class="region__content-list-ul">
+                <li class="region__content-list-li">
+                    <span class="region-first-level">Белгородская область</span>
+                    <ul class="region__content-list-li-ul off">
+                        <li class="region__content-list-li-ul-li">Алтай</li>
+                        <li class="region__content-list-li-ul-li">Амур</li>
+                    </ul>
+                </li>
+                <li class="region__content-list-li">
+                    <span class="region-first-level">Брянская область</span>
+                    <ul class="region__content-list-li-ul off">
+                        <li class="region__content-list-li-ul-li">Алтай</li>
+                        <li class="region__content-list-li-ul-li">Амур</li>
+                    </ul>
+                </li>
+            </div>
+        </div>
+        <div class="region__content-another">
+            <div class="region__content-category-item">Другая страна</div>
+        </div>
+        <div class="selected-region-main closed">
+            <div class="region__selected-category-item">
+                <span>Оренбург, Оренбургская обл.</span>
+                <div class="ico-close"></div>
+            </div>
+        </div>
+        <div class="selected-region-list closed">
+            <ul>
+                <li class="selected-region-item">
+                    <a href="#">ООО "Тестовая компания" Оренбург, Оренбургская обл.</a>
+                </li>
+                <li class="selected-region-item">
+                    <a href="#">ООО "Тесла" Оренбург, Оренбургская обл.</a>
+                </li>
+                <li class="selected-region-item">
+                    <a href="#">ИП "Мурманск вторсырье" Оренбург, Оренбургская обл.</a>
+                </li>
+                <li class="selected-region-item">
+                    <a href="#">ОАО "Супер-компания" Оренбург, Оренбургская обл.</a>
+                </li>
+                <li class="selected-region-item">
+                    <a href="#">ООО "Тестовая компания" Оренбург, Оренбургская обл.</a>
+                </li>
+                <li class="selected-region-item">
+                    <a href="#">ООО "Тесла" Оренбург, Оренбургская обл.</a>
+                </li>
+                <li class="selected-region-item">
+                    <a href="#">ИП "Мурманск вторсырье" Оренбург, Оренбургская обл.</a>
+                </li>
+                <li class="selected-region-item">
+                    <a href="#">ОАО "Супер-компания" Оренбург, Оренбургская обл.</a>
+                </li>
+                <li class="selected-region-item">
+                    <a href="#">ООО "Тестовая компания" Оренбург, Оренбургская обл.</a>
+                </li>
+                <li class="selected-region-item">
+                    <a href="#">ООО "Тесла" Оренбург, Оренбургская обл.</a>
+                </li>
+                <li class="selected-region-item">
+                    <a href="#">ИП "Мурманск вторсырье" Оренбург, Оренбургская обл.</a>
+                </li>
+                <li class="selected-region-item">
+                    <a href="#">ОАО "Супер-компания" Оренбург, Оренбургская обл.</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </section>
 <!-- //Поиск контрагента -->
 
 <main>
+    <!-- Мини чат -->
+    <div>
 
-	<!-- Мини чат -->
-	@*<section class="m-chat-btn have-message only-desktop">
-		<div class="count-of-msg">1</div>
-	</section>
-	<section class="m-chat closed only-desktop">
-		<div class="m-chat__header">
-			<div class="title">
-				<span>Сообщения</span>
-				<div class="m-chat__header-btns">
-					<div class="notice notice-off"></div>
-					<div class="close"></div>
-				</div>
-			</div>
-			<div class="m-chat__header-find">
-				<div class="new-message">
+        @*<section class="m-chat-btn have-message only-desktop">
+                <div class="count-of-msg">1</div>
+            </section>
+            <section class="m-chat closed only-desktop">
+                <div class="m-chat__header">
+                    <div class="title">
+                        <span>Сообщения</span>
+                        <div class="m-chat__header-btns">
+                            <div class="notice notice-off"></div>
+                            <div class="close"></div>
+                        </div>
+                    </div>
+                    <div class="m-chat__header-find">
+                        <div class="new-message">
 
-				</div>
-				<div class="input">
-					<input type="text" placeholder="Поиск по сообщениям ...">
-					<div class="ico"></div>
-				</div>
-			</div>
-			<div class="m-chat__header-clrd">
-				<div class="clear">
-					Очистить все чаты
-				</div>
-				<div class="read">
-					Все как прочитанные
-				</div>
-			</div>
-		</div>
-		<div class="m-chat__main">
-			<div class="m-chat__main-item item-have-msg" data-chatId="1">
-				<div class="edit-msg"></div>
-				<div class="edit-wrapper closed">
-					<ul>
-						<li class="delete">Удалить чат</li>
-						<li class="full">Полная версия</li>
-					</ul>
-				</div>
-				<div class="img">
-					<img src="../images/logo-counter1.png" alt="">
-					<div class="count-of-itm-msg">
-						3
-					</div>
-				</div>
-				<div class="info">
-					<div class="name">ООО "ОЛЗ"</div>
-					<div class="city">Орск, Оренбургская область</div>
-					<div class="msg">Добрый день! Это тестовый текст. Тестовый теееееееестооооооооовыыыыыый</div>
-					<div class="date">15.06.2020, 15:24:50</div>
-				</div>
-				<div class="delete-msg closed">
-					<div class="title">
-						Удалить этот чат безвозвратно?
-					</div>
-					<div class="delete-btns">
-						<div class="delete-btn yes">Да</div>
-						<div class="delete-btn no">Нет</div>
-					</div>
-				</div>
-			</div>
-			<div class="m-chat__main-item item-have-msg" data-chatId="2">
-				<div class="edit-msg"></div>
-				<div class="edit-wrapper closed">
-					<ul>
-						<li class="delete">Удалить чат</li>
-						<li class="full">Полная версия</li>
-					</ul>
-				</div>
-				<div class="img">
-					<img src="../images/logo-counter1.png" alt="">
-					<div class="count-of-itm-msg">
-						3
-					</div>
-				</div>
-				<div class="info">
-					<div class="name">ООО "ОЛЗ"</div>
-					<div class="city">Орск, Оренбургская область</div>
-					<div class="msg">Добрый день! Это тестовый текст. Тестовый теееееееестооооооооовыыыыыый</div>
-					<div class="date">15.06.2020, 15:24:50</div>
-				</div>
-				<div class="delete-msg closed">
-					<div class="title">
-						Удалить этот чат безвозвратно?
-					</div>
-					<div class="delete-btns">
-						<div class="delete-btn yes">Да</div>
-						<div class="delete-btn no">Нет</div>
-					</div>
-				</div>
-			</div>
-			<div class="m-chat__main-item item-have-msg" data-chatId="3">
-				<div class="edit-msg"></div>
-				<div class="edit-wrapper closed">
-					<ul>
-						<li class="delete">Удалить чат</li>
-						<li class="full">Полная версия</li>
-					</ul>
-				</div>
-				<div class="img">
-					<img src="../images/logo-counter1.png" alt="">
-					<div class="count-of-itm-msg">
-						3
-					</div>
-				</div>
-				<div class="info">
-					<div class="name">ООО "ОЛЗ"</div>
-					<div class="city">Орск, Оренбургская область</div>
-					<div class="msg">Добрый день! Это тестовый текст. Тестовый теееееееестооооооооовыыыыыый</div>
-					<div class="date">15.06.2020, 15:24:50</div>
-				</div>
-				<div class="delete-msg closed">
-					<div class="title">
-						Удалить этот чат безвозвратно?
-					</div>
-					<div class="delete-btns">
-						<div class="delete-btn yes">Да</div>
-						<div class="delete-btn no">Нет</div>
-					</div>
-				</div>
-			</div>
-			<div class="m-chat__main-item item-have-msg" data-chatId="4">
-				<div class="edit-msg"></div>
-				<div class="edit-wrapper closed">
-					<ul>
-						<li class="delete">Удалить чат</li>
-						<li class="full">Полная версия</li>
-					</ul>
-				</div>
-				<div class="img">
-					<img src="../images/logo-counter1.png" alt="">
-					<div class="count-of-itm-msg">
-						3
-					</div>
-				</div>
-				<div class="info">
-					<div class="name">ООО "ОЛЗ"</div>
-					<div class="city">Орск, Оренбургская область</div>
-					<div class="msg">Добрый день! Это тестовый текст. Тестовый теееееееестооооооооовыыыыыый</div>
-					<div class="date">15.06.2020, 15:24:50</div>
-				</div>
-				<div class="delete-msg closed">
-					<div class="title">
-						Удалить этот чат безвозвратно?
-					</div>
-					<div class="delete-btns">
-						<div class="delete-btn yes">Да</div>
-						<div class="delete-btn no">Нет</div>
-					</div>
-				</div>
-			</div>
-			<div class="m-chat__main-item item-have-msg" data-chatId="5">
-				<div class="edit-msg"></div>
-				<div class="edit-wrapper closed">
-					<ul>
-						<li class="delete">Удалить чат</li>
-						<li class="full">Полная версия</li>
-					</ul>
-				</div>
-				<div class="img">
-					<img src="../images/logo-counter1.png" alt="">
-					<div class="count-of-itm-msg">
-						3
-					</div>
-				</div>
-				<div class="info">
-					<div class="name">ООО "ОЛЗ"</div>
-					<div class="city">Орск, Оренбургская область</div>
-					<div class="msg">Добрый день! Это тестовый текст. Тестовый теееееееестооооооооовыыыыыый</div>
-					<div class="date">15.06.2020, 15:24:50</div>
-				</div>
-				<div class="delete-msg closed">
-					<div class="title">
-						Удалить этот чат безвозвратно?
-					</div>
-					<div class="delete-btns">
-						<div class="delete-btn yes">Да</div>
-						<div class="delete-btn no">Нет</div>
-					</div>
-				</div>
-			</div>
-			<div class="m-chat__main-item item-have-msg" data-chatId="6">
-				<div class="edit-msg"></div>
-				<div class="edit-wrapper closed">
-					<ul>
-						<li class="delete">Удалить чат</li>
-						<li class="full">Полная версия</li>
-					</ul>
-				</div>
-				<div class="img">
-					<img src="../images/logo-counter1.png" alt="">
-					<div class="count-of-itm-msg">
-						3
-					</div>
-				</div>
-				<div class="info">
-					<div class="name">ООО "ОЛЗ"</div>
-					<div class="city">Орск, Оренбургская область</div>
-					<div class="msg">Добрый день! Это тестовый текст. Тестовый теееееееестооооооооовыыыыыый</div>
-					<div class="date">15.06.2020, 15:24:50</div>
-				</div>
-				<div class="delete-msg closed">
-					<div class="title">
-						Удалить этот чат безвозвратно?
-					</div>
-					<div class="delete-btns">
-						<div class="delete-btn yes">Да</div>
-						<div class="delete-btn no">Нет</div>
-					</div>
-				</div>
-			</div>
-			<div class="m-chat__main-item item-have-msg" data-chatId="7">
-				<div class="edit-msg"></div>
-				<div class="edit-wrapper closed">
-					<ul>
-						<li class="delete">Удалить чат</li>
-						<li class="full">Полная версия</li>
-					</ul>
-				</div>
-				<div class="img">
-					<img src="../images/logo-counter1.png" alt="">
-					<div class="count-of-itm-msg">
-						3
-					</div>
-				</div>
-				<div class="info">
-					<div class="name">ООО "ОЛЗ"</div>
-					<div class="city">Орск, Оренбургская область</div>
-					<div class="msg">Добрый день! Это тестовый текст. Тестовый теееееееестооооооооовыыыыыый</div>
-					<div class="date">15.06.2020, 15:24:50</div>
-				</div>
-				<div class="delete-msg closed">
-					<div class="title">
-						Удалить этот чат безвозвратно?
-					</div>
-					<div class="delete-btns">
-						<div class="delete-btn yes">Да</div>
-						<div class="delete-btn no">Нет</div>
-					</div>
-				</div>
-			</div>
-			<div class="m-chat__main-item item-have-msg" data-chatId="8">
-				<div class="edit-msg"></div>
-				<div class="edit-wrapper closed">
-					<ul>
-						<li class="delete">Удалить чат</li>
-						<li class="full">Полная версия</li>
-					</ul>
-				</div>
-				<div class="img">
-					<img src="../images/logo-counter1.png" alt="">
-					<div class="count-of-itm-msg">
-						3
-					</div>
-				</div>
-				<div class="info">
-					<div class="name">ООО "ОЛЗ"</div>
-					<div class="city">Орск, Оренбургская область</div>
-					<div class="msg">Добрый день! Это тестовый текст. Тестовый теееееееестооооооооовыыыыыый</div>
-					<div class="date">15.06.2020, 15:24:50</div>
-				</div>
-				<div class="delete-msg closed">
-					<div class="title">
-						Удалить этот чат безвозвратно?
-					</div>
-					<div class="delete-btns">
-						<div class="delete-btn yes">Да</div>
-						<div class="delete-btn no">Нет</div>
-					</div>
-				</div>
-			</div>
-			<div class="m-chat__main-item item-have-msg" data-chatId="9">
-				<div class="edit-msg"></div>
-				<div class="edit-wrapper closed">
-					<ul>
-						<li class="delete">Удалить чат</li>
-						<li class="full">Полная версия</li>
-					</ul>
-				</div>
-				<div class="img">
-					<img src="../images/logo-counter1.png" alt="">
-					<div class="count-of-itm-msg">
-						3
-					</div>
-				</div>
-				<div class="info">
-					<div class="name">ООО "ОЛЗ"</div>
-					<div class="city">Орск, Оренбургская область</div>
-					<div class="msg">Добрый день! Это тестовый текст. Тестовый теееееееестооооооооовыыыыыый</div>
-					<div class="date">15.06.2020, 15:24:50</div>
-				</div>
-				<div class="delete-msg closed">
-					<div class="title">
-						Удалить этот чат безвозвратно?
-					</div>
-					<div class="delete-btns">
-						<div class="delete-btn yes">Да</div>
-						<div class="delete-btn no">Нет</div>
-					</div>
-				</div>
-			</div>
-			<div class="delete-msg-all closed">
-				<div class="title">
-					Удалить все чаты безвозвратно?
-				</div>
-				<div class="delete-btns">
-					<div class="delete-btn yes">Да</div>
-					<div class="delete-btn no">Нет</div>
-				</div>
-			</div>
-		</div>
-		<div class="m-chat__current">
-			<div class="message__wrapper">
-				<div class="message__header">
-					<div class="back">
+                        </div>
+                        <div class="input">
+                            <input type="text" placeholder="Поиск по сообщениям ...">
+                            <div class="ico"></div>
+                        </div>
+                    </div>
+                    <div class="m-chat__header-clrd">
+                        <div class="clear">
+                            Очистить все чаты
+                        </div>
+                        <div class="read">
+                            Все как прочитанные
+                        </div>
+                    </div>
+                </div>
+                <div class="m-chat__main">
+                    <div class="m-chat__main-item item-have-msg" data-chatId="1">
+                        <div class="edit-msg"></div>
+                        <div class="edit-wrapper closed">
+                            <ul>
+                                <li class="delete">Удалить чат</li>
+                                <li class="full">Полная версия</li>
+                            </ul>
+                        </div>
+                        <div class="img">
+                            <img src="../images/logo-counter1.png" alt="">
+                            <div class="count-of-itm-msg">
+                                3
+                            </div>
+                        </div>
+                        <div class="info">
+                            <div class="name">ООО "ОЛЗ"</div>
+                            <div class="city">Орск, Оренбургская область</div>
+                            <div class="msg">Добрый день! Это тестовый текст. Тестовый теееееееестооооооооовыыыыыый</div>
+                            <div class="date">15.06.2020, 15:24:50</div>
+                        </div>
+                        <div class="delete-msg closed">
+                            <div class="title">
+                                Удалить этот чат безвозвратно?
+                            </div>
+                            <div class="delete-btns">
+                                <div class="delete-btn yes">Да</div>
+                                <div class="delete-btn no">Нет</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-chat__main-item item-have-msg" data-chatId="2">
+                        <div class="edit-msg"></div>
+                        <div class="edit-wrapper closed">
+                            <ul>
+                                <li class="delete">Удалить чат</li>
+                                <li class="full">Полная версия</li>
+                            </ul>
+                        </div>
+                        <div class="img">
+                            <img src="../images/logo-counter1.png" alt="">
+                            <div class="count-of-itm-msg">
+                                3
+                            </div>
+                        </div>
+                        <div class="info">
+                            <div class="name">ООО "ОЛЗ"</div>
+                            <div class="city">Орск, Оренбургская область</div>
+                            <div class="msg">Добрый день! Это тестовый текст. Тестовый теееееееестооооооооовыыыыыый</div>
+                            <div class="date">15.06.2020, 15:24:50</div>
+                        </div>
+                        <div class="delete-msg closed">
+                            <div class="title">
+                                Удалить этот чат безвозвратно?
+                            </div>
+                            <div class="delete-btns">
+                                <div class="delete-btn yes">Да</div>
+                                <div class="delete-btn no">Нет</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-chat__main-item item-have-msg" data-chatId="3">
+                        <div class="edit-msg"></div>
+                        <div class="edit-wrapper closed">
+                            <ul>
+                                <li class="delete">Удалить чат</li>
+                                <li class="full">Полная версия</li>
+                            </ul>
+                        </div>
+                        <div class="img">
+                            <img src="../images/logo-counter1.png" alt="">
+                            <div class="count-of-itm-msg">
+                                3
+                            </div>
+                        </div>
+                        <div class="info">
+                            <div class="name">ООО "ОЛЗ"</div>
+                            <div class="city">Орск, Оренбургская область</div>
+                            <div class="msg">Добрый день! Это тестовый текст. Тестовый теееееееестооооооооовыыыыыый</div>
+                            <div class="date">15.06.2020, 15:24:50</div>
+                        </div>
+                        <div class="delete-msg closed">
+                            <div class="title">
+                                Удалить этот чат безвозвратно?
+                            </div>
+                            <div class="delete-btns">
+                                <div class="delete-btn yes">Да</div>
+                                <div class="delete-btn no">Нет</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-chat__main-item item-have-msg" data-chatId="4">
+                        <div class="edit-msg"></div>
+                        <div class="edit-wrapper closed">
+                            <ul>
+                                <li class="delete">Удалить чат</li>
+                                <li class="full">Полная версия</li>
+                            </ul>
+                        </div>
+                        <div class="img">
+                            <img src="../images/logo-counter1.png" alt="">
+                            <div class="count-of-itm-msg">
+                                3
+                            </div>
+                        </div>
+                        <div class="info">
+                            <div class="name">ООО "ОЛЗ"</div>
+                            <div class="city">Орск, Оренбургская область</div>
+                            <div class="msg">Добрый день! Это тестовый текст. Тестовый теееееееестооооооооовыыыыыый</div>
+                            <div class="date">15.06.2020, 15:24:50</div>
+                        </div>
+                        <div class="delete-msg closed">
+                            <div class="title">
+                                Удалить этот чат безвозвратно?
+                            </div>
+                            <div class="delete-btns">
+                                <div class="delete-btn yes">Да</div>
+                                <div class="delete-btn no">Нет</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-chat__main-item item-have-msg" data-chatId="5">
+                        <div class="edit-msg"></div>
+                        <div class="edit-wrapper closed">
+                            <ul>
+                                <li class="delete">Удалить чат</li>
+                                <li class="full">Полная версия</li>
+                            </ul>
+                        </div>
+                        <div class="img">
+                            <img src="../images/logo-counter1.png" alt="">
+                            <div class="count-of-itm-msg">
+                                3
+                            </div>
+                        </div>
+                        <div class="info">
+                            <div class="name">ООО "ОЛЗ"</div>
+                            <div class="city">Орск, Оренбургская область</div>
+                            <div class="msg">Добрый день! Это тестовый текст. Тестовый теееееееестооооооооовыыыыыый</div>
+                            <div class="date">15.06.2020, 15:24:50</div>
+                        </div>
+                        <div class="delete-msg closed">
+                            <div class="title">
+                                Удалить этот чат безвозвратно?
+                            </div>
+                            <div class="delete-btns">
+                                <div class="delete-btn yes">Да</div>
+                                <div class="delete-btn no">Нет</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-chat__main-item item-have-msg" data-chatId="6">
+                        <div class="edit-msg"></div>
+                        <div class="edit-wrapper closed">
+                            <ul>
+                                <li class="delete">Удалить чат</li>
+                                <li class="full">Полная версия</li>
+                            </ul>
+                        </div>
+                        <div class="img">
+                            <img src="../images/logo-counter1.png" alt="">
+                            <div class="count-of-itm-msg">
+                                3
+                            </div>
+                        </div>
+                        <div class="info">
+                            <div class="name">ООО "ОЛЗ"</div>
+                            <div class="city">Орск, Оренбургская область</div>
+                            <div class="msg">Добрый день! Это тестовый текст. Тестовый теееееееестооооооооовыыыыыый</div>
+                            <div class="date">15.06.2020, 15:24:50</div>
+                        </div>
+                        <div class="delete-msg closed">
+                            <div class="title">
+                                Удалить этот чат безвозвратно?
+                            </div>
+                            <div class="delete-btns">
+                                <div class="delete-btn yes">Да</div>
+                                <div class="delete-btn no">Нет</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-chat__main-item item-have-msg" data-chatId="7">
+                        <div class="edit-msg"></div>
+                        <div class="edit-wrapper closed">
+                            <ul>
+                                <li class="delete">Удалить чат</li>
+                                <li class="full">Полная версия</li>
+                            </ul>
+                        </div>
+                        <div class="img">
+                            <img src="../images/logo-counter1.png" alt="">
+                            <div class="count-of-itm-msg">
+                                3
+                            </div>
+                        </div>
+                        <div class="info">
+                            <div class="name">ООО "ОЛЗ"</div>
+                            <div class="city">Орск, Оренбургская область</div>
+                            <div class="msg">Добрый день! Это тестовый текст. Тестовый теееееееестооооооооовыыыыыый</div>
+                            <div class="date">15.06.2020, 15:24:50</div>
+                        </div>
+                        <div class="delete-msg closed">
+                            <div class="title">
+                                Удалить этот чат безвозвратно?
+                            </div>
+                            <div class="delete-btns">
+                                <div class="delete-btn yes">Да</div>
+                                <div class="delete-btn no">Нет</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-chat__main-item item-have-msg" data-chatId="8">
+                        <div class="edit-msg"></div>
+                        <div class="edit-wrapper closed">
+                            <ul>
+                                <li class="delete">Удалить чат</li>
+                                <li class="full">Полная версия</li>
+                            </ul>
+                        </div>
+                        <div class="img">
+                            <img src="../images/logo-counter1.png" alt="">
+                            <div class="count-of-itm-msg">
+                                3
+                            </div>
+                        </div>
+                        <div class="info">
+                            <div class="name">ООО "ОЛЗ"</div>
+                            <div class="city">Орск, Оренбургская область</div>
+                            <div class="msg">Добрый день! Это тестовый текст. Тестовый теееееееестооооооооовыыыыыый</div>
+                            <div class="date">15.06.2020, 15:24:50</div>
+                        </div>
+                        <div class="delete-msg closed">
+                            <div class="title">
+                                Удалить этот чат безвозвратно?
+                            </div>
+                            <div class="delete-btns">
+                                <div class="delete-btn yes">Да</div>
+                                <div class="delete-btn no">Нет</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-chat__main-item item-have-msg" data-chatId="9">
+                        <div class="edit-msg"></div>
+                        <div class="edit-wrapper closed">
+                            <ul>
+                                <li class="delete">Удалить чат</li>
+                                <li class="full">Полная версия</li>
+                            </ul>
+                        </div>
+                        <div class="img">
+                            <img src="../images/logo-counter1.png" alt="">
+                            <div class="count-of-itm-msg">
+                                3
+                            </div>
+                        </div>
+                        <div class="info">
+                            <div class="name">ООО "ОЛЗ"</div>
+                            <div class="city">Орск, Оренбургская область</div>
+                            <div class="msg">Добрый день! Это тестовый текст. Тестовый теееееееестооооооооовыыыыыый</div>
+                            <div class="date">15.06.2020, 15:24:50</div>
+                        </div>
+                        <div class="delete-msg closed">
+                            <div class="title">
+                                Удалить этот чат безвозвратно?
+                            </div>
+                            <div class="delete-btns">
+                                <div class="delete-btn yes">Да</div>
+                                <div class="delete-btn no">Нет</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="delete-msg-all closed">
+                        <div class="title">
+                            Удалить все чаты безвозвратно?
+                        </div>
+                        <div class="delete-btns">
+                            <div class="delete-btn yes">Да</div>
+                            <div class="delete-btn no">Нет</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-chat__current">
+                    <div class="message__wrapper">
+                        <div class="message__header">
+                            <div class="back">
 
-					</div>
-					<div class="info-wrapper">
-						<div class="img">
-							<img src="../images/logo-counter1.png" alt="">
-						</div>
-						<div class="info-text">
-							<div class="oo">
-								ООО “ОЛЗ”
-							</div>
-							<div class="city">
-								Орск, Оренбургская область
-							</div>
-							<div class="name">
-								Александр
-							</div>
-							<div class="status on-line">
-								В сети
-							</div>
-						</div>
-					</div>
-					<div class="edit-current">
-						<ul class="edit-list closed">
-							<li class="edit-item">Профиль контрагента</li>
-							<li class="edit-item delete">Удалить всю переписку</li>
-							<li class="edit-item">Ещё пункт меню</li>
-						</ul>
-					</div>
-				</div>
-				<div class="message__main">
-					<div class="message__main-date last">
-						<div class="date-message">Сегодня</div>
-						<div class="message-in">
-							<div class="message-info">
-								<div class="img">
-									<img src="../images/logo-counter1.png" alt="">
-								</div>
-								<div class="date">
-									15.06.2020, 15:24:50
-								</div>
-								<div class="add">
-									<ul class="message-list closed">
-										<li class="message-item">Пункт меню</li>
-										<li class="message-item">Удалить сообщение</li>
-										<li class="message-item">Пункт меню</li>
-									</ul>
-								</div>
-							</div>
-							<div class="message-text">
-								Добрый день! Произвольный текст для показа стиля в данном блоке.
-							</div>
-						</div>
-						<div class="message-in">
-							<div class="message-info">
-								<div class="img">
-									<img src="../images/logo-counter1.png" alt="">
-								</div>
-								<div class="date">
-									15.06.2020, 15:28:10
-								</div>
-								<div class="add">
-									<ul class="message-list closed">
-										<li class="message-item">Пункт меню</li>
-										<li class="message-item">Удалить сообщение</li>
-										<li class="message-item">Пункт меню</li>
-									</ul>
-								</div>
-							</div>
-							<div class="message-text">
-								Пример текста
-							</div>
-						</div>
-						<div class="message-in out">
-							<div class="message-info">
-								<div class="date">
-									15.06.2020, 16:20:34
-								</div>
-								<div class="add">
-									<ul class="message-list closed">
-										<li class="message-item">Пункт меню</li>
-										<li class="message-item">Удалить сообщение</li>
-										<li class="message-item">Пункт меню</li>
-									</ul>
-								</div>
-							</div>
-							<div class="message-text">
-								Пример ответного сообщения. Произвольный текст для показа стиля.
-							</div>
-							<div class="status readed">
+                            </div>
+                            <div class="info-wrapper">
+                                <div class="img">
+                                    <img src="../images/logo-counter1.png" alt="">
+                                </div>
+                                <div class="info-text">
+                                    <div class="oo">
+                                        ООО “ОЛЗ”
+                                    </div>
+                                    <div class="city">
+                                        Орск, Оренбургская область
+                                    </div>
+                                    <div class="name">
+                                        Александр
+                                    </div>
+                                    <div class="status on-line">
+                                        В сети
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="edit-current">
+                                <ul class="edit-list closed">
+                                    <li class="edit-item">Профиль контрагента</li>
+                                    <li class="edit-item delete">Удалить всю переписку</li>
+                                    <li class="edit-item">Ещё пункт меню</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="message__main">
+                            <div class="message__main-date last">
+                                <div class="date-message">Сегодня</div>
+                                <div class="message-in">
+                                    <div class="message-info">
+                                        <div class="img">
+                                            <img src="../images/logo-counter1.png" alt="">
+                                        </div>
+                                        <div class="date">
+                                            15.06.2020, 15:24:50
+                                        </div>
+                                        <div class="add">
+                                            <ul class="message-list closed">
+                                                <li class="message-item">Пункт меню</li>
+                                                <li class="message-item">Удалить сообщение</li>
+                                                <li class="message-item">Пункт меню</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="message-text">
+                                        Добрый день! Произвольный текст для показа стиля в данном блоке.
+                                    </div>
+                                </div>
+                                <div class="message-in">
+                                    <div class="message-info">
+                                        <div class="img">
+                                            <img src="../images/logo-counter1.png" alt="">
+                                        </div>
+                                        <div class="date">
+                                            15.06.2020, 15:28:10
+                                        </div>
+                                        <div class="add">
+                                            <ul class="message-list closed">
+                                                <li class="message-item">Пункт меню</li>
+                                                <li class="message-item">Удалить сообщение</li>
+                                                <li class="message-item">Пункт меню</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="message-text">
+                                        Пример текста
+                                    </div>
+                                </div>
+                                <div class="message-in out">
+                                    <div class="message-info">
+                                        <div class="date">
+                                            15.06.2020, 16:20:34
+                                        </div>
+                                        <div class="add">
+                                            <ul class="message-list closed">
+                                                <li class="message-item">Пункт меню</li>
+                                                <li class="message-item">Удалить сообщение</li>
+                                                <li class="message-item">Пункт меню</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="message-text">
+                                        Пример ответного сообщения. Произвольный текст для показа стиля.
+                                    </div>
+                                    <div class="status readed">
 
-							</div>
-						</div>
-						<div class="message-in" id="lastMessage">
-							<div class="message-info">
-								<div class="img">
-									<img src="../images/logo-counter1.png" alt="">
-								</div>
-								<div class="date">
-									15.06.2020, 16:45:23
-								</div>
-								<div class="add">
-									<ul class="message-list closed">
-										<li class="message-item">Пункт меню</li>
-										<li class="message-item">Удалить сообщение</li>
-										<li class="message-item">Пункт меню</li>
-									</ul>
-								</div>
-							</div>
-							<div class="message-text">
-								Пример текста, максимальная ширина растягивания блока сообщения, далее перенос строки, если длина текста больше.
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="message__send">
-					<div class="add-file">
+                                    </div>
+                                </div>
+                                <div class="message-in" id="lastMessage">
+                                    <div class="message-info">
+                                        <div class="img">
+                                            <img src="../images/logo-counter1.png" alt="">
+                                        </div>
+                                        <div class="date">
+                                            15.06.2020, 16:45:23
+                                        </div>
+                                        <div class="add">
+                                            <ul class="message-list closed">
+                                                <li class="message-item">Пункт меню</li>
+                                                <li class="message-item">Удалить сообщение</li>
+                                                <li class="message-item">Пункт меню</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="message-text">
+                                        Пример текста, максимальная ширина растягивания блока сообщения, далее перенос строки, если длина текста больше.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message__send">
+                            <div class="add-file">
 
-					</div>
-					<textarea type="text" name="message" id="message" placeholder="Написать сообщение"></textarea>
-					<div class="message-send-btn">
+                            </div>
+                            <textarea type="text" name="message" id="message" placeholder="Написать сообщение"></textarea>
+                            <div class="message-send-btn">
 
-					</div>
-				</div>
-				<div class="delete-msg-cerrnt-all closed">
-					<div class="title">
-						Удалить всю переписку безвозвратно?
-					</div>
-					<div class="delete-btns">
-						<div class="delete-btn yes">Да</div>
-						<div class="delete-btn no">Нет</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="m-chat__find">
-			<div class="m-chat__find-header">
-				<div class="title">
-					<span>Новый чат</span>
-					<div class="back">Назад</div>
-				</div>
-				<div class="find">
-					<input type="text" id="findChat" placeholder="Поиск по поиску ...">
-					<div class="ico"></div>
-				</div>
-			</div>
-			<div class="m-chat__find-main">
-				<div class="letter">
-					А
-				</div>
-				<div class="m-chat__find-main-item">
-					<div class="img">
-						<img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
-					</div>
-					<div class="info">
-						<div class="oo">ООО "Название компании"</div>
-						<div class="city">Название города, Название области</div>
-					</div>
-				</div>
-				<div class="m-chat__find-main-item">
-					<div class="img">
-						<img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
-					</div>
-					<div class="info">
-						<div class="oo">ООО "Название компании"</div>
-						<div class="city">Название города, Название области</div>
-					</div>
-				</div>
-				<div class="m-chat__find-main-item">
-					<div class="img">
-						<img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
-					</div>
-					<div class="info">
-						<div class="oo">ООО "Название компании"</div>
-						<div class="city">Название города, Название области</div>
-					</div>
-				</div>
-				<div class="letter">
-					Б
-				</div>
-				<div class="m-chat__find-main-item">
-					<div class="img">
-						<img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
-					</div>
-					<div class="info">
-						<div class="oo">ООО "Название компании"</div>
-						<div class="city">Название города, Название области</div>
-					</div>
-				</div>
-				<div class="m-chat__find-main-item">
-					<div class="img">
-						<img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
-					</div>
-					<div class="info">
-						<div class="oo">ООО "Название компании"</div>
-						<div class="city">Название города, Название области</div>
-					</div>
-				</div>
-				<div class="m-chat__find-main-item">
-					<div class="img">
-						<img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
-					</div>
-					<div class="info">
-						<div class="oo">ООО "Название компании"</div>
-						<div class="city">Название города, Название области</div>
-					</div>
-				</div>
-				<div class="letter">
-					В
-				</div>
-				<div class="m-chat__find-main-item">
-					<div class="img">
-						<img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
-					</div>
-					<div class="info">
-						<div class="oo">ООО "Название компании"</div>
-						<div class="city">Название города, Название области</div>
-					</div>
-				</div>
-				<div class="m-chat__find-main-item">
-					<div class="img">
-						<img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
-					</div>
-					<div class="info">
-						<div class="oo">ООО "Название компании"</div>
-						<div class="city">Название города, Название области</div>
-					</div>
-				</div>
-				<div class="m-chat__find-main-item">
-					<div class="img">
-						<img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
-					</div>
-					<div class="info">
-						<div class="oo">ООО "Название компании"</div>
-						<div class="city">Название города, Название области</div>
-					</div>
-				</div>
-				<div class="letter">
-					Г
-				</div>
-				<div class="m-chat__find-main-item">
-					<div class="img">
-						<img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
-					</div>
-					<div class="info">
-						<div class="oo">ООО "Название компании"</div>
-						<div class="city">Название города, Название области</div>
-					</div>
-				</div>
-				<div class="m-chat__find-main-item">
-					<div class="img">
-						<img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
-					</div>
-					<div class="info">
-						<div class="oo">ООО "Название компании"</div>
-						<div class="city">Название города, Название области</div>
-					</div>
-				</div>
-				<div class="m-chat__find-main-item">
-					<div class="img">
-						<img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
-					</div>
-					<div class="info">
-						<div class="oo">ООО "Название компании"</div>
-						<div class="city">Название города, Название области</div>
-					</div>
-				</div>
-				<div class="letter">
-					Д
-				</div>
-				<div class="m-chat__find-main-item">
-					<div class="img">
-						<img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
-					</div>
-					<div class="info">
-						<div class="oo">ООО "Название компании"</div>
-						<div class="city">Название города, Название области</div>
-					</div>
-				</div>
-				<div class="m-chat__find-main-item">
-					<div class="img">
-						<img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
-					</div>
-					<div class="info">
-						<div class="oo">ООО "Название компании"</div>
-						<div class="city">Название города, Название области</div>
-					</div>
-				</div>
-				<div class="m-chat__find-main-item">
-					<div class="img">
-						<img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
-					</div>
-					<div class="info">
-						<div class="oo">ООО "Название компании"</div>
-						<div class="city">Название города, Название области</div>
-					</div>
-				</div>
-			</div>
-			<div class="m-chat__find-allbase">
-				<span>Искать по всей базе</span>
-			</div>
-		</div>
-	</section>*@
-	<!-- //Мини чат -->
-	<!-- Данные профиля -->
-	<section class="lk__main__wrapper lk-can-closed lk-file-wrapper lk-opened lk-main">
-		<div class="container">
-			<div class="row">
-				@{
-					Html.RenderPartial("_LeftMenu", Model.LeftMenuViewModel);
-				}
-				<div class="col-sm-12 mobile__off">
-					<div class="lk__main-title">
-						Данные вашего профиля
-					</div>
-				</div>
-				<div class="col-sm-12 mobile__off">
-					<div class="profile__wrapper">
-						<div class="profile__wrapper-img">
-							<img src="@currentUser.SmallPhotoUrl" alt="">
-						</div>
-						<div class="profile__wrapper-info">
-							<div class="name">
-								@currentUser.CompanyNameWithTypeOfOwnership
-							</div>
-							<div class="rate">
-								<span>@currentUser.Rating</span>
-								<div class="ico">
-									@Html.Raw(currentUser.RatingImagesHtml)
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-12 col-md-7 col-lg-6">
-					<div class="profile__info">
-						<div class="profile__info-item">
-							<div class="title">
-								Организация:
-							</div>
-							<div class="text">
-								@currentUser.CompanyNameWithTypeOfOwnership
-							</div>
-						</div>
-						<div class="profile__info-item">
-							<div class="title">
-								Город:
-							</div>
-							<div class="text">
-								@(currentUser.Town?.NameAndRegionNameWithComma)
-							</div>
-						</div>
-						<div class="profile__info-item">
-							<div class="title">
-								E-mail:
-							</div>
-							<div class="text">
-								@currentUser.Email
-							</div>
-						</div>
-						<div class="profile__info-item">
-							<div class="title">
-								ИНН:
-							</div>
-							<div class="text">
-								@currentUser.INN
-							</div>
-						</div>
-						<div class="profile__info-item">
-							<div class="title">
-								ОГРН:
-							</div>
-							<div class="text">
-								@currentUser.OGRN
-							</div>
-						</div>
-						<div class="profile__info-item">
-							<div class="title">
-								Телефон:
-							</div>
-							<div class="text">
-								@currentUser.PhoneNumber
-							</div>
-						</div>
-						<div class="profile__info-item">
-							<div class="title">
-								Доп. телефон:
-							</div>
-							<div class="text">
-								@(currentUser.PhoneNumberCity ?? "Не указан")
-							</div>
-						</div>
-						<div class="profile__info-item">
-							<div class="title">
-								Юр. адрес:
-							</div>
-							<div class="text">
-								@currentUser.Address
-							</div>
-						</div>
-						<div class="profile__info-item">
-							<div class="title">
-								Фактический адрес:
-							</div>
-							<div class="text">
-								@currentUser.FactualAddress
-							</div>
-						</div>
-						<div class="profile__info-item info-sub">
-							<div class="title">
-								Подписка:
-							</div>
-							<div class="text can-edit text-sub">
-								@{ 
-									var noSub = currentUser.SubscribeIsActive ? "" : "no-sub";
-									var subscribeStatus = currentUser.SubscribeIsActive ? "Активно до " + currentUser.SubscribeUntilDate.Value.ToString().Replace(" ", ", ") : "Активировать подписку";
-								}
-								<span class="@noSub">@subscribeStatus</span>
-								<div class="profile__info-sub">
-									Доступ к откликам и публикацииям объявлений «ЗАКУПКА»
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-12 col-md-2 col-lg-3">
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="profile__btn-wrapper">
-								<a href="#" class="profile-btn find">
-									Поиск контрагента
-								</a>
-								<a href="@ViewBag.L.SiteUrlClear/Ads/NewAdStep0" class="profile-btn add">
-									Добавить объявление
-								</a>
-								<!-- Поиск контрагента -->
-								<section class="region__wrapper only__pc col-sm-12 p-0 closed">
-									<div class="region__header">
-										<div class="close__btn-reg"></div>
-										<div class="region-title">
-											Поиск контрагента
-										</div>
-										<div class="region-input">
-											<input type="text" placeholder="Введите название...">
-											<div class="ico-search"></div>
-										</div>
-									</div>
-									<div class="region__content">
-										<div class="region__content-rus">
-											<div class="region__content-category-item">Россия</div>
-										</div>
-										<div class="region__content-list-wrapper">
-											<div class="region__content-list-title">
-												А
-											</div>
-											<div class="region__content-list-ul">
-												<li class="region__content-list-li">
-													<span class="region-first-level">Aлтайский край</span>
-													<ul class="region__content-list-li-ul off">
-														<li class="region__content-list-li-ul-li">Алтай</li>
-														<li class="region__content-list-li-ul-li">Амур</li>
-													</ul>
-												</li>
-												<li class="region__content-list-li">
-													<span class="region-first-level">Амурская область</span>
-													<ul class="region__content-list-li-ul off">
-														<li class="region__content-list-li-ul-li">Алтай</li>
-														<li class="region__content-list-li-ul-li">Амур</li>
-													</ul>
-												</li>
-												<li class="region__content-list-li">
-													<span class="region-first-level">Архангельская область</span>
-													<ul class="region__content-list-li-ul off">
-														<li class="region__content-list-li-ul-li">Алтай</li>
-														<li class="region__content-list-li-ul-li">Амур</li>
-													</ul>
-												</li>
-												<li class="region__content-list-li">
-													<span class="region-first-level">Астраханская область</span>
-													<ul class="region__content-list-li-ul off">
-														<li class="region__content-list-li-ul-li">Алтай</li>
-														<li class="region__content-list-li-ul-li">Амур</li>
-													</ul>
-												</li>
-											</div>
-											<div class="region__content-list-title">
-												Б
-											</div>
-											<div class="region__content-list-ul">
-												<li class="region__content-list-li">
-													<span class="region-first-level">Белгородская область</span>
-													<ul class="region__content-list-li-ul off">
-														<li class="region__content-list-li-ul-li">Алтай</li>
-														<li class="region__content-list-li-ul-li">Амур</li>
-													</ul>
-												</li>
-												<li class="region__content-list-li">
-													<span class="region-first-level">Брянская область</span>
-													<ul class="region__content-list-li-ul off">
-														<li class="region__content-list-li-ul-li">Алтай</li>
-														<li class="region__content-list-li-ul-li">Амур</li>
-													</ul>
-												</li>
-											</div>
-										</div>
-										<div class="region__content-another">
-											<div class="region__content-category-item">Другая страна</div>
-										</div>
-										<div class="selected-region-main closed">
-											<div class="region__selected-category-item">
-												<span>Оренбург, Оренбургская обл.</span>
-												<div class="ico-close"></div>
-											</div>
-										</div>
-										<div class="selected-region-list closed">
-											<ul>
-												<li class="selected-region-item">
-													<a href="#">ООО "Тестовая компания" Оренбург, Оренбургская обл.</a>
-												</li>
-												<li class="selected-region-item">
-													<a href="#">ООО "Тесла" Оренбург, Оренбургская обл.</a>
-												</li>
-												<li class="selected-region-item">
-													<a href="#">ИП "Мурманск вторсырье" Оренбург, Оренбургская обл.</a>
-												</li>
-												<li class="selected-region-item">
-													<a href="#">ОАО "Супер-компания" Оренбург, Оренбургская обл.</a>
-												</li>
-												<li class="selected-region-item">
-													<a href="#">ООО "Тестовая компания" Оренбург, Оренбургская обл.</a>
-												</li>
-												<li class="selected-region-item">
-													<a href="#">ООО "Тесла" Оренбург, Оренбургская обл.</a>
-												</li>
-												<li class="selected-region-item">
-													<a href="#">ИП "Мурманск вторсырье" Оренбург, Оренбургская обл.</a>
-												</li>
-												<li class="selected-region-item">
-													<a href="#">ОАО "Супер-компания" Оренбург, Оренбургская обл.</a>
-												</li>
-												<li class="selected-region-item">
-													<a href="#">ООО "Тестовая компания" Оренбург, Оренбургская обл.</a>
-												</li>
-												<li class="selected-region-item">
-													<a href="#">ООО "Тесла" Оренбург, Оренбургская обл.</a>
-												</li>
-												<li class="selected-region-item">
-													<a href="#">ИП "Мурманск вторсырье" Оренбург, Оренбургская обл.</a>
-												</li>
-												<li class="selected-region-item">
-													<a href="#">ОАО "Супер-компания" Оренбург, Оренбургская обл.</a>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</section>
-								<!-- //Поиск контрагента -->
-							</div>
-						</div>
-						<div class="col-sm-12">
-							<div class="profile__edit-wrapper">
-								<a href="#" class="profile__edit-wrapper-btn edit-password-btn">Изменить пароль</a>
-								<a href="#" class="profile__edit-wrapper-btn edit-profile-btn">Редактировать профиль</a>
-								<a href="#" class="profile__edit-wrapper-btn tech-support-btn">Техподдержка</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- // Данные профиля -->
-	<!-- Сменя пароля -->
-	<section class="lk__main__wrapper lk-can-closed lk-file-wrapper lk-closed lk-password">
-		<div class="container">
-			<div class="row password-wrapper">
-				@{
-					Html.RenderPartial("_LeftMenu", Model.LeftMenuViewModel);
-				}
-				<div class="col-sm-12 mobile__off">
-					<div class="lk__main-title">
-						Изменить пароль
-					</div>
-				</div>
-				<div class="col-sm-12 col-md-9">
-					<div class="row">
-						<div class="profile__edit-wrapper col-sm-12">
-							<form action="#">
-								<div class="profile__edit-item">
-									<label for="current">Текущий пароль:</label>
-									<div class="password-field">
-										<input id="current" name="currentPassword" type="password" class="profile-input" autocomplete="off">
-										<div class="password-open"></div>
-									</div>
-								</div>
-								<div class="profile__edit-item">
-									<label for="new">Новый пароль:</label>
-									<div class="password-field">
-										<input id="new" name="newPassword" type="password" class="profile-input" autocomplete="off">
-										<div class="password-open"></div>
-									</div>
-								</div>
-								<div class="profile__edit-item">
-									<label for="new-repeat">Повторите пароль:</label>
-									<div class="password-field">
-										<input id="new-repeat" type="password" class="profile-input" autocomplete="off">
-										<div class="password-open"></div>
-									</div>
-								</div>
-							</form>
-						</div>
-						<div class="profile__edit-change col-sm-12 col-lg-9">
-							<button class="profile__edit-change-btn" onclick="checkAndSavePassword()">Изменить пароль</button>
-						</div>
-						<div class="profile__edit-back col-sm-12 col-lg-3">
-							<a href="#" class="profile__edit-back-btn">Вернуться в профиль</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- // Сменя пароля -->
-	<!-- Редактирование профиля -->
-	<section class="lk__main__wrapper lk-can-closed lk-file-wrapper lk-closed lk-edit">
-		<div class="container">
-			<div class="row password-wrapper">
-				@{
-					Html.RenderPartial("_LeftMenu", Model.LeftMenuViewModel);
-				}
-				<div class="col-sm-12 mobile__off">
-					<div class="lk__main-title">
-						Редактировать профиль
-					</div>
-				</div>
-				<div class="col-sm-12 col-md-9">
-					<div class="row">
-						<div class="profile__edit-wrapper col-sm-12">
-							<form action="">
-								<div class="profile__edit-item">
-									<label for="current">Ваше имя:</label>
-									<div class="password-field">
-										<input id="contactName" type="text" name="name" class="profile-input" placeholder="Имя" value="@currentUser.ContactName" required autocomplete="off">
-									</div>
-								</div>
-								<div class="profile__edit-item">
-									<label for="current">E-Mail:</label>
-									<div class="password-field">
-										<input id="email" type="email" name="email" class="profile-input" placeholder="E-Mail" value="@currentUser.Email" required autocomplete="off">
-									</div>
-								</div>
-								<div class="profile__edit-item">
-									<label for="current">Моб. телефон:</label>
-									<div class="password-field">
-										<input id="phoneNumber" type="tel" name="tel" class="profile-input" placeholder="+7(777) 777-77-77" value="@currentUser.PhoneNumber" required autocomplete="off">
-									</div>
-								</div>
-								<div class="profile__edit-item">
-									<label for="current">Доп. телефон:</label>
-									<div class="password-field">
-										<input id="phoneNumberCity" type="tel" name="tel" class="profile-input" placeholder="+7(___) ___-__-__" value="@currentUser.PhoneNumberCity" autocomplete="off">
-									</div>
-								</div>
-								<div class="profile__edit-item">
-									<label for="current">Юр. адрес:</label>
-									<div class="password-field">
-										<input id="address" type="text" name="adres" class="profile-input" placeholder="" value="@currentUser.Address" autocomplete="off">
-									</div>
-								</div>
-								<div class="profile__edit-item">
-									<label for="current">Фактический адрес:</label>
-									<div class="password-field">
-										<input id="factualAddress" type="text" name="adres" class="profile-input" placeholder="" value="@currentUser.FactualAddress" autocomplete="off">
-									</div>
-								</div>
-							</form>
-						</div>
+                            </div>
+                        </div>
+                        <div class="delete-msg-cerrnt-all closed">
+                            <div class="title">
+                                Удалить всю переписку безвозвратно?
+                            </div>
+                            <div class="delete-btns">
+                                <div class="delete-btn yes">Да</div>
+                                <div class="delete-btn no">Нет</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-chat__find">
+                    <div class="m-chat__find-header">
+                        <div class="title">
+                            <span>Новый чат</span>
+                            <div class="back">Назад</div>
+                        </div>
+                        <div class="find">
+                            <input type="text" id="findChat" placeholder="Поиск по поиску ...">
+                            <div class="ico"></div>
+                        </div>
+                    </div>
+                    <div class="m-chat__find-main">
+                        <div class="letter">
+                            А
+                        </div>
+                        <div class="m-chat__find-main-item">
+                            <div class="img">
+                                <img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
+                            </div>
+                            <div class="info">
+                                <div class="oo">ООО "Название компании"</div>
+                                <div class="city">Название города, Название области</div>
+                            </div>
+                        </div>
+                        <div class="m-chat__find-main-item">
+                            <div class="img">
+                                <img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
+                            </div>
+                            <div class="info">
+                                <div class="oo">ООО "Название компании"</div>
+                                <div class="city">Название города, Название области</div>
+                            </div>
+                        </div>
+                        <div class="m-chat__find-main-item">
+                            <div class="img">
+                                <img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
+                            </div>
+                            <div class="info">
+                                <div class="oo">ООО "Название компании"</div>
+                                <div class="city">Название города, Название области</div>
+                            </div>
+                        </div>
+                        <div class="letter">
+                            Б
+                        </div>
+                        <div class="m-chat__find-main-item">
+                            <div class="img">
+                                <img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
+                            </div>
+                            <div class="info">
+                                <div class="oo">ООО "Название компании"</div>
+                                <div class="city">Название города, Название области</div>
+                            </div>
+                        </div>
+                        <div class="m-chat__find-main-item">
+                            <div class="img">
+                                <img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
+                            </div>
+                            <div class="info">
+                                <div class="oo">ООО "Название компании"</div>
+                                <div class="city">Название города, Название области</div>
+                            </div>
+                        </div>
+                        <div class="m-chat__find-main-item">
+                            <div class="img">
+                                <img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
+                            </div>
+                            <div class="info">
+                                <div class="oo">ООО "Название компании"</div>
+                                <div class="city">Название города, Название области</div>
+                            </div>
+                        </div>
+                        <div class="letter">
+                            В
+                        </div>
+                        <div class="m-chat__find-main-item">
+                            <div class="img">
+                                <img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
+                            </div>
+                            <div class="info">
+                                <div class="oo">ООО "Название компании"</div>
+                                <div class="city">Название города, Название области</div>
+                            </div>
+                        </div>
+                        <div class="m-chat__find-main-item">
+                            <div class="img">
+                                <img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
+                            </div>
+                            <div class="info">
+                                <div class="oo">ООО "Название компании"</div>
+                                <div class="city">Название города, Название области</div>
+                            </div>
+                        </div>
+                        <div class="m-chat__find-main-item">
+                            <div class="img">
+                                <img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
+                            </div>
+                            <div class="info">
+                                <div class="oo">ООО "Название компании"</div>
+                                <div class="city">Название города, Название области</div>
+                            </div>
+                        </div>
+                        <div class="letter">
+                            Г
+                        </div>
+                        <div class="m-chat__find-main-item">
+                            <div class="img">
+                                <img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
+                            </div>
+                            <div class="info">
+                                <div class="oo">ООО "Название компании"</div>
+                                <div class="city">Название города, Название области</div>
+                            </div>
+                        </div>
+                        <div class="m-chat__find-main-item">
+                            <div class="img">
+                                <img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
+                            </div>
+                            <div class="info">
+                                <div class="oo">ООО "Название компании"</div>
+                                <div class="city">Название города, Название области</div>
+                            </div>
+                        </div>
+                        <div class="m-chat__find-main-item">
+                            <div class="img">
+                                <img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
+                            </div>
+                            <div class="info">
+                                <div class="oo">ООО "Название компании"</div>
+                                <div class="city">Название города, Название области</div>
+                            </div>
+                        </div>
+                        <div class="letter">
+                            Д
+                        </div>
+                        <div class="m-chat__find-main-item">
+                            <div class="img">
+                                <img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
+                            </div>
+                            <div class="info">
+                                <div class="oo">ООО "Название компании"</div>
+                                <div class="city">Название города, Название области</div>
+                            </div>
+                        </div>
+                        <div class="m-chat__find-main-item">
+                            <div class="img">
+                                <img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
+                            </div>
+                            <div class="info">
+                                <div class="oo">ООО "Название компании"</div>
+                                <div class="city">Название города, Название области</div>
+                            </div>
+                        </div>
+                        <div class="m-chat__find-main-item">
+                            <div class="img">
+                                <img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
+                            </div>
+                            <div class="info">
+                                <div class="oo">ООО "Название компании"</div>
+                                <div class="city">Название города, Название области</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-chat__find-allbase">
+                        <span>Искать по всей базе</span>
+                    </div>
 
-						<div class="profile__edit-change edit-block col-sm-12 col-lg-9">
-							<button class="profile__edit-change-btn" onclick="saveUserData()">Сохранить изменения</button>
-						</div>
-						<div class="profile__edit-back edit-block col-sm-12 col-lg-3">
-							<a href="#" class="profile__edit-delete-btn">Удалить организацию с данной площадки</a>
-							<a href="#" class="profile__edit-back-btn-reg">Вернуться в профиль</a>
-						</div>
-					</div>
-				</div>
-				<div class="delete__draft closed draft-file">
-					<div class="delete__draft-wrapper">
-						<div class="delete__draft-title">
-							Ваш аккаунт и профиль организации будет удалён без возможности восстановления.
-						</div>
-						<div class="delete__draft-quest">
-							Вы подтверждаете это?
-						</div>
-						<div class="delete__draft-flex">
-							<a href="#" class="delete__draft-btn yes" onclick="removeCompanyFromSite()">Да</a>
-							<a href="#" class="delete__draft-btn no">Нет</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- // Редактирование профиля -->
+            </section>*@
+    </div>
+    <!-- //Мини чат -->
+    <!-- Данные профиля -->
+    <section class="lk__main__wrapper lk-can-closed lk-file-wrapper lk-opened lk-main">
+        <div class="container">
+            <div class="row">
+                @{
+                    Html.RenderPartial("_LeftMenu", Model.LeftMenuViewModel);
+                }
+                <div class="col-sm-12 mobile__off">
+                    <div class="lk__main-title">
+                        Данные вашего профиля
+                    </div>
+                </div>
+                <div class="col-sm-12 mobile__off">
+                    <div class="profile__wrapper">
+                        <div class="profile__wrapper-img">
+                            <img src="@currentUser.SmallPhotoUrl" alt="">
+                        </div>
+                        <div class="profile__wrapper-info">
+                            <div class="name">
+                                @currentUser.CompanyNameWithTypeOfOwnership
+                            </div>
+                            <div class="rate">
+                                <span>@currentUser.Rating</span>
+                                <div class="ico">
+                                    @Html.Raw(currentUser.RatingImagesHtml)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-7 col-lg-6">
+                    <div class="profile__info">
+                        <div class="profile__info-item">
+                            <div class="title">
+                                Организация:
+                            </div>
+                            <div class="text">
+                                @currentUser.CompanyNameWithTypeOfOwnership
+                            </div>
+                        </div>
+                        <div class="profile__info-item">
+                            <div class="title">
+                                Город:
+                            </div>
+                            <div class="text">
+                                @(currentUser.Town?.NameAndRegionNameWithComma)
+                            </div>
+                        </div>
+                        <div class="profile__info-item">
+                            <div class="title">
+                                E-mail:
+                            </div>
+                            <div class="text">
+                                @currentUser.Email
+                            </div>
+                        </div>
+                        <div class="profile__info-item">
+                            <div class="title">
+                                ИНН:
+                            </div>
+                            <div class="text">
+                                @currentUser.INN
+                            </div>
+                        </div>
+                        <div class="profile__info-item">
+                            <div class="title">
+                                ОГРН:
+                            </div>
+                            <div class="text">
+                                @currentUser.OGRN
+                            </div>
+                        </div>
+                        <div class="profile__info-item">
+                            <div class="title">
+                                Телефон:
+                            </div>
+                            <div class="text">
+                                @currentUser.PhoneNumber
+                            </div>
+                        </div>
+                        <div class="profile__info-item">
+                            <div class="title">
+                                Доп. телефон:
+                            </div>
+                            <div class="text">
+                                @(currentUser.PhoneNumberCity ?? "Не указан")
+                            </div>
+                        </div>
+                        <div class="profile__info-item">
+                            <div class="title">
+                                Юр. адрес:
+                            </div>
+                            <div class="text">
+                                @currentUser.Address
+                            </div>
+                        </div>
+                        <div class="profile__info-item">
+                            <div class="title">
+                                Фактический адрес:
+                            </div>
+                            <div class="text">
+                                @currentUser.FactualAddress
+                            </div>
+                        </div>
+                        <div class="profile__info-item info-sub">
+                            <div class="title">
+                                Подписка:
+                            </div>
+                            <div class="text can-edit text-sub">
+                                @{
+                                    var noSub = currentUser.SubscribeIsActive ? "" : "no-sub";
+                                    var subscribeStatus = currentUser.SubscribeIsActive ? "Активно до " + currentUser.SubscribeUntilDate.Value.ToString().Replace(" ", ", ") : "Активировать подписку";
+                                }
+                                <span class="@noSub">@subscribeStatus</span>
+                                <div class="profile__info-sub">
+                                    Доступ к откликам и публикацииям объявлений «ЗАКУПКА»
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-3">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="profile__btn-wrapper">
+                                <a href="#" class="profile-btn find">
+                                    Поиск контрагента
+                                </a>
+                                <a href="@ViewBag.L.SiteUrlClear/Ads/NewAdStep0" class="profile-btn add">
+                                    Добавить объявление
+                                </a>
+                                <!-- Поиск контрагента -->
+                                <section class="region__wrapper only__pc col-sm-12 p-0 closed">
+                                    <div class="region__header">
+                                        <div class="close__btn-reg"></div>
+                                        <div class="region-title">
+                                            Поиск контрагента
+                                        </div>
+                                        <div class="region-input">
+                                            <input type="text" placeholder="Введите название...">
+                                            <div class="ico-search"></div>
+                                        </div>
+                                    </div>
+                                    <div class="region__content">
+                                        <div class="region__content-rus">
+                                            <div class="region__content-category-item">Россия</div>
+                                        </div>
+                                        <div class="region__content-list-wrapper">
+                                            <div class="region__content-list-title">
+                                                А
+                                            </div>
+                                            <div class="region__content-list-ul">
+                                                <li class="region__content-list-li">
+                                                    <span class="region-first-level">Aлтайский край</span>
+                                                    <ul class="region__content-list-li-ul off">
+                                                        <li class="region__content-list-li-ul-li">Алтай</li>
+                                                        <li class="region__content-list-li-ul-li">Амур</li>
+                                                    </ul>
+                                                </li>
+                                                <li class="region__content-list-li">
+                                                    <span class="region-first-level">Амурская область</span>
+                                                    <ul class="region__content-list-li-ul off">
+                                                        <li class="region__content-list-li-ul-li">Алтай</li>
+                                                        <li class="region__content-list-li-ul-li">Амур</li>
+                                                    </ul>
+                                                </li>
+                                                <li class="region__content-list-li">
+                                                    <span class="region-first-level">Архангельская область</span>
+                                                    <ul class="region__content-list-li-ul off">
+                                                        <li class="region__content-list-li-ul-li">Алтай</li>
+                                                        <li class="region__content-list-li-ul-li">Амур</li>
+                                                    </ul>
+                                                </li>
+                                                <li class="region__content-list-li">
+                                                    <span class="region-first-level">Астраханская область</span>
+                                                    <ul class="region__content-list-li-ul off">
+                                                        <li class="region__content-list-li-ul-li">Алтай</li>
+                                                        <li class="region__content-list-li-ul-li">Амур</li>
+                                                    </ul>
+                                                </li>
+                                            </div>
+                                            <div class="region__content-list-title">
+                                                Б
+                                            </div>
+                                            <div class="region__content-list-ul">
+                                                <li class="region__content-list-li">
+                                                    <span class="region-first-level">Белгородская область</span>
+                                                    <ul class="region__content-list-li-ul off">
+                                                        <li class="region__content-list-li-ul-li">Алтай</li>
+                                                        <li class="region__content-list-li-ul-li">Амур</li>
+                                                    </ul>
+                                                </li>
+                                                <li class="region__content-list-li">
+                                                    <span class="region-first-level">Брянская область</span>
+                                                    <ul class="region__content-list-li-ul off">
+                                                        <li class="region__content-list-li-ul-li">Алтай</li>
+                                                        <li class="region__content-list-li-ul-li">Амур</li>
+                                                    </ul>
+                                                </li>
+                                            </div>
+                                        </div>
+                                        <div class="region__content-another">
+                                            <div class="region__content-category-item">Другая страна</div>
+                                        </div>
+                                        <div class="selected-region-main closed">
+                                            <div class="region__selected-category-item">
+                                                <span>Оренбург, Оренбургская обл.</span>
+                                                <div class="ico-close"></div>
+                                            </div>
+                                        </div>
+                                        <div class="selected-region-list closed">
+                                            <ul>
+                                                <li class="selected-region-item">
+                                                    <a href="#">ООО "Тестовая компания" Оренбург, Оренбургская обл.</a>
+                                                </li>
+                                                <li class="selected-region-item">
+                                                    <a href="#">ООО "Тесла" Оренбург, Оренбургская обл.</a>
+                                                </li>
+                                                <li class="selected-region-item">
+                                                    <a href="#">ИП "Мурманск вторсырье" Оренбург, Оренбургская обл.</a>
+                                                </li>
+                                                <li class="selected-region-item">
+                                                    <a href="#">ОАО "Супер-компания" Оренбург, Оренбургская обл.</a>
+                                                </li>
+                                                <li class="selected-region-item">
+                                                    <a href="#">ООО "Тестовая компания" Оренбург, Оренбургская обл.</a>
+                                                </li>
+                                                <li class="selected-region-item">
+                                                    <a href="#">ООО "Тесла" Оренбург, Оренбургская обл.</a>
+                                                </li>
+                                                <li class="selected-region-item">
+                                                    <a href="#">ИП "Мурманск вторсырье" Оренбург, Оренбургская обл.</a>
+                                                </li>
+                                                <li class="selected-region-item">
+                                                    <a href="#">ОАО "Супер-компания" Оренбург, Оренбургская обл.</a>
+                                                </li>
+                                                <li class="selected-region-item">
+                                                    <a href="#">ООО "Тестовая компания" Оренбург, Оренбургская обл.</a>
+                                                </li>
+                                                <li class="selected-region-item">
+                                                    <a href="#">ООО "Тесла" Оренбург, Оренбургская обл.</a>
+                                                </li>
+                                                <li class="selected-region-item">
+                                                    <a href="#">ИП "Мурманск вторсырье" Оренбург, Оренбургская обл.</a>
+                                                </li>
+                                                <li class="selected-region-item">
+                                                    <a href="#">ОАО "Супер-компания" Оренбург, Оренбургская обл.</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </section>
+                                <!-- //Поиск контрагента -->
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="profile__edit-wrapper">
+                                <a href="#" class="profile__edit-wrapper-btn edit-password-btn">Изменить пароль</a>
+                                <a href="#" class="profile__edit-wrapper-btn edit-profile-btn">Редактировать профиль</a>
+                                <a href="#" class="profile__edit-wrapper-btn tech-support-btn">Техподдержка</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // Данные профиля -->
+    <!-- Сменя пароля -->
+    <section class="lk__main__wrapper lk-can-closed lk-file-wrapper lk-closed lk-password">
+        <div class="container">
+            <div class="row password-wrapper">
+                @{
+                    Html.RenderPartial("_LeftMenu", Model.LeftMenuViewModel);
+                }
+                <div class="col-sm-12 mobile__off">
+                    <div class="lk__main-title">
+                        Изменить пароль
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-9">
+                    <div class="row">
+                        <div class="profile__edit-wrapper col-sm-12">
+                            <form action="#">
+                                <div class="profile__edit-item">
+                                    <label for="current">Текущий пароль:</label>
+                                    <div class="password-field">
+                                        <input id="current" name="currentPassword" type="password" class="profile-input" autocomplete="off">
+                                        <div class="password-open"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <span id="needPasswordSpan" class="needFieldSpan">Поле "Текущий пароль" обязательно для заполнения</span>
+                                    <span id="invalidPasswordSpan" class="invalidFieldSpan">Текущий пароль должен содержать от 6 до 24 символов, хотя бы один из которых - цифра</span>
+                                    <img id="checkedPasswordIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                                </div>
+                                <div class="profile__edit-item">
+                                    <label for="new">Новый пароль:</label>
+                                    <div class="password-field">
+                                        <input id="new" name="newPassword" type="password" class="profile-input" autocomplete="off">
+                                        <div class="password-open"></div>
+                                        <span class="about-input">
+                                            Новый пароль должен содержать от 6 до 24 символов, хотя бы один из которых - цифра
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <span id="needPasswordSpan" class="needFieldSpan">Поле "Новый пароль" обязательно для заполнения</span>
+                                    <span id="invalidPasswordSpan" class="invalidFieldSpan">Новый пароль должен содержать от 6 до 24 символов, хотя бы один из которых - цифра</span>
+                                    <img id="checkedPasswordIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                                </div>
+                                <div class="profile__edit-item">
+                                    <label for="new-repeat">Повторите пароль:</label>
+                                    <div class="password-field">
+                                        <input id="new-repeat" type="password" class="profile-input" autocomplete="off">
+                                        <div class="password-open"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <span id="needRepeatPasswordSpan" class="needFieldSpan">Поле "Повторите пароль" обязательно для заполнения</span>
+                                    <span id="invalidRepeatPasswordSpan" class="invalidFieldSpan">Пароли должны совпадать</span>
+                                    <img id="checkedRepeatPasswordIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="profile__edit-change col-sm-12 col-lg-9">
+                            <button class="profile__edit-change-btn" onclick="checkAndSavePassword()">Изменить пароль</button>
+                        </div>
+                        <div class="profile__edit-back col-sm-12 col-lg-3">
+                            <a href="#" class="profile__edit-back-btn">Вернуться в профиль</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // Сменя пароля -->
+    <!-- Редактирование профиля -->
+    <section class="lk__main__wrapper lk-can-closed lk-file-wrapper lk-closed lk-edit">
+        <div class="container">
+            <div class="row password-wrapper">
+                @{
+                    Html.RenderPartial("_LeftMenu", Model.LeftMenuViewModel);
+                }
+                <div class="col-sm-12 mobile__off">
+                    <div class="lk__main-title">
+                        Редактировать профиль
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-9">
+                    <div class="row">
+                        <div class="profile__edit-wrapper col-sm-12">
+                            <form action="">
+                                <div class="profile__edit-item">
+                                    <label for="current">Ваше имя:</label>
+                                    <div class="password-field">
+                                        <input id="contactName" type="text" name="name" class="profile-input" placeholder="Имя" value="@currentUser.ContactName" required autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="profile__edit-item">
+                                    <label for="current">E-Mail:</label>
+                                    <div class="password-field">
+                                        <input id="email" type="email" name="email" class="profile-input" placeholder="E-Mail" value="@currentUser.Email" required autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="profile__edit-item">
+                                    <label for="current">Моб. телефон:</label>
+                                    <div class="password-field">
+                                        <input id="phoneNumber" type="tel" name="tel" class="profile-input" placeholder="+7(777) 777-77-77" value="@currentUser.PhoneNumber" required autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="profile__edit-item">
+                                    <label for="current">Доп. телефон:</label>
+                                    <div class="password-field">
+                                        <input id="phoneNumberCity" type="tel" name="tel" class="profile-input" placeholder="+7(___) ___-__-__" value="@currentUser.PhoneNumberCity" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="profile__edit-item">
+                                    <label for="current">Юр. адрес:</label>
+                                    <div class="password-field">
+                                        <input id="address" type="text" name="adres" class="profile-input" placeholder="" value="@currentUser.Address" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="profile__edit-item">
+                                    <label for="current">Фактический адрес:</label>
+                                    <div class="password-field">
+                                        <input id="factualAddress" type="text" name="adres" class="profile-input" placeholder="" value="@currentUser.FactualAddress" autocomplete="off">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
 
-	@{
-		Html.RenderPartial("_AdsSlider", Model.AdsSliderViewModel);
-	}
+                        <div class="profile__edit-change edit-block col-sm-12 col-lg-9">
+                            <button class="profile__edit-change-btn" onclick="saveUserData()">Сохранить изменения</button>
+                        </div>
+                        <div class="profile__edit-back edit-block col-sm-12 col-lg-3">
+                            <a href="#" class="profile__edit-delete-btn">Удалить организацию с данной площадки</a>
+                            <a href="#" class="profile__edit-back-btn-reg">Вернуться в профиль</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="delete__draft closed draft-file">
+                    <div class="delete__draft-wrapper">
+                        <div class="delete__draft-title">
+                            Ваш аккаунт и профиль организации будет удалён без возможности восстановления.
+                        </div>
+                        <div class="delete__draft-quest">
+                            Вы подтверждаете это?
+                        </div>
+                        <div class="delete__draft-flex">
+                            <a href="#" class="delete__draft-btn yes" onclick="removeCompanyFromSite()">Да</a>
+                            <a href="#" class="delete__draft-btn no">Нет</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // Редактирование профиля -->
+
+    @{
+        Html.RenderPartial("_AdsSlider", Model.AdsSliderViewModel);
+    }
 
 </main>
 
@@ -1196,6 +1219,7 @@
 <script src="@ViewBag.L.SiteUrlClear/js/lk-main.js?p=2020-10-10-a"></script>
 <script src="@ViewBag.L.SiteUrlClear/js/profile.js?p=2020-10-10-a"></script>
 <script src="@ViewBag.L.SiteUrlClear/js/mini-chat.js?p=2020-10-10-a"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/jquery-ui/jquery-ui.min.js"></script>
 
 <script type="text/javascript">
 	function checkAndSavePassword() {
@@ -1237,7 +1261,7 @@
 			$('#new').parent().addClass('false');
 			alert('Пароль должен содержать от 6 до 24 символов, хотя бы один из которых - цифра');
 		}
-			
+
 	}
 
 	function saveUserData() {
@@ -1260,7 +1284,7 @@
 	function removeCompanyFromSite() {
 		$.post("@ViewBag.L.SiteUrlClear/User/RemoveCompanyFromSite", {
 			}, function (result) {
-				if (result == "ok") 
+				if (result == "ok")
 					location.href = '@ViewBag.L.SiteUrlClear/User/Logout?deletedCompany=true'
 				else
 					alert(result);

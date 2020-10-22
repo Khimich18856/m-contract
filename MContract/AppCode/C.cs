@@ -6,48 +6,48 @@ using System.Web;
 
 namespace MContract.AppCode
 {
-	public class C
-	{
-        private const string mcontract = "http://m-contract.ru/";
+    public class C
+    {
+        private const string mcontract = "http://m-contract.ru";
 
         public static string SiteUrlClear
-		{
-			get
-			{
-				return ConfigurationManager.AppSettings["production"] == "true" ? mcontract : "http://localhost:3254";
-			}
-		}
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["production"] == "true" ? mcontract : "http://localhost:3254";
+            }
+        }
 
-		public static string SiteUrl
-		{
-			get
-			{
-				return ConfigurationManager.AppSettings["production"] == "true" ? mcontract : "http://localhost:3254/";
-			}
-		}
+        public static string SiteUrl
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["production"] == "true" ? mcontract + "/" : "http://localhost:3254/";
+            }
+        }
 
-		public static bool IsProduction
-		{
-			get
-			{
-				return ConfigurationManager.AppSettings["production"] == "true";
-			}
-		}
+        public static bool IsProduction
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["production"] == "true";
+            }
+        }
 
-		public static int ChatBoxMaxDialogs
-		{
-			get
-			{
-				return 10;
-			}
-		}
+        public static int ChatBoxMaxDialogs
+        {
+            get
+            {
+                return 10;
+            }
+        }
 
-		public static int ChatBoxSecondsBetweenMessagesRefresh
-		{
-			get
-			{
-				return 5;
-			}
-		}
-	}
+        public static int ChatBoxSecondsBetweenMessagesRefresh
+        {
+            get
+            {
+                return 5;
+            }
+        }
+    }
 }
