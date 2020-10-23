@@ -575,21 +575,60 @@ namespace MContract.Controllers
             var currentUser = SM.CurrentUser;
             //var emailChanged = formUser.Email != currentUser.Email;
 
-            currentUser.ContactName = formUser.ContactName;
-            currentUser.Email = formUser.Email;
-            currentUser.PhoneNumber = formUser.PhoneNumber;
-            currentUser.PhoneNumberCity = formUser.PhoneNumberCity;
-            currentUser.Address = formUser.Address;
-            currentUser.FactualAddress = formUser.FactualAddress;
-
-            var success = UsersDAL.UpdateUser(currentUser);
-            if (success)
+            if (formUser.Email == currentUser.Email)
             {
-                CookiesHelper.SaveCookiesForHideAuthorization(currentUser.Email, "", SecurityHelper.Decryption(currentUser.Password).TrimEnd());
-                return "ok";
+                currentUser.ContactName = formUser.ContactName;
+                currentUser.Email = formUser.Email;
+                currentUser.PhoneNumber = formUser.PhoneNumber;
+                currentUser.PhoneNumberCity = formUser.PhoneNumberCity;
+                currentUser.Address = formUser.Address;
+                currentUser.FactualAddress = formUser.FactualAddress;
+
+                var success = UsersDAL.UpdateUser(currentUser);
+                if (success)
+                {
+                    CookiesHelper.SaveCookiesForHideAuthorization(currentUser.Email, "", currentUser.Password.TrimEnd());
+                    return "ok";
+                }
+                else
+                    return "Произошла ошибка при сохранении, попробуйте позже";
             }
             else
-                return "Произошла ошибка при сохранении, попробуйте позже";
+            {
+                var successemail = UsersDAL.UserEmailUnique(formUser.Email);
+                if (successemail)
+                {
+                    currentUser.ContactName = formUser.ContactName;
+                    currentUser.Email = formUser.Email;
+                    currentUser.PhoneNumber = formUser.PhoneNumber;
+                    currentUser.PhoneNumberCity = formUser.PhoneNumberCity;
+                    currentUser.Address = formUser.Address;
+                    currentUser.FactualAddress = formUser.FactualAddress;
+
+                    var success = UsersDAL.UpdateUser(currentUser);
+                    if (success)
+                    {
+                        CookiesHelper.SaveCookiesForHideAuthorization(currentUser.Email, "", currentUser.Password.TrimEnd());
+                        return "ok";
+                        /* 20201024 
+                         * и необходимо отправить письмо 
+                         * ПОДТВЕРДИТЬ НОВЫЙ ЕМАЙЛ 
+                         * Поле ЕМАЙЛ ВЕРИФИКАЦИЯ в таблице юзер == false 
+                         * обновить Token 
+                         * и после подтверждения емайл с новым Token 
+                         * Поле ЕМАЙЛ ВЕРИФИКАЦИЯ в таблице юзер == true 
+                         * и желательно выкинуть Юзера на страницу входа ... 
+                         * Это все надо реализовать завтра ... 
+                         */
+                    }
+                    else
+                        return "Произошла ошибка при сохранении, попробуйте позже";
+                }
+                else
+
+                    return "Пользователь с данным емайл - " + formUser.Email + " уже зарегистрирован в базе данных";
+               
+            }
         }
 
         [HttpPost]
