@@ -290,7 +290,7 @@
                     else {
                         //$('#email').val('');
                         $('#email').focus();
-                        $("#needEmailSpan").text('Пользователь уже зарегистрирован').show().siblings().hide();
+                        $("#need" + fieldName + "Span").text('Пользователь уже зарегистрирован').show().siblings().hide();
                         $('#needPasswordSpan').hide();
                     }
                 },
@@ -332,7 +332,7 @@
 				$('#checked' + fieldName + 'Icon').show();
 			}
 			else {
-				$('#invalidPasswordSpan').show();
+                $('#invalid' + fieldName + 'Span').show();
 			}
 
             return true;
@@ -485,9 +485,8 @@
                         checkedIcon.show().siblings().hide();
                     }
                     else {
-                        //$('#INN').val('');
-                        $('#INN').focus();
-                        $("#needINNSpan").text('Пользователь уже зарегистрирован').show().siblings().hide();
+                        field.focus();
+                        $('#need' + fieldName + 'Span').text('Пользователь уже зарегистрирован').show().siblings().hide();
                         $('#needOGRNSpan').hide();
                     }
                 },

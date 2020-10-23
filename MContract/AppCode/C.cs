@@ -9,6 +9,7 @@ namespace MContract.AppCode
     public class C
     {
         private const string mcontract = "http://m-contract.ru";
+        private const string mcontract1 = "http://mc.krakoss.ru";
 
         public static string SiteUrlClear
         {

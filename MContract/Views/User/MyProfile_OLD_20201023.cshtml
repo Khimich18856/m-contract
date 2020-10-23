@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/profile.css?p=2020-10-10-a">
 <link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/User/Login.css?p=2020-08-16_21-55">
 <link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/User/Signup.css?p=2020-08-16_21-55">
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/js/jquery-ui/jquery-ui.css?p=202006112" />
 
 @{
     Html.RenderPartial("_MobileMenu", Model.MobileMenuViewModel);
@@ -1075,38 +1076,38 @@
                                 <div class="profile__edit-item">
                                     <label for="current">Текущий пароль:</label>
                                     <div class="password-field">
-                                        <input id="current" name="currentPassword" type="password" class="profile-input" autocomplete="off" required tabindex="1">
+                                        <input id="current" name="currentPassword" type="password" class="profile-input" autocomplete="off">
                                         <div class="password-open"></div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <span id="needcurrentPasswordSpan" class="needFieldSpan">Укажите Ваш пароль</span>
-                                        <span id="invalidcurrentPasswordSpan" class="needFieldSpan">Не верный пароль</span>
-                                        <img id="checkedcurrentPasswordIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
-                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <span id="needPasswordSpan" class="needFieldSpan">Поле "Текущий пароль" обязательно для заполнения</span>
+                                    <span id="invalidPasswordSpan" class="invalidFieldSpan">Текущий пароль должен содержать от 6 до 24 символов, хотя бы один из которых - цифра</span>
+                                    <img id="checkedPasswordIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
                                 </div>
                                 <div class="profile__edit-item">
                                     <label for="new">Новый пароль:</label>
                                     <div class="password-field">
-                                        <input id="new" name="newPassword" type="password" class="profile-input" autocomplete="off" tabindex="2">
+                                        <input id="new" name="newPassword" type="password" class="profile-input" autocomplete="off" title="Новый пароль должен содержать от 6 до 24 символов, хотя бы один из которых - цифра">
                                         <div class="password-open"></div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <span id="neednewPasswordSpan" class="needFieldSpan">Текущий пароль и Новый пароль идентичны.</span>
-                                        <span id="invalidnewPasswordSpan" class="needFieldSpan">Новый пароль должен содержать от 6 до 24 символов, хотя бы один из которых - цифра</span>
-                                        <img id="checkednewPasswordIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
-                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <span id="needPasswordSpan" class="needFieldSpan">Поле "Новый пароль" обязательно для заполнения</span>
+                                    <span id="invalidPasswordSpan" class="invalidFieldSpan">Новый пароль должен содержать от 6 до 24 символов, хотя бы один из которых - цифра</span>
+                                    <img id="checkedPasswordIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
                                 </div>
                                 <div class="profile__edit-item">
                                     <label for="new-repeat">Повторите пароль:</label>
                                     <div class="password-field">
-                                        <input id="new-repeat" name="new-repeat" type="password" class="profile-input" autocomplete="off" tabindex="3">
+                                        <input id="new-repeat" type="password" class="profile-input" autocomplete="off">
                                         <div class="password-open"></div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <span id="neednew-repeatSpan" class="needFieldSpan">Пароли должны совпадать</span>
-                                        <span id="invalidnew-repeatSpan" class="needFieldSpan">Новый пароль и Повторите пароль не совпадают</span>
-                                        <img id="checkednew-repeatIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
-                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <span id="needRepeatPasswordSpan" class="needFieldSpan">Поле "Повторите пароль" обязательно для заполнения</span>
+                                    <span id="invalidRepeatPasswordSpan" class="invalidFieldSpan">Пароли должны совпадать</span>
+                                    <img id="checkedRepeatPasswordIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
                                 </div>
                             </form>
                         </div>
@@ -1149,12 +1150,6 @@
                                     <div class="password-field">
                                         <input id="email" type="email" name="email" class="profile-input" placeholder="E-Mail" value="@currentUser.Email" required autocomplete="off">
                                     </div>
-                                    <span class="needFieldSpan">
-                                        Очень длинный текст ошибки. Проверка контейнера
-                                    </span>
-                                    <span class="needFieldSpan">
-                                        Ошибка 2
-                                    </span>
                                 </div>
                                 <div class="profile__edit-item">
                                     <label for="current">Моб. телефон:</label>
@@ -1223,213 +1218,8 @@
 <script src="@ViewBag.L.SiteUrlClear/js/mini-chat.js?p=2020-10-10-a"></script>
 <script src="@ViewBag.L.SiteUrlClear/js/jquery-ui/jquery-ui.min.js"></script>
 
-<script>
-    jQuery(document).ready(function () {
-        $("#new").prop('disabled', true);
-        $("#new-repeat").prop('disabled', true);
-    });
-
-    $(function () {
-        $("#current").on('blur', function () {
-            checkPassword();
-        });
-        $("#current").on('change keyup paste', function () {
-            changePassword();
-        });
-
-        $("#new").on('blur', function () {
-            checkNewPassword();
-        });
-
-        $("#new").focus(function () {
-            focusNewPassword();
-        });
-
-        $("#new-repeat").on('blur', function () {
-            checkPasswordRepeat();
-        });
-        $("#new-repeat").on('focus', function () {
-            focusPasswordRepeat();
-        });
-
-        $("#new-repeat").on('change keyup paste', function () {
-            changePasswordRepeat();
-        });
-
-
-        //Например, если у вас нету элемента с id="el" при загрузке страницы, а появляется он потом, например через ajax, то такая конструкция не сработает $("#el").click(...).
-        // А вот такая сработает $('body').on('click', '#el', ...) т.к. < body > почти всегда есть.
-    });
-
-
-    //======================================== проверка ввода пароля ===========================//
-    function checkPassword() {
-        var field = $("#current");
-        var fieldName = field.attr("name");
-        var checkedIcon = $('#checked' + fieldName + 'Icon');
-        var invalidSpan = $('#invalid' + fieldName + 'Span');
-        var needSpan = $('#need' + fieldName + 'Span');
-        if (field.val().length > 5) {
-            $.ajax('/User/СurretnPassword',
-                {
-                    type: 'POST',
-                    data: { 'curretnPassword': field.val() },
-                    success: function (data) {
-                        if (data == "true") {
-                            checkedIcon.show().siblings().hide();
-                            $("#new").prop('disabled', false);
-                        }
-                        else {
-                            field.focus();
-                            invalidSpan.show().siblings().hide();
-                            $("#new").prop('disabled', true);
-                            $("#new-repeat").prop('disabled', true);
-                        }
-                    },
-                });
-        }
-        else {
-            needSpan.show().siblings().hide();
-        }
-        $('#neednewPasswordSpan').hide();
-        $('#invalidnewPasswordSpan').hide();
-        $('#neednew-repeatSpan').hide();
-        $('#invalidnew-repeatSpan').hide();
-    }
-    function changePassword() {
-        var field = $("#current");
-        $.ajax('/User/СurretnPassword',
-            {
-                type: 'POST',
-                data: { 'curretnPassword': field.val() },
-                success: function (data) {
-                    if (data == "true") {
-                        checkedIcon.show().siblings().hide();
-                        $("#new").prop('disabled', false);
-                    }
-                    else {
-                        field.focus();
-                        invalidSpan.show().siblings().hide();
-                        $("#new").prop('disabled', true);
-                        $("#new-repeat").prop('disabled', true);
-                    }
-                },
-            });
-    }
-
-    //======================================== проверка ввода нового пароля ===========================//
-    function checkNewPassword() {
-        var fieldold = $("#current");
-        var field = $("#new");
-
-        var fieldName = field.attr("name");
-
-        var checkedIcon = $('#checked' + fieldName + 'Icon');
-        var invalidSpan = $('#invalid' + fieldName + 'Span');
-        var needSpan = $('#need' + fieldName + 'Span');
-
-        if (field.val().length > 1 && fieldold.val().length > 1) {
-            if (field.val() != fieldold.val()) {
-
-                var hasDigits = /[0-9]/.test(field.val());
-                if (field.val().length >= 6 && field.val().length <= 24 && hasDigits) {
-                    checkedIcon.show().siblings().hide();
-                    $("#current").prop('disabled', true);
-                    $("#new-repeat").prop('disabled', false);
-                }
-                else {
-
-                    invalidSpan.show().siblings().hide();
-                    $('#invalidnew-repeatSpan').hide();
-                    $("#current").prop('disabled', false);
-                    $("#new-repeat").prop('disabled', true);
-                }
-            }
-            else {
-
-                needSpan.show().siblings().hide();
-            }
-        }
-        else {
-
-            invalidSpan.show().siblings().hide();
-            $('#invalidnew-repeatSpan').show().siblings().hide();
-        }
-
-    }
-      //======================================== проверка ввода повтора нового пароля ===========================//
-    function checkPasswordRepeat() {
-
-        var field = $("#new-repeat");
-        var fieldName = field.attr("name");
-
-        var newPassword = $("#new").val();
-        var newPasswordRepeat = $('#new-repeat').val();
-
-        var checkedIcon = $('#checked' + fieldName + 'Icon');
-        var invalidSpan = $('#invalid' + fieldName + 'Span');
-
-        if (newPasswordRepeat.length >= 6 && newPasswordRepeat.length <= 24) {
-            if (newPassword == newPasswordRepeat) {
-                checkedIcon.show().siblings().hide();
-                $("#current").prop('disabled', true);
-                $("#new").prop('disabled', true);
-                return true;
-            }
-            else {
-
-                invalidSpan.show().siblings().hide();
-                $("#current").prop('disabled', false);
-                $("#new").prop('disabled', false);
-                return false;
-            }
-        }
-    }
-
-    function focusNewPassword() {
-        var Password = $("#current");
-        if (Password.val().length < 6) {
-            Password.focus();
-        }
-    }
-
-    function focusPasswordRepeat() {
-        var field = $("#new");
-        var fieldName = field.attr("name");
-        var invalidSpan = $('#invalid' + fieldName + 'Span');
-        if (field.val().length < 6 ) {
-            field.focus();
-            invalidSpan.show().siblings().hide();
-        }
-    }
-
-    function changePasswordRepeat() {
-        var fieldold = $("#new");
-        var field = $("#new-repeat");
-        var fieldName = field.attr("name");
-        var invalidSpan = $('#invalid' + fieldName + 'Span');
-        var checkedIcon = $('#checked' + fieldName + 'Icon');
-        if (fieldold.val() == field.val()) {
-            checkedIcon.show().siblings().hide();
-            fieldold.prop('disabled', true);
-        }
-        else {
-            invalidSpan.show().siblings().hide();
-            fieldold.prop('disabled', false);
-        }
-    }
-
-//======================================== Sinup=========================
-        function checkFields() {
-            var result = checkPasswordRepeat();
-            return result;
-        };
-
-
-    function checkAndSavePassword() {
-         if (!checkFields())
-                return;
-
+<script type="text/javascript">
+	function checkAndSavePassword() {
 		var currentPassword = $('#current').val();
 
 		if (currentPassword.length == 0)
@@ -1457,12 +1247,7 @@
 				if (result == "ok") {
 					$('#current').val('');
 					$('#new').val('');
-                    $('#new-repeat').val('');
-                    $('.checkedFieldIcon').hide();
-                    $('.needFieldSpan').hide();
-                    $("#current").prop('disabled', false);
-                    $("#new").prop('disabled', true);
-                    $("#new-repeat").prop('disabled', true);
+					$('#new-repeat').val('');
 					alert("Пароль успешно изменен.");
 				}
 				else
@@ -1501,6 +1286,5 @@
 				else
 					alert(result);
 			});
-    }
-
+	}
 </script>

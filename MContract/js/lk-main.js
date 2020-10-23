@@ -64,9 +64,9 @@ $('.ended-list').on('click', function() {
 
 $('.password-open').on('click', function() {
     $(this).toggleClass('show');
-    if ($(this).parent().children('.profile-input').attr('type') == 'password'){
-		$(this).parent().children('.profile-input').attr('type', 'text');
+    if ($(this).siblings('.profile-input').attr('type') == 'password'){
+        $(this).siblings('.profile-input').attr('type', 'text');
 	} else {
-		$(this).parent().children('.profile-input').attr('type', 'password');
+        $(this).siblings('.profile-input').attr('type', 'password');
 	}
 });

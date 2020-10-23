@@ -287,40 +287,21 @@ namespace MContract.Controllers
 
         public string UniqueEmail(string newEmail)
         {
-            string email = "true";
             /*  проверяем существование пользователя в базе данных с только что введенным емайл               
               если такого пользователя нет то ничего не делаем
               если есть то сообщаем пользователю об этом 
               блокируем внесение данных ... 
           */
             if (UsersDAL.UserEmailUnique(newEmail) == false)
-            {
-                email = "false";
-                return email;
-            }
-            else
-            {
-                return email;
-            }
+                return "false";
+            return "true";
         }
 
         public string UniqueINN(string newINN)
         {
-            string inn = "true";
-            /*  проверяем существование пользователя в базе данных с только что введенным ИНН
-              если такого пользователя нет то ничего не делаем \
-              если есть то сообщаем пользователю об этом 
-              блокируем внесение данных ... 
-          */
             if (UsersDAL.UserINNUnique(newINN) == false)
-            {
-                inn = "false";
-                return inn;
-            }
-            else
-            {
-                return inn;
-            }
+                return "false";
+            return "true";
         }
         #endregion
         #region Повторная отправка запроса для подтверждения регистрации == 630
@@ -404,7 +385,7 @@ namespace MContract.Controllers
 
         }
         #endregion
-        #region Задать новый пароль
+        #region Задать новый пароль Забыли
         [HttpGet]
         public ActionResult ResetPassword(string token)
         {
@@ -454,6 +435,16 @@ namespace MContract.Controllers
             return "ОК";
         }
 
+        #endregion
+        #region проверить текущий пароль В личном кабинете при вводе
+        [MyAuthorize]
+        public string СurretnPassword(string curretnPassword)
+        {
+            User currentUser = SM.CurrentUser;
+            if (SecurityHelper.Decryption(currentUser.Password) != curretnPassword)
+                return "false";
+            return "true";
+        }
         #endregion
 
         #region Регистрация нового ЮЗЕРА 
@@ -555,7 +546,7 @@ namespace MContract.Controllers
         }
         #endregion
 
-        #region
+        #region Задать новый пароль В личном кабинете
         [HttpPost]
         [MyAuthorize]
         public string ChangePassword(string currentPassword, string newPassword)
@@ -569,13 +560,14 @@ namespace MContract.Controllers
             {
                 currentUser.Password = SecurityHelper.Encryption(newPassword);
                 SM.CurrentUser = currentUser;
-                CookiesHelper.SaveCookiesForHideAuthorization(currentUser.Email, "", SecurityHelper.Decryption(currentUser.Password));
+                CookiesHelper.SaveCookiesForHideAuthorization(currentUser.Email, "", currentUser.Password);
                 return "ok";
             }
             else
                 return "Произошла ошибка при обновлениие пароля, попробуйте позже";
         }
-
+        #endregion
+        #region
         [HttpPost]
         [MyAuthorize]
         public string SaveUserData(User formUser)
