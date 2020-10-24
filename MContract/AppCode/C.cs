@@ -8,14 +8,19 @@ namespace MContract.AppCode
 {
     public class C
     {
-        private const string mcontract = "http://m-contract.ru";
-        private const string mcontract1 = "http://mc.krakoss.ru";
+        //private const string mcontract = "http://m-contract.ru";
+        //private const string mcontract1 = "http://mc.krakoss.ru";
+
+
+        public static string WebAddress => ConfigurationManager.AppSettings["webaddress"].ToString();
+        public static string LocalHost => ConfigurationManager.AppSettings["localhost"].ToString();
+
 
         public static string SiteUrlClear
         {
             get
             {
-                return ConfigurationManager.AppSettings["production"] == "true" ? mcontract : "http://localhost:3254";
+                return ConfigurationManager.AppSettings["production"] == "true" ? WebAddress : "http://localhost:" + LocalHost;
             }
         }
 
@@ -23,7 +28,7 @@ namespace MContract.AppCode
         {
             get
             {
-                return ConfigurationManager.AppSettings["production"] == "true" ? mcontract + "/" : "http://localhost:3254/";
+                return ConfigurationManager.AppSettings["production"] == "true" ? WebAddress + "/" : "http://localhost:" + LocalHost + "/";
             }
         }
 

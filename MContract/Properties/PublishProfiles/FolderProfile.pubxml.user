@@ -28,10 +28,10 @@
       <publishTime>10/16/2020 16:42:59</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>10/23/2020 21:27:18</publishTime>
+      <publishTime>10/24/2020 11:50:36</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>10/23/2020 21:27:18</publishTime>
+      <publishTime>10/24/2020 11:50:36</publishTime>
     </File>
     <File Include="bin/cs/Microsoft.QualityTools.Testing.Fakes.resources.dll">
       <publishTime>10/15/2020 13:35:50</publishTime>
@@ -106,10 +106,10 @@
       <publishTime>10/15/2020 13:35:50</publishTime>
     </File>
     <File Include="bin/MContract.dll">
-      <publishTime>10/23/2020 21:26:52</publishTime>
+      <publishTime>10/24/2020 11:50:10</publishTime>
     </File>
     <File Include="bin/MContract.pdb">
-      <publishTime>10/23/2020 21:26:52</publishTime>
+      <publishTime>10/24/2020 11:50:10</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>10/16/2020 12:25:12</publishTime>
@@ -2476,7 +2476,7 @@
       <publishTime>10/16/2020 12:25:11</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>10/23/2020 21:27:06</publishTime>
+      <publishTime>10/24/2020 11:50:24</publishTime>
     </File>
     <File Include="Scripts/bootstrap.bundle.js">
       <publishTime>10/16/2020 16:42:59</publishTime>
@@ -3154,7 +3154,7 @@
       <publishTime>10/16/2020 12:25:06</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/22/2020 15:19:08</publishTime>
+      <publishTime>10/24/2020 11:50:12</publishTime>
     </File>
     <File Include="Верстка Максима/.DS_Store">
       <publishTime>01/01/0001 00:00:00</publishTime>
