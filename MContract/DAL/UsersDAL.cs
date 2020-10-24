@@ -994,6 +994,38 @@ DECLARE @newUserID int;
         }
         #endregion
 
+        #region Удаление подтверждение ЕМАЙЛ ввиду смены ЕМАЙЛ в личном кабинете
+
+        public static bool UpdateUserEmailNOConfirmed(int userId, string token)
+        {
+            const string query = "update dbo.Users set EmailConfirmed=@EmailConfirmed, VerificationCode=@VerificationCode where Id=@Id";
+
+            var connect = new SqlConnection(connStr);
+            var sqlCommand = new SqlCommand(query, connect);
+
+            sqlCommand.Parameters.AddWithValue("Id", userId);
+            sqlCommand.Parameters.AddWithValue("EmailConfirmed", false);
+            sqlCommand.Parameters.AddWithValue("VerificationCode", token);
+
+            try
+            {
+                connect.Open();
+                sqlCommand.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                string methodName = MethodBase.GetCurrentMethod().Name;
+                throw new Exception("in UsersDAL." + methodName + "(): " + ex);
+            }
+            finally
+            {
+                connect.Close();
+            }
+
+            return true;
+        }
+        #endregion
+
         # region Задать новый пароль
 
         public static bool UpdateUserResetPassword(int userId, string token, string password)

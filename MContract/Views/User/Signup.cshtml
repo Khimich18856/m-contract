@@ -231,10 +231,11 @@
 </section>
 <!-- // Вход-->
 
-<script src="~/js/jquery.maskedinput.js" type="text/javascript"></script>
-<link href="~/js/jquery-ui/jquery-ui.css?p=202006112" rel="stylesheet" type="text/css" />
-<script src="~/js/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-<script src="~/js/user/cityAutocomplete.js?p=20200624" type="text/javascript"></script>
+<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/js/jquery-ui/jquery-ui.css?p=202006112" />
+<script src="@ViewBag.L.SiteUrlClear/js/jquery-ui/jquery-ui.min.js"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/user/cityAutocomplete.js?p=20200624"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/jquery.maskedinput.js"></script>
+
 <script>
     jQuery(document).ready(function () {
         $("#INN").mask("9999999999", { autoclear: false });

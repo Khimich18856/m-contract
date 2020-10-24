@@ -653,7 +653,7 @@ namespace MContract.Controllers
         {
             var currentUser = SM.CurrentUser;
             //var emailChanged = formUser.Email != currentUser.Email;
-
+            #region Если НЕ изменили Email
             if (formUser.Email == currentUser.Email)
             {
                 currentUser.ContactName = formUser.ContactName;
@@ -672,6 +672,8 @@ namespace MContract.Controllers
                 else
                     return "Произошла ошибка при сохранении, попробуйте позже";
             }
+            #endregion
+            #region Если ИЗМЕНИЛИ Email
             else
             {
                 var successemail = UsersDAL.UserEmailUnique(formUser.Email);
@@ -687,18 +689,48 @@ namespace MContract.Controllers
                     var success = UsersDAL.UpdateUser(currentUser);
                     if (success)
                     {
-                        CookiesHelper.SaveCookiesForHideAuthorization(currentUser.Email, "", currentUser.Password.TrimEnd());
-                        return "ok";
-                        /* 20201024 
-                         * и необходимо отправить письмо 
-                         * ПОДТВЕРДИТЬ НОВЫЙ ЕМАЙЛ 
-                         * Поле ЕМАЙЛ ВЕРИФИКАЦИЯ в таблице юзер == false 
-                         * обновить Token 
-                         * и после подтверждения емайл с новым Token 
-                         * Поле ЕМАЙЛ ВЕРИФИКАЦИЯ в таблице юзер == true 
-                         * и желательно выкинуть Юзера на страницу входа ... 
-                         * Это все надо реализовать завтра ... 
-                         */
+                        /*
+                     * Заремарено чтобы после изменения ЕМАЙЛ 
+                     * у ЮЗЕРа так как он не подтвердил данные своего НОВОГО ЕМАЙЛ 
+                     * не было доступа в Личный кабинет
+                    */
+                        CookiesHelper.SaveCookiesForHideAuthorization("", "", "");
+                        Guid g;
+                        g = Guid.NewGuid();
+                        string _g = Convert.ToString(g);
+                        var dbUser = UsersDAL.GetUserByEmail(currentUser.Email);
+
+                        if (dbUser != null)
+                        {
+                            int IdUser = dbUser.Id;
+
+                            if (UsersDAL.UpdateUserEmailNOConfirmed(IdUser, _g) == true)
+                            {
+                                string sendTo = dbUser.Email;
+                                #region Подтверждение Вашего нового почтового ящика зарегистрированного ЮЗЕРА
+                                string subscription = C.SiteUrl + "User/VerificationEmail?token=" + _g;
+                                string subject = "Подтверждение Вашего нового почтового ящика";
+                                string body = "Уважаемый новый пользователь портала M-contract.ru" + "<br/>" + "<br/>" +
+                                "Вам необходимо подтвердить данные Вашего нового почтового ящика - " + "<b>" + sendTo + "</b>" + "<br/>" + "<br/>" +
+                                "для подтверждения - перейдите по ссылке - " + "<a href=\'" + subscription + "'>Подтвердить e-mail</a>." + "<br/>"
+                                + "<br/>" + "<i>" + "С уважением команда портала <a href=\'" + C.SiteUrl + "'>m-contract.ru</a>" + "</i>";
+                                MailHelper.SendMail(sendTo, subject, body);
+                                #endregion
+                            }
+                            return "yes";
+                            /* 20201024 
+                             * и необходимо отправить письмо 
+                             * ПОДТВЕРДИТЬ НОВЫЙ ЕМАЙЛ 
+                             * Поле ЕМАЙЛ ВЕРИФИКАЦИЯ в таблице юзер == false 
+                             * обновить Token 
+                             * и после подтверждения емайл с новым Token 
+                             * Поле ЕМАЙЛ ВЕРИФИКАЦИЯ в таблице юзер == true 
+                             * и желательно выкинуть Юзера на страницу входа ... 
+                             * Это все надо реализовать завтра ... 
+                             */
+                        }
+                        else
+                        return "Произошла ошибка при сохранении, попробуйте позже";
                     }
                     else
                         return "Произошла ошибка при сохранении, попробуйте позже";
@@ -708,6 +740,7 @@ namespace MContract.Controllers
                     return "Пользователь с данным емайл - " + formUser.Email + " уже зарегистрирован в базе данных";
 
             }
+            #endregion
         }
         #endregion
 

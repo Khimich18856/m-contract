@@ -870,7 +870,7 @@
                         </div>
                         <div class="profile__info-item">
                             <div class="title">
-                                Доп. телефон:
+                                Допол. телефон:
                             </div>
                             <div class="text">
                                 @(currentUser.PhoneNumberCity ?? "Не указан")
@@ -1191,7 +1191,7 @@
                         </div>
 
                         <div class="profile__edit-change edit-block col-sm-12 col-lg-9">
-                            <button class="profile__edit-change-btn" onclick="saveUserData();">Сохранить изменения</button>
+                            <button id="btnSaveUserData" class="profile__edit-change-btn" onclick="saveUserData();">Сохранить изменения</button>
                         </div>
                         <div class="profile__edit-back edit-block col-sm-12 col-lg-3">
                             <a href="#" class="profile__edit-delete-btn">Удалить организацию с данной площадки</a>
@@ -1229,6 +1229,8 @@
 <script src="@ViewBag.L.SiteUrlClear/js/profile.js?p=2020-10-10-a"></script>
 <script src="@ViewBag.L.SiteUrlClear/js/mini-chat.js?p=2020-10-10-a"></script>
 <script src="@ViewBag.L.SiteUrlClear/js/jquery-ui/jquery-ui.min.js"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/jquery.maskedinput.js"></script>
+
 
 <script>
     jQuery(document).ready(function () {
@@ -1268,15 +1270,23 @@
             changePasswordRepeat();
         });
 // редактирование профиля
-        $("#email").blur(function () {
+        $("#email").on('blur',function () {
             checkEmail();
         });
-        $("#phoneNumber").blur(function () {
+        $("#phoneNumber").on('blur',function () {
             checkPhoneNumber();
         });
-        $("#phoneNumberCity").blur(function () {
+        $("#phoneNumberCity").on('blur',function () {
             checkPhoneNumberCity();
         });
+
+        //$("#btnSaveUserData").on('click',function () {
+        //    setTimeout(
+        //        function () {
+        //            location.reload();
+        //        }, 2000
+        //    );
+        //});
         //Например, если у вас нету элемента с id="el" при загрузке страницы, а появляется он потом, например через ajax, то такая конструкция не сработает $("#el").click(...).
         // А вот такая сработает $('body').on('click', '#el', ...) т.к. < body > почти всегда есть.
     });
@@ -1505,10 +1515,10 @@
                 data: { 'newEmail': $('#email').val() },
                 success: function (data) {
 
-                    if (data == "true") {                        
+                    if (data == "true") {
                         $('#checked' + fieldName + 'Icon').show().siblings().hide();
                     }
-                    else {                        
+                    else {
                         $('#email').focus();
                         $("#need" + fieldName + "Span").text('Данный емайл адрес принадлежит другому пользователю').show().siblings().hide();
                     }
@@ -1517,13 +1527,13 @@
     };
 //================================== END реализация проверки емайл на уникальность ====================================== //
     function checkEmail() {
-        var fieldName = $("#email").attr("name");       
+        var fieldName = $("#email").attr("name");
         if (checkIsNotEmptyAndSetTipVisibility($("#email"))) {
             if ($("#email").val().match(/^\b[A-Z0-9._%-]+@@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i)) {
                 checkEmailID();
                 return true;
             }
-            else {              
+            else {
                 $("#invalid" + fieldName + "Span").show().siblings().hide();
                 return false;
             }
@@ -1615,12 +1625,43 @@
 			}, function (result) {
                 if (result == "ok") {
                     $('#checkedEmailIcon').hide().siblings().hide();
-					alert("Данные успешно сохранены.");
+                    alert("Данные успешно сохранены.");
+                    LocationReload()
 				}
 				else
-					alert(result);
+                    alert(result);
+                if (result == "yes") {
+                    $('#checkedEmailIcon').hide().siblings().hide();
+                    alert("Данные успешно сохранены.");
+                    LocationSignupChecking()
+                }
+                else
+                    alert(result);
 			});
-	}
+    }
+
+    // после изменений надо перегрузить страницу
+    // а то получается следующее
+    // 1. внесли изменения
+    // 2. сохранили данные
+    // 3. нажали кнопку == Вернуться в профиль
+    // 4. А там все данные старые
+
+    function LocationReload() {
+        setTimeout(
+            function () {
+                location.reload();
+            }, 200
+        );
+    };
+
+    function LocationSignupChecking() {
+        setTimeout(
+            function () {
+                location.href = "@ViewBag.L.SiteUrlClear/User/SignupChecking";;
+            }, 200
+        );
+    };
 
 	function removeCompanyFromSite() {
 		$.post("@ViewBag.L.SiteUrlClear/User/RemoveCompanyFromSite", {
