@@ -320,7 +320,9 @@ namespace MContract.Controllers
 
             if (dbUser != null)
             {
-                if (UsersDAL.UpdateVerificationCode(dbUser.Id, _g) == true)
+                int IdUser = dbUser.Id;
+
+                if (UsersDAL.UpdateVerificationCode(IdUser, _g) == true)
                 {
                     string sendTo = dbUser.Email;
                     #region Повторное потдверждение почтового ящика зарегистрированного ЮЗЕРА
@@ -384,7 +386,8 @@ namespace MContract.Controllers
 
             if (dbUser != null)
             {
-                if (UsersDAL.UpdateVerificationCode(dbUser.Id, _g) == true)
+                int IdUser = dbUser.Id;
+                if (UsersDAL.UpdateVerificationCode(IdUser, _g) == true)
                 {
                     #region Отправка письма - напоминаем пароль зарегистрированного ЮЗЕРА
                     string sendTo = dbUser.Email;
