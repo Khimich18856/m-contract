@@ -529,11 +529,18 @@ namespace MContract.Controllers
                 var id = UsersDAL.AddUser(user);
                 if (id > 0)
                 {
-                    CookiesHelper.SaveCookiesForHideAuthorization(user.Email, "", SecurityHelper.Decryption(user.Password).TrimEnd());
+                    /*
+                     * Заремарено чтобы после регистрации при переходе на страницу SignupChecking 
+                     * у нового Юзера так как он не подтвердил данные своего почтового ящика 
+                     * не было доступа в Личный кабинет
+                    */
+                    //CookiesHelper.SaveCookiesForHideAuthorization(user.Email, "", SecurityHelper.Decryption(user.Password).TrimEnd());
 
                     #region Потдверждение почтого ящика нового ЮЗЕРА
-                    string subscription = C.SiteUrl + "User/VerificationEmail?token=" + UsersDAL.GetUser(id).VerificationCode;
-                    string sendTo = UsersDAL.GetUser(id).Email;
+                    var userNew = UsersDAL.GetUser(id);
+
+                    string subscription = C.SiteUrl + "User/VerificationEmail?token=" + userNew.VerificationCode;
+                    string sendTo = userNew.Email;
                     string subject = "Подтверждение регистрации";
                     string body = "Уважаемый новый пользователь портала M-contract.ru" + "<br/>" + "<br/>" +
                     "Вам необходимо подтвердить данные Вашего почтового ящика - " + "<b>" + sendTo + "</b>" + "<br/>" + "<br/>" +
@@ -569,7 +576,7 @@ namespace MContract.Controllers
         }
         #endregion
 
-        #region После Регистрация нового ЮЗЕРА 
+        #region После Регистрация нового ЮЗЕРА 20201024
         [HttpGet]
         public ActionResult SignupChecking()
         {
@@ -584,6 +591,37 @@ namespace MContract.Controllers
             #endregion
             return View();
         }
+
+        #region OLD public ActionResult SignupChecking()
+
+        /*
+                     * Заремарено чтобы после регистрации при переходе на страницу SignupChecking 
+                     * у нового Юзера так как он не подтвердил данные своего почтового ящика 
+                     * не было доступа в Личный кабинет
+                    */
+
+        //[HttpGet]
+        //public ActionResult SignupChecking()
+        //{
+        //    ViewBag.L.ShowSearchbar = false;
+        //    UserSignUpCheckingViewModel viewModel = new UserSignUpCheckingViewModel()
+        //    {
+        //        PersonalAreaUrl = Urls.PersonalArea
+        //    };
+        //    ViewBag.Heading = "Подтверждение регистрации";
+        //    #region Хлебные крошки
+        //    var breadCrumbs = new List<BreadCrumbLink>
+        //    {
+        //        new BreadCrumbLink() { Text = "Регистрация", Url = Urls.Registration, Title = "Перейти к странице регистрации" },
+        //        new BreadCrumbLink() { Text = "Подтверждение", EndPoint = true }
+        //    };
+        //    ViewBag.BreadCrumbs = breadCrumbs;
+        //    #endregion
+
+        //    return View(viewModel);
+        //}
+        #endregion
+
         #endregion
 
         #region Задать новый пароль В личном кабинете
@@ -705,27 +743,6 @@ namespace MContract.Controllers
 
             return success ? "ok" : "Произошла ошибка при удалении, попробуйте позже";
         }
-
-        //[HttpGet]
-        //public ActionResult SignupChecking()
-        //{
-        //    ViewBag.L.ShowSearchbar = false;
-        //    UserSignUpCheckingViewModel viewModel = new UserSignUpCheckingViewModel()
-        //    {
-        //        PersonalAreaUrl = Urls.PersonalArea
-        //    };
-        //    ViewBag.Heading = "Подтверждение регистрации";
-        //    #region Хлебные крошки
-        //    var breadCrumbs = new List<BreadCrumbLink>
-        //    {
-        //        new BreadCrumbLink() { Text = "Регистрация", Url = Urls.Registration, Title = "Перейти к странице регистрации" },
-        //        new BreadCrumbLink() { Text = "Подтверждение", EndPoint = true }
-        //    };
-        //    ViewBag.BreadCrumbs = breadCrumbs;
-        //    #endregion
-
-        //    return View(viewModel);
-        //}
 
         [HttpGet]
         public ActionResult Login()

@@ -131,8 +131,8 @@
                 type: 'POST',
                 data: { 'email': $("#email").val() },
                 success: function () {
-                    $('#btnReSendPassword').hide();
                     alert("Письмо подтверждения отправлено повторно.");
+                    $('#divReSendEmail').hide();
                 },
             });
     };

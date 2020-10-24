@@ -28,10 +28,10 @@
       <publishTime>10/16/2020 16:42:59</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>10/24/2020 11:50:36</publishTime>
+      <publishTime>10/24/2020 15:27:18</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>10/24/2020 11:50:36</publishTime>
+      <publishTime>10/24/2020 15:27:18</publishTime>
     </File>
     <File Include="bin/cs/Microsoft.QualityTools.Testing.Fakes.resources.dll">
       <publishTime>10/15/2020 13:35:50</publishTime>
@@ -106,10 +106,10 @@
       <publishTime>10/15/2020 13:35:50</publishTime>
     </File>
     <File Include="bin/MContract.dll">
-      <publishTime>10/24/2020 11:50:10</publishTime>
+      <publishTime>10/24/2020 15:26:50</publishTime>
     </File>
     <File Include="bin/MContract.pdb">
-      <publishTime>10/24/2020 11:50:10</publishTime>
+      <publishTime>10/24/2020 15:26:50</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>10/16/2020 12:25:12</publishTime>
@@ -2476,7 +2476,7 @@
       <publishTime>10/16/2020 12:25:11</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>10/24/2020 11:50:24</publishTime>
+      <publishTime>10/24/2020 15:27:05</publishTime>
     </File>
     <File Include="Scripts/bootstrap.bundle.js">
       <publishTime>10/16/2020 16:42:59</publishTime>
@@ -3133,7 +3133,7 @@
       <publishTime>10/24/2020 12:59:55</publishTime>
     </File>
     <File Include="Views/User/SignupChecking.cshtml">
-      <publishTime>10/20/2020 10:21:19</publishTime>
+      <publishTime>10/24/2020 15:25:59</publishTime>
     </File>
     <File Include="Views/User/SignupOld.cshtml">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -3154,7 +3154,7 @@
       <publishTime>10/16/2020 12:25:06</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/24/2020 11:50:12</publishTime>
+      <publishTime>10/24/2020 15:26:52</publishTime>
     </File>
     <File Include="Верстка Максима/.DS_Store">
       <publishTime>01/01/0001 00:00:00</publishTime>
