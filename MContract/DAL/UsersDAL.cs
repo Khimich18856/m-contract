@@ -106,135 +106,7 @@ namespace MContract.DAL
             return result;
         }
 
-        public static User GetUserByEmail(string email)
-        {
-            User result = null;
-            const string query = @"select * from dbo.Users where Email=@Email";
-            var connection = new SqlConnection(connStr);
-            var sqlCommand = new SqlCommand(query, connection);
-            sqlCommand.Parameters.AddWithValue("Email", email);
-
-            try
-            {
-                connection.Open();
-                var reader = sqlCommand.ExecuteReader();
-                if (reader.Read())
-                    result = ReadUserInfo(reader);
-                reader.Close();
-            }
-            catch (Exception ex)
-            {
-                string methodName = MethodBase.GetCurrentMethod().Name;
-                throw new Exception("in UsersDAL." + methodName + "(): " + ex);
-            }
-            finally
-            {
-                connection.Close();
-            }
-
-            return result;
-        }
-        // для проверки нового пользователя на уникальный EMAIL
-        public static bool UserEmailUnique(string email)
-        {
-            const string query = "select COUNT(*) from dbo.Users where Email=@Email";
-            var connect = new SqlConnection(connStr);
-            var command = new SqlCommand(query, connect);
-            command.Parameters.AddWithValue("Email", email);
-
-            try
-            {
-                connect.Open();
-                int count = (int)command.ExecuteScalar();
-                if (count == 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                string methodName = MethodBase.GetCurrentMethod().Name;
-                throw new Exception("in UsersDAL." + methodName + "(): " + ex);
-            }
-            finally
-            {
-                connect.Close();
-            }
-        }
-
-
-        // для проверки нового пользователя на уникальный ИНН
-
-        public static bool UserINNUnique(string inn)
-        {
-            const string query = "select COUNT(*) from dbo.Users where INN=@INN";
-            var connect = new SqlConnection(connStr);
-            var command = new SqlCommand(query, connect);
-            command.Parameters.AddWithValue("INN", inn);
-
-            try
-            {
-                connect.Open();
-                int count = (int)command.ExecuteScalar();
-                if (count == 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                string methodName = MethodBase.GetCurrentMethod().Name;
-                throw new Exception("in UsersDAL." + methodName + "(): " + ex);
-            }
-            finally
-            {
-                connect.Close();
-            }
-        }
-
-        // для проверки нового пользователя == верификации почты
-
-        public static User GetUserByToken(string token)
-        {
-            User result = null;
-            const string query = @"select * from dbo.Users where VerificationCode=@VerificationCode";
-            var connection = new SqlConnection(connStr);
-            var sqlCommand = new SqlCommand(query, connection);
-            sqlCommand.Parameters.AddWithValue("VerificationCode", token);
-
-            try
-            {
-                connection.Open();
-                var reader = sqlCommand.ExecuteReader();
-                if (reader.HasRows) // если есть данные
-                {
-                    if (reader.Read())
-                        result = ReadUserInfo(reader);
-
-                    reader.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                string methodName = MethodBase.GetCurrentMethod().Name;
-                throw new Exception("in UsersDAL." + methodName + "(): " + ex);
-            }
-            finally
-            {
-                connection.Close();
-            }
-
-            return result;
-        }
-
+        #region
         public static List<User> GetUsers(List<int> ids = null, bool? checkedInSbis = null, int? moderateResultId = null)
         {
             var result = new List<User>();
@@ -279,7 +151,9 @@ namespace MContract.DAL
 
             return result;
         }
+        #endregion
 
+        #region Добавлление нового ЮЗЕРА
         public static int AddUser(User user)
         {
             Guid g;
@@ -318,7 +192,9 @@ DECLARE @newUserID int;
 
             return newUserId;
         }
+        #endregion
 
+        #region
         private static void AddAddOrUpdateSqlParameters(SqlParameterCollection parameters, User user)
         {
             parameters.AddWithValue("ContactName", user.ContactName);
@@ -830,70 +706,9 @@ DECLARE @newUserID int;
             return true;
         }
 
-        #region Подтверждение ЕМАЙЛ 
-
-        public static bool UpdateUserEmailConfirmed(int userId, string token)
-        {
-            const string query = "update dbo.Users set EmailConfirmed=@EmailConfirmed, VerificationCode=@VerificationCode where Id=@Id";
-
-            var connect = new SqlConnection(connStr);
-            var sqlCommand = new SqlCommand(query, connect);
-
-            sqlCommand.Parameters.AddWithValue("Id", userId);
-            sqlCommand.Parameters.AddWithValue("EmailConfirmed", true);
-            sqlCommand.Parameters.AddWithValue("VerificationCode", token);
-
-            try
-            {
-                connect.Open();
-                sqlCommand.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                string methodName = MethodBase.GetCurrentMethod().Name;
-                throw new Exception("in UsersDAL." + methodName + "(): " + ex);
-            }
-            finally
-            {
-                connect.Close();
-            }
-
-            return true;
-        }
         #endregion
 
-        #region Задать новый пароль 
-
-        public static bool UpdateUserResetPassword(int userId, string token, string password)
-        {
-            const string query = "update dbo.Users set Password=@Password, VerificationCode=@VerificationCode where Id=@Id";
-
-            var connect = new SqlConnection(connStr);
-            var sqlCommand = new SqlCommand(query, connect);
-
-            sqlCommand.Parameters.AddWithValue("Id", userId);
-            sqlCommand.Parameters.AddWithValue("Password", password);
-            sqlCommand.Parameters.AddWithValue("VerificationCode", token);
-
-            try
-            {
-                connect.Open();
-                sqlCommand.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                string methodName = MethodBase.GetCurrentMethod().Name;
-                throw new Exception("in UsersDAL." + methodName + "(): " + ex);
-            }
-            finally
-            {
-                connect.Close();
-            }
-
-            return true;
-        }
-        #endregion
-
+        #region
         public static bool UpdateUserLastOnline(int userId, DateTime lastOnline)
         {
             const string query = "update dbo.Users set LastOnline=@LastOnline where Id=@Id";
@@ -1008,5 +823,240 @@ DECLARE @newUserID int;
 
             return true;
         }
+        #endregion
+
+        //==========================================================//
+
+        #region Повторная отправка запроса для подтверждения регистрации
+
+        public static User GetUserByEmail(string email)
+        {
+            User result = null;
+            const string query = @"select * from dbo.Users where Email=@Email";
+            var connection = new SqlConnection(connStr);
+            var sqlCommand = new SqlCommand(query, connection);
+            sqlCommand.Parameters.AddWithValue("Email", email);
+
+            try
+            {
+                connection.Open();
+                var reader = sqlCommand.ExecuteReader();
+                if (reader.Read())
+                    result = ReadUserInfo(reader);
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                string methodName = MethodBase.GetCurrentMethod().Name;
+                throw new Exception("in UsersDAL." + methodName + "(): " + ex);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return result;
+        }
+        #endregion
+
+        #region для проверки нового пользователя на уникальный EMAIL
+        public static bool UserEmailUnique(string email)
+        {
+            const string query = "select COUNT(*) from dbo.Users where Email=@Email";
+            var connect = new SqlConnection(connStr);
+            var command = new SqlCommand(query, connect);
+            command.Parameters.AddWithValue("Email", email);
+
+            try
+            {
+                connect.Open();
+                int count = (int)command.ExecuteScalar();
+                if (count == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                string methodName = MethodBase.GetCurrentMethod().Name;
+                throw new Exception("in UsersDAL." + methodName + "(): " + ex);
+            }
+            finally
+            {
+                connect.Close();
+            }
+        }
+        #endregion
+
+        #region для проверки нового пользователя на уникальный ИНН
+
+        public static bool UserINNUnique(string inn)
+        {
+            const string query = "select COUNT(*) from dbo.Users where INN=@INN";
+            var connect = new SqlConnection(connStr);
+            var command = new SqlCommand(query, connect);
+            command.Parameters.AddWithValue("INN", inn);
+
+            try
+            {
+                connect.Open();
+                int count = (int)command.ExecuteScalar();
+                if (count == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                string methodName = MethodBase.GetCurrentMethod().Name;
+                throw new Exception("in UsersDAL." + methodName + "(): " + ex);
+            }
+            finally
+            {
+                connect.Close();
+            }
+        }
+        #endregion
+
+        #region для проверки нового пользователя == верификации почты
+
+        public static User GetUserByToken(string token)
+        {
+            User result = null;
+            const string query = @"select * from dbo.Users where VerificationCode=@VerificationCode";
+            var connection = new SqlConnection(connStr);
+            var sqlCommand = new SqlCommand(query, connection);
+            sqlCommand.Parameters.AddWithValue("VerificationCode", token);
+
+            try
+            {
+                connection.Open();
+                var reader = sqlCommand.ExecuteReader();
+                if (reader.HasRows) // если есть данные
+                {
+                    if (reader.Read())
+                        result = ReadUserInfo(reader);
+
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                string methodName = MethodBase.GetCurrentMethod().Name;
+                throw new Exception("in UsersDAL." + methodName + "(): " + ex);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return result;
+        }
+        #endregion
+
+        #region Подтверждение ЕМАЙЛ 
+
+        public static bool UpdateUserEmailConfirmed(int userId, string token)
+        {
+            const string query = "update dbo.Users set EmailConfirmed=@EmailConfirmed, VerificationCode=@VerificationCode where Id=@Id";
+
+            var connect = new SqlConnection(connStr);
+            var sqlCommand = new SqlCommand(query, connect);
+
+            sqlCommand.Parameters.AddWithValue("Id", userId);
+            sqlCommand.Parameters.AddWithValue("EmailConfirmed", true);
+            sqlCommand.Parameters.AddWithValue("VerificationCode", token);
+
+            try
+            {
+                connect.Open();
+                sqlCommand.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                string methodName = MethodBase.GetCurrentMethod().Name;
+                throw new Exception("in UsersDAL." + methodName + "(): " + ex);
+            }
+            finally
+            {
+                connect.Close();
+            }
+
+            return true;
+        }
+        #endregion
+
+        # region Задать новый пароль
+
+        public static bool UpdateUserResetPassword(int userId, string token, string password)
+        {
+            const string query = "update dbo.Users set Password=@Password, VerificationCode=@VerificationCode where Id=@Id";
+
+            var connect = new SqlConnection(connStr);
+            var sqlCommand = new SqlCommand(query, connect);
+
+            sqlCommand.Parameters.AddWithValue("Id", userId);
+            sqlCommand.Parameters.AddWithValue("Password", password);
+            sqlCommand.Parameters.AddWithValue("VerificationCode", token);
+
+            try
+            {
+                connect.Open();
+                sqlCommand.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                string methodName = MethodBase.GetCurrentMethod().Name;
+                throw new Exception("in UsersDAL." + methodName + "(): " + ex);
+            }
+            finally
+            {
+                connect.Close();
+            }
+
+            return true;
+        }
+        #endregion
+
+        #region Обновление VerificationCode для ЮЗЕРА =>  Отправка запроса - напоминаем пароль
+        public static bool UpdateVerificationCode(int userId, string token)
+        {
+           
+            const string query = "update dbo.Users set VerificationCode=@VerificationCode where Id=@Id";
+
+            var connect = new SqlConnection(connStr);
+            var sqlCommand = new SqlCommand(query, connect);
+            var parameters = sqlCommand.Parameters;
+
+            parameters.AddWithValue("Id", userId);
+            parameters.AddWithValue("VerificationCode", token);
+
+            try
+            {
+                connect.Open();
+                sqlCommand.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                string methodName = MethodBase.GetCurrentMethod().Name;
+                throw new Exception("in UsersDAL." + methodName + "(): " + ex);
+            }
+            finally
+            {
+                connect.Close();
+            }
+
+            return true;
+        }
+        #endregion
+
     }
 }
