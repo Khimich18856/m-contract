@@ -1081,7 +1081,6 @@
     <Content Include="Views\Shared\_AdsSlider.cshtml" />
     <Content Include="Views\Shared\_LeftMenu.cshtml" />
     <Content Include="Views\Shared\_MobileMenu.cshtml" />
-    <Content Include="Views\User\MyProfile_OLD_20201023.cshtml" />
     <Content Include="Views\User\CounteragentProfile.cshtml" />
     <Content Include="Views\User\UserAgreement.cshtml" />
     <Content Include="Views\User\ProcessingPersonalData.cshtml" />

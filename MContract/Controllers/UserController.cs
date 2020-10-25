@@ -400,8 +400,10 @@ namespace MContract.Controllers
                     MailHelper.SendMail(sendTo, subject, body);
                     #endregion
                 }
+                return "Отправка запроса - напоминаем пароль.";
             }
-            return "Отправка запроса - напоминаем пароль.";
+            else
+            return email + " - вы не являетесь пользователем данного ресурса.";
 
         }
         #endregion

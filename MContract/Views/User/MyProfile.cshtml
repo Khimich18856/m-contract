@@ -1622,15 +1622,14 @@
 				PhoneNumberCity: $('#phoneNumberCity').val(),
 				Address: $('#address').val(),
 				FactualAddress: $('#factualAddress').val()
-			}, function (result) {
+        },
+            function (result) {
                 if (result == "ok") {
                     $('#checkedEmailIcon').hide().siblings().hide();
                     alert("Данные успешно сохранены.");
                     LocationReload()
 				}
-				else
-                    alert(result);
-                if (result == "yes") {
+				else if (result == "yes") {
                     $('#checkedEmailIcon').hide().siblings().hide();
                     alert("Данные успешно сохранены.");
                     LocationSignupChecking()

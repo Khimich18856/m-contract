@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = ViewBag.Heading;
     Layout = "~/Views/Shared/_Layout.cshtml";
-	var errorMessage = Model.ErrorMessage;
+    var errorMessage = Model.ErrorMessage;
 }
 
 @section Styles{
@@ -24,8 +24,8 @@
 
             <!-- Form inputs -->
             <form action="">
-				<div class="row">
-					<div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-12">
                         <div class="status-of-log">
                             @if (errorMessage != null && errorMessage.Contains("пароль"))
                             {
@@ -41,24 +41,24 @@
                             }
                             @if (errorMessage != null && errorMessage.Contains("повторно?"))
                             {
-                        <div class="false-mail" id="divReSendEmail">
-                            Вы не подтвердили Ваш E-Mail. <br />
-                            Отправить письмо подтверждения повторно?
-                            <br />
-                                <button id="btnReSendEmail" type="button" href="#" class="btn"> <span>ДА</span> </button>
-                            </div>
+                                <div class="false-mail" id="divReSendEmail">
+                                    Вы не подтвердили Ваш E-Mail. <br />
+                                    Отправить письмо подтверждения повторно?
+                                    <br />
+                                    <button id="btnReSendEmail" type="button" href="#" class="btn"> <span>ДА</span> </button>
+                                </div>
                             }
                         </div>
-					</div>
-					<div class="col-md-3"></div>
-					<div class="col-sm-12 col-md-6 input__col">
-						<div class="input__wrapper letter-padding-desktop">
-							<label for="email">Логин</label>
-							<input type="email" id="email" placeholder="E-Mail" name="email" required value="@Model.Email">
-						</div>
-					</div>
-					<div class="col-md-3"></div>
-				</div>
+                    </div>
+                    <div class="col-md-3"></div>
+                    <div class="col-sm-12 col-md-6 input__col">
+                        <div class="input__wrapper letter-padding-desktop">
+                            <label for="email">Логин</label>
+                            <input type="email" id="email" placeholder="E-Mail" name="email" required value="@Model.Email">
+                        </div>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
                 <div class="row">
                     <div class="col-md-3"></div>
                     <div class="col-sm-12 col-md-6 input__col">
@@ -136,20 +136,17 @@
                 },
             });
     };
-    function reSendPassword() {
-        if ($("#email").val().length > 6) {
-            $.ajax('/User/Resendpassword',
-                {
-                    type: 'POST',
-                    data: { 'email': $("#email").val() },
-                    success: function () {
+    //https://jqbook.site/ajax/jquery
 
-                        alert("Письмо с инструкцией по восстановлению пароля отправлено на Ваш емайл - " + $("#email").val())
-                    },
-                });
-        }
-        else {
-            alert("Вы не указали Ваш емайл")
-        }
+    function reSendPassword() {
+
+        $.ajax('/User/Resendpassword',
+            {
+                type: 'POST',
+                data: { 'email': $("#email").val() },
+                success: function (data) {
+                    alert(data);
+                },
+            });
     };
 </script>

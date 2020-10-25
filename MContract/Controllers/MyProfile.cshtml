@@ -11,7 +11,6 @@
 <link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/profile.css?p=2020-10-10-a">
 <link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/User/Login.css?p=2020-08-16_21-55">
 <link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/css/User/Signup.css?p=2020-08-16_21-55">
-<link rel="stylesheet" href="@ViewBag.L.SiteUrlClear/js/jquery-ui/jquery-ui.css?p=202006112" />
 
 @{
     Html.RenderPartial("_MobileMenu", Model.MobileMenuViewModel);
@@ -871,7 +870,7 @@
                         </div>
                         <div class="profile__info-item">
                             <div class="title">
-                                Доп. телефон:
+                                Допол. телефон:
                             </div>
                             <div class="text">
                                 @(currentUser.PhoneNumberCity ?? "Не указан")
@@ -1076,38 +1075,38 @@
                                 <div class="profile__edit-item">
                                     <label for="current">Текущий пароль:</label>
                                     <div class="password-field">
-                                        <input id="current" name="currentPassword" type="password" class="profile-input" autocomplete="off">
+                                        <input id="current" name="currentPassword" type="password" class="profile-input" autocomplete="off" required tabindex="1">
                                         <div class="password-open"></div>
                                     </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <span id="needPasswordSpan" class="needFieldSpan">Поле "Текущий пароль" обязательно для заполнения</span>
-                                    <span id="invalidPasswordSpan" class="invalidFieldSpan">Текущий пароль должен содержать от 6 до 24 символов, хотя бы один из которых - цифра</span>
-                                    <img id="checkedPasswordIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                                    <div class="col-md-3">
+                                        <span id="needcurrentPasswordSpan" class="needFieldSpan">Укажите Ваш пароль</span>
+                                        <span id="invalidcurrentPasswordSpan" class="needFieldSpan">Не верный пароль</span>
+                                        <img id="checkedcurrentPasswordIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                                    </div>
                                 </div>
                                 <div class="profile__edit-item">
                                     <label for="new">Новый пароль:</label>
                                     <div class="password-field">
-                                        <input id="new" name="newPassword" type="password" class="profile-input" autocomplete="off" title="Новый пароль должен содержать от 6 до 24 символов, хотя бы один из которых - цифра">
+                                        <input id="new" name="newPassword" type="password" class="profile-input" autocomplete="off" tabindex="2">
                                         <div class="password-open"></div>
                                     </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <span id="needPasswordSpan" class="needFieldSpan">Поле "Новый пароль" обязательно для заполнения</span>
-                                    <span id="invalidPasswordSpan" class="invalidFieldSpan">Новый пароль должен содержать от 6 до 24 символов, хотя бы один из которых - цифра</span>
-                                    <img id="checkedPasswordIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                                    <div class="col-md-3">
+                                        <span id="neednewPasswordSpan" class="needFieldSpan">Текущий пароль и Новый пароль идентичны.</span>
+                                        <span id="invalidnewPasswordSpan" class="needFieldSpan">Новый пароль должен содержать от 6 до 24 символов, хотя бы один из которых - цифра</span>
+                                        <img id="checkednewPasswordIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                                    </div>
                                 </div>
                                 <div class="profile__edit-item">
                                     <label for="new-repeat">Повторите пароль:</label>
                                     <div class="password-field">
-                                        <input id="new-repeat" type="password" class="profile-input" autocomplete="off">
+                                        <input id="new-repeat" name="new-repeat" type="password" class="profile-input" autocomplete="off" tabindex="3">
                                         <div class="password-open"></div>
                                     </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <span id="needRepeatPasswordSpan" class="needFieldSpan">Поле "Повторите пароль" обязательно для заполнения</span>
-                                    <span id="invalidRepeatPasswordSpan" class="invalidFieldSpan">Пароли должны совпадать</span>
-                                    <img id="checkedRepeatPasswordIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                                    <div class="col-md-3">
+                                        <span id="neednew-repeatSpan" class="needFieldSpan">Пароли должны совпадать</span>
+                                        <span id="invalidnew-repeatSpan" class="needFieldSpan">Новый пароль и Повторите пароль не совпадают</span>
+                                        <img id="checkednew-repeatIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -1148,19 +1147,32 @@
                                 <div class="profile__edit-item">
                                     <label for="current">E-Mail:</label>
                                     <div class="password-field">
-                                        <input id="email" type="email" name="email" class="profile-input" placeholder="E-Mail" value="@currentUser.Email" required autocomplete="off">
+                                        <input id="email" type="email" name="Email" class="profile-input" placeholder="E-Mail" value="@currentUser.Email" required autocomplete="off">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span id="needEmailSpan" class="needFieldSpan">Пользователь с данным емайл - " + formUser.Email + " уже зарегистрирован в базе данных</span>
+                                        <span id="invalidEmailSpan" class="invalidFieldSpan">Введенный адрес не соответствует формату электронной почты</span>
+                                        <img id="checkedEmailIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg" />
                                     </div>
                                 </div>
                                 <div class="profile__edit-item">
                                     <label for="current">Моб. телефон:</label>
                                     <div class="password-field">
-                                        <input id="phoneNumber" type="tel" name="tel" class="profile-input" placeholder="+7(777) 777-77-77" value="@currentUser.PhoneNumber" required autocomplete="off">
+                                        <input id="phoneNumber" type="tel" name="tel" class="profile-input" placeholder="+7 (___) ___-__-__" onfocus="this.selectionStart = 0" value="@currentUser.PhoneNumber" required autocomplete="off">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span id="needPhoneNumberSpan" class="needFieldSpan">Поле "Контактный номер телефона" обязательно для заполнения</span>
+                                        <span id="invalidPhoneNumberSpan" class="invalidFieldSpan">@*placeholder*@</span>
+                                        <img id="checkedPhoneNumberIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
                                     </div>
                                 </div>
                                 <div class="profile__edit-item">
                                     <label for="current">Доп. телефон:</label>
                                     <div class="password-field">
-                                        <input id="phoneNumberCity" type="tel" name="tel" class="profile-input" placeholder="+7(___) ___-__-__" value="@currentUser.PhoneNumberCity" autocomplete="off">
+                                        <input id="phoneNumberCity" type="tel" name="tel" class="profile-input" placeholder="+7(___) ___-__-__" onfocus="this.selectionStart = 0" value="@currentUser.PhoneNumberCity" autocomplete="off">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <img id="checkedPhoneNumberCityIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg">
                                     </div>
                                 </div>
                                 <div class="profile__edit-item">
@@ -1179,7 +1191,7 @@
                         </div>
 
                         <div class="profile__edit-change edit-block col-sm-12 col-lg-9">
-                            <button class="profile__edit-change-btn" onclick="saveUserData()">Сохранить изменения</button>
+                            <button id="btnSaveUserData" class="profile__edit-change-btn" onclick="saveUserData();">Сохранить изменения</button>
                         </div>
                         <div class="profile__edit-back edit-block col-sm-12 col-lg-3">
                             <a href="#" class="profile__edit-delete-btn">Удалить организацию с данной площадки</a>
@@ -1217,9 +1229,236 @@
 <script src="@ViewBag.L.SiteUrlClear/js/profile.js?p=2020-10-10-a"></script>
 <script src="@ViewBag.L.SiteUrlClear/js/mini-chat.js?p=2020-10-10-a"></script>
 <script src="@ViewBag.L.SiteUrlClear/js/jquery-ui/jquery-ui.min.js"></script>
+<script src="@ViewBag.L.SiteUrlClear/js/jquery.maskedinput.js"></script>
 
-<script type="text/javascript">
-	function checkAndSavePassword() {
+
+<script>
+    jQuery(document).ready(function () {
+        $("#new").prop('disabled', true);
+        $("#new-repeat").prop('disabled', true);
+        $("#phoneNumber").mask("+7(999)999-99-99", { autoclear: false });
+        $("#phoneNumber").attr("placeholder", "+7(999)999-99-99");
+        $("#phoneNumberCity").mask("+7(999)999-99-99", { autoclear: false });
+        $("#phoneNumberCity").attr("placeholder", "+7(999)999-99-99");
+
+    });
+// изменения пароля
+    $(function () {
+        $("#current").on('blur', function () {
+            checkPassword();
+        });
+        $("#current").on('change keyup paste', function () {
+            changePassword();
+        });
+
+        $("#new").on('blur', function () {
+            checkNewPassword();
+        });
+
+        $("#new").focus(function () {
+            focusNewPassword();
+        });
+
+        $("#new-repeat").on('blur', function () {
+            checkPasswordRepeat();
+        });
+        $("#new-repeat").on('focus', function () {
+            focusPasswordRepeat();
+        });
+
+        $("#new-repeat").on('change keyup paste', function () {
+            changePasswordRepeat();
+        });
+// редактирование профиля
+        $("#email").on('blur',function () {
+            checkEmail();
+        });
+        $("#phoneNumber").on('blur',function () {
+            checkPhoneNumber();
+        });
+        $("#phoneNumberCity").on('blur',function () {
+            checkPhoneNumberCity();
+        });
+
+        //$("#btnSaveUserData").on('click',function () {
+        //    setTimeout(
+        //        function () {
+        //            location.reload();
+        //        }, 2000
+        //    );
+        //});
+        //Например, если у вас нету элемента с id="el" при загрузке страницы, а появляется он потом, например через ajax, то такая конструкция не сработает $("#el").click(...).
+        // А вот такая сработает $('body').on('click', '#el', ...) т.к. < body > почти всегда есть.
+    });
+
+
+    //======================================== проверка ввода пароля ===========================//
+    function checkPassword() {
+        var field = $("#current");
+        var fieldName = field.attr("name");
+        var checkedIcon = $('#checked' + fieldName + 'Icon');
+        var invalidSpan = $('#invalid' + fieldName + 'Span');
+        var needSpan = $('#need' + fieldName + 'Span');
+        if (field.val().length > 5) {
+            $.ajax('/User/СurretnPassword',
+                {
+                    type: 'POST',
+                    data: { 'curretnPassword': field.val() },
+                    success: function (data) {
+                        if (data == "true") {
+                            checkedIcon.show().siblings().hide();
+                            $("#new").prop('disabled', false);
+                        }
+                        else {
+                            field.focus();
+                            invalidSpan.show().siblings().hide();
+                            $("#new").prop('disabled', true);
+                            $("#new-repeat").prop('disabled', true);
+                        }
+                    },
+                });
+        }
+        else {
+            needSpan.show().siblings().hide();
+        }
+        $('#neednewPasswordSpan').hide();
+        $('#invalidnewPasswordSpan').hide();
+        $('#neednew-repeatSpan').hide();
+        $('#invalidnew-repeatSpan').hide();
+    }
+    function changePassword() {
+        var field = $("#current");
+        $.ajax('/User/СurretnPassword',
+            {
+                type: 'POST',
+                data: { 'curretnPassword': field.val() },
+                success: function (data) {
+                    if (data == "true") {
+                        checkedIcon.show().siblings().hide();
+                        $("#new").prop('disabled', false);
+                    }
+                    else {
+                        field.focus();
+                        invalidSpan.show().siblings().hide();
+                        $("#new").prop('disabled', true);
+                        $("#new-repeat").prop('disabled', true);
+                    }
+                },
+            });
+    }
+
+    //======================================== проверка ввода нового пароля ===========================//
+    function checkNewPassword() {
+        var fieldold = $("#current");
+        var field = $("#new");
+
+        var fieldName = field.attr("name");
+
+        var checkedIcon = $('#checked' + fieldName + 'Icon');
+        var invalidSpan = $('#invalid' + fieldName + 'Span');
+        var needSpan = $('#need' + fieldName + 'Span');
+
+        if (field.val().length > 1 && fieldold.val().length > 1) {
+            if (field.val() != fieldold.val()) {
+
+                var hasDigits = /[0-9]/.test(field.val());
+                if (field.val().length >= 6 && field.val().length <= 24 && hasDigits) {
+                    checkedIcon.show().siblings().hide();
+                    $("#current").prop('disabled', true);
+                    $("#new-repeat").prop('disabled', false);
+                }
+                else {
+
+                    invalidSpan.show().siblings().hide();
+                    $('#invalidnew-repeatSpan').hide();
+                    $("#current").prop('disabled', false);
+                    $("#new-repeat").prop('disabled', true);
+                }
+            }
+            else {
+
+                needSpan.show().siblings().hide();
+            }
+        }
+        else {
+
+            invalidSpan.show().siblings().hide();
+            $('#invalidnew-repeatSpan').show().siblings().hide();
+        }
+
+    }
+      //======================================== проверка ввода повтора нового пароля ===========================//
+    function checkPasswordRepeat() {
+
+        var field = $("#new-repeat");
+        var fieldName = field.attr("name");
+
+        var newPassword = $("#new").val();
+        var newPasswordRepeat = $('#new-repeat').val();
+
+        var checkedIcon = $('#checked' + fieldName + 'Icon');
+        var invalidSpan = $('#invalid' + fieldName + 'Span');
+
+        if (newPasswordRepeat.length >= 6 && newPasswordRepeat.length <= 24) {
+            if (newPassword == newPasswordRepeat) {
+                checkedIcon.show().siblings().hide();
+                $("#current").prop('disabled', true);
+                $("#new").prop('disabled', true);
+                return true;
+            }
+            else {
+
+                invalidSpan.show().siblings().hide();
+                $("#current").prop('disabled', false);
+                $("#new").prop('disabled', false);
+                return false;
+            }
+        }
+    }
+
+    function focusNewPassword() {
+        var Password = $("#current");
+        if (Password.val().length < 6) {
+            Password.focus();
+        }
+    }
+
+    function focusPasswordRepeat() {
+        var field = $("#new");
+        var fieldName = field.attr("name");
+        var invalidSpan = $('#invalid' + fieldName + 'Span');
+        if (field.val().length < 6 ) {
+            field.focus();
+            invalidSpan.show().siblings().hide();
+        }
+    }
+
+    function changePasswordRepeat() {
+        var fieldold = $("#new");
+        var field = $("#new-repeat");
+        var fieldName = field.attr("name");
+        var invalidSpan = $('#invalid' + fieldName + 'Span');
+        var checkedIcon = $('#checked' + fieldName + 'Icon');
+        if (fieldold.val() == field.val()) {
+            checkedIcon.show().siblings().hide();
+            fieldold.prop('disabled', true);
+        }
+        else {
+            invalidSpan.show().siblings().hide();
+            fieldold.prop('disabled', false);
+        }
+    }
+
+//======================================== Пароль ========================= //
+    function checkFields() {
+            var result = checkPasswordRepeat();
+            return result;
+        };
+
+    function checkAndSavePassword() {
+         if (!checkFields())
+                return;
+
 		var currentPassword = $('#current').val();
 
 		if (currentPassword.length == 0)
@@ -1247,7 +1486,12 @@
 				if (result == "ok") {
 					$('#current').val('');
 					$('#new').val('');
-					$('#new-repeat').val('');
+                    $('#new-repeat').val('');
+                    $('.checkedFieldIcon').hide();
+                    $('.needFieldSpan').hide();
+                    $("#current").prop('disabled', false);
+                    $("#new").prop('disabled', true);
+                    $("#new-repeat").prop('disabled', true);
 					alert("Пароль успешно изменен.");
 				}
 				else
@@ -1261,7 +1505,116 @@
 
 	}
 
-	function saveUserData() {
+//======================================== Email и телефоны ========================= //
+//================================== реализация проверки емайл на уникальность ====================================== //
+    function checkEmailID() {
+        var fieldName = $("#email").attr("name");
+        $.ajax('/User/UniqueEmailUpdate',
+            {
+                type: 'POST',
+                data: { 'newEmail': $('#email').val() },
+                success: function (data) {
+
+                    if (data == "true") {
+                        $('#checked' + fieldName + 'Icon').show().siblings().hide();
+                    }
+                    else {
+                        $('#email').focus();
+                        $("#need" + fieldName + "Span").text('Данный емайл адрес принадлежит другому пользователю').show().siblings().hide();
+                    }
+                },
+            });
+    };
+//================================== END реализация проверки емайл на уникальность ====================================== //
+    function checkEmail() {
+        var fieldName = $("#email").attr("name");
+        if (checkIsNotEmptyAndSetTipVisibility($("#email"))) {
+            if ($("#email").val().match(/^\b[A-Z0-9._%-]+@@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i)) {
+                checkEmailID();
+                return true;
+            }
+            else {
+                $("#invalid" + fieldName + "Span").show().siblings().hide();
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+
+    };
+
+    function checkPhoneNumber() {
+        var field = $("#phoneNumber");
+        var fieldName = field.attr("name");
+        var checkedIcon = $('#checked' + fieldName + 'Icon');
+        var invalidSpan = $('#invalid' + fieldName + 'Span');
+        if (checkIsNotEmptyAndSetTipVisibility(field)) {
+            var value = field.val();
+            var placeholderChar = '_';
+            if (!value.includes(placeholderChar)) {
+                checkedIcon.show().siblings().hide();
+                return true;
+            }
+            else {
+                invalidSpan.text('Номер телефона должен содержать 10 цифр').show().siblings().hide();
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    };
+
+    function checkPhoneNumberCity() {
+        var field = $("#phoneNumberCity");
+        var fieldName = field.attr("name");
+        var checkedIcon = $('#checked' + fieldName + 'Icon');
+        var invalidSpan = $('#invalid' + fieldName + 'Span');
+        if (checkIsNotEmptyAndSetTipVisibility(field)) {
+            var value = field.val();
+            var placeholderChar = '_';
+            if (!value.includes(placeholderChar)) {
+                checkedIcon.show().siblings().hide();
+            }
+            /*else {
+                invalidSpan.text('Номер телефона должен содержать 10 цифр').show().siblings().hide();
+                return false;
+            }*/
+        }
+        return true;
+        /*else {
+            return false;
+        }*/
+    };
+
+
+    function checkIsNotEmptyAndSetTipVisibility(obj) {
+        var fieldName = obj.attr("name");
+        if (obj.val().length == 0 || !obj.val().match(/[^-_+7()]/g)) {
+            $('#need' + fieldName + 'Span').siblings().hide();
+            $('#need' + fieldName + 'Span').show();
+            return false;
+        }
+        else {
+            $('#need' + fieldName + 'Span').hide();
+            return true;
+        };
+    };
+
+    function checkFieldsUserUpdate() {
+       var inputsValidated = [];
+        inputsValidated.push(checkEmail());
+        inputsValidated.push(checkPhoneNumber());
+        inputsValidated.push(checkPhoneNumberCity());
+        var result = inputsValidated.every(Boolean);
+        return result;
+    };
+
+    function saveUserData() {
+        if (!checkFieldsUserUpdate())
+            return;
+
 		$.post("@ViewBag.L.SiteUrlClear/User/SaveUserData", {
 				ContactName: $('#contactName').val(),
 				Email: $('#email').val(),
@@ -1270,13 +1623,43 @@
 				Address: $('#address').val(),
 				FactualAddress: $('#factualAddress').val()
 			}, function (result) {
-				if (result == "ok") {
-					alert("Данные успешно сохранены.");
+                if (result == "ok") {
+                    $('#checkedEmailIcon').hide().siblings().hide();
+                    alert("Данные успешно сохранены.");
+                    LocationReload()
 				}
-				else
-					alert(result);
+                else if (result == "yes") {
+                    $('#checkedEmailIcon').hide().siblings().hide();
+                    alert("e-mail новый. Данные успешно сохранены.");
+                    LocationSignupChecking()
+                }
+                else
+                    alert(result);
 			});
-	}
+    }
+
+    // после изменений надо перегрузить страницу
+    // а то получается следующее
+    // 1. внесли изменения
+    // 2. сохранили данные
+    // 3. нажали кнопку == Вернуться в профиль
+    // 4. А там все данные старые
+
+    function LocationReload() {
+        setTimeout(
+            function () {
+                location.reload();
+            }, 200
+        );
+    };
+
+    function LocationSignupChecking() {
+        setTimeout(
+            function () {
+                location.href = "@ViewBag.L.SiteUrlClear/User/SignupChecking";;
+            }, 200
+        );
+    };
 
 	function removeCompanyFromSite() {
 		$.post("@ViewBag.L.SiteUrlClear/User/RemoveCompanyFromSite", {
@@ -1286,5 +1669,6 @@
 				else
 					alert(result);
 			});
-	}
+    }
+
 </script>
