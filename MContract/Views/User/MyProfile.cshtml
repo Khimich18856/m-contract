@@ -1150,7 +1150,7 @@
                                         <input id="email" type="email" name="Email" class="profile-input" placeholder="E-Mail" value="@currentUser.Email" required autocomplete="off">
                                     </div>
                                     <div class="col-md-3">
-                                        <span id="needEmailSpan" class="needFieldSpan">Пользователь с данным емайл - " + formUser.Email + " уже зарегистрирован в базе данных</span>
+                                        <span id="needEmailSpan" class="needFieldSpan"></span>
                                         <span id="invalidEmailSpan" class="invalidFieldSpan">Введенный адрес не соответствует формату электронной почты</span>
                                         <img id="checkedEmailIcon" class="checkedFieldIcon" src="/ico/CheckmarkGreen.svg" />
                                     </div>
@@ -1505,27 +1505,35 @@
 
 	}
 
-//======================================== Email и телефоны ========================= //
-//================================== реализация проверки емайл на уникальность ====================================== //
+//======================================== e-mail и телефоны ========================= //
+//================================== реализация проверки e-mail на уникальность ====================================== //
     function checkEmailID() {
         var fieldName = $("#email").attr("name");
-        $.ajax('/User/UniqueEmailUpdate',
-            {
-                type: 'POST',
-                data: { 'newEmail': $('#email').val() },
-                success: function (data) {
+        var _email = $("#email").val();
+        if (_email.length > 5) {
+            $.ajax('/User/UniqueEmailUpdate',
+                {
+                    type: 'POST',
+                    data: { 'newEmail': $('#email').val() },
+                    success: function (data) {
 
-                    if (data == "true") {
-                        $('#checked' + fieldName + 'Icon').show().siblings().hide();
-                    }
-                    else {
-                        $('#email').focus();
-                        $("#need" + fieldName + "Span").text('Данный емайл адрес принадлежит другому пользователю').show().siblings().hide();
-                    }
-                },
-            });
+                        if (data == "true") {
+                            $('#checked' + fieldName + 'Icon').show().siblings().hide();
+                        }
+                        else {
+                            $('#email').focus();
+                            $("#need" + fieldName + "Span").text('Данный e-mail -' + _email + ' принадлежит другому пользователю').show().siblings().hide();
+                        }
+                    },
+                });
+        }
+        else {
+            $('#email').focus();
+            $("#need" + fieldName + "Span").text('Вы указали не верные данные').show().siblings().hide();
+        }
+
     };
-//================================== END реализация проверки емайл на уникальность ====================================== //
+//================================== END реализация проверки e-mail на уникальность ====================================== //
     function checkEmail() {
         var fieldName = $("#email").attr("name");
         if (checkIsNotEmptyAndSetTipVisibility($("#email"))) {
@@ -1627,12 +1635,15 @@
                 if (result == "ok") {
                     $('#checkedEmailIcon').hide().siblings().hide();
                     alert("Данные успешно сохранены.");
-                    LocationReload()
+                    // LocationReload()
+                    // После при нажатии кнопки == Вернуться в профиль == в профиле данные остались старые ??? 
+                    // Кто делал профиль??? 
+                    // как должно происходить обновление профиля ??? 
 				}
 				else if (result == "yes") {
                     $('#checkedEmailIcon').hide().siblings().hide();
-                    alert("Данные успешно сохранены.");
-                    LocationSignupChecking()
+                    alert("Данные успешно сохранены. Необходимо подтвердить Ваш новый e-mail");
+                    HrefUpdateEmail()
                 }
                 else
                     alert(result);
@@ -1654,10 +1665,10 @@
         );
     };
 
-    function LocationSignupChecking() {
+    function HrefUpdateEmail() {
         setTimeout(
             function () {
-                location.href = "@ViewBag.L.SiteUrlClear/User/SignupChecking";;
+                location.href = "@ViewBag.L.SiteUrlClear/User/UpdateEmail";;
             }, 200
         );
     };

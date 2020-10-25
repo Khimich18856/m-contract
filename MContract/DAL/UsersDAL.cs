@@ -962,7 +962,7 @@ DECLARE @newUserID int;
         }
         #endregion
 
-        #region Подтверждение ЕМАЙЛ 
+        #region Подтверждение e-mail 
 
         public static bool UpdateUserEmailConfirmed(int userId, string token)
         {
@@ -994,7 +994,38 @@ DECLARE @newUserID int;
         }
         #endregion
 
-        #region Удаление подтверждение ЕМАЙЛ ввиду смены ЕМАЙЛ в личном кабинете
+        #region проверка e-mail EmailConfirmed == true
+
+        public static bool SelectUserEmailConfirmed(int userId)
+        {
+            //@"select * from dbo.Users where Id=@Id";
+            const string query = @"select * from dbo.Users where Id=@Id AND EmailConfirmed=@EmailConfirmed";
+            var connect = new SqlConnection(connStr);
+            var sqlCommand = new SqlCommand(query, connect);
+
+            sqlCommand.Parameters.AddWithValue("Id", userId);
+            sqlCommand.Parameters.AddWithValue("EmailConfirmed", true);
+
+            try
+            {
+                connect.Open();
+                sqlCommand.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                string methodName = MethodBase.GetCurrentMethod().Name;
+                throw new Exception("in UsersDAL." + methodName + "(): " + ex);
+            }
+            finally
+            {
+                connect.Close();
+            }
+
+            return true;
+        }
+        #endregion
+
+        #region Удаление подтверждение e-mail ввиду смены e-mail в личном кабинете
 
         public static bool UpdateUserEmailNOConfirmed(int userId, string token)
         {

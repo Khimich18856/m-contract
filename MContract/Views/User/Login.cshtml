@@ -29,14 +29,17 @@
                         <div class="status-of-log">
                             @if (errorMessage != null && errorMessage.Contains("пароль"))
                             {
-                                <div class="false-pas">
-                                    Неправильный Логин или Пароль
+                                <img src="" onerror="checkPassword();">
+                                <div class="false-pas" id="divPassword">
+                                    Неправильный Пароль
                                 </div>
                             }
-                            @if (errorMessage != null && errorMessage.Contains("Email"))
+                            @if (errorMessage != null && errorMessage.Contains("e-mail"))
                             {
+
+
                                 <div class="false-mail">
-                                    Пользователь с данным E-Mail не найден, проверьте правильность ввода или <a href="@ViewBag.L.SiteUrlClear/registration">зарегистрируйтесь</a>
+                                    Пользователь с данным e-mail не найден, проверьте правильность ввода или <a href="@ViewBag.L.SiteUrlClear/registration">зарегистрируйтесь</a>
                                 </div>
                             }
                             @if (errorMessage != null && errorMessage.Contains("повторно?"))
@@ -96,12 +99,20 @@
     </section>
     <!-- // Вход-->
 }
+<script>
 
-<script type="text/javascript">
+    function checkPassword() {
+        $("#password").css('border', 'solid 2px red');
+
+       // $("#password").css('box-shadow', '0 0 5px 2px red;');
+    }
+
+
     function checkFields() {
         var result = true;
         if ($('#email').val().length == 0) {
             $('#emailRequired').show();
+            //$("#email").css('border', 'solid 2px red');
             result = false;
         }
         else
@@ -109,6 +120,7 @@
 
         if ($('#password').val().length == 0) {
             $('#passwordRequired').show();
+            //$("#password").css('border', 'solid 2px red');
             result = false;
         }
         else
@@ -119,19 +131,19 @@
     //==   Лучшее решение состоит в том, чтобы создать слушатель события, вместо того, чтобы вставлять обработчик в строку ====== //
     $(function () {
         $("#btnReSendEmail").click(function () {
-            reSendEmail();
+            reVerificationEmail();
         });
         $("#spanReSendPassword").click(function () {
             reSendPassword();
         });
     });
-    function reSendEmail() {
+    function reVerificationEmail() {
         $.ajax('/User/Resendemail',
             {
                 type: 'POST',
                 data: { 'email': $("#email").val() },
                 success: function () {
-                    alert("Письмо подтверждения отправлено повторно.");
+                    alert("Письмо подтверждения отправлено повторно. Для завершения регистрации перейдите по ссылке, указанной в письме.");
                     $('#divReSendEmail').hide();
                 },
             });

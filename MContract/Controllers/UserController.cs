@@ -283,11 +283,11 @@ namespace MContract.Controllers
 
         #endregion
 
-        #region Проверка нового ЮЗЕРА на уникальность по ЕМАЙЛ и ИНН
+        #region Проверка нового ЮЗЕРА на уникальность по e-mail и ИНН
 
         public string UniqueEmail(string newEmail)
         {
-            /*  проверяем существование пользователя в базе данных с только что введенным емайл               
+            /*  проверяем существование пользователя в базе данных с только что введенным e-mail               
               если такого пользователя нет то ничего не делаем
               если есть то сообщаем пользователю об этом 
               блокируем внесение данных ... 
@@ -310,7 +310,7 @@ namespace MContract.Controllers
         public string Resendemail(string email)
         {
             /* 
-              НЕОБХОДИМО ПЕРЕДАТЬ емайл USERA на клиенте == button
+              НЕОБХОДИМО ПЕРЕДАТЬ e-mail USERA на клиенте == button
              $.ajax('/User/Resendemail',
              */
             Guid g;
@@ -328,23 +328,45 @@ namespace MContract.Controllers
                     #region Повторное потдверждение почтового ящика зарегистрированного ЮЗЕРА
                     string subscription = C.SiteUrl + "User/VerificationEmail?token=" + _g;
                     string subject = "Повторное подтверждение регистрации";
-                    string body = "Уважаемый новый пользователь портала M-contract.ru" + "<br/>" + "<br/>" +
-                    "Вам необходимо подтвердить данные Вашего почтового ящика - " + "<b>" + sendTo + "</b>" + "<br/>" + "<br/>" +
+                    string body = "Уважаемый новый пользователь портала M-contract" + "<br/>" + "<br/>" +
+                    "Вам необходимо подтвердить данные Вашего почтового ящика" + "<br/>" + "<br/>" +
                     "для подтверждения - перейдите по ссылке - " + "<a href=\'" + subscription + "'>Подтвердить e-mail</a>." + "<br/>"
-                    + "<br/>" + "<i>" + "С уважением команда портала <a href=\'" + C.SiteUrl + "'>m-contract.ru</a>" + "</i>";
+                    + "<br/>" + "<i>" + "С уважением команда портала M-contract" + "</i>";
                     MailHelper.SendMail(sendTo, subject, body);
                     #endregion
+                    return "Письмо подтверждения отправлено повторно на Ваш e-mail - " + sendTo + ", указанный Вами при регистрации";
                 }
-            }
-            return "Письмо подтверждения отправлено повторно.";
-
+                else
+                    return "Ошибка отправки почты на  Ваш e-mail - " + email;
+                }
+                else
+                    return "Пользователя с данным именем " + email + " не существует. Проверьте правильность ввода или зарегистрируйтесь.";
         }
         #endregion
 
-        #region Верификация емайл 
+        #region Верификация e-mail 
         [HttpGet]
         public ActionResult VerificationEmail(string token)
         {
+            var viewModel = new UserLogoutViewModel();
+
+            ViewBag.L.ShowSearchbar = false;
+            if (Response.Cookies != null && Response.Cookies["ep"] != null)
+                Response.Cookies["ep"].Expires = DateTime.Now.AddDays(-1);
+            else
+                LogsDAL.AddError("Response.Cookies = null или Response.Cookies[ep] = null в UserController.Logout()");
+
+            Session.Clear();
+
+            ViewBag.Heading = "Изменения e-mail пользователя";
+            #region Хлебные крошки
+            var breadCrumbs = new List<BreadCrumbLink>
+            {
+                new BreadCrumbLink() { Text = ViewBag.Heading, EndPoint = true }
+            };
+            ViewBag.BreadCrumbs = breadCrumbs;
+            #endregion
+
             if (token != null && token.Length == 36)
             {
                 var user = UsersDAL.GetUserByToken(token);
@@ -358,13 +380,12 @@ namespace MContract.Controllers
                     if (UsersDAL.UpdateUserEmailConfirmed(user.Id, _g) == true)
                     {
                         ViewData["tempdata"] = user.Email;
-                        ViewData["tempdata1"] = "Ваш емайл - подтвержден успешно";
+                        ViewData["tempdata1"] = "Ваш e-mail - подтвержден успешно";
+
+                        return View(viewModel);
                     }
-                    else/* (UsersDAL.GetUserByEmail(_email).EmailConfirmed == true)*/
-                    {
-                        //ViewData["tempdata"] = "Вы уже подтвердили Ваш емайл. Не стоит делать это повторно.";
-                    }
-                    return View();
+                    else
+                        return View(viewModel);
                 }
                 else
                     return RedirectToAction("Index", "Home");
@@ -393,18 +414,19 @@ namespace MContract.Controllers
                     string sendTo = dbUser.Email;
                     string subscription = C.SiteUrl + "User/ResetPassword?token=" + _g;
                     string subject = "Восстановление доступа";
-                    string body = "Уважаемый пользователь портала M-contract.ru" + "<br/>" + "<br/>" +
+                    string body = "Уважаемый пользователь портала M-contract" + "<br/>" + "<br/>" +
                     "Для восстановления доступа к порталу - перейдите по ссылке - " + "<a href=\'" + subscription + "'>Восстановить пароль</a>." + "<br/>"
-                    + "<br/>" + "<i>" + "С уважением команда портала <a href=\'" + C.SiteUrl + "'>m-contract.ru</a>" + "</i>"
+                    + "<br/>" + "<i>" + "С уважением команда портала M-contract" + "</i>"
                     + "<br/>" + "<br/>" + "Если это письмо пришло Вам ошибочно - просто проигнорируйте это письмо";
                     MailHelper.SendMail(sendTo, subject, body);
-                    #endregion
+                    #endregion 
+                    return "Для восстановления доступа к порталу - перейдите по ссылке в письме, отправленном на Ваш e-mail - " + sendTo;
                 }
-                return "Отправка запроса - напоминаем пароль.";
+                else
+                    return "Ошибка отправки почты на  Ваш e-mail - " + email;
             }
             else
-            return email + " - вы не являетесь пользователем данного ресурса.";
-
+            return "Пользователя с данным именем " + email + " не существует. Проверьте правильность ввода или зарегистрируйтесь.";
         }
         #endregion
 
@@ -447,7 +469,7 @@ namespace MContract.Controllers
                 if (success)
                 {
                     //ViewData["tempdata"] = user.ContactName + " - ваш пароль успешно обновлен";
-                    //ViewData["tempdata1"] = "Для завершения процедуры - перейдите по ссылке отправленной на Ваш емайл - " + user.Email;
+                    //ViewData["tempdata1"] = "Для завершения процедуры - перейдите по ссылке отправленной на Ваш e-mail - " + user.Email;
                 }
                 else
                     ViewData["tempdata"] = "Произошла ошибка при обновлениие пароля, попробуйте позже";
@@ -544,10 +566,10 @@ namespace MContract.Controllers
                     string subscription = C.SiteUrl + "User/VerificationEmail?token=" + userNew.VerificationCode;
                     string sendTo = userNew.Email;
                     string subject = "Подтверждение регистрации";
-                    string body = "Уважаемый новый пользователь портала M-contract.ru" + "<br/>" + "<br/>" +
-                    "Вам необходимо подтвердить данные Вашего почтового ящика - " + "<b>" + sendTo + "</b>" + "<br/>" + "<br/>" +
+                    string body = "Уважаемый новый пользователь портала M-contract" + "<br/>" + "<br/>" +
+                    "Вам необходимо подтвердить данные Вашего почтового ящика" + "<br/>" + "<br/>" +
                     "для подтверждения - перейдите по ссылке - " + "<a href=\'" + subscription + "'>Подтвердить e-mail</a>." + "<br/>"
-                    + "<br/>" + "<i>" + "С уважением команда портала <a href=\'" + C.SiteUrl + "'>m-contract.ru</a>" + "</i>";
+                    + "<br/>" + "<i>" + "С уважением команда портала M-contract" + "</i>";
                     MailHelper.SendMail(sendTo, subject, body);
                     #endregion
 
@@ -573,8 +595,6 @@ namespace MContract.Controllers
 
                 return "Не удалось записать ваши данные, пожалуйста, попробуйте позже";
             }
-
-
         }
         #endregion
 
@@ -582,7 +602,16 @@ namespace MContract.Controllers
         [HttpGet]
         public ActionResult SignupChecking()
         {
+            var viewModel = new UserLogoutViewModel();
+
             ViewBag.L.ShowSearchbar = false;
+            if (Response.Cookies != null && Response.Cookies["ep"] != null)
+                Response.Cookies["ep"].Expires = DateTime.Now.AddDays(-1);
+            else
+                LogsDAL.AddError("Response.Cookies = null или Response.Cookies[ep] = null в UserController.Logout()");
+
+            Session.Clear();
+
             ViewBag.Heading = "Подтверждение регистрации";
             #region Хлебные крошки
             var breadCrumbs = new List<BreadCrumbLink>
@@ -591,39 +620,35 @@ namespace MContract.Controllers
             };
             ViewBag.BreadCrumbs = breadCrumbs;
             #endregion
-            return View();
+            return View(viewModel);
         }
-
-        #region OLD public ActionResult SignupChecking()
-
-        /*
-                     * Заремарено чтобы после регистрации при переходе на страницу SignupChecking 
-                     * у нового Юзера так как он не подтвердил данные своего почтового ящика 
-                     * не было доступа в Личный кабинет
-                    */
-
-        //[HttpGet]
-        //public ActionResult SignupChecking()
-        //{
-        //    ViewBag.L.ShowSearchbar = false;
-        //    UserSignUpCheckingViewModel viewModel = new UserSignUpCheckingViewModel()
-        //    {
-        //        PersonalAreaUrl = Urls.PersonalArea
-        //    };
-        //    ViewBag.Heading = "Подтверждение регистрации";
-        //    #region Хлебные крошки
-        //    var breadCrumbs = new List<BreadCrumbLink>
-        //    {
-        //        new BreadCrumbLink() { Text = "Регистрация", Url = Urls.Registration, Title = "Перейти к странице регистрации" },
-        //        new BreadCrumbLink() { Text = "Подтверждение", EndPoint = true }
-        //    };
-        //    ViewBag.BreadCrumbs = breadCrumbs;
-        //    #endregion
-
-        //    return View(viewModel);
-        //}
         #endregion
 
+        #region После изменения e-mail существующего ЮЗЕРА 20201025
+        [HttpGet]
+        public ActionResult UpdateEmail()
+        {
+            var viewModel = new UserLogoutViewModel();
+
+            ViewBag.L.ShowSearchbar = false;
+            if (Response.Cookies != null && Response.Cookies["ep"] != null)
+                Response.Cookies["ep"].Expires = DateTime.Now.AddDays(-1);
+            else
+                LogsDAL.AddError("Response.Cookies = null или Response.Cookies[ep] = null в UserController.Logout()");
+
+            Session.Clear();
+
+            ViewBag.Heading = "Изменения e-mail пользователя";
+            #region Хлебные крошки
+            var breadCrumbs = new List<BreadCrumbLink>
+            {
+                new BreadCrumbLink() { Text = ViewBag.Heading, EndPoint = true }
+            };
+            ViewBag.BreadCrumbs = breadCrumbs;
+            #endregion
+            return View(viewModel);
+        }
+        
         #endregion
 
         #region Задать новый пароль В личном кабинете
@@ -638,7 +663,7 @@ namespace MContract.Controllers
             var success = UsersDAL.UpdateUserPassword(currentUser.Id, SecurityHelper.Encryption(newPassword));
             if (success)
             {
-                currentUser.Password = SecurityHelper.Encryption(newPassword);
+                currentUser.Password = newPassword;
                 SM.CurrentUser = currentUser;
                 CookiesHelper.SaveCookiesForHideAuthorization(currentUser.Email, "", currentUser.Password);
                 return "ok";
@@ -692,8 +717,8 @@ namespace MContract.Controllers
                     if (success)
                     {
                         /*
-                     * Заремарено чтобы после изменения ЕМАЙЛ 
-                     * у ЮЗЕРа так как он не подтвердил данные своего НОВОГО ЕМАЙЛ 
+                     * Заремарено чтобы после изменения e-mail 
+                     * у ЮЗЕРа так как он не подтвердил данные своего НОВОГО e-mail 
                      * не было доступа в Личный кабинет
                     */
                         CookiesHelper.SaveCookiesForHideAuthorization("", "", "");
@@ -712,25 +737,28 @@ namespace MContract.Controllers
                                 #region Подтверждение Вашего нового почтового ящика зарегистрированного ЮЗЕРА
                                 string subscription = C.SiteUrl + "User/VerificationEmail?token=" + _g;
                                 string subject = "Подтверждение Вашего нового почтового ящика";
-                                string body = "Уважаемый новый пользователь портала M-contract.ru" + "<br/>" + "<br/>" +
-                                "Вам необходимо подтвердить данные Вашего нового почтового ящика - " + "<b>" + sendTo + "</b>" + "<br/>" + "<br/>" +
+                                string body = "Уважаемый пользователь портала M-contract" + "<br/>" + "<br/>" +
+                                "Вам необходимо подтвердить данные Вашего нового почтового ящика"  + "<br/>" + "<br/>" +
                                 "для подтверждения - перейдите по ссылке - " + "<a href=\'" + subscription + "'>Подтвердить e-mail</a>." + "<br/>"
-                                + "<br/>" + "<i>" + "С уважением команда портала <a href=\'" + C.SiteUrl + "'>m-contract.ru</a>" + "</i>";
+                                + "<br/>" + "<i>" + "С уважением команда портала M-contract" + "</i>";
                                 MailHelper.SendMail(sendTo, subject, body);
                                 #endregion
+                                return "yes";
                             }
-                            return "yes";
-                            /* 20201024 
-                             * и необходимо отправить письмо 
-                             * ПОДТВЕРДИТЬ НОВЫЙ ЕМАЙЛ 
-                             * Поле ЕМАЙЛ ВЕРИФИКАЦИЯ в таблице юзер == false 
-                             * обновить Token 
-                             * и после подтверждения емайл с новым Token 
-                             * Поле ЕМАЙЛ ВЕРИФИКАЦИЯ в таблице юзер == true 
-                             * и желательно выкинуть Юзера на страницу входа ... 
-                             * Это все надо реализовать завтра ... 
-                             */
-                        }
+                            else
+                                return "Произошла ошибка при сохранении, попробуйте позже";
+
+                        /* 20201024 
+                         * и необходимо отправить письмо 
+                         * ПОДТВЕРДИТЬ НОВЫЙ e-mail 
+                         * Поле e-mail ВЕРИФИКАЦИЯ в таблице юзер == false 
+                         * обновить Token 
+                         * и после подтверждения e-mail с новым Token 
+                         * Поле e-mail ВЕРИФИКАЦИЯ в таблице юзер == true 
+                         * и желательно выкинуть Юзера на страницу входа ... 
+                         * Это все надо реализовать завтра ... 
+                         */
+                    }
                         else
                         return "Произошла ошибка при сохранении, попробуйте позже";
                     }
@@ -738,15 +766,13 @@ namespace MContract.Controllers
                         return "Произошла ошибка при сохранении, попробуйте позже";
                 }
                 else
-
-                    return "Пользователь с данным емайл - " + formUser.Email + " уже зарегистрирован в базе данных";
-
+                    return "Пользователь с данным e-mail - " + formUser.Email + " уже зарегистрирован в базе данных";
             }
             #endregion
         }
         #endregion
 
-        #region Проверка существующего ЮЗЕРА на уникальность по ЕМАЙЛ при изменении
+        #region Проверка существующего ЮЗЕРА на уникальность по e-mail при изменении
         [MyAuthorize]
         public string UniqueEmailUpdate(string newEmail)
         {
@@ -819,7 +845,7 @@ namespace MContract.Controllers
                             return Redirect(Urls.PersonalArea);
                     }
                     else
-                        formUser.ErrorMessage = "Вы не подтвердили Ваш емайл. Хотите получить письмо подтверждения повторно?";
+                        formUser.ErrorMessage = "Вы не подтвердили Ваш e-mail. Хотите получить письмо подтверждения повторно?";
                     //#region Повторная отправка запроса для подтверждения регистрации == 330
                 }
 
@@ -827,7 +853,7 @@ namespace MContract.Controllers
                     formUser.ErrorMessage = "Неверный пароль";
             }
             else
-                formUser.ErrorMessage = "Пользователь с данным Email не найден. Хотите <a href=\"" + Urls.Registration + "\">зарегистрироваться?</a>";
+                formUser.ErrorMessage = "Пользователь с данным e-mail не найден. Хотите <a href=\"" + Urls.Registration + "\">зарегистрироваться?</a>";
 
             return View(formUser);
         }

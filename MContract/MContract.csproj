@@ -1103,6 +1103,7 @@
     <Content Include="Views\User\VerificationEmail.cshtml" />
     <Content Include="Views\User\ResetPassword.cshtml" />
     <None Include="Views\User\MyProfile.cshtml" />
+    <Content Include="Views\User\UpdateEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Files\" />

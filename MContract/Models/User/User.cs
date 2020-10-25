@@ -52,10 +52,10 @@ namespace MContract.Models
 		/// </summary>
 		public DateTime LastOnline { get; set; }
 
-        /// <summary>
-        /// Krakoss.Encryption(user.INN).ToString() для подтверждения емайл нового пользователя
-        /// </summary>
-        public string VerificationCode { get; set; }
+		/// <summary>
+		/// для подтверждения e-mail нового пользователя
+		/// </summary>
+		public string VerificationCode { get; set; }
 
 		//вычисляемые поля:
 		public bool IsOnline
@@ -161,8 +161,8 @@ namespace MContract.Models
 
 		public List<Ad> FavoriteAds { get; set; }
 
-		//для страницы логина
-		public string ErrorMessage { get; set; }
+        //для страницы логина
+        public string ErrorMessage { get; set; }
 
 		/// <summary>
 		/// для поиска в профиле
