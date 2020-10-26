@@ -1029,7 +1029,9 @@ namespace MContract.Controllers
             #endregion
             return View(viewModel);
         }
+        #endregion
 
+        #region История сделок
         [MyAuthorize]
         public ActionResult DealsHistory()
         {
@@ -1232,6 +1234,9 @@ namespace MContract.Controllers
             return View(viewModel);
         }
 
+        #endregion
+
+        #region
         [MyAuthorize]
         public ActionResult DealCard(int adId)
         {
