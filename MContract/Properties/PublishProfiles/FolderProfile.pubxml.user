@@ -3082,7 +3082,7 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Views/User/Login.cshtml">
-      <publishTime>10/26/2020 10:34:17</publishTime>
+      <publishTime>10/26/2020 10:58:27</publishTime>
     </File>
     <File Include="Views/User/Logout.cshtml">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -3106,7 +3106,7 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Views/User/MyProfile.cshtml">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/26/2020 10:55:10</publishTime>
     </File>
     <File Include="Views/User/MyProfile_OLD_20201023.cshtml">
       <publishTime>01/01/0001 00:00:00</publishTime>

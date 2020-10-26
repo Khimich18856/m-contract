@@ -117,17 +117,17 @@
 
     // best
     function checkPassword() {
-        $("#password").css('border', 'solid 1px #e060f6');
+        $("#password").css('border', 'solid 1px red');
     }
     function checkEmail() {
-        $("#email").css('border', 'solid 1px #e060f6');
+        $("#email").css('border', 'solid 1px red');
     }
 
     function checkFields() {
         var result = true;
         if ($('#email').val().length == 0) {
             $('#emailRequired').show();
-            $("#email").css('border', 'solid 1px #e060f6');
+            $("#email").css('border', 'solid 1px red');
             result = false;
         }
         else
@@ -135,7 +135,7 @@
 
         if ($('#password').val().length == 0) {
             $('#passwordRequired').show();
-            $("#password").css('border', 'solid 1px #e060f6');
+            $("#password").css('border', 'solid 1px red');
             result = false;
         }
         else
