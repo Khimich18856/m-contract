@@ -107,71 +107,101 @@
         $("#password").on('focus', function () {
             focusPassword();
         });
+        $(function () {
+            $("#email").blur(function () {
+                verificationEmail();
+            });
+        });
     });
-    function focusEmail() {
-        $("#email").css('border', 'solid 1px #2b8ff1');
-    }
-    function focusPassword() {
-        $("#password").css('border', 'solid 1px #2b8ff1');
-    }
-
-    // best
-    function checkPassword() {
-        $("#password").css('border', 'solid 1px red');
-    }
-    function checkEmail() {
-        $("#email").css('border', 'solid 1px red');
-    }
-
-    function checkFields() {
-        var result = true;
-        if ($('#email').val().length == 0) {
-            $('#emailRequired').show();
-            $("#email").css('border', 'solid 1px red');
-            result = false;
+        //==========================================//
+        function focusEmail() {
+            $("#email").css('border', 'solid 1px #2b8ff1');
         }
-        else
-            $('#emailRequired').hide();
+        function focusPassword() {
+            $("#password").css('border', 'solid 1px #2b8ff1');
+        }
 
-        if ($('#password').val().length == 0) {
-            $('#passwordRequired').show();
+        // best
+        function checkPassword() {
             $("#password").css('border', 'solid 1px red');
-            result = false;
         }
-        else
-            $('#passwordRequired').hide();
+        function checkEmail() {
+            $("#email").css('border', 'solid 1px red');
+        }
 
-        return result;
-    }
-    //==   Лучшее решение состоит в том, чтобы создать слушатель события, вместо того, чтобы вставлять обработчик в строку ====== //
-    $(function () {
-        $("#btnReSendEmail").click(function () {
-            reVerificationEmail();
-        });
-        $("#spanReSendPassword").click(function () {
-            reSendPassword();
-        });
-    });
-    function reVerificationEmail() {
-        $.ajax('/User/Resendemail',
-            {
-                type: 'POST',
-                data: { 'email': $("#email").val() },
-                success: function () {
-                    alert("Письмо подтверждения отправлено повторно. Для завершения регистрации перейдите по ссылке, указанной в письме.");
-                    $('#divReSendEmail').hide();
-                },
+        function checkFields() {
+            var result = true;
+            if ($('#email').val().length == 0) {
+                $('#emailRequired').show();
+                $("#email").css('border', 'solid 1px red');
+                result = false;
+            }
+            else
+                $('#emailRequired').hide();
+
+            if ($('#password').val().length == 0) {
+                $('#passwordRequired').show();
+                $("#password").css('border', 'solid 1px red');
+                result = false;
+            }
+            else
+                $('#passwordRequired').hide();
+
+            return result;
+        }
+
+        $(function () {
+            $("#btnReSendEmail").click(function () {
+                reVerificationEmail();
             });
+            $("#spanReSendPassword").click(function () {
+                reSendPassword();
+            });
+        });
+        function reVerificationEmail() {
+            $.ajax('/User/Resendemail',
+                {
+                    type: 'POST',
+                    data: { 'email': $("#email").val() },
+                    success: function () {
+                        alert("Письмо подтверждения отправлено повторно. Для завершения регистрации перейдите по ссылке, указанной в письме.");
+                        $('#divReSendEmail').hide();
+                    },
+                });
+        };
+        function reSendPassword() {
+
+            $.ajax('/User/Resendpassword',
+                {
+                    type: 'POST',
+                    data: { 'email': $("#email").val() },
+                    success: function (data) {
+                        alert(data);
+                    },
+                });
+        };
+
+        function verificationEmail() {
+           
+            if (checkIsNotEmptyAndSetTipVisibility($("#email"))) {
+                if ($("#email").val().match(/^\b[A-Z0-9._%-]+@@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i)) {                   
+                }
+                else {
+                    $("#email").focus;
+                    checkEmail();
+                }
+            }
+            else {
+                $("#email").focus;
+                checkEmail();
+            }
     };
-    function reSendPassword() {
-
-        $.ajax('/User/Resendpassword',
-            {
-                type: 'POST',
-                data: { 'email': $("#email").val() },
-                success: function (data) {
-                    alert(data);
-                },
-            });
+    function checkIsNotEmptyAndSetTipVisibility(obj) {      
+        if (obj.val().length == 0 || !obj.val().match(/[^-_+7()]/g)) {          
+            return false;
+        }
+        else {           
+            return true;
+        };
     };
 </script>
