@@ -338,9 +338,9 @@ namespace MContract.Controllers
                 }
                 else
                     return "Ошибка отправки почты на  Ваш e-mail - " + email;
-                }
-                else
-                    return "Пользователя с данным именем " + email + " не существует. Проверьте правильность ввода или зарегистрируйтесь.";
+            }
+            else
+                return "Пользователя с данным именем " + email + " не существует. Проверьте правильность ввода или зарегистрируйтесь.";
         }
         #endregion
 
@@ -426,7 +426,7 @@ namespace MContract.Controllers
                     return "Ошибка отправки почты на  Ваш e-mail - " + email;
             }
             else
-            return "Пользователя с данным именем " + email + " не существует. Проверьте правильность ввода или зарегистрируйтесь.";
+                return "Пользователя с данным именем " + email + " не существует. Проверьте правильность ввода или зарегистрируйтесь.";
         }
         #endregion
 
@@ -648,7 +648,7 @@ namespace MContract.Controllers
             #endregion
             return View(viewModel);
         }
-        
+
         #endregion
 
         #region Задать новый пароль В личном кабинете
@@ -738,7 +738,7 @@ namespace MContract.Controllers
                                 string subscription = C.SiteUrl + "User/VerificationEmail?token=" + _g;
                                 string subject = "Подтверждение Вашего нового почтового ящика";
                                 string body = "Уважаемый пользователь портала M-contract" + "<br/>" + "<br/>" +
-                                "Вам необходимо подтвердить данные Вашего нового почтового ящика"  + "<br/>" + "<br/>" +
+                                "Вам необходимо подтвердить данные Вашего нового почтового ящика" + "<br/>" + "<br/>" +
                                 "для подтверждения - перейдите по ссылке - " + "<a href=\'" + subscription + "'>Подтвердить e-mail</a>." + "<br/>"
                                 + "<br/>" + "<i>" + "С уважением команда портала M-contract" + "</i>";
                                 MailHelper.SendMail(sendTo, subject, body);
@@ -748,19 +748,19 @@ namespace MContract.Controllers
                             else
                                 return "Произошла ошибка при сохранении, попробуйте позже";
 
-                        /* 20201024 
-                         * и необходимо отправить письмо 
-                         * ПОДТВЕРДИТЬ НОВЫЙ e-mail 
-                         * Поле e-mail ВЕРИФИКАЦИЯ в таблице юзер == false 
-                         * обновить Token 
-                         * и после подтверждения e-mail с новым Token 
-                         * Поле e-mail ВЕРИФИКАЦИЯ в таблице юзер == true 
-                         * и желательно выкинуть Юзера на страницу входа ... 
-                         * Это все надо реализовать завтра ... 
-                         */
-                    }
+                            /* 20201024 
+                             * и необходимо отправить письмо 
+                             * ПОДТВЕРДИТЬ НОВЫЙ e-mail 
+                             * Поле e-mail ВЕРИФИКАЦИЯ в таблице юзер == false 
+                             * обновить Token 
+                             * и после подтверждения e-mail с новым Token 
+                             * Поле e-mail ВЕРИФИКАЦИЯ в таблице юзер == true 
+                             * и желательно выкинуть Юзера на страницу входа ... 
+                             * Это все надо реализовать завтра ... 
+                             */
+                        }
                         else
-                        return "Произошла ошибка при сохранении, попробуйте позже";
+                            return "Произошла ошибка при сохранении, попробуйте позже";
                     }
                     else
                         return "Произошла ошибка при сохранении, попробуйте позже";
@@ -1081,7 +1081,7 @@ namespace MContract.Controllers
             // основываясь на объявлениях соберем сделки
             foreach (var ad in ads)
             {
-                //в озьмем соответствующее предложение
+                // возьмем соответствующее предложение
                 var offer = offers.FirstOrDefault(o => o.AdId == ad.Id);
                 if (offer == null)
                 {
@@ -1236,7 +1236,7 @@ namespace MContract.Controllers
 
         #endregion
 
-        #region
+        #region История выбранной сделки
         [MyAuthorize]
         public ActionResult DealCard(int adId)
         {
@@ -1336,6 +1336,19 @@ namespace MContract.Controllers
             return View(viewModel);
         }
 
+        #endregion
+        #region Отправка данных о выбранной сделке на емайл
+
+        [MyAuthorize]
+        public string SendDealsHistory(string locationHref, string formHTML)
+        {
+            return locationHref +  " Произошла ошибка при сохранении, попробуйте позже "+ formHTML;
+        }
+        #endregion
+
+
+
+        #region
         public ActionResult RateRules()
         {
             return View();

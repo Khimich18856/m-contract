@@ -2412,6 +2412,9 @@
     <File Include="js/jquery.validate.unobtrusive.min.js">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
+    <File Include="js/jspdf.min.js">
+      <publishTime>10/26/2020 20:29:42</publishTime>
+    </File>
     <File Include="js/lk-main.js">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
@@ -3058,7 +3061,7 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Views/User/DealCard.cshtml">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/26/2020 21:24:33</publishTime>
     </File>
     <File Include="Views/User/DealsHistory.cshtml">
       <publishTime>01/01/0001 00:00:00</publishTime>
