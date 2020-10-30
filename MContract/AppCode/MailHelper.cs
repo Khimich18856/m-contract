@@ -38,12 +38,12 @@ namespace MContract.AppCode
         // ==================== метод отправки почты с вложением файла ===================================//
         public static void MailSendAttachment(string strFrom, string strTo, string strToCC, string strSubject, string strBody, string dirName, string fileName)
         {
-            if (ValidHelper.emailRus(strTo))
+            if (ValidHelper.EmailRus(strTo))
             try
             {
                 MailMessage Message = new MailMessage(strFrom, strTo); // 
 
-                if (ValidHelper.emailRus(strToCC))
+                if (ValidHelper.EmailRus(strToCC))
                     Message.CC.Add(strToCC);
                 Message.Body = strBody;
                 Message.Subject = strSubject;

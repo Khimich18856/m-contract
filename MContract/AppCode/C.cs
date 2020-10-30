@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Web;
+﻿using System.Configuration;
 
 namespace MContract.AppCode
 {
@@ -16,44 +12,14 @@ namespace MContract.AppCode
         public static string LocalHost => ConfigurationManager.AppSettings["localhost"].ToString();
 
 
-        public static string SiteUrlClear
-        {
-            get
-            {
-                return ConfigurationManager.AppSettings["production"] == "true" ? "http://m-contract.ru" : "http://localhost:3254";
-            }
-        }
+        public static string SiteUrlClear => ConfigurationManager.AppSettings["production"] == "true" ? WebAddress : "http://localhost:3254";
 
-        public static string SiteUrl
-        {
-            get
-            {
-                return ConfigurationManager.AppSettings["production"] == "true" ? "http://m-contract.ru/" : "http://localhost:3254/";
-            }
-        }
+        public static string SiteUrl => ConfigurationManager.AppSettings["production"] == "true" ? WebAddress + "/" : "http://localhost:3254/";
 
-        public static bool IsProduction
-        {
-            get
-            {
-                return ConfigurationManager.AppSettings["production"] == "true";
-            }
-        }
+        public static bool IsProduction => ConfigurationManager.AppSettings["production"] == "true";
 
-        public static int ChatBoxMaxDialogs
-        {
-            get
-            {
-                return 10;
-            }
-        }
+        public static int ChatBoxMaxDialogs => 10;
 
-        public static int ChatBoxSecondsBetweenMessagesRefresh
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public static int ChatBoxSecondsBetweenMessagesRefresh => 5;
     }
 }

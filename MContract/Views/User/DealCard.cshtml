@@ -85,7 +85,7 @@
 
 
         @{
-            var deferMentPeriod = Model.deferMentPeriod > 0 ? "<tr><td>Количество дней отсрочки:</td><td>" + Model.deferMentPeriod + "</td></tr>" : "";
+            var deferMentPeriod = Model.ContractOffer.DefermentPeriod> 0 ? "<tr><td>Количество дней отсрочки:</td><td>" + Model.ContractOffer.DefermentPeriod + "</td></tr>" : "";
         }
         @Html.Raw(deferMentPeriod)
 

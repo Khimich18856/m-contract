@@ -1,22 +1,19 @@
-﻿using MContract.AppCode;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using MContract.AppCode;
 using MContract.DAL;
 using MContract.Models;
 using MContract.Models.Enums;
 using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Web.Mvc;
-
-using System.IO;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
 using System.Web;
+using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using ImageiTextSharp = iTextSharp.text.Image;
-using System.Net.Mail;
-using System.Net.Mime;
 
 namespace MContract.Controllers
 {
@@ -1349,9 +1346,10 @@ namespace MContract.Controllers
 
             //Заполним строку Цена действительна до
             viewModel.ActiveUntilDate = contractOffer.ActiveUntilDate;
-
+            // Цена действительно до - пример 29.10.2020(23:59 мск) 
+            // На сколько помню формат должен быть такой
             var defermentPeriod = ad.DefermentPeriod != null ? ad.DefermentPeriod : 0;
-            viewModel.deferMentPeriod = Convert.ToInt32(defermentPeriod);
+            viewModel.ContractOffer.DefermentPeriod = Convert.ToInt32(defermentPeriod);
 
 
 
@@ -1553,13 +1551,17 @@ namespace MContract.Controllers
                 userTable.AddCell(new Phrase("Цена:", arial));
                 userTable.AddCell(new Phrase(viewModel.Nds.ToString(), arial));
 
-                userTable.AddCell(new Phrase("Условия оплаты:", arial));
-                userTable.AddCell(new Phrase(viewModel.TermsOfPayments.ToString(), arial));
-
-                if (viewModel.deferMentPeriod > 0)
+                
+                if (viewModel.ContractOffer.DefermentPeriod > 0)
                 {
-                    userTable.AddCell(new Phrase("Цена действительна до:", arial));
-                    userTable.AddCell(new Phrase(viewModel.deferMentPeriod.ToString(), arial));
+                    string xxx = viewModel.TermsOfPayments.ToString() + "("
+                        + viewModel.ContractOffer.DefermentPeriod.ToString() + " календарн. дн.)";
+                               userTable.AddCell(new Phrase("Условия оплаты:", arial));
+                    userTable.AddCell(new Phrase(xxx, arial));
+                }
+                else {
+                    userTable.AddCell(new Phrase("Условия оплаты:", arial));
+                    userTable.AddCell(new Phrase(viewModel.TermsOfPayments.ToString(), arial));
                 }
 
                 docCard.Add(userTable);
@@ -1793,7 +1795,7 @@ namespace MContract.Controllers
         public string SendDealsHistory(string file, string emailUser, string emailUserNew, string history)
         {
 
-            if (ValidHelper.emailRus(emailUser) && ValidHelper.emailRus(emailUserNew))
+            if (ValidHelper.EmailRus(emailUser) && ValidHelper.EmailRus(emailUserNew))
 
                 try
                 {
@@ -1813,7 +1815,7 @@ namespace MContract.Controllers
                     Console.WriteLine(ex.ToString());
                     return ex.ToString() + "почта не может быть доставлена на фальшивые e-mail адреса";
                 }
-            else if (ValidHelper.emailRus(emailUser))
+            else if (ValidHelper.EmailRus(emailUser))
 
                 try
                 {
@@ -1832,11 +1834,11 @@ namespace MContract.Controllers
                     Console.WriteLine(ex.ToString());
                     return ex.ToString() + "почта не может быть доставлена на фальшивый e-mail адрес";
                 }
-            #endregion
+          
             return "почта не может быть доставлена на фальшивые e-mail адреса";
 
         }
-
+  #endregion
         #region
         public ActionResult RateRules()
         {

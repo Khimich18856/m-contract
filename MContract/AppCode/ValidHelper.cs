@@ -4,7 +4,7 @@ namespace MContract.AppCode
 {
     public class ValidHelper
     {
-        public static bool emailRus(string email)
+        public static bool EmailRus(string email)
         {
 
             string pattern = @"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*"

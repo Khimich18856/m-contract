@@ -55,13 +55,19 @@ namespace MContract.Models
 		/// </summary>
 		public string Nds { get; set; }
 
-		/// <summary>
-		/// Цена (С НДС/Без НДС)
-		/// </summary>
-		public int deferMentPeriod { get; set; }
+		///// <summary>
+		///// ОТЛОЖЕННЫЙ ПЕРИОД
+		///// </summary>
+		//public int DeferMentPeriod { get; set; }
 
+		/// <summary>
+		/// Активен до даты
+		/// </summary>
 		public string TermsOfPayments { get; set; }
 
+		/// <summary>
+		/// Активен до даты
+		/// </summary>
 		public DateTime ActiveUntilDate { get; set; }
 
 		public User PersonalAreaUser { get; set; }
