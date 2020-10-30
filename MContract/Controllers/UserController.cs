@@ -9,6 +9,15 @@ using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
 
+using System.IO;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.Web;
+using System.Web.UI.WebControls;
+using ImageiTextSharp = iTextSharp.text.Image;
+using System.Net.Mail;
+using System.Net.Mime;
+
 namespace MContract.Controllers
 {
     public class UserController : Controller
@@ -790,7 +799,7 @@ namespace MContract.Controllers
         }
         #endregion
 
-        #region
+        #region Удаление ЮЗЕРА из системы
         [HttpPost]
         [MyAuthorize]
         public string RemoveCompanyFromSite()
@@ -804,7 +813,9 @@ namespace MContract.Controllers
 
             return success ? "ok" : "Произошла ошибка при удалении, попробуйте позже";
         }
+        #endregion
 
+        #region LOGIN Вход в систему
         [HttpGet]
         public ActionResult Login()
         {
@@ -883,7 +894,9 @@ namespace MContract.Controllers
             #endregion
             return View(viewModel);
         }
+        #endregion
 
+        #region
         public ActionResult UserAgreement()
         {
             return View();
@@ -1240,6 +1253,8 @@ namespace MContract.Controllers
         [MyAuthorize]
         public ActionResult DealCard(int adId)
         {
+            #region Create DCard 20201028 NEW
+
             ViewBag.L.HideHead = true;
             var viewModel = new UserDealCardViewModel();
             var currentUser = SM.GetPersonalAreaUser();
@@ -1311,6 +1326,7 @@ namespace MContract.Controllers
             viewModel.Buyer = buyer;
             viewModel.Seller = seller;
 
+
             //Заполним строку Условия поставки
             var deliveryType = ad.DeliveryType != DeliveryTypes.Any ? ad.DeliveryType : contractOffer.DeliveryType;
             viewModel.DeliveryType = AdHelper.GetDeliveryTypeString(deliveryType);
@@ -1332,21 +1348,492 @@ namespace MContract.Controllers
             viewModel.TermsOfPayments = AdHelper.GetTermsOfPaymentsString(termOfPayment);
 
 
+            var defermentPeriod = ad.DefermentPeriod != null ? ad.DefermentPeriod : 0;
+            viewModel.deferMentPeriod = Convert.ToInt32(defermentPeriod);
 
+
+
+            #endregion
+            #region Create DCard OLD 20201028
+            //ViewBag.L.HideHead = true;
+            //var viewModel = new UserDealCardViewModel();
+            //var currentUser = SM.GetPersonalAreaUser();
+            //var currentUserId = currentUser.Id;
+            //currentUser.SelectedMenu = "История сделок";
+            //viewModel.PersonalAreaUser = currentUser;
+
+            //var ad = AdsDAL.GetAd(adId);
+            //if (ad == null)
+            //    throw new Exception("Не найдено объявление по Id = " + adId);
+
+            //ad.City = TownsDAL.GetTown(ad.CityId);
+            //if (ad.City == null)
+            //    throw new Exception("Не удалось найти город фактического нахождения груза по Id города = " + ad.CityId);
+
+
+            //viewModel.DealDirection = ad.IsBuy ? "покупка" : "продажа";
+
+            //var contractOffers = OffersDAL.GetOffers(adId: adId, contractStatusId: (int)ContractStatuses.Accepted);
+            //if (!contractOffers.Any())
+            //    throw new Exception("Не найдено предложение, по которому заключен контракт, для объявления с Id = " + adId);
+
+            //var contractOffer = contractOffers.First();
+
+            //viewModel.ContractOffer = contractOffer;
+
+            //var adProducts = AdProductsDAL.GetAdProducts(adId);
+            //var productCategoriesIds = adProducts.Select(c => c.ProductCategoryId).Distinct().ToList();
+            //var productCategories = ProductCategoriesDAL.GetCategories()/*из кэша*/.Where(c => productCategoriesIds.Contains(c.Id)).ToList();
+            //var offerProducts = ProductOffersDAL.GetProductOffers(contractOffer.Id);
+            //foreach (var adProduct in adProducts)
+            //{
+            //    adProduct.ProductCategoryName = productCategories.FirstOrDefault(c => c.Id == adProduct.ProductCategoryId)?.Name;
+            //    adProduct.OfferProduct = offerProducts.FirstOrDefault(op => op.ProductId == adProduct.Id);
+            //}
+
+            //ad.Products = adProducts;
+
+            //viewModel.Ad = ad;
+
+            //viewModel.DealDate = contractOffer.ContractSendDate ?? DateTime.MinValue;
+
+
+
+            //var adCreator = UsersDAL.GetUser(ad.SenderId);
+            //if (adCreator == null)
+            //    throw new Exception("Не удалось найти пользователя - организатора торгов по Id пользователя = " + ad.SenderId);
+
+            //var offerCreator = UsersDAL.GetUser(contractOffer.SenderId);
+            //if (offerCreator == null)
+            //    throw new Exception("Не удалось найти пользователя - отправившего выигравшее предложение по Id пользователя = " + contractOffer.SenderId);
+
+            //var buyer = ad.IsBuy ? adCreator : offerCreator;
+            //var seller = ad.IsBuy ? offerCreator : adCreator;
+
+            //buyer.Town = TownsDAL.GetTown(buyer.CityId);
+            //if (buyer.Town == null)
+            //    throw new Exception("Не удалось найти город покупателя по Id города = " + buyer.CityId);
+
+            //seller.Town = TownsDAL.GetTown(seller.CityId);
+            //if (seller.Town == null)
+            //    throw new Exception("Не удалось найти город продавца по Id города = " + seller.CityId);
+
+            //if (seller.Id == currentUserId)
+            //    buyer.Rating = UsersDAL.GetUserRating(buyer.Id, seller.Id, adId);
+            //else
+            //    seller.Rating = UsersDAL.GetUserRating(seller.Id, buyer.Id, adId);
+
+            //viewModel.Buyer = buyer;
+            //viewModel.Seller = seller;
+
+            ////Заполним строку Условия поставки
+            //var deliveryType = ad.DeliveryType != DeliveryTypes.Any ? ad.DeliveryType : contractOffer.DeliveryType;
+            //viewModel.DeliveryType = AdHelper.GetDeliveryTypeString(deliveryType);
+
+            ////Заполним строку Погрузка
+            //var deliveryLoadType = ad.DeliveryLoadType != DeliveryLoadTypes.Any ? ad.DeliveryLoadType : contractOffer.DeliveryLoadType;
+            //viewModel.DeliveryLoadType = AdHelper.GetDeliveryLoadTypeString(deliveryLoadType);
+
+            ////Заполним строку Способ доставки
+            //var deliveryWay = ad.DeliveryWay != DeliveryWays.Any ? ad.DeliveryWay : contractOffer.DeliveryWay;
+            //viewModel.DeliveryWay = AdHelper.GetDeliveryWayString(deliveryWay);
+
+            ////Заполним строку Цена (с НДС/без НДС)
+            //var nds = ad.Nds != Nds.Any ? ad.Nds : contractOffer.Nds;
+            //viewModel.Nds = AdHelper.GetNdsString(nds);
+
+            ////Заполним строку Условия оплаты
+            //var termOfPayment = ad.TermsOfPayments != TermsOfPayments.Any ? ad.TermsOfPayments : contractOffer.TermsOfPayments;
+            //viewModel.TermsOfPayments = AdHelper.GetTermsOfPaymentsString(termOfPayment);
+            #endregion
+
+            #region Create PDF
+            string filename;
+            /// 1: создаем документ
+            Document docCard = new Document();
+            try
+            {
+                /// 2: задаем фон и размеры для главной страницы 
+                ///  Rectangle rec = new Rectangle(PageSize.A4.Rotate())  // Альбомная == (842, 595);
+                Rectangle rec = new Rectangle(PageSize.A4)                // Книжная
+                {
+                    BackgroundColor = new BaseColor(248, 249, 250)
+                };
+                docCard.SetPageSize(rec);
+                docCard.SetMargins(20, 10, 25, 30);
+
+                /// 3: подключаем русский шрифт
+                BaseFont baseFont;
+
+                if (System.IO.File.Exists(GetCurrent().Server.MapPath("~/Files/arial.ttf")))
+                {
+                    // русский
+                    string fontUrl = GetCurrent().Server.MapPath("~/Files/arial.ttf");
+                    baseFont = BaseFont.CreateFont(fontUrl, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+                }
+                else
+                    baseFont = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
+
+                Font arial = new Font(baseFont, Font.DEFAULTSIZE, Font.NORMAL);
+                /// 4: Подключаем шрифт для ИТОГО 
+                Font arialbold = new Font(baseFont, 12, Font.BOLD);
+
+                /// 5: указываем папку на сервере где будут храниться документы
+                /// Прежде проверить наличии папки == если ее нет то создать 
+
+                string path = GetCurrent().Server.MapPath("~/"); ;
+
+                if (Directory.Exists(GetCurrent().Server.MapPath("~/Files")))
+                {
+                    path = GetCurrent().Server.MapPath("~/Files");
+                }
+
+                /// 6: Название файла pdf
+                Guid g;
+                g = Guid.NewGuid();
+                string _g = Convert.ToString(g);
+                /*
+                string filename = "Контракт_№_" + viewModel.Ad.Id.ToString() + "_-_" + viewModel.DealDirection.ToString() + "_-_" +_g +".pdf";
+                */
+                filename = _g + ".pdf";
+                ViewBag.FilePDF = filename;
+                /// 7: создаем документ
+                PdfWriter.GetInstance(docCard, new FileStream(path + "/" + filename, FileMode.Create));
+
+                /// 8: открываем дозданный документ
+                docCard.Open();
+
+                docCard.Add(new Paragraph("Контракт № " + viewModel.Ad.Id.ToString() + " (" + viewModel.DealDirection.ToString() + ")", arial));
+                docCard.Add(new Paragraph(" ", arial));
+                docCard.Add(new Paragraph(" ", arial));
+
+
+                /// 12: создание талицы с данным User...ов
+                PdfPTable userTable = new PdfPTable(2);    //2 columns
+                userTable.SetWidths(new float[] { 200, 290 }); // 595
+                userTable.TotalWidth = docCard.PageSize.Width - docCard.RightMargin - docCard.LeftMargin;
+                userTable.LockedWidth = true;
+                userTable.DefaultCell.PaddingTop = 5;
+                userTable.DefaultCell.PaddingRight = 5;
+                userTable.DefaultCell.PaddingBottom = 5;
+                userTable.DefaultCell.PaddingLeft = 5;
+                userTable.DefaultCell.HorizontalAlignment = Element.ALIGN_LEFT;
+                userTable.DefaultCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+
+                /// 13: зададим свойства ячеек таблицы
+                PdfPCell usercell = new PdfPCell
+                {
+                    HorizontalAlignment = Element.ALIGN_LEFT,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    Border = 1,
+                    BackgroundColor = new BaseColor(37, 168, 81)
+                };
+
+                /// 14: добавляем текст в ячейки таблицы 
+                userTable.AddCell(new Phrase("Дата сделки:", arial));
+                userTable.AddCell(new Phrase(viewModel.DealDate.ToShortDateString(), arial));
+
+                userTable.AddCell(new Phrase("Покупатель:", arial));
+                userTable.AddCell(new Phrase(viewModel.Buyer.CompanyNameWithTypeOfOwnership.ToString() + " " + viewModel.Buyer.Town.NameAndRegionNameWithComma.ToString(), arial));
+
+                userTable.AddCell(new Phrase("Продавец:", arial));
+                userTable.AddCell(new Phrase(viewModel.Seller.CompanyNameWithTypeOfOwnership.ToString() + " " + viewModel.Seller.Town.NameAndRegionNameWithComma.ToString(), arial));
+
+                userTable.AddCell(new Phrase("Условия поставки:", arial));
+                userTable.AddCell(new Phrase(viewModel.DeliveryType.ToString(), arial));
+
+                userTable.AddCell(new Phrase("Погрузка:", arial));
+                userTable.AddCell(new Phrase(viewModel.DeliveryLoadType.ToString(), arial));
+
+                userTable.AddCell(new Phrase("Способ доставки:", arial));
+                userTable.AddCell(new Phrase(viewModel.DeliveryWay.ToString(), arial));
+
+                userTable.AddCell(new Phrase("Цена:", arial));
+                userTable.AddCell(new Phrase(viewModel.Nds.ToString(), arial));
+
+                userTable.AddCell(new Phrase("Условия оплаты:", arial));
+                userTable.AddCell(new Phrase(viewModel.TermsOfPayments.ToString(), arial));
+
+                if (viewModel.deferMentPeriod > 0)
+                {
+                    userTable.AddCell(new Phrase("Цена действительна до:", arial));
+                    userTable.AddCell(new Phrase(viewModel.deferMentPeriod.ToString(), arial));
+                }
+
+                docCard.Add(userTable);
+                userTable.AddCell(usercell);
+
+                docCard.Add(new Paragraph(" ", arial));
+                docCard.Add(new Paragraph(" ", arial));
+
+
+                /// 15: создание талицы с данным товара Header
+                PdfPTable productTableHeader = new PdfPTable(6);    // 6 columns
+                productTableHeader.SetWidths(new float[] { 20, 100, 55, 90, 145, 145 }); // 555 == 595
+                productTableHeader.TotalWidth = docCard.PageSize.Width - docCard.RightMargin - docCard.LeftMargin;
+                productTableHeader.LockedWidth = true;
+                productTableHeader.DefaultCell.PaddingTop = 5;
+                productTableHeader.DefaultCell.PaddingRight = 5;
+                productTableHeader.DefaultCell.PaddingBottom = 5;
+                productTableHeader.DefaultCell.PaddingLeft = 5;
+                productTableHeader.DefaultCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                productTableHeader.DefaultCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+
+                /// 16: зададим свойства ячеек таблицы Header
+                PdfPCell productcellHeader = new PdfPCell
+                {
+                    HorizontalAlignment = Element.ALIGN_LEFT,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    Border = 1,
+                    BackgroundColor = new BaseColor(37, 168, 81)
+                };
+
+                /// заголовки таблицы                 
+                productTableHeader.AddCell(new Phrase("№", arial));
+                productTableHeader.AddCell(new Phrase("Категория товара", arial));
+                productTableHeader.AddCell(new Phrase("Вес (тн.)", arial));
+                productTableHeader.AddCell(new Phrase("Валюта", arial));
+                productTableHeader.AddCell(new Phrase("Цена за 1 тн. (предложение)", arial));
+                productTableHeader.AddCell(new Phrase("Цена за всю позицию (предложение)", arial));
+
+
+                /// тело таблицы Body
+                PdfPTable productTableBody = new PdfPTable(6);    // 6 columns
+                productTableBody.SetWidths(new float[] { 20, 100, 55, 90, 145, 145 }); // 555 == 595
+                productTableBody.TotalWidth = docCard.PageSize.Width - docCard.RightMargin - docCard.LeftMargin;
+                productTableBody.LockedWidth = true;
+                productTableBody.DefaultCell.PaddingTop = 5;
+                productTableBody.DefaultCell.PaddingRight = 5;
+                productTableBody.DefaultCell.PaddingBottom = 5;
+                productTableBody.DefaultCell.PaddingLeft = 5;
+                productTableBody.DefaultCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+
+                /// 16: зададим свойства ячеек таблицы Body
+                PdfPCell productcellBody = new PdfPCell
+                {
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    Border = 1,
+                    BackgroundColor = new BaseColor(37, 168, 81)
+                };
+
+                int rowNum = 0;
+                float sumTotal = 0;
+
+                foreach (var adProduct in viewModel.Ad.Products)
+                {
+                    rowNum++;
+                    var currency = adProduct.Currency == Currencies.Dollar ? "Доллар" : "Рубль";
+                    string pricePerWeightOffer = "Не указано";
+                    var priceForWholePositionStr = "Не указано";
+                    if (adProduct.OfferProduct != null)
+                    {
+                        pricePerWeightOffer = adProduct.OfferProduct.PricePerWeight.ToString();
+                        var priceForWholePosition = adProduct.Weight * adProduct.OfferProduct.PricePerWeight;
+                        priceForWholePositionStr = priceForWholePosition.ToString();
+                        sumTotal += priceForWholePosition;
+                    }
+                    productTableBody.AddCell(new Phrase(rowNum.ToString(), arial));
+                    productTableBody.AddCell(new Phrase(adProduct.ProductCategoryName.ToString(), arial));
+                    productTableBody.AddCell(new Phrase(adProduct.Weight.ToString(), arial));
+                    productTableBody.AddCell(new Phrase(currency.ToString(), arial));
+                    productTableBody.AddCell(new Phrase(pricePerWeightOffer.ToString(), arial));
+                    productTableBody.AddCell(new Phrase(priceForWholePositionStr.ToString(), arial));
+
+                }
+
+                docCard.Add(productTableHeader);
+                productTableHeader.AddCell(productcellHeader);
+
+                docCard.Add(productTableBody);
+                productTableBody.AddCell(productcellBody);
+
+                /// Footer table Product
+                PdfPTable productTableFooter = new PdfPTable(3);    // 7 columns
+                productTableFooter.SetWidths(new float[] { 20, 390, 145 }); // 555 == 595
+                productTableFooter.TotalWidth = docCard.PageSize.Width - docCard.RightMargin - docCard.LeftMargin;
+                productTableFooter.LockedWidth = true;
+                productTableFooter.DefaultCell.PaddingTop = 5;
+                productTableFooter.DefaultCell.PaddingRight = 5;
+                productTableFooter.DefaultCell.PaddingBottom = 5;
+                productTableFooter.DefaultCell.PaddingLeft = 5;
+                productTableFooter.DefaultCell.HorizontalAlignment = Element.ALIGN_LEFT;
+                productTableFooter.DefaultCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+
+                /// 16: зададим свойства ячеек таблицы Footer
+                PdfPCell productcellFooter = new PdfPCell
+                {
+                    HorizontalAlignment = Element.ALIGN_LEFT,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    Border = 0,
+                    BackgroundColor = new BaseColor(37, 168, 81)
+                };
+
+                /// заголовки таблицы Footer               
+                productTableFooter.AddCell(new Phrase(" ", arialbold));
+                productTableFooter.AddCell(new Phrase("Итого:", arialbold));
+                productTableFooter.AddCell(new Phrase(sumTotal.ToString(), arialbold));
+
+                docCard.Add(productTableFooter);
+                productTableFooter.AddCell(productcellFooter);
+
+                if (!string.IsNullOrWhiteSpace(viewModel.Ad.Description))
+                {
+                    /// 17: создание Описание
+                    docCard.Add(new Paragraph(" ", arial));
+                    docCard.Add(new Paragraph(" ", arial));
+                    docCard.Add(new Paragraph("Описание:", arial));
+                    docCard.Add(new Paragraph(""));
+
+                    string description = !string.IsNullOrWhiteSpace(viewModel.Ad.Description) ? viewModel.Ad.Description : "Не указано";
+                    docCard.Add(new Paragraph(" ", arial));
+                    docCard.Add(new Paragraph(description, arial));
+                }
+
+                //docCard.Add(new Paragraph("M-Contract", arial));
+                //docCard.Add(new Paragraph("Подтверждено", arial));
+
+                /// 18. добавляем ссылку на сайт
+                /*
+                Anchor anchor = new Anchor("M-contract.ru", new Font(
+                    BaseFont.CreateFont(fontUrl,
+                    BaseFont.IDENTITY_H,
+                    BaseFont.NOT_EMBEDDED),
+                    10, Font.UNDERLINE,
+                    BaseColor.BLUE));
+                anchor.Reference = "http://m-contract.ru/";
+                docCard.Add(new Paragraph(anchor));
+                */
+                docCard.Add(new Paragraph(" ", arial));
+                /// 10: добавляем картинку и расположим ее внизу вправо 
+                /*
+                ALIGN_LEFT = 0
+                ALIGN_RIGHT = 2
+                TEXTWRAP = 4
+                Image d = Image.getInstance(DOG);
+                d.setScaleToFitHeight(false);
+                Image f = Image.getInstance(FOX);
+                f.setScaleToFitHeight(false);
+                Chunk dog = new Chunk(d, 0, 0, false);
+                Chunk fox = new Chunk(f, 0, 0, false);
+                PdfContentByte canvas = writer.getDirectContent();
+                ColumnText.showTextAligned(canvas, Element.ALIGN_LEFT, new Phrase(dog), 250, 750f, 0);
+                ColumnText.showTextAligned(canvas, Element.ALIGN_RIGHT, new Phrase(fox), 250, 750f, 0);
+
+                */
+                if (System.IO.File.Exists(GetCurrent().Server.MapPath("~/Files/counter-accepted.png")))
+                {
+                    ImageiTextSharp imageAccepted = ImageiTextSharp.GetInstance(GetCurrent().Server.MapPath("~/Files/counter-accepted.png"));
+                    imageAccepted.ScalePercent(75);
+
+
+
+                    /// Accepted table Accepted
+                    PdfPTable acceptedTable = new PdfPTable(2);    // 2 columns
+                    acceptedTable.SetWidths(new float[] { 390, 165 }); // 555 == 595
+                    acceptedTable.TotalWidth = docCard.PageSize.Width - docCard.RightMargin - docCard.LeftMargin;
+                    acceptedTable.LockedWidth = true;
+                    acceptedTable.DefaultCell.PaddingTop = 0;
+                    acceptedTable.DefaultCell.PaddingRight = 25;
+                    acceptedTable.DefaultCell.PaddingBottom = 0;
+                    acceptedTable.DefaultCell.PaddingLeft = 0;
+                    acceptedTable.DefaultCell.Border = 0;
+                    acceptedTable.DefaultCell.HorizontalAlignment = Element.ALIGN_LEFT;
+                    acceptedTable.DefaultCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+
+                    /// 16: зададим свойства ячеек таблицы acceptedTable
+                    PdfPCell acceptedcell = new PdfPCell
+                    {
+                        HorizontalAlignment = Element.ALIGN_LEFT,
+                        VerticalAlignment = Element.ALIGN_MIDDLE,
+                        Border = 0,
+                        BackgroundColor = new BaseColor(37, 168, 81)
+                    };
+
+                    PdfPCell imageCell = new PdfPCell(imageAccepted)
+                    {
+                        Colspan = 2, // either 1 if you need to insert one cell == либо 1, если вам нужно вставить одну ячейку
+                        Border = 0,
+                        PaddingRight = 30,
+                        HorizontalAlignment = Element.ALIGN_RIGHT
+                    };
+
+                    /// строки таблицы acceptedTable               
+                    acceptedTable.AddCell(imageCell);
+
+                    docCard.Add(acceptedTable);
+                    acceptedTable.AddCell(acceptedcell);
+
+                }
+            }
+            catch (DocumentException de)
+            {
+                Console.WriteLine(de.ToString());
+            }
+            catch (IOException ioe)
+            {
+                Console.WriteLine(ioe.ToString());
+            }
+            docCard.Close();
+            #endregion
             return View(viewModel);
-        }
 
+
+        }
+        HttpContext GetCurrent()
+        {
+            return System.Web.HttpContext.Current;
+        }
         #endregion
-        #region Отправка данных о выбранной сделке на емайл
+
+        #region Отправка файла (PDF) с данными о выбранной сделке на емайл 
 
         [MyAuthorize]
-        public string SendDealsHistory(string locationHref, string formHTML)
+        public string SendDealsHistory(string file, string emailUser, string emailUserNew, string history)
         {
-            return locationHref +  " Произошла ошибка при сохранении, попробуйте позже "+ formHTML;
+
+            if (ValidHelper.emailRus(emailUser) && ValidHelper.emailRus(emailUserNew))
+
+                try
+                {
+                    string Subject = "История сделки - " + history;
+                    string Body = "Уважаемый пользователь портала M-contract" + "<br />" +
+                        "Во вложенном файле история сделки - " + history + "<br />"
+                        + "<i>" + "С уважением команда портала M-contract" + "</i>";
+
+                    string dirName = "Files";
+
+                    MailHelper.MailSendAttachment("info@m-contract.ru", emailUser, emailUserNew, Subject, Body, dirName, file);
+
+                    return "История сделки - " + history + " отправлена на e-mail: " + emailUser + ", " + emailUserNew + ", с вложенным файлом -  " + file;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    return ex.ToString() + "почта не может быть доставлена на фальшивые e-mail адреса";
+                }
+            else if (ValidHelper.emailRus(emailUser))
+
+                try
+                {
+                    string Subject = "История сделки - " + history;
+                    string Body = "Уважаемый пользователь портала M-contract" + "<br />" +
+                        "Во вложенном файле история сделки - " + history + "<br />"
+                        + "<i>" + "С уважением команда портала M-contract" + "</i>";
+
+                    string dirName = "Files";
+
+                    MailHelper.MailSendAttachment("info@m-contract.ru", emailUser, emailUserNew, Subject, Body, dirName, file);
+                    return "История сделки - " + history + " отправлена на e-mail: " + emailUser + ", с вложенным файлом -  " + file;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    return ex.ToString() + "почта не может быть доставлена на фальшивый e-mail адрес";
+                }
+            #endregion
+            return "почта не может быть доставлена на фальшивые e-mail адреса";
+
         }
-        #endregion
-
-
 
         #region
         public ActionResult RateRules()

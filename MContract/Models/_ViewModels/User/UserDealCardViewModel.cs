@@ -55,6 +55,11 @@ namespace MContract.Models
 		/// </summary>
 		public string Nds { get; set; }
 
+		/// <summary>
+		/// Цена (С НДС/Без НДС)
+		/// </summary>
+		public int deferMentPeriod { get; set; }
+
 		public string TermsOfPayments { get; set; }
 
 		public User PersonalAreaUser { get; set; }

@@ -81,6 +81,11 @@
                 <td>Условия оплаты:</td>
                 <td>@Model.TermsOfPayments</td>
             </tr>
+
+            @{
+                var deferMentPeriod = Model.deferMentPeriod > 0 ? "<tr><td>Количество дней отсрочки:</td><td>" + Model.deferMentPeriod + "</td></tr>" : "";
+            }
+            @Html.Raw(deferMentPeriod)
         </table>
 
         <div style="height: 30px">
@@ -170,17 +175,34 @@
                     <a href="~/User/RateRules"> Правила оценки </a>
                 </td>
                 <td>
-                    <a class="removeFromDealsHistory" href="#">УДАЛИТЬ ИЗ ИСТОРИИ СДЕЛОК</a><br /><br />
-                    <a class="sendMessageToCounteragent" href="#">
+                    <a class="removeFromDealsHistory" href="javascript:void(null);">УДАЛИТЬ ИЗ ИСТОРИИ СДЕЛОК</a><br /><br />
+                    <a class="sendMessageToCounteragent" href="javascript:void(null);">
                         ОТПРАВИТЬ СООБЩЕНИЕ
                         @(Model.Seller?.Id == ViewBag.L.PersonalAreaUser?.Id
                         ? "ПОКУПАТЕЛЮ"
                         : "ПРОДАВЦУ")
                     </a><br /><br />
                     <a class="printDeal" href="#">РАСПЕЧАТАТЬ</a><br /><br />
-                    <a class="sendToEmail" href="" onclick="alert('еще не готово')">ОТПРАВИТЬ НА E-MAIL</a><br />
-                    <input id="modelAdId" type="hidden" value="@Model.Ad.Id">
-                    <a class="sendToEmail" href="#" id="create_pdf" onclick="createPDF();">PDF</a>
+                    <a class="sendToEmail" id="showEmailDiv" href="javascript:void(null);">ОТПРАВИТЬ НА E-MAIL</a>
+                    <input id="filePdf" type="hidden" value="@ViewBag.FilePDF">
+                    <input id="history" type="hidden" value="Контракт № @Model.Ad.Id (@Model.DealDirection)">
+                    <div id="sendEmailDiv">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>ВАШ E-MAIL:</td>
+                                    <td> <input id="emailUser" value="@Model.PersonalAreaUser.Email" style="background-color: transparent; border-bottom: 1px solid #808080; border-top:0px; border-left:0px; border-right:0px; margin-left:10px;" /></td>
+                                </tr>
+                                <tr>
+                                    <td><span>ДОПОЛНИТЕЛЬНЫЙ E-MAIL:</span></td>
+                                    <td><input id="emailUserNew" type="text" style="background-color: transparent; border-bottom: 1px solid #808080; border-top: 0px; border-left: 0px; border-right: 0px; margin-left: 10px; " /></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><br /><a id="sendEmail" href="javascript:void(null);">ОТПРАВИТЬ</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <br />
                 </td>
             </tr>
@@ -190,10 +212,12 @@
 
 <script type="text/javascript">
     jQuery(document).ready(function ($) {
+        //============================================= krakoss 20201028 ============================== //
+        $("#sendEmailDiv").hide(); $("#descriptionDiv").hide();
+         //============================================= END krakoss 20201028 ============================== //
         $(".removeFromDealsHistory").on("click", function () {
             if (!confirm('Информация об этой сделке будет удалена без возможности восстановления. Вы подтверждаете это?'))
                 return;
-
             var adId = @(Model.Ad?.Id);
             var offerId = @(Model.ContractOffer?.Id);
             $.post("@ViewBag.L.SiteUrlClear/User/RemoveDealFromDealsHistory", {
@@ -205,55 +229,43 @@
                         location.href = "@ViewBag.L.SiteUrlClear/User/DealsHistory";
                     })
         });
-
         $(".sendMessageToCounteragent").on("click", function () {
             var respondentId = @(counteragent?.Id);
             var lastPageUrl = encodeURIComponent(location.href);
             location.href = `@ViewBag.L.SiteUrlClear/User/Messages?respondentId=${respondentId}&lastPageUrl=${lastPageUrl}`;
         });
-
         $(".printDeal").on("click", function () {
             var printContainerClone = $(".mainPrintContainer").clone();
-
             $(printContainerClone).find(".noPrintContainer").remove();
-
             var htmlToPrint = $(printContainerClone).html();
             $(".extraPrintContainer").each(function () {
                 htmlToPrint += this.outerHTML;
             });
-
             console.log(htmlToPrint);
             var windowToPrint = window.open();
             windowToPrint.document.open("text/html");
             windowToPrint.document.write(htmlToPrint);
             windowToPrint.document.close();
-
             windowToPrint.focus();
             windowToPrint.print();
             windowToPrint.close();
         });
-
         var ratingIsSet = false;
-
         $(".ratingOptionsContainer").on("mouseenter", ".ratingOption", function () {
             if (ratingIsSet == false) {
                 var highlightedOptions = $(this).prevAll(".ratingOption").add(this);
                 $(highlightedOptions).css("color", "gold");
             }
         });
-
         $(".ratingOptionsContainer").on("mouseleave", ".ratingOption", function () {
             if (ratingIsSet == false) {
                 $(".ratingOptionsContainer .ratingOption").css("color", "");
             }
         });
-
         var setRating = $(".ratingOptionsContainer").attr("value")
         if (setRating > 0)
             $(`.ratingOptionsContainer .ratingOption[value=${setRating}]`).trigger("mouseenter");
-
         ratingIsSet = setRating > 0;
-
         $(".ratingOptionsContainer").on("click", ".ratingOption", function () {
             if (ratingIsSet == false) {
                 var userId = @counteragent.Id;
@@ -276,7 +288,6 @@
             }
         });
 	});
-
 	function switchDescriptionVisibility() {
 		var descriptionDiv = $('#descriptionDiv');
 		var switchDescriptionVisibilityButton = $('#switchDescriptionVisibilityButton');
@@ -289,43 +300,44 @@
 			switchDescriptionVisibilityButton.html('A');
 		}
     }
-
-
-    //================================================================//
-
-
-
-    function createPDF() {
-
-var modelAdId = $("#modelAdId").val();
-
-    var containerPdf= $(".mainPrintContainer").clone();
-
-    $(containerPdf).find(".noPrintContainer").remove();
-    $(containerPdf).find("#switchDescriptionVisibilityButton").remove();
-
-    var containerPdf = $(containerPdf).html();
-
-    $(".extraPrintContainer").each(function () {
-        containerPdf += this.outerHTML;
+ //===================== krakoss 20201030 ===========================================//
+    $("#showEmailDiv").on('click', function () {
+        var sendEmailDiv = $('#sendEmailDiv');
+        if (sendEmailDiv.is(":visible")) {
+            sendEmailDiv.hide();
+        }
+        else {
+            sendEmailDiv.show();
+        }
     });
 
-        console.log(containerPdf);
 
-        var _locationHref = "@ViewBag.L.SiteUrlClear/User/DealCard/" + modelAdId + '.pdf';
+    $("#sendEmail").on('click', function () {
+        sendEmailFilePDF();
+    });
+    function sendEmailFilePDF() {
+        //if (!checkEmal())
+        //    return;
 
-        alert('outerHTML');
+        var _filePdf = $("#filePdf").val();
+
+        var _emailUser = $("#emailUser").val();
+
+        var _emailUserNew = $("#emailUserNew").val();
+
+        var _history = $("#history").val();
+
+        var sendEmailDiv = $('#sendEmailDiv');
 
         $.ajax('/User/SendDealsHistory',
             {
                 type: 'POST',
-                data: { locationHref: _locationHref, formHTML: 'outerHTML' },
+                data: { file: _filePdf, emailUser: _emailUser, emailUserNew: _emailUserNew, history: _history },
                 success: function (data) {
-
                     alert(data);
-
+                    sendEmailDiv.hide();
                 },
             });
     };
-
+   
 </script>
