@@ -512,6 +512,7 @@ namespace MContract.Controllers
                     }
                 }
             }
+
             ViewBag.Heading = offer.Name + " от " + offer.Sender?.CompanyNameWithTypeOfOwnership + (offer.Sender?.Town != null ? ", " + offer.Sender.TownName : "");
             #region Хлебные крошки
             var breadCrumbs = new List<BreadCrumbLink>();
@@ -666,22 +667,20 @@ namespace MContract.Controllers
     //    }
 
         [MyAuthorize]
-		public ActionResult NewAdStep0()
-		{
-			var ad = new Ad();
-            //ad.PersonalAreaUser = SM.GetPersonalAreaUser();
+        public ActionResult NewAdStep0()
+        {
+            var ad = new AdsNewAdStep0ViewModel();
+            ad.PersonalAreaUser = SM.GetPersonalAreaUser();
             ViewBag.Heading = "Новое объявление";
-            #region Хлебные крошки
             var breadCrumbs = new List<BreadCrumbLink>();
             breadCrumbs.Add(new BreadCrumbLink() { Text = "Личный кабинет", Url = Urls.PersonalArea, Title = "Перейти в личный кабинет" });
             breadCrumbs.Add(new BreadCrumbLink() { Text = "Новое объявление", Url = C.SiteUrl + "Ads/NewAdStep0", Title = "Перейти к созданию нового объявления" });
             breadCrumbs.Add(new BreadCrumbLink() { Text = "Выбор процедуры", EndPoint = true });
             ViewBag.BreadCrumbs = breadCrumbs;
-            #endregion
             return View(ad);
-		}
+        }
 
-		[MyAuthorize]
+        [MyAuthorize]
 		public ActionResult NewAd(bool isBuy = false, bool availableForAllUsers = true)
         {
 			ViewBag.L.HideHead = true;

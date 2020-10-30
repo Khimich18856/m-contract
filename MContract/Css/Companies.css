@@ -158,7 +158,7 @@
       .company__list-item .info .rate .ico {
         width: 13px;
         height: 12px;
-        background-image: url("http://m-contract.ru/ico/redStar.png");
+        background-image: url("http://m-contract.ru/ico/redStar.svg");
         background-size: 100% 100%;
         margin-right: 4px; }
         @media (min-width: 767px) {
@@ -168,7 +168,7 @@
         display: none;
         width: 13px;
         height: 12px;
-        background-image: url("http://m-contract.ru/ico/redStar.png");
+        background-image: url("http://m-contract.ru/ico/redStar.svg");
         background-size: 100% 100%;
         margin-right: 2px; }
         @media (min-width: 767px) {
@@ -182,9 +182,9 @@
           .company__list-item .info .rate .num {
             margin-right: 8px; } }
       .company__list-item .info .rate .ico-half {
-        background-image: url("http://m-contract.ru/ico/redStar-half.png"); }
+        background-image: url("http://m-contract.ru/ico/redStar-half.svg"); }
       .company__list-item .info .rate .ico-none {
-        background-image: url("http://m-contract.ru/ico/redStar-none.png"); }
+        background-image: url("http://m-contract.ru/ico/redStar-none.svg"); }
       @media (min-width: 767px) {
         .company__list-item .info .rate {
           margin-bottom: 10px; } }
@@ -322,14 +322,14 @@
       margin-right: 34px;
       height: 14px;
       display: block;
-      background-image: url("http://m-contract.ru/ico/redStar.png");
+      background-image: url("http://m-contract.ru/ico/redStar.svg");
       background-size: 100% 100%; }
     .counter__header .rate .ico-pc {
       display: none;
       width: 15px;
       margin-left: 4px;
       height: 14px;
-      background-image: url("http://m-contract.ru/ico/redStar.png");
+      background-image: url("http://m-contract.ru/ico/redStar.svg");
       background-size: 100% 100%; }
       @media (min-width: 767px) {
         .counter__header .rate .ico-pc {

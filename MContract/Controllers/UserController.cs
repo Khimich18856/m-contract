@@ -1347,6 +1347,8 @@ namespace MContract.Controllers
             var termOfPayment = ad.TermsOfPayments != TermsOfPayments.Any ? ad.TermsOfPayments : contractOffer.TermsOfPayments;
             viewModel.TermsOfPayments = AdHelper.GetTermsOfPaymentsString(termOfPayment);
 
+            //Заполним строку Цена действительна до
+            viewModel.ActiveUntilDate = contractOffer.ActiveUntilDate;
 
             var defermentPeriod = ad.DefermentPeriod != null ? ad.DefermentPeriod : 0;
             viewModel.deferMentPeriod = Convert.ToInt32(defermentPeriod);

@@ -35,7 +35,7 @@ bestFitPhoto = offer.Ad.MainPhotoGroup.Find(p => Math.Abs(p.HigherDimension.Valu
 }
 <div class="singleOfferContainer @(offer.SenderId == Model.PersonalAreaUser?.Id ? "outgoing" : "incoming")">
     <a href="@offer.Url" class="adPhotoContainer">
-        <img src="@(offer.Ad.MainPhotoGroup != null ? bestFitPhoto.Url : "/Images/NoLogo.png")" class="adPhoto" />
+        <img src="@(offer.Ad.MainPhotoGroup != null ? bestFitPhoto.Url : "/Images/Nologo.svg")" class="adPhoto" />
     </a>
     <a href="@offer.Url" class="textContainer">
         <h3 class="adName">

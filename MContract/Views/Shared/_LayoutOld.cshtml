@@ -20,7 +20,7 @@
 	//если он не определен, значит мы не на странице User/Messages
 	if (typeof isMainChatPage === "undefined")
 		var isMainChatPage = false;
-	var placeholderLogoUrl = "/Images/NoLogo.png";
+	var placeholderLogoUrl = "/Images/Nologo.svg";
 
 	var newMessageAudio = new Audio("/Audio/NewMessageAudio.mp3");
 
@@ -147,7 +147,7 @@
 				    @*if (dialog.Respondent.LogoGroup[0]) {
                         var respondentLogoUrl = dialog.Respondent.LogoGroup[0].Url;
                     }*@
-			        var respondentLogoUrl = "/Images/NoLogo.png";
+			        var respondentLogoUrl = "/Images/Nologo.svg";
                     $(currentDialogMessages).each(function () {
 					    var messageDirection =
 						    this.SenderId == currentRespondentId
@@ -441,7 +441,7 @@
 			<div class="container">
 				<div class="navbar-content">
 					<a href="@ViewBag.L.SiteUrlClear" class="projectName">
-						<img src="~/Images/Logos/main-logo.png" />
+						<img src="~/Images/Logos/main-logo.svg" />
 					</a>
 					@if (ViewBag.L.ShowSearchbar == true)
 					{

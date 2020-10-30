@@ -138,7 +138,7 @@ header {
             content: '';
             top: 0;
             left: -25px;
-            background-image: url("/ico/lk.png");
+            background-image: url("/ico/lk.svg");
             background-size: 100% 100%;
             width: 14px;
             height: 15px;
@@ -154,7 +154,7 @@ header {
               -webkit-transform: translate(-50% -50%);
                   -ms-transform: translate(-50% -50%);
                       transform: translate(-50% -50%);
-              background-image: url("/ico/lk.png");
+              background-image: url("/ico/lk.svg");
               background-size: 100% 100%;
               width: 14px;
               height: 15px;
@@ -2105,7 +2105,7 @@ footer {
       .offer__popup-offers .item .rate .ico {
         width: 13px;
         height: 12px;
-        background-image: url("/ico/rate.png");
+        background-image: url("/ico/rate.svg");
         background-size: 100% 100%; }
       .offer__popup-offers .item .rate-text {
         color: #14355d;

@@ -809,7 +809,7 @@ header.mobile__off .lk__wrapper {
     width: 46px;
     height: 46px;
     background-color: #899aae;
-    background-image: url("http://m-contract.ru/ico/send-message.png");
+    background-image: url("http://m-contract.ru/ico/message.svg");
     background-size: 26px 19px;
     background-position: 50% 50%;
     background-repeat: no-repeat;
@@ -887,7 +887,7 @@ header.mobile__off .lk__wrapper {
       .offer__most-info .info .rate .ico {
         width: 13px;
         height: 12px;
-        background-image: url("http://m-contract.ru/ico/rate.png");
+        background-image: url("http://m-contract.ru/ico/rate.svg");
         background-size: 100% 100%; }
       .offer__most-info .info .rate-text {
         color: #e60f6f;
@@ -1009,7 +1009,7 @@ header.mobile__off .lk__wrapper {
     .offer__about-item .ico {
       width: 9px;
       height: 8px;
-      background-image: url("http://m-contract.ru/ico/yes-green.png");
+      background-image: url("http://m-contract.ru/ico/yes-green.svg");
       background-size: 100% 100%; }
       @media (min-width: 767px) {
         .offer__about-item .ico {
