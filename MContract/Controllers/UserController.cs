@@ -1331,6 +1331,8 @@ namespace MContract.Controllers
             var termOfPayment = ad.TermsOfPayments != TermsOfPayments.Any ? ad.TermsOfPayments : contractOffer.TermsOfPayments;
             viewModel.TermsOfPayments = AdHelper.GetTermsOfPaymentsString(termOfPayment);
 
+            //Заполним строку Цена действительна до
+            viewModel.ActiveUntilDate = contractOffer.ActiveUntilDate;
 
 
             return View(viewModel);

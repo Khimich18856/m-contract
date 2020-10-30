@@ -57,6 +57,8 @@ namespace MContract.Models
 
 		public string TermsOfPayments { get; set; }
 
+		public DateTime ActiveUntilDate { get; set; }
+
 		public User PersonalAreaUser { get; set; }
 	}
 }
