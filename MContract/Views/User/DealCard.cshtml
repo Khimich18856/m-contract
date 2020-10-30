@@ -1,23 +1,16 @@
 ﻿@model MContract.Models.UserDealCardViewModel
 
-@{
-    ViewBag.Title = "Контракт №" + Model.Ad.Id;
-    Layout = "~/Views/Shared/_LayoutOld.cshtml";
-}
+@{ ViewBag.Title = "Контракт №" + Model.Ad.Id;
+    Layout = "~/Views/Shared/_LayoutOld.cshtml"; }
 
 @section Styles{
     <link href="@Url.Content("~/css/User/DealCard.css")?p=20200715" rel="stylesheet" type="text/css" />
     <link href="~/js/jquery-ui/jquery-ui.css?p=202006112" rel="stylesheet" type="text/css" />
 }
-@{
-    var personalAreaUser = ViewBag.L.PersonalAreaUser != null ? (MContract.Models.User)ViewBag.L.PersonalAreaUser : null;
-    @*if (personalAreaUser != null)
+@{ var personalAreaUser = ViewBag.L.PersonalAreaUser != null ? (MContract.Models.User)ViewBag.L.PersonalAreaUser : null; @*if (personalAreaUser != null)
         {
             Html.RenderPartial("_PersonalAreaOld", personalAreaUser);
-        }*@
-
-    var counteragent = Model.Seller?.Id == ViewBag.L.PersonalAreaUser?.Id ? Model.Buyer : Model.Seller;
-}
+        }*@ var counteragent = Model.Seller?.Id == ViewBag.L.PersonalAreaUser?.Id ? Model.Buyer : Model.Seller; }
 
 
 <span style="font-size: larger; font-weight: bold">Личный кабинет</span> | История сделок
@@ -35,10 +28,8 @@
             </tr>
             <tr>
                 <td>Покупатель:</td>
-                @{
-                    var buyerStartA = Model.Buyer.Id != personalAreaUser.Id ? "<a href=\"" + Model.Buyer.Url + "\">" : "";
-                    var buyerEndA = Model.Buyer.Id != personalAreaUser.Id ? "</a>" : "";
-                }
+                @{ var buyerStartA = Model.Buyer.Id != personalAreaUser.Id ? "<a href=\"" + Model.Buyer.Url + "\">" : "";
+                    var buyerEndA = Model.Buyer.Id != personalAreaUser.Id ? "</a>" : ""; }
                 <td>
                     @Html.Raw(buyerStartA)
                     @Model.Buyer.CompanyNameWithTypeOfOwnership, @Model.Buyer.Town.NameAndRegionNameWithComma
@@ -47,10 +38,8 @@
             </tr>
             <tr>
                 <td>Продавец:</td>
-                @{
-                    var sellerStartA = Model.Seller.Id != personalAreaUser.Id ? "<a href=\"" + Model.Seller.Url + "\">" : "";
-                    var sellerEndA = Model.Seller.Id != personalAreaUser.Id ? "</a>" : "";
-                }
+                @{ var sellerStartA = Model.Seller.Id != personalAreaUser.Id ? "<a href=\"" + Model.Seller.Url + "\">" : "";
+                    var sellerEndA = Model.Seller.Id != personalAreaUser.Id ? "</a>" : ""; }
                 <td>
                     @Html.Raw(sellerStartA)
                     @Model.Seller.CompanyNameWithTypeOfOwnership, @Model.Seller.Town.NameAndRegionNameWithComma
@@ -58,9 +47,9 @@
                 </td>
             </tr>
             @*<tr>
-            <td>Место фактического нахождения груза:&nbsp;</td>
-            <td>@Model.Ad.City.NameAndRegionNameWithComma</td>
-        </tr>*@
+                    <td>Место фактического нахождения груза:&nbsp;</td>
+                    <td>@Model.Ad.City.NameAndRegionNameWithComma</td>
+                </tr>*@
             <tr>
                 <td>Условия поставки:</td>
                 <td>@Model.DeliveryType</td>
@@ -79,19 +68,41 @@
             </tr>
             <tr>
                 <td>Условия оплаты:</td>
-                <td>@Model.TermsOfPayments</td>
+                @{ var termsOfPayments =
+                              Model.ContractOffer.DefermentPeriod > 0 ?
+                              Model.TermsOfPayments + " (" + Model.ContractOffer.DefermentPeriod.ToString() + " календарн.дн.)" :
+                              Model.TermsOfPayments; }
+                <td>
+                    @Html.Raw(termsOfPayments)
+                </td>
             </tr>
+            @*
+                        исходя их этого
+                                        ===============================================================================
+
+                            16:12, 30.10.2020] Site Роман Оренбург: По поводу карточки сделки. Не путайте
+                            Кол-во дней отсрочки - просто числовое значение
+                            [16:13, 30.10.2020] Site Роман Оренбург: И есть «цена действительно до» там идёт дата
+                            [16:14, 30.10.2020] Site Роман Оренбург: Вот я писал
+
+                        ===============================================================================
+                [14:43, 29.10.2020] Site Роман Оренбург: Цена действительно до - пример 29.10.2020(23:59 мск)
+                На сколько помню формат должен быть такой ☝️
+                [14:43, 29.10.2020] Site Роман Оренбург: Посмотреть точно можно при подачи предложения
+                        ===============================================================================
+
+                            [16:15, 30.10.2020] Site Роман Оренбург: Посмотрите страницу подачи предложения, у нас Сергеем вся логика уже работала,
+                            нужно только перенести эти данные в карточку сделки
+                                        ===============================================================================
+
+                            оставил и это ...*@
             <tr>
-                <td>Цена действительна до:</td>
-                <td>@Model.ActiveUntilDate</td>
+                <td>Цена действительна до:&nbsp;&nbsp;&nbsp;</td>
+                <td>@Model.ActiveUntilDate (МСК)</td>
             </tr>
         </table>
 
 
-        @{
-            var deferMentPeriod = Model.ContractOffer.DefermentPeriod> 0 ? "<tr><td>Количество дней отсрочки:</td><td>" + Model.ContractOffer.DefermentPeriod + "</td></tr>" : "";
-        }
-        @Html.Raw(deferMentPeriod)
 
         <div style="height: 30px">
         </div>
@@ -109,10 +120,8 @@
                 </tr>
             </thead>
             <tbody>
-                @{
-                    int rowNum = 0;
-                    float sumTotal = 0;
-                }
+                @{ int rowNum = 0;
+                    float sumTotal = 0; }
                 @foreach (var adProduct in Model.Ad.Products)
                 {
                     rowNum++;
@@ -127,16 +136,16 @@
                         priceForWholePositionStr = priceForWholePosition.ToString();
                         sumTotal += priceForWholePosition;
                     }
-                    <tr>
-                        <td>@rowNum</td>
-                        <td>@adProduct.ProductCategoryName</td>
-                        <td>@adProduct.Weight</td>
-                        <td>@currency</td>
-                        <td>@pricePerWeight</td>
-                        <td>@pricePerWeightOffer</td>
-                        <td>@priceForWholePositionStr</td>
-                    </tr>
-                }
+    <tr>
+        <td>@rowNum</td>
+        <td>@adProduct.ProductCategoryName</td>
+        <td>@adProduct.Weight</td>
+        <td>@currency</td>
+        <td>@pricePerWeight</td>
+        <td>@pricePerWeightOffer</td>
+        <td>@priceForWholePositionStr</td>
+    </tr>
+}
                 <tr style="font-weight: bold">
                     <td></td>
                     <td>Итого:</td>
@@ -152,9 +161,7 @@
         </div>
         Описание: <span id="switchDescriptionVisibilityButton" style="cursor: pointer" onclick="switchDescriptionVisibility()">A</span>
         <br />
-        @{
-            var description = !String.IsNullOrWhiteSpace(Model.Ad.Description) ? Model.Ad.Description : "Не указано";
-        }
+        @{ var description = !String.IsNullOrWhiteSpace(Model.Ad.Description) ? Model.Ad.Description : "Не указано"; }
         <div id="descriptionDiv" style="background-color: gainsboro; word-wrap: break-word; width: 60%">
             <p>
                 @description
@@ -344,5 +351,5 @@
                 },
             });
     };
-   
+
 </script>

@@ -1,19 +1,22 @@
-﻿using iTextSharp.text;
-using iTextSharp.text.pdf;
-using MContract.AppCode;
+﻿using MContract.AppCode;
 using MContract.DAL;
 using MContract.Models;
 using MContract.Models.Enums;
 using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Web;
 using System.Web.Mvc;
+
+using System.IO;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.Web;
 using System.Web.UI.WebControls;
 using ImageiTextSharp = iTextSharp.text.Image;
+using System.Net.Mail;
+using System.Net.Mime;
 
 namespace MContract.Controllers
 {
@@ -1346,106 +1349,9 @@ namespace MContract.Controllers
 
             //Заполним строку Цена действительна до
             viewModel.ActiveUntilDate = contractOffer.ActiveUntilDate;
-            // Цена действительно до - пример 29.10.2020(23:59 мск) 
-            // На сколько помню формат должен быть такой
-            var defermentPeriod = ad.DefermentPeriod != null ? ad.DefermentPeriod : 0;
-            viewModel.ContractOffer.DefermentPeriod = Convert.ToInt32(defermentPeriod);
 
+          #endregion
 
-
-            #endregion
-            #region Create DCard OLD 20201028
-            //ViewBag.L.HideHead = true;
-            //var viewModel = new UserDealCardViewModel();
-            //var currentUser = SM.GetPersonalAreaUser();
-            //var currentUserId = currentUser.Id;
-            //currentUser.SelectedMenu = "История сделок";
-            //viewModel.PersonalAreaUser = currentUser;
-
-            //var ad = AdsDAL.GetAd(adId);
-            //if (ad == null)
-            //    throw new Exception("Не найдено объявление по Id = " + adId);
-
-            //ad.City = TownsDAL.GetTown(ad.CityId);
-            //if (ad.City == null)
-            //    throw new Exception("Не удалось найти город фактического нахождения груза по Id города = " + ad.CityId);
-
-
-            //viewModel.DealDirection = ad.IsBuy ? "покупка" : "продажа";
-
-            //var contractOffers = OffersDAL.GetOffers(adId: adId, contractStatusId: (int)ContractStatuses.Accepted);
-            //if (!contractOffers.Any())
-            //    throw new Exception("Не найдено предложение, по которому заключен контракт, для объявления с Id = " + adId);
-
-            //var contractOffer = contractOffers.First();
-
-            //viewModel.ContractOffer = contractOffer;
-
-            //var adProducts = AdProductsDAL.GetAdProducts(adId);
-            //var productCategoriesIds = adProducts.Select(c => c.ProductCategoryId).Distinct().ToList();
-            //var productCategories = ProductCategoriesDAL.GetCategories()/*из кэша*/.Where(c => productCategoriesIds.Contains(c.Id)).ToList();
-            //var offerProducts = ProductOffersDAL.GetProductOffers(contractOffer.Id);
-            //foreach (var adProduct in adProducts)
-            //{
-            //    adProduct.ProductCategoryName = productCategories.FirstOrDefault(c => c.Id == adProduct.ProductCategoryId)?.Name;
-            //    adProduct.OfferProduct = offerProducts.FirstOrDefault(op => op.ProductId == adProduct.Id);
-            //}
-
-            //ad.Products = adProducts;
-
-            //viewModel.Ad = ad;
-
-            //viewModel.DealDate = contractOffer.ContractSendDate ?? DateTime.MinValue;
-
-
-
-            //var adCreator = UsersDAL.GetUser(ad.SenderId);
-            //if (adCreator == null)
-            //    throw new Exception("Не удалось найти пользователя - организатора торгов по Id пользователя = " + ad.SenderId);
-
-            //var offerCreator = UsersDAL.GetUser(contractOffer.SenderId);
-            //if (offerCreator == null)
-            //    throw new Exception("Не удалось найти пользователя - отправившего выигравшее предложение по Id пользователя = " + contractOffer.SenderId);
-
-            //var buyer = ad.IsBuy ? adCreator : offerCreator;
-            //var seller = ad.IsBuy ? offerCreator : adCreator;
-
-            //buyer.Town = TownsDAL.GetTown(buyer.CityId);
-            //if (buyer.Town == null)
-            //    throw new Exception("Не удалось найти город покупателя по Id города = " + buyer.CityId);
-
-            //seller.Town = TownsDAL.GetTown(seller.CityId);
-            //if (seller.Town == null)
-            //    throw new Exception("Не удалось найти город продавца по Id города = " + seller.CityId);
-
-            //if (seller.Id == currentUserId)
-            //    buyer.Rating = UsersDAL.GetUserRating(buyer.Id, seller.Id, adId);
-            //else
-            //    seller.Rating = UsersDAL.GetUserRating(seller.Id, buyer.Id, adId);
-
-            //viewModel.Buyer = buyer;
-            //viewModel.Seller = seller;
-
-            ////Заполним строку Условия поставки
-            //var deliveryType = ad.DeliveryType != DeliveryTypes.Any ? ad.DeliveryType : contractOffer.DeliveryType;
-            //viewModel.DeliveryType = AdHelper.GetDeliveryTypeString(deliveryType);
-
-            ////Заполним строку Погрузка
-            //var deliveryLoadType = ad.DeliveryLoadType != DeliveryLoadTypes.Any ? ad.DeliveryLoadType : contractOffer.DeliveryLoadType;
-            //viewModel.DeliveryLoadType = AdHelper.GetDeliveryLoadTypeString(deliveryLoadType);
-
-            ////Заполним строку Способ доставки
-            //var deliveryWay = ad.DeliveryWay != DeliveryWays.Any ? ad.DeliveryWay : contractOffer.DeliveryWay;
-            //viewModel.DeliveryWay = AdHelper.GetDeliveryWayString(deliveryWay);
-
-            ////Заполним строку Цена (с НДС/без НДС)
-            //var nds = ad.Nds != Nds.Any ? ad.Nds : contractOffer.Nds;
-            //viewModel.Nds = AdHelper.GetNdsString(nds);
-
-            ////Заполним строку Условия оплаты
-            //var termOfPayment = ad.TermsOfPayments != TermsOfPayments.Any ? ad.TermsOfPayments : contractOffer.TermsOfPayments;
-            //viewModel.TermsOfPayments = AdHelper.GetTermsOfPaymentsString(termOfPayment);
-            #endregion
 
             #region Create PDF
             string filename;
@@ -1551,18 +1457,18 @@ namespace MContract.Controllers
                 userTable.AddCell(new Phrase("Цена:", arial));
                 userTable.AddCell(new Phrase(viewModel.Nds.ToString(), arial));
 
-                
+                userTable.AddCell(new Phrase("Условия оплаты:", arial));
+
+                string _termsOfPayments = viewModel.TermsOfPayments + " (" + viewModel.ContractOffer.DefermentPeriod.ToString() + " календарн.дн.)";
                 if (viewModel.ContractOffer.DefermentPeriod > 0)
+                    userTable.AddCell(new Phrase(_termsOfPayments.ToString(), arial));
+                else
                 {
-                    string xxx = viewModel.TermsOfPayments.ToString() + "("
-                        + viewModel.ContractOffer.DefermentPeriod.ToString() + " календарн. дн.)";
-                               userTable.AddCell(new Phrase("Условия оплаты:", arial));
-                    userTable.AddCell(new Phrase(xxx, arial));
-                }
-                else {
-                    userTable.AddCell(new Phrase("Условия оплаты:", arial));
                     userTable.AddCell(new Phrase(viewModel.TermsOfPayments.ToString(), arial));
                 }
+                userTable.AddCell(new Phrase("Цена действительна до:", arial));
+                userTable.AddCell(new Phrase(viewModel.ActiveUntilDate.ToString() + " (МСК)", arial));
+
 
                 docCard.Add(userTable);
                 userTable.AddCell(usercell);
@@ -1834,11 +1740,12 @@ namespace MContract.Controllers
                     Console.WriteLine(ex.ToString());
                     return ex.ToString() + "почта не может быть доставлена на фальшивый e-mail адрес";
                 }
-          
+
             return "почта не может быть доставлена на фальшивые e-mail адреса";
 
         }
-  #endregion
+        #endregion
+
         #region
         public ActionResult RateRules()
         {
