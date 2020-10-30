@@ -83,6 +83,12 @@
             </tr>
         </table>
 
+
+        @{
+            var deferMentPeriod = Model.deferMentPeriod > 0 ? "<tr><td>Количество дней отсрочки:</td><td>" + Model.deferMentPeriod + "</td></tr>" : "";
+        }
+        @Html.Raw(deferMentPeriod)
+
         <div style="height: 30px">
         </div>
 
