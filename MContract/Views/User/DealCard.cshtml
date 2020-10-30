@@ -58,9 +58,9 @@
                 </td>
             </tr>
             @*<tr>
-                <td>Место фактического нахождения груза:&nbsp;</td>
-                <td>@Model.Ad.City.NameAndRegionNameWithComma</td>
-            </tr>*@
+            <td>Место фактического нахождения груза:&nbsp;</td>
+            <td>@Model.Ad.City.NameAndRegionNameWithComma</td>
+        </tr>*@
             <tr>
                 <td>Условия поставки:</td>
                 <td>@Model.DeliveryType</td>
@@ -80,6 +80,10 @@
             <tr>
                 <td>Условия оплаты:</td>
                 <td>@Model.TermsOfPayments</td>
+            </tr>
+            <tr>
+                <td>Цена действительна до:</td>
+                <td>@Model.ActiveUntilDate</td>
             </tr>
         </table>
 
