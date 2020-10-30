@@ -166,7 +166,7 @@
 				</div>
 				<div class="col-lg-3 order-lg-9">
 					<div class="send__to__seller">
-						<a href="#" class="btn__seller btn__send__offer">Отправить предложение</a>
+						<a href=""@ViewBag.L.SiteUrlClear/Ads/Offer?respondentId=@Model.SenderId" class="btn__seller btn__send__offer">Отправить предложение</a>
 					</div>
 				</div>
 
@@ -550,9 +550,9 @@
 												<div class="title">
 													Ценовое предложение дейстительно до
 												</div>
-												<div class="text can-edit">
-													@(offer.ActiveUntilDate.ToShortDateString()) (включительно)
-												</div>
+                                                <div class="text can-edit">
+                                                    @(offer.ActiveUntilDate.ToShortDateString()) (23:59 МСК)
+                                                </div>
 											</div>
 										</div>
 									</div>

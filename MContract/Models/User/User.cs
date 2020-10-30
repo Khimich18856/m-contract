@@ -300,13 +300,13 @@ namespace MContract.Models
 				var result = "";
 				int ratingInt = (int)Math.Floor(Rating);
 				for(int i = 1; i <= ratingInt && i <= 5; i++)
-					result += "<img src=\"/ico/redStar.png\" alt = \"\" >";
+					result += "<img src=\"/ico/redStar.svg\" alt = \"\" >";
 
 				if(Rating - ratingInt >= 0.5)
-					result += "<img src=\"/ico/redStar-half.png\" alt = \"\">";
+					result += "<img src=\"/ico/redStar-half.svg\" alt = \"\">";
 
 				for (int i = 0; i < 5 - (ratingInt + 0.999999); i++)
-					result += "<img src=\"/ico/redStar-none.png\" alt = \"\">";
+					result += "<img src=\"/ico/redStar-none.svg\" alt = \"\">";
 
 				return result;
 			}

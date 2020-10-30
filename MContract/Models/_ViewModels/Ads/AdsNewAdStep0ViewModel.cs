@@ -7,5 +7,6 @@ namespace MContract.Models
 {
 	public class AdsNewAdStep0ViewModel
 	{
+		public User PersonalAreaUser { get; set; }
 	}
 }

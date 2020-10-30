@@ -1,53 +1,138 @@
-﻿@model MContract.Models.Ad
+﻿@model MContract.Models.AdsNewAdStep0ViewModel
 
 @{
     ViewBag.Title = ViewBag.Heading;
-    Layout = "~/Views/Shared/_LayoutOld.cshtml";
+    Layout = "~/Views/Shared/_LayoutWithoutNav.cshtml";
 }
 
 @section Styles{
-    <link href="@Url.Content("~/css/Ads/NewAdStep0.css")?p=2020-10-10-a" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/css/NewAdStep0.css")?p=2020-10-10-a" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/css/lk-layout.css")?p=2020-10-10-a" rel="stylesheet" type="text/css" />
+
 }
 
-<table border="1" style="margin-top: 15px">
-    <tr class="newAdStep0Tr">
-        <td class="newAdStep0Td">
-            <a href="~/Ads/NewAdOld?isBuy=false&availableForAllUsers=false">Объявление о продаже (закрытый запрос предложений)</a>
-        </td>
-        <td class="newAdStep0Td">
-            Участвовать могут только покупатели, приглашенные вами
-        </td>
-    </tr>
-    <tr class="newAdStep0Tr">
-        <td class="newAdStep0Td">
-            <a href="~/Ads/NewAdOld?isBuy=false&availableForAllUsers=true">Объявление о продаже (открытый запрос предложений)</a>
-        </td>
-        <td class="newAdStep0Td">
-            Участвовать могут все пользователи сервиса
-        </td>
-    </tr>
-</table>
-<div>
-    * Участники отправляют свои ценовые предложения с учетом указанных критериев продавцом. Победителя определяет продавец, и это необязательно должен быть участник,
-    давший наибольшую цену, учитывается логистика, сроки расчета и условия приема материала
-</div>
-<br />
 
-<table border="1">
-    <tr class="newAdStep0Tr">
-        <td class="newAdStep0Td">
-            <a href="~/Ads/NewAdOld?isBuy=true&availableForAllUsers=false">Объявление о покупке (закрытый запрос предложений)</a>
-        </td>
-        <td class="newAdStep0Td">
-            Участвовать могут только поставщики приглашенные вами
-        </td>
-    </tr>
-    <tr class="newAdStep0Tr">
-        <td class="newAdStep0Td">
-            <a href="~/Ads/NewAdOld?isBuy=true&availableForAllUsers=true">Объявление о покупке (открытый запрос предложений)</a>
-        </td>
-        <td class="newAdStep0Td">
-            Участвовать могут все пользователи сервиса
-        </td>
-    </tr>
-</table>
+
+<section class="header-pc">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-5 col-lg-4">
+                <div class="offer__title">
+                    <h1>Личный кабинет</h1>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-5 col-lg-7">
+                <div class="offer__open">
+                    <div class="open">
+                        Новое объявление
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md col-lg-1 mobile-first">
+                <div class="product__crumbs">
+                    <span class="page"><a href="@ViewBag.L.SiteUrlClear">Главная</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<main>
+
+    <!-- Новое объявление -->
+    <section class="lk__main__wrapper">
+        <div class="container">
+            <div class="row">
+                @{
+                    Html.RenderPartial("_PersonalArea", Model.PersonalAreaUser);
+                }
+                <div class="col-sm-12 mobile__off">
+                    <div class="lk__main-title">
+                        Новое объявление
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-8 col-lg-9">
+                    <div class="new__btns-wrapper">
+                        <div class="new__btn__item">
+                            <a href="~/Ads/NewAdOld?isBuy=false&availableForAllUsers=false" class="new__btn__item-btn">
+                                <div class="title">
+                                    Объявление о продаже
+                                </div>
+                                <div class="text">
+                                    закрытый запрос предложений
+                                </div>
+                            </a>
+                            <div class="new__btn__item-about">
+                                Участвовать могут только покупатели, приглашенные вами
+                            </div>
+                        </div>
+                        <div class="new__btn__item">
+                            <a href="~/Ads/NewAdOld?isBuy=false&availableForAllUsers=true" class="new__btn__item-btn">
+                                <div class="title">
+                                    Объявление о продаже
+                                </div>
+                                <div class="text">
+                                    открытый запрос предложений
+                                </div>
+                            </a>
+                            <div class="new__btn__item-about">
+                                Участвовать могут все пользователи сервиса
+                            </div>
+                        </div>
+                        <div class="new__btn__item-break">
+
+                        </div>
+                        <div class="new__btn__item">
+                            <a href="~/Ads/NewAdOld?isBuy=true&availableForAllUsers=false" class="new__btn__item-btn">
+                                <div class="title">
+                                    Объявление о покупке
+                                </div>
+                                <div class="text">
+                                    закрытый запрос предложений
+                                </div>
+                            </a>
+                            <div class="new__btn__item-about">
+                                Участвовать могут только поставщики, приглашенные вами
+                            </div>
+                        </div>
+                        <div class="new__btn__item">
+                            <a href="~/Ads/NewAdOld?isBuy=true&availableForAllUsers=true" class="new__btn__item-btn">
+                                <div class="title">
+                                    Объявление о покупке
+                                </div>
+                                <div class="text">
+                                    открытый запрос предложений
+                                </div>
+                            </a>
+                            <div class="new__btn__item-about">
+                                Участвовать могут все пользователи сервиса
+                            </div>
+                        </div>
+                    </div>
+                    <div class="quest__wrapper">
+                        <div class="ico">
+
+                        </div>
+                        <div class="text">
+                            <p>
+                                Участники отправляют свои ценовые предложения с учетом указанных критериев в объявлении.
+                            </p>
+                            <p>
+                                Победителя определяет продавец или покупатель, и это не обязательно должен быть участник, давший наиболее выгодную цену, учитывается логистика, сроки расчета и условия приема материала
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // Новое объявление -->
+
+</main>
+
+
+
+<script src="../js/jquery.min.js"></script>
+<script src="../js/offer.js"></script>
+<script src="../js/lk-main.js"></script>
+<script src="../js/bootstrap.min.js"></script>

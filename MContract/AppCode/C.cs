@@ -20,7 +20,7 @@ namespace MContract.AppCode
         {
             get
             {
-                return ConfigurationManager.AppSettings["production"] == "true" ? WebAddress : "http://localhost:" + LocalHost;
+                return ConfigurationManager.AppSettings["production"] == "true" ? "http://m-contract.ru" : "http://localhost:3254";
             }
         }
 
@@ -28,7 +28,7 @@ namespace MContract.AppCode
         {
             get
             {
-                return ConfigurationManager.AppSettings["production"] == "true" ? WebAddress + "/" : "http://localhost:" + LocalHost + "/";
+                return ConfigurationManager.AppSettings["production"] == "true" ? "http://m-contract.ru/" : "http://localhost:3254/";
             }
         }
 

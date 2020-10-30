@@ -67,7 +67,7 @@ main {
       margin-right: 10px;
       margin-top: 5px;
       height: 10px;
-      background-image: url("/ico/yes.png");
+      background-image: url("/ico/yes.svg");
       background-size: 100% 100%; }
   .first__screen .opport__btn-wrapper {
     display: -webkit-box;

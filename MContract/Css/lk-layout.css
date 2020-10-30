@@ -36,7 +36,7 @@ header {
     border-left: 1px solid #8fa4bd;
     height: 35px;
     min-width: 35px;
-    background-image: url("http://m-contract.ru/ico/home.png");
+    background-image: url("http://m-contract.ru/ico/home.svg");
     background-size: 20px 15px;
     background-position: 50% 50%;
     background-repeat: no-repeat; }
@@ -742,7 +742,7 @@ header {
         font-weight: 400;
         margin-left: 15px; }
       .lk__main-offers-block-wrapper .lk-product__item-edit {
-        background-image: url("http://m-contract.ru/ico/edit.png");
+        background-image: url("http://m-contract.ru/ico/edit-1.svg");
         width: 22px;
         height: 19px;
         background-size: 100% 100%;

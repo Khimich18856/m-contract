@@ -27,7 +27,7 @@
 
         <!-- Form inputs -->
         @*@using (Html.BeginForm("Signup", "User", FormMethod.Post, new { @class = "" }))
-            {*@
+        {*@
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-sm-12 col-md-6 input__col">
@@ -97,10 +97,10 @@
                 <div class="input__wrapper">
                     <label for="typeOfOwnership">Форма собственности:</label>
                     <select name="TypeOfOwnership" id="typeOfOwnership" onchange="checkTypeOfOwnership();">
-                        <option value="">Выбрать</option>
                         <option value="1">ООО</option>
                         <option value="2">ОАО</option>
                         <option value="3">ИП</option>
+                        <option value="">Иное</option>
                     </select>
                 </div>
             </div>
@@ -226,6 +226,7 @@
             </div>
             <div class="col-md-3"></div>
         </div>
+
         <!--}-->
     </div>
 </section>

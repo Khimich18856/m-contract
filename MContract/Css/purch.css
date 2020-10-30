@@ -370,7 +370,7 @@
     -webkit-flex-basis: 48%;
         -ms-flex-preferred-size: 48%;
             flex-basis: 48%;
-    padding: 30px; }
+    padding: 18px; }
     .product__item_d.double__item .product__item_d-info {
       width: 100%; }
       .product__item_d.double__item .product__item_d-info .open {
@@ -418,7 +418,7 @@
           .product__item_d.double__item .product__item_d-info .stats .views .view-text, .product__item_d.double__item .product__item_d-info .stats .comments .view-text, .product__item_d.double__item .product__item_d-info .stats .favourites .view-text {
             display: none !important; }
     .product__item_d.double__item .product__item_d-img {
-      margin-right: 20px;
+      margin-right: 18px;
       width: 150px;
       height: 150px;
       min-width: 150px; }

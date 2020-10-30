@@ -75,7 +75,7 @@
     <div class="singleAdContainer @(ad.IsBuy ? "isBuy" : "") @(ad.Offers.Any() && ad.Offers.Any(o => o.ContractStatus == MContract.Models.Enums.ContractStatuses.Sent) ? "contractSent" : "")">
         <div class="adIdHf" style="display: none">@ad.Id</div>
         <a href="@(adUrl)" onclick="@(adOnclick)" class="adPhotoContainer">
-            <img src="@(ad.MainPhotoGroup != null ? bestFitPhoto.Url : "/Images/NoLogo.png")" class="adPhoto" />
+            <img src="@(ad.MainPhotoGroup != null ? bestFitPhoto.Url : "/Images/Nologo.svg")" class="adPhoto" />
         </a>
         <a href="@(adUrl)" onclick="@(adOnclick)" class="textContainer">
             <p class="adNameContainer">
