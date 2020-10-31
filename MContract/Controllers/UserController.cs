@@ -1467,7 +1467,7 @@ namespace MContract.Controllers
                     userTable.AddCell(new Phrase(viewModel.TermsOfPayments.ToString(), arial));
                 }
                 userTable.AddCell(new Phrase("Цена действительна до:", arial));
-                userTable.AddCell(new Phrase(viewModel.ActiveUntilDate.ToString() + " (МСК)", arial));
+                userTable.AddCell(new Phrase(viewModel.ActiveUntilDate.ToShortDateString() + " 23:59 (МСК)", arial));
 
 
                 docCard.Add(userTable);

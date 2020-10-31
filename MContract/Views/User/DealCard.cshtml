@@ -98,7 +98,7 @@
                             оставил и это ...*@
             <tr>
                 <td>Цена действительна до:&nbsp;&nbsp;&nbsp;</td>
-                <td>@Model.ActiveUntilDate (МСК)</td>
+                <td>@Model.ActiveUntilDate.ToShortDateString() 23:59 (МСК)</td>
             </tr>
         </table>
 
