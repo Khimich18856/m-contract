@@ -440,6 +440,7 @@
     <Content Include="ico\list.svg" />
     <Content Include="ico\lkWhite.png" />
     <Content Include="ico\Log.svg" />
+    <Content Include="ico\logo.svg" />
     <Content Include="ico\logout.svg" />
     <Content Include="ico\message-w-white.svg" />
     <Content Include="ico\message-w.svg" />
@@ -753,6 +754,7 @@
     <Content Include="js\regulations.js" />
     <Content Include="js\selectinputs.js" />
     <Content Include="js\task.js" />
+    <Content Include="js\user\usercommon.js" />
     <Content Include="js\user\MyAds.js" />
     <Content Include="js\user\shared.js" />
     <Content Include="js\jquery-3.3.1.min.map" />
