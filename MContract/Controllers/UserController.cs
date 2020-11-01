@@ -1253,7 +1253,7 @@ namespace MContract.Controllers
         [MyAuthorize]
         public ActionResult DealCard(int adId)
         {
-            #region Create DCard 20201028 NEW
+
 
             ViewBag.L.HideHead = true;
             var viewModel = new UserDealCardViewModel();
@@ -1350,11 +1350,129 @@ namespace MContract.Controllers
             //Заполним строку Цена действительна до
             viewModel.ActiveUntilDate = contractOffer.ActiveUntilDate;
 
-          #endregion
 
+            return View(viewModel);
+        }
+        #endregion
+
+        #region Создание файла (PDF) с данными о выбранной сделке Отправка на емайл Удаление файла
+        HttpContext GetCurrent()
+        {
+            return System.Web.HttpContext.Current;
+        }
+        [MyAuthorize]
+        public string SendFilePdfToEmail(int adId, string emailUser, string emailUserNew, string history)
+        {
+
+            #region Create DCard 20201028 NEW
+
+
+            var viewModel = new UserDealCardViewModel();
+            var currentUser = SM.GetPersonalAreaUser();
+            var currentUserId = currentUser.Id;
+            currentUser.SelectedMenu = "История сделок";
+            viewModel.PersonalAreaUser = currentUser;
+
+            var ad = AdsDAL.GetAd(adId);
+            if (ad == null)
+                throw new Exception("Не найдено объявление по Id = " + adId);
+
+            ad.City = TownsDAL.GetTown(ad.CityId);
+            if (ad.City == null)
+                throw new Exception("Не удалось найти город фактического нахождения груза по Id города = " + ad.CityId);
+
+
+            viewModel.DealDirection = ad.IsBuy ? "покупка" : "продажа";
+
+            var contractOffers = OffersDAL.GetOffers(adId: adId, contractStatusId: (int)ContractStatuses.Accepted);
+            if (!contractOffers.Any())
+                throw new Exception("Не найдено предложение, по которому заключен контракт, для объявления с Id = " + adId);
+
+            var contractOffer = contractOffers.First();
+
+            viewModel.ContractOffer = contractOffer;
+
+            var adProducts = AdProductsDAL.GetAdProducts(adId);
+            var productCategoriesIds = adProducts.Select(c => c.ProductCategoryId).Distinct().ToList();
+            var productCategories = ProductCategoriesDAL.GetCategories()/*из кэша*/.Where(c => productCategoriesIds.Contains(c.Id)).ToList();
+            var offerProducts = ProductOffersDAL.GetProductOffers(contractOffer.Id);
+            foreach (var adProduct in adProducts)
+            {
+                adProduct.ProductCategoryName = productCategories.FirstOrDefault(c => c.Id == adProduct.ProductCategoryId)?.Name;
+                adProduct.OfferProduct = offerProducts.FirstOrDefault(op => op.ProductId == adProduct.Id);
+            }
+
+            ad.Products = adProducts;
+
+            viewModel.Ad = ad;
+
+            viewModel.DealDate = contractOffer.ContractSendDate ?? DateTime.MinValue;
+
+
+
+            var adCreator = UsersDAL.GetUser(ad.SenderId);
+            if (adCreator == null)
+                throw new Exception("Не удалось найти пользователя - организатора торгов по Id пользователя = " + ad.SenderId);
+
+            var offerCreator = UsersDAL.GetUser(contractOffer.SenderId);
+            if (offerCreator == null)
+                throw new Exception("Не удалось найти пользователя - отправившего выигравшее предложение по Id пользователя = " + contractOffer.SenderId);
+
+            var buyer = ad.IsBuy ? adCreator : offerCreator;
+            var seller = ad.IsBuy ? offerCreator : adCreator;
+
+            buyer.Town = TownsDAL.GetTown(buyer.CityId);
+            if (buyer.Town == null)
+                throw new Exception("Не удалось найти город покупателя по Id города = " + buyer.CityId);
+
+            seller.Town = TownsDAL.GetTown(seller.CityId);
+            if (seller.Town == null)
+                throw new Exception("Не удалось найти город продавца по Id города = " + seller.CityId);
+
+            if (seller.Id == currentUserId)
+                buyer.Rating = UsersDAL.GetUserRating(buyer.Id, seller.Id, adId);
+            else
+                seller.Rating = UsersDAL.GetUserRating(seller.Id, buyer.Id, adId);
+
+            viewModel.Buyer = buyer;
+            viewModel.Seller = seller;
+
+
+            //Заполним строку Условия поставки
+            var deliveryType = ad.DeliveryType != DeliveryTypes.Any ? ad.DeliveryType : contractOffer.DeliveryType;
+            viewModel.DeliveryType = AdHelper.GetDeliveryTypeString(deliveryType);
+
+            //Заполним строку Погрузка
+            var deliveryLoadType = ad.DeliveryLoadType != DeliveryLoadTypes.Any ? ad.DeliveryLoadType : contractOffer.DeliveryLoadType;
+            viewModel.DeliveryLoadType = AdHelper.GetDeliveryLoadTypeString(deliveryLoadType);
+
+            //Заполним строку Способ доставки
+            var deliveryWay = ad.DeliveryWay != DeliveryWays.Any ? ad.DeliveryWay : contractOffer.DeliveryWay;
+            viewModel.DeliveryWay = AdHelper.GetDeliveryWayString(deliveryWay);
+
+            //Заполним строку Цена (с НДС/без НДС)
+            var nds = ad.Nds != Nds.Any ? ad.Nds : contractOffer.Nds;
+            viewModel.Nds = AdHelper.GetNdsString(nds);
+
+            //Заполним строку Условия оплаты
+            var termOfPayment = ad.TermsOfPayments != TermsOfPayments.Any ? ad.TermsOfPayments : contractOffer.TermsOfPayments;
+            viewModel.TermsOfPayments = AdHelper.GetTermsOfPaymentsString(termOfPayment);
+
+            //Заполним строку Цена действительна до
+            viewModel.ActiveUntilDate = contractOffer.ActiveUntilDate;
+
+            #endregion
 
             #region Create PDF
             string filename;
+            /// 6: Название файла pdf
+            Guid g;
+            g = Guid.NewGuid();
+            string _g = Convert.ToString(g);
+            filename = _g + ".pdf";
+
+            string path = GetCurrent().Server.MapPath("~/");
+
             /// 1: создаем документ
             Document docCard = new Document();
             try
@@ -1387,22 +1505,14 @@ namespace MContract.Controllers
                 /// 5: указываем папку на сервере где будут храниться документы
                 /// Прежде проверить наличии папки == если ее нет то создать 
 
-                string path = GetCurrent().Server.MapPath("~/"); ;
+
 
                 if (Directory.Exists(GetCurrent().Server.MapPath("~/Files")))
                 {
                     path = GetCurrent().Server.MapPath("~/Files");
                 }
 
-                /// 6: Название файла pdf
-                Guid g;
-                g = Guid.NewGuid();
-                string _g = Convert.ToString(g);
-                /*
-                string filename = "Контракт_№_" + viewModel.Ad.Id.ToString() + "_-_" + viewModel.DealDirection.ToString() + "_-_" +_g +".pdf";
-                */
-                filename = _g + ".pdf";
-                ViewBag.FilePDF = filename;
+
                 /// 7: создаем документ
                 PdfWriter.GetInstance(docCard, new FileStream(path + "/" + filename, FileMode.Create));
 
@@ -1685,13 +1795,70 @@ namespace MContract.Controllers
             }
             docCard.Close();
             #endregion
-            return View(viewModel);
 
 
-        }
-        HttpContext GetCurrent()
-        {
-            return System.Web.HttpContext.Current;
+
+
+            #region send to email and delete file
+
+            string fullPath = path + "/" + filename;
+
+            if (ValidHelper.EmailRus(emailUser) && ValidHelper.EmailRus(emailUserNew))
+
+                try
+                {
+                    string Subject = "История сделки - " + history;
+                    string Body = "Уважаемый пользователь портала M-contract" + "<br />" +
+                        "Во вложенном файле история сделки - " + history + "<br />"
+                        + "<i>" + "С уважением команда портала M-contract" + "</i>";
+
+                    string dirName = "Files";
+
+                    MailHelper.MailSendAttachment("info@m-contract.ru", emailUser, emailUserNew, Subject, Body, dirName, filename);
+
+                    //delete file to end send to email                   
+                    if (System.IO.File.Exists(fullPath))
+                        System.IO.File.Delete(fullPath);
+
+                    return "История сделки - " + history + " отправлена на e-mail: " + emailUser + ", " + emailUserNew + ", с вложенным файлом -  " + filename;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    return "почта не может быть доставлена" + ex.ToString();
+                }
+            else if (ValidHelper.EmailRus(emailUser))
+
+                try
+                {
+                    string Subject = "История сделки - " + history;
+                    string Body = "Уважаемый пользователь портала M-contract" + "<br />" +
+                        "Во вложенном файле история сделки - " + history + "<br />"
+                        + "<i>" + "С уважением команда портала M-contract" + "</i>";
+
+                    string dirName = "Files";
+
+                    MailHelper.MailSendAttachment("info@m-contract.ru", emailUser, emailUserNew, Subject, Body, dirName, filename);
+
+
+                    //delete file to end send to email                 
+                    if (System.IO.File.Exists(fullPath))
+                        System.IO.File.Delete(fullPath);
+
+                    return "История сделки - " + history + " отправлена на e-mail: " + emailUser + ", с вложенным файлом -  " + filename;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    return "почта не может быть доставлена" + ex.ToString();
+                }
+
+
+
+
+            #endregion
+            return "почта не может быть доставлена на фальшивые e-mail адреса";
+
         }
         #endregion
 

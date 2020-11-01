@@ -196,6 +196,7 @@
                     </a><br /><br />
                     <a class="printDeal" href="#">РАСПЕЧАТАТЬ</a><br /><br />
                     <a class="sendToEmail" id="showEmailDiv" href="javascript:void(null);">ОТПРАВИТЬ НА E-MAIL</a>
+                    <input id="model" type="hidden" value="@Model">
                     <input id="filePdf" type="hidden" value="@ViewBag.FilePDF">
                     <input id="history" type="hidden" value="Контракт № @Model.Ad.Id (@Model.DealDirection)">
                     <div id="sendEmailDiv">
@@ -325,7 +326,8 @@
 
 
     $("#sendEmail").on('click', function () {
-        sendEmailFilePDF();
+        //sendEmailFilePDF();
+        sendFilePdfToEmailAndDeleteFile();
     });
     function sendEmailFilePDF() {
         //if (!checkEmal())
@@ -352,4 +354,28 @@
             });
     };
 
+    function sendFilePdfToEmailAndDeleteFile() {
+        //if (!checkEmal())
+        //    return;
+
+        var _adId = @(Model.Ad.Id); 
+
+        var _emailUser = $("#emailUser").val();
+
+        var _emailUserNew = $("#emailUserNew").val();
+
+        var _history = $("#history").val();
+
+        var sendEmailDiv = $('#sendEmailDiv');
+
+        $.ajax('/User/SendFilePdfToEmail',
+            {
+                type: 'POST',
+                data: { adId: _adId, emailUser: _emailUser, emailUserNew: _emailUserNew, history: _history },
+                success: function (data) {
+                    alert(data);
+                    sendEmailDiv.hide();
+                },
+            });
+    };
 </script>
