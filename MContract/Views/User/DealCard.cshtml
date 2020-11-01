@@ -44,212 +44,216 @@
         <div class="row">
             @{ Html.RenderPartial("_PersonalArea", Model.PersonalAreaUser); }
             <div class="col-sm-12 deal__wrapper col-md-12 col-lg-9">
-            <div class="mainPrintContainer">
-            <div class="col-sm-12">
-            <div class="c__offer-title" style="background-color: gainsboro; font-size: large">
-            <div class="contract">Контракт № @Model.Ad.Id</div>
-            <div class="info">(@Model.DealDirection)</div>
-            </div>
-            </div>
-            <div class="col-sm-12" style="font-size: larger">
-            <table class="offer__about" style="margin-top: 15px">
-            <tr class="offer__about-item">
-            <td class="title">Дата сделки:</td>
-            <td class="text">@Model.DealDate.ToShortDateString()</td>
-            </tr>
-            <tr class="offer__about-item">
-            <td class="title">Покупатель:</td>
-            @{ var buyerStartA = Model.Buyer.Id != personalAreaUser.Id ? "<a href=\"" + Model.Buyer.Url + "\">" : "";
-                var buyerEndA = Model.Buyer.Id != personalAreaUser.Id ? "</a>" : ""; }
-            <td class="text">
-            @Html.Raw(buyerStartA)
-            @Model.Buyer.CompanyNameWithTypeOfOwnership, @Model.Buyer.Town.NameAndRegionNameWithComma
-            @Html.Raw(buyerEndA)
-            </td>
-            </tr>
-            <tr class="offer__about-item">
-            <td class="title">Продавец:</td>
-            @{ var sellerStartA = Model.Seller.Id != personalAreaUser.Id ? "<a href=\"" + Model.Seller.Url + "\">" : "";
-                var sellerEndA = Model.Seller.Id != personalAreaUser.Id ? "</a>" : ""; }
-            <td class="text">
-            @Html.Raw(sellerStartA)
-            @Model.Seller.CompanyNameWithTypeOfOwnership, @Model.Seller.Town.NameAndRegionNameWithComma
-            @Html.Raw(sellerEndA)
-            </td>
-            </tr>
-            @*<tr>
-            <td>Место фактического нахождения груза:&nbsp;</td>
-            <td>@Model.Ad.City.NameAndRegionNameWithComma</td>
-        </tr>*@
-            <tr class="offer__about-item">
-            <td class="title">Условия поставки:</td>
-            <td class="text">@Model.DeliveryType</td>
-            </tr>
-            <tr class="offer__about-item">
-            <td class="title">Погрузка:</td>
-            <td class="text">@Model.DeliveryLoadType</td>
-            </tr>
-            <tr class="offer__about-item">
-            <td class="title">Способ доставки:</td>
-            <td class="text">@Model.DeliveryWay</td>
-            </tr>
-            <tr class="offer__about-item">
-            <td class="title">Цена:</td>
-            <td class="text">@Model.Nds</td>
-            </tr>
-            <tr class="offer__about-item">
-            <td class="title">Условия оплаты:</td>
-            @{ var termsOfPayments =
-                                 Model.ContractOffer.DefermentPeriod > 0 ?
-                                 Model.TermsOfPayments + " (" + Model.ContractOffer.DefermentPeriod.ToString() + " календарн.дн.)" :
-                                 Model.TermsOfPayments; }
-            <td class="text">
-            @Html.Raw(termsOfPayments)
-            </td>
-            </tr>
-            <tr class="offer__about-item">
-            <td class="title">Цена действительна до:&nbsp;&nbsp;&nbsp;</td>
-            <td class="text">@Model.ActiveUntilDate.ToShortDateString() 23:59 (МСК)</td>
-            </tr>
-            </table>
-            </div>
-            <div class="col-sm-12">
-            <table class="offer__position-table" border="1">
-            <thead>
-            <tr style="background-color: gainsboro; font-weight: bold">
-            <td>№</td>
-            <td>Категория товара</td>
-            <td>Вес (тн.)</td>
-            <td>Валюта</td>
-            <td>Цена за 1 тн. (минимальная)</td>
-            <td>Цена за 1 тн. (предложение)</td>
-            <td>Цена за всю позицию (предложение)</td>
-            </tr>
-            </thead>
-            <tbody>
-            @{ int rowNum = 0;
-                float sumTotal = 0; }
-            @foreach (var adProduct in Model.Ad.Products)
-            {
-                rowNum++;
-                var currency = adProduct.Currency == MContract.Models.Enums.Currencies.Dollar ? "Доллар" : "Рубль";
-                var pricePerWeight = adProduct.PricePerWeight > 0 ? adProduct.PricePerWeight.ToString() : "Не указано";
-                string pricePerWeightOffer = "Не указано";
-                var priceForWholePositionStr = "Не указано";
-                if (adProduct.OfferProduct != null)
-                {
-                    pricePerWeightOffer = adProduct.OfferProduct.PricePerWeight.ToString();
-                    var priceForWholePosition = adProduct.Weight * adProduct.OfferProduct.PricePerWeight;
-                    priceForWholePositionStr = priceForWholePosition.ToString();
-                    sumTotal += priceForWholePosition;
-                }
-                <tr>
-                <td>@rowNum</td>
-                <td>@adProduct.ProductCategoryName</td>
-                <td>@adProduct.Weight</td>
-                <td>@currency</td>
-                <td>@pricePerWeight</td>
-                <td>@pricePerWeightOffer</td>
-                <td>@priceForWholePositionStr</td>
-                </tr>
-            }
-            <tr style="font-weight: bold">
-            <td></td>
-            <td>Итого:</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>@sumTotal</td>
-            </tr>
-            </tbody>
-            </table>
-            </div>
-            <div class="col-sm-12">
-            <div class="offer__description">
-            <div class="tab">
-            <input id="tab-one" type="checkbox" name="tabs">
-            <label for="tab-one" id="switchDescriptionVisibilityButton" style="cursor: pointer" onclick="switchDescriptionVisibility()">Описание</label>
-            <div class="tab-content">
-            @{ var description = !String.IsNullOrWhiteSpace(Model.Ad.Description) ? Model.Ad.Description : "Не указано"; }
-            <div id="descriptionDiv" style="background-color: gainsboro; word-wrap: break-word; width: 60%">
-            <p>
-            @description
-            </p>
-            </div>
-            </div>
-            </div>
-            </div>
-            <div class="noPrintContainer">
-            <div class="row">
-            <div class="col-sm-12 col-md-3">
-            <div class="counter__info-wrapper extraPrintContainer">
-            <div class="counter-image">
-            <img src="../images/counter-accepted.png" alt="">
-            </div>
-            </div>
-            </div>
-            <div class="col-sm-12 col-md-5">
-            <div class="rate__counter-block">
-            <div class="title">
-            Оцените контрагента:
-            </div>
-            <div class="rate ratingOptionsContainer" value="@counteragent.Rating">
-            <div class="ratingOption" value="1">★</div>
-            <div class="ratingOption" value="2">★</div>
-            <div class="ratingOption" value="3">★</div>
-            <div class="ratingOption" value="4">★</div>
-            <div class="ratingOption" value="5">★</div>
-            </div>
-            <div class="rules-block">
-            <div class="rules-title">
-            <a href="~/User/RateRules"> Правила оценки </a>
-            </div>
-            </div>
-            </div>
-            </div>
-            <div class="col-sm-12 col-md-4">
-                <div class="rate__btns-block">
-                    <a href="#" class="removeFromDealsHistory rate-btn rate-delete">Удалить из истории сделок</a>
-                    <a href="#" class="sendMessageToCounteragent rate-btn">
-                        Отправить сообщение
-                        @(Model.Seller?.Id == ViewBag.L.PersonalAreaUser?.Id
-                                ? "покупателю"
-                                : "продавцу")
-                    </a>
-                    <a href="#" class="printDeal rate-btn">Распечатать</a>
-                    <a href="#" class="sendToEmail rate-btn" id="showEmailDiv">Отправить на E-Mail</a>
-                    <input id="filePdf" type="hidden" value="@ViewBag.FilePDF">
-                    <input id="history" type="hidden" value="Контракт № @Model.Ad.Id (@Model.DealDirection)">
-                    <div class="col-sm-12" id="sendEmailDiv">
-                        <div class="row">
-                        <table style="width:50%" class="offer__position-table">
+                <div class="mainPrintContainer">
+                    <div class="col-sm-12">
+                        <div class="c__offer-title" style="background-color: gainsboro; font-size: large">
+                            <div class="contract">Контракт № @Model.Ad.Id</div>
+                            <div class="info">(@Model.DealDirection)</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12" style="font-size: larger">
+                        <table class="offer__about" style="margin-top: 15px">
+                            <tr class="offer__about-item">
+                                <td class="title">Дата сделки:</td>
+                                <td class="text">@Model.DealDate.ToShortDateString()</td>
+                            </tr>
+                            <tr class="offer__about-item">
+                                <td class="title">Покупатель:</td>
+                                @{ var buyerStartA = Model.Buyer.Id != personalAreaUser.Id ? "<a href=\"" + Model.Buyer.Url + "\">" : "";
+                                    var buyerEndA = Model.Buyer.Id != personalAreaUser.Id ? "</a>" : ""; }
+                                <td class="text">
+                                    @Html.Raw(buyerStartA)
+                                    @Model.Buyer.CompanyNameWithTypeOfOwnership, @Model.Buyer.Town.NameAndRegionNameWithComma
+                                    @Html.Raw(buyerEndA)
+                                </td>
+                            </tr>
+                            <tr class="offer__about-item">
+                                <td class="title">Продавец:</td>
+                                @{ var sellerStartA = Model.Seller.Id != personalAreaUser.Id ? "<a href=\"" + Model.Seller.Url + "\">" : "";
+                                    var sellerEndA = Model.Seller.Id != personalAreaUser.Id ? "</a>" : ""; }
+                                <td class="text">
+                                    @Html.Raw(sellerStartA)
+                                    @Model.Seller.CompanyNameWithTypeOfOwnership, @Model.Seller.Town.NameAndRegionNameWithComma
+                                    @Html.Raw(sellerEndA)
+                                </td>
+                            </tr>
+                            @*<tr>
+                                    <td>Место фактического нахождения груза:&nbsp;</td>
+                                    <td>@Model.Ad.City.NameAndRegionNameWithComma</td>
+                                </tr>*@
+                            <tr class="offer__about-item">
+                                <td class="title">Условия поставки:</td>
+                                <td class="text">@Model.DeliveryType</td>
+                            </tr>
+                            <tr class="offer__about-item">
+                                <td class="title">Погрузка:</td>
+                                <td class="text">@Model.DeliveryLoadType</td>
+                            </tr>
+                            <tr class="offer__about-item">
+                                <td class="title">Способ доставки:</td>
+                                <td class="text">@Model.DeliveryWay</td>
+                            </tr>
+                            <tr class="offer__about-item">
+                                <td class="title">Цена:</td>
+                                <td class="text">@Model.Nds</td>
+                            </tr>
+                            <tr class="offer__about-item">
+                                <td class="title">Условия оплаты:</td>
+                                @{ var termsOfPayments =
+                                                       Model.ContractOffer.DefermentPeriod > 0 ?
+                                                       Model.TermsOfPayments + " (" + Model.ContractOffer.DefermentPeriod.ToString() + " календарн.дн.)" :
+                                                       Model.TermsOfPayments; }
+                                <td class="text">
+                                    @Html.Raw(termsOfPayments)
+                                </td>
+                            </tr>
+                            <tr class="offer__about-item">
+                                <td class="title">Цена действительна до:&nbsp;&nbsp;&nbsp;</td>
+                                <td class="text">@Model.ActiveUntilDate.ToShortDateString() 23:59 (МСК)</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-12">
+                        <table class="offer__position-table" border="1">
+                            <thead>
+                                <tr style="background-color: gainsboro; font-weight: bold">
+                                    <td>№</td>
+                                    <td>Категория товара</td>
+                                    <td>Вес (тн.)</td>
+                                    <td>Валюта</td>
+                                    <td>Цена за 1 тн. (минимальная)</td>
+                                    <td>Цена за 1 тн. (предложение)</td>
+                                    <td>Цена за всю позицию (предложение)</td>
+                                </tr>
+                            </thead>
                             <tbody>
-                                <tr class="offer__position-item">
-                                    <td class="title">Ваш E-mail:</td>
-                                    <td class="text"> <input id="emailUser" value="@Model.PersonalAreaUser.Email" style="background-color: transparent; border-bottom: 1px solid #808080; border-top:0px; border-left:0px; border-right:0px; margin-left:10px;" /></td>
-                                </tr>
-                                <tr class="offer__position-item">
-                                    <td class="title"><span>Дополнительный E-mail:</span></td>
-                                    <td class="text"><input id="emailUserNew" type="text" style="background-color: transparent; border-bottom: 1px solid #808080; border-top: 0px; border-left: 0px; border-right: 0px; margin-left: 10px; " /></td>
-                                </tr>
-                                <tr class="offer__position-item">
-                                    <td class="title" colspan="2"><br /><a id="sendEmail" href="javascript:void(null);">ОТПРАВИТЬ</a></td>
+                                @{ int rowNum = 0;
+                                    float sumTotal = 0; }
+                                @foreach (var adProduct in Model.Ad.Products)
+                                {
+                                    rowNum++;
+                                    var currency = adProduct.Currency == MContract.Models.Enums.Currencies.Dollar ? "Доллар" : "Рубль";
+                                    var pricePerWeight = adProduct.PricePerWeight > 0 ? adProduct.PricePerWeight.ToString() : "Не указано";
+                                    string pricePerWeightOffer = "Не указано";
+                                    var priceForWholePositionStr = "Не указано";
+                                    if (adProduct.OfferProduct != null)
+                                    {
+                                        pricePerWeightOffer = adProduct.OfferProduct.PricePerWeight.ToString();
+                                        var priceForWholePosition = adProduct.Weight * adProduct.OfferProduct.PricePerWeight;
+                                        priceForWholePositionStr = priceForWholePosition.ToString();
+                                        sumTotal += priceForWholePosition;
+                                    }
+                                    <tr>
+                                        <td>@rowNum</td>
+                                        <td>@adProduct.ProductCategoryName</td>
+                                        <td>@adProduct.Weight</td>
+                                        <td>@currency</td>
+                                        <td>@pricePerWeight</td>
+                                        <td>@pricePerWeightOffer</td>
+                                        <td>@priceForWholePositionStr</td>
+                                    </tr>
+                                }
+                                <tr style="font-weight: bold">
+                                    <td></td>
+                                    <td>Итого:</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>@sumTotal</td>
                                 </tr>
                             </tbody>
-                            </table>
+                        </table>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="offer__description">
+                            <div class="tab">
+                                <input id="tab-one" type="checkbox" name="tabs">
+                                <label for="tab-one" id="switchDescriptionVisibilityButton" style="cursor: pointer" onclick="switchDescriptionVisibility()">Описание</label>
+                                <div class="tab-content">
+                                    @{ var description = !String.IsNullOrWhiteSpace(Model.Ad.Description) ? Model.Ad.Description : "Не указано"; }
+                                    <div id="descriptionDiv" style="background-color: gainsboro; word-wrap: break-word; width: 60%">
+                                        <p>
+                                            @description
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+                        <div class="noPrintContainer">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-3">
+                                    <div class="counter__info-wrapper extraPrintContainer">
+                                        <div class="counter-image">
+                                            <img src="../images/counter-accepted.png" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-5">
+                                    <div class="rate__counter-block">
+                                        <div class="title">
+                                            Оцените контрагента:
+                                        </div>
+                                        <div class="rate ratingOptionsContainer" value="@counteragent.Rating">
+                                            <div class="ratingOption" value="1">★</div>
+                                            <div class="ratingOption" value="2">★</div>
+                                            <div class="ratingOption" value="3">★</div>
+                                            <div class="ratingOption" value="4">★</div>
+                                            <div class="ratingOption" value="5">★</div>
+                                        </div>
+                                        <div class="rules-block">
+                                            <div class="rules-title">
+                                                <a href="~/User/RateRules"> Правила оценки </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="rate__btns-block">
+                                        <a href="#" class="removeFromDealsHistory rate-btn rate-delete">Удалить из истории сделок</a>
+                                        <a href="#" class="sendMessageToCounteragent rate-btn">
+                                            Отправить сообщение
+                                            @(Model.Seller?.Id == ViewBag.L.PersonalAreaUser?.Id
+                                ? "покупателю"
+                                : "продавцу")
+                                        </a>
+                                        <a href="#" class="printDeal rate-btn">Распечатать</a>
+                                        <a href="javascript:void(null);" class="sendToEmail rate-btn" id="showEmailDiv">Отправить на E-Mail</a>
+                                        <input id="filePdf" type="hidden" value="@ViewBag.FilePDF">
+                                        <input id="history" type="hidden" value="Контракт № @Model.Ad.Id (@Model.DealDirection)">
+                                        <div class="col-sm-12" id="sendEmailDiv">
+                                            <div class="row">
+                                                <table style="width:50%" class="offer__position-table">
+                                                    <tbody>
+                                                        <tr class="offer__position-item">
+                                                            <td class="title">Ваш E-mail:</td>
+                                                        </tr>
+                                                        <tr class="offer__position-item">
+                                                            <td class="text"> <input id="emailUser" value="@Model.PersonalAreaUser.Email" style="background-color: transparent; border-bottom: 1px solid #808080; border-top:0px; border-left:0px; border-right:0px; margin-left:10px;" /></td>
+                                                        </tr>
+                                                        <tr class="offer__position-item">
+                                                            <td class="title"><span>Дополнительный E-mail:</span></td>
+                                                        </tr>
+                                                        <tr class="offer__position-item">
+                                                            <td class="text"><input id="emailUserNew" type="text" style="background-color: transparent; border-bottom: 1px solid #808080; border-top: 0px; border-left: 0px; border-right: 0px; margin-left: 10px; " /></td>
+                                                        </tr>
+                                                        <tr class="offer__position-item">
+                                                            <td class="title"><a id="sendEmail" href="javascript:void(null);">ОТПРАВИТЬ</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            </div>
-            </div>
-            </div>
-            </div>
-            </div>
-       </div>
-</div>
+        </div>
+    </div>
 </section>
 
 
@@ -356,13 +360,13 @@
 
 
     $("#sendEmail").on('click', function () {
-        sendEmailFilePDF();
+        sendFilePdfToEmailAndDeleteFile();
     });
-    function sendEmailFilePDF() {
+   function sendFilePdfToEmailAndDeleteFile() {
         //if (!checkEmal())
         //    return;
 
-        var _filePdf = $("#filePdf").val();
+        var _adId = @(Model.Ad.Id);
 
         var _emailUser = $("#emailUser").val();
 
@@ -372,10 +376,10 @@
 
         var sendEmailDiv = $('#sendEmailDiv');
 
-        $.ajax('/User/SendDealsHistory',
+        $.ajax('/User/SendFilePdfToEmail',
             {
                 type: 'POST',
-                data: { file: _filePdf, emailUser: _emailUser, emailUserNew: _emailUserNew, history: _history },
+                data: { adId: _adId, emailUser: _emailUser, emailUserNew: _emailUserNew, history: _history },
                 success: function (data) {
                     alert(data);
                     sendEmailDiv.hide();
