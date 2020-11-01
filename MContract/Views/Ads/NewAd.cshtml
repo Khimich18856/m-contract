@@ -1,401 +1,958 @@
 ﻿@model MContract.Models.AdsNewAdViewModel
 
 @{
-	ViewBag.Title = ViewBag.Heading;
-	Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = ViewBag.Heading;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Styles{
-	<link href="@Url.Content("~/css/lk-layout.css")?p=2020-10-10-a" rel="stylesheet" type="text/css" />
-	<link href="@Url.Content("~/css/NewAd.css")?p=2020-10-10-a" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/css/lk-layout.css")?p=2020-10-10-a" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/css/Ads/NewAd.css")?p=2020-10-10-a" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/css/NewAd.css")?p=2020-10-10-a" rel="stylesheet" type="text/css" />
+    <link href="~/js/jquery-ui/jquery-ui.css?p=202006112" rel="stylesheet" type="text/css" />
 }
+<script src="~/js/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
 
 <section class="header-pc">
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-12 col-md-5 col-lg-4">
-				<div class="offer__title">
-					<h1>Личный кабинет</h1>
-				</div>
-			</div>
-			<div class="col-sm-12 col-md-5 col-lg-7">
-				<div class="offer__open">
-					<div class="open">
-						Новое объявление
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-12 col-md col-lg-1 mobile-first">
-				<div class="product__crumbs">
-					<span class="page"><a href="@ViewBag.L.SiteUrlClear">Главная</a></span>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-5 col-lg-4">
+                <div class="offer__title">
+                    <h1>Личный кабинет</h1>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-5 col-lg-7">
+                <div class="offer__open">
+                    <div class="open">
+                        Новое объявление
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md col-lg-1 mobile-first">
+                <div class="product__crumbs">
+                    <span class="page"><a href="@ViewBag.L.SiteUrlClear">Главная</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 <main>
-	<!-- Новое объявление -->
-	<section class="lk__main__wrapper">
-		<div class="container">
-			<div class="row">
-				@{ 
-					Html.RenderPartial("_PersonalArea", Model.PersonalAreaUser); 
-				}
-				<div class="col-sm-12 mobile__off">
-					<div class="lk__main-title">
-						Новое объявление
-					</div>
-				</div>
-				<div class="col-sm-12 col-lg-9 add-margin">
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="c__offer-title">
-								<div class="title">
-									Продажа №50
-								</div>
-								<div class="company">
-									<span>открытый запрос предложений</span>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-12">
-							<div class="offer__about">
-								<div class="offer__about-item">
-									<div class="title">
-										Место фактического нахождения груза:
-									</div>
-									<div class="text-select required true-input">
-										<input type="text" placeholder="Город" required>
-									</div>
-								</div>
-								<div class="offer__about-item">
-									<div class="title">
-										Условия поставки:
-									</div>
-									<div class="text-select">
-										<span class="cat-span category-btn">Самовывоз покупателем</span>
-										<div class="ico"></div>
-										<ul class="filter-item-list closed">
-											<li>Самовывоз покупателем</li>
-											<li>Условие 2</li>
-											<li>Условие 3</li>
-											<li>Условие 4</li>
-										</ul>
-									</div>
-								</div>
-								<div class="offer__about-item">
-									<div class="title">
-										Погрузка:
-									</div>
-									<div class="text-select">
-										<span class="cat-span category-btn">Силами покупателя</span>
-										<div class="ico"></div>
-										<ul class="filter-item-list closed">
-											<li>Силами покупателя</li>
-											<li>Условие 2</li>
-											<li>Условие 3</li>
-											<li>Условие 4</li>
-										</ul>
-									</div>
-								</div>
-								<div class="offer__about-item">
-									<div class="title">
-										Способ доставки:
-									</div>
-									<div class="text-select">
-										<span class="cat-span category-btn">Не выбрано</span>
-										<div class="ico"></div>
-										<ul class="filter-item-list closed">
-											<li>Не выбрано</li>
-											<li>Условие 2</li>
-											<li>Условие 3</li>
-											<li>Условие 4</li>
-										</ul>
-									</div>
-								</div>
-								<div class="offer__about-item">
-									<div class="title">
-										Цена
-									</div>
-									<div class="text-select not-first">
-										<input type="number" placeholder="Цена" required>
-									</div>
-								</div>
-								<div class="offer__about-item">
-									<div class="title">
-										Условия оплаты
-									</div>
-									<div class="text-select">
-										<span class="cat-span category-btn">Не выбрано</span>
-										<div class="ico"></div>
-										<ul class="filter-item-list closed">
-											<li>Не выбрано</li>
-											<li>Условие 2</li>
-											<li>Условие 3</li>
-											<li>Условие 4</li>
-										</ul>
-									</div>
-								</div>
-								<div class="offer__about-item last-of-type">
-									<div class="title">
-										Подача предложений по части позиций:
-									</div>
-									<div class="text-select check-box-text">
-										<input type="checkbox" class="offer-check" name="yes" id="offerSend">
-										<label for="offerSend">
-										</label>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-12 mobile__off">
-							<div class="offer__position-item">
-								<div class="item-title">
-									<span class="title">
-										Позиция №1
-									</span>
-									<div class="close-position">
+    <!-- Новое объявление -->
+    <section class="lk__main__wrapper">
+        <div class="container">
+            <div class="row">
+                @{
+                    Html.RenderPartial("_PersonalArea", Model.PersonalAreaUser);
+                }
 
-									</div>
-								</div>
-								<div class="offer__position-block">
-									<div class="offer__position-block-item">
-										<div class="title">
-											Наименование товара
-										</div>
-										<div class="text-select">
-											<input type="text" placeholder="Имя товара" required>
-										</div>
-									</div>
-									<div class="offer__position-block-item">
-										<div class="title">
-											Дополнительное наименование
-										</div>
-										<div class="text-select input-select">
-											<input type="text" placeholder="Указать">
-										</div>
-									</div>
-									<div class="offer__position-block-item">
-										<div class="title required">
-											Вес(тн.)
-										</div>
-										<div class="text-select">
-											<input type="number" placeholder="1">
-										</div>
-									</div>
-									<div class="offer__position-block-item">
-										<div class="title required">
-											Валюта
-										</div>
-										<div class="text-select">
-											<select name="select" id="select">
-												<option value="value0">Рубль</option>
-												<option value="value1">Доллар</option>
-												<option value="value2">Евро</option>
-											</select>
-										</div>
-									</div>
-									<div class="offer__position-block-item">
-										<div class="title">
-											Цена за 1 тн. (минимальная)
-										</div>
-										<div class="text-select">
-											<input type="number" placeholder="50.000">
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-12 mobile__off">
-							<div class="offer__position-item">
-								<div class="item-title">
-									<span class="title">
-										Позиция №2
-									</span>
-									<div class="close-position">
+                <div class="col-sm-12 mobile__off">
+                    <div class="lk__main-title">
+                        Новое объявление
+                    </div>
+                </div>
+                <div class="col-sm-12 col-lg-9 add-margin">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="c__offer-title">
+                                <div class="title">
+                                    Продажа
+                                </div>
+                                <div class="company">
+                                    <span>открытый запрос предложений</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="offer__about">
+                                <div class="offer__about-item">
+                                    <div class="title">
+                                        @(Model.IsBuy ? "Город поставки товара:" : "Место фактического нахождения груза:")
+                                    </div>
+                                    <div class="cityContainer mb-1">
+                                        <input class="cityInput" type="text" autocomplete="off" />
+                                    </div>
+                                    <div class="tipsContainer">
+                                        <span class="requiredFieldMarker"></span>
+                                        <div class="needContainer cityNeedContainer">
+                                            <span>Поле "Город" обязательно для заполнения</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                @if (Model.IsBuy)
+                                {
+                                    <div class="deliveryAddressRow isBuy offer__about-item mb-1">
+                                        <div class="title">
+                                            Адрес поставки товара:
+                                        </div>
+                                        <div class="deliveryAddressContainer">
+                                            <input type="text" value="@(Model.PersonalAreaUser?.FactualAddress ?? Model.PersonalAreaUser?.Address ?? Model.PersonalAreaUser?.TownName ?? "")" />
+                                        </div>
+                                        <div class="tipsContainer">
+                                            <div class="needContainer deliveryAddressNeedContainer">
+                                                <span>Поле "Адрес поставки товара" обязательно для заполнения</span>
+                                            </div>
+                                            <div class="invalidContainer deliveryAddressInvalidContainer">
+                                                <span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <div class="offer__about-item">
+                                    <div class="title">
+                                        Условия поставки:
+                                    </div>
+                                    <div class="text-select deliveryTypeContainer">
+                                        <span class="cat-span category-btn">Не выбрано</span>
+                                        <ul class="filter-item-list closed deliveryType">
+                                            <li name="deliveryType" value="0">Не выбрано</li>
+                                            <li name="deliveryType" value="1">Доставка продавцом</li>
+                                            <li name="deliveryType" value="2">Самовывоз покупателем</li>
+                                        </ul>
 
-									</div>
-								</div>
-								<div class="offer__position-block">
-									<div class="offer__position-block-item">
-										<div class="title">
-											Наименование товара
-										</div>
-										<div class="text-select">
-											<input type="text" placeholder="Имя товара" required>
-										</div>
-									</div>
-									<div class="offer__position-block-item">
-										<div class="title">
-											Дополнительное наименование
-										</div>
-										<div class="text-select input-select">
-											<input type="text" placeholder="Указать">
-										</div>
-									</div>
-									<div class="offer__position-block-item">
-										<div class="title required">
-											Вес(тн.)
-										</div>
-										<div class="text-select">
-											<input type="number" placeholder="1">
-										</div>
-									</div>
-									<div class="offer__position-block-item">
-										<div class="title required">
-											Валюта
-										</div>
-										<div class="text-select">
-											<select name="select" id="select">
-												<option value="value0">Рубль</option>
-												<option value="value1">Доллар</option>
-												<option value="value2">Евро</option>
-											</select>
-										</div>
-									</div>
-									<div class="offer__position-block-item">
-										<div class="title">
-											Цена за 1 тн. (минимальная)
-										</div>
-										<div class="text-select">
-											<input type="number" placeholder="50.000">
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-12 only-desktop">
-							<table class="offer__position-table">
-								<tr>
-									<th>№</th>
-									<th>Категории товара</th>
-									<th>Точное наименование</th>
-									<th>Вес (тн.)</th>
-									<th>Валюта</th>
-									<th>Цена за 1 тн. (минимальная)</th>
-									<th></th>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>
-										<input type="text" placeholder="Название">
-									</td>
-									<td class="indicate">
-										<input type="text" placeholder="Указать">
-									</td>
-									<td>
-										<input type="text" placeholder="Вес">
-									</td>
-									<td>
-										<select name="select" id="select">
-											<option value="Не указано">Рубль</option>
-											<option value="Выбор 1">Евро</option>
-										</select>
-									</td>
-									<td>
-										<input type="text" placeholder="Цена">
-									</td>
-									<td class="delete"></td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>
-										<input type="text" placeholder="Название">
-									</td>
-									<td class="indicate">
-										<input type="text" placeholder="Указать">
-									</td>
-									<td>
-										<input type="text" placeholder="Вес">
-									</td>
-									<td>
-										<select name="select" id="select">
-											<option value="Не указано">Рубль</option>
-											<option value="Выбор 1">Евро</option>
-										</select>
-									</td>
-									<td>
-										<input type="text" placeholder="Цена">
-									</td>
-									<td class="delete"></td>
-								</tr>
-								<tr>
-									<td class="add"></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-							</table>
-						</div>
-						<div class="col-sm-12 mobile__off">
-							<div class="offer__position-item">
-								<div class="item-title">
-									<span>
-										Добавить позицию
-									</span>
-									<div class="add">
+                                    </div>
+                                </div>
+                                <div class="offer__about-item">
+                                    <div class="title">
+                                        Погрузка:
+                                    </div>
+                                    <div class="text-select deliveryLoadTypeContainer">
+                                        <span class="cat-span category-btn">Не выбрано</span>
+                                        <ul class="filter-item-list closed deliveryLoadType">
+                                            <li name="deliveryLoadType" value="0">Не выбрано</li>
+                                            <li name="deliveryLoadType" value="1">Силами продавца</li>
+                                            <li name="deliveryLoadType" value="2">Силами покупателя</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="offer__about-item">
+                                    <div class="title">
+                                        Способ доставки:
+                                    </div>
+                                    <div class="text-select deliveryWayContainer">
+                                        <span class="cat-span category-btn">Не выбрано</span>
+                                        <ul class="filter-item-list closed deliveryWay">
+                                            <li name="deliveryWay" value="0">Не выбрано</li>
+                                            <li name="deliveryWay" value="1">Авто</li>
+                                            <li name="deliveryWay" value="2">Ж/Д</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="offer__about-item">
+                                    <div class="title">
+                                        Цена
+                                    </div>
+                                    <div class="text-select not-first">
+                                        <input type="number" placeholder="Цена" required>
+                                    </div>
+                                </div>
+                                <div class="offer__about-item">
+                                    <div class="title">
+                                        Условия оплаты
+                                    </div>
+                                    <div class="text-select ndsContainer">
+                                        <span class="cat-span category-btn">Не выбрано</span>
+                                        <ul class="filter-item-list closed Nds">
+                                            <li name="Nds" value="0">Не выбрано</li>
+                                            <li name="Nds" value="1">Отсрочка платежа</li>
+                                            <li name="Nds" value="2">100% предоплата</li>
+                                            <li name="Nds" value="3">Частичная предоплата</li>
+                                            <li name="Nds" value="4">По факту поставки</li>
+                                        </ul>
+                                    </div>
 
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="delete__draft closed draft-file">
-							<div class="delete__draft-wrapper">
-								<div class="delete__draft-title">
-									Позиция по данному объявлению будет удалена.
-								</div>
-								<div class="delete__draft-quest">
-									Вы подтверждаете это?
-								</div>
-								<div class="delete__draft-flex">
-									<a href="#" class="delete__draft-btn yes">Да</a>
-									<a href="#" class="delete__draft-btn no">Нет</a>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-12">
-							<div class="offer__position-item">
-								<div class="item-title description">
-									Описание
-								</div>
-								<div class="offer__position-block">
-									<div class="offer__position-block-item input-item">
-										<textarea name="" id="">Тестовый текст комментария для образца и показа стиля  в макете.</textarea>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-12">
-							<div class="btn-wrapper">
-								<div class="offer__send-btn offer__send-upload mobile__off">
-									<a href="#">
-										<div class="ico"></div>
-										<span>Загрузить</span>
-									</a>
-								</div>
-								<div class="offer__send-btn offer__send-upload only-desktop">
-									<a href="#">
-										<span>Загрузить фото</span>
-									</a>
-								</div>
-								<div class="offer__send-btn offset-lg-1">
-									<a href="#">
-										<span>Далее</span>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- // Новое объявление -->
+                                </div>
+                                <div class="offer__about-item last-of-type">
+                                    <div class="title">
+                                        Подача предложений по части позиций:
+                                    </div>
+                                    <div class="text-select check-box-text">
+                                        <input type="checkbox" class="offer-check" name="yes" id="offerSend">
+                                        <label for="offerSend">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 mobile__off">
+                            <div class="offer__position-item">
+                                <div class="item-title">
+                                    <span class="title">
+                                        Позиция №1
+                                    </span>
+                                    <div class="close-position">
+
+                                    </div>
+                                </div>
+                                <div class="offer__position-block ">
+                                    <div class="offer__position-block-item ">
+                                        <div class="title">
+                                            Наименование товара
+                                        </div>
+                                        <div class="text-select">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="offer__position-block-item">
+                                        <div class="title">
+                                            Дополнительное наименование
+                                        </div>
+                                        <div class="text-select input-select">
+                                            <input type="text" placeholder="Указать">
+                                        </div>
+                                    </div>
+                                    <div class="offer__position-block-item">
+                                        <div class="title required">
+                                            Вес(тн.)
+                                        </div>
+                                        <div class="text-select">
+                                            <input type="number" placeholder="1">
+                                        </div>
+                                    </div>
+                                    <div class="offer__position-block-item">
+                                        <div class="title required">
+                                            Валюта
+                                        </div>
+                                        <div class="text-select">
+                                            <select name="select" id="select">
+                                                <option value="value0">Рубль</option>
+                                                <option value="value1">Доллар</option>
+                                                <option value="value2">Евро</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="offer__position-block-item">
+                                        <div class="title">
+                                            Цена за 1 тн. (минимальная)
+                                        </div>
+                                        <div class="text-select">
+                                            <input type="number" placeholder="50.000">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 mobile__off">
+                            <div class="offer__position-item">
+                                <div class="item-title">
+                                    <span class="title">
+                                        Позиция №2
+                                    </span>
+                                    <div class="close-position">
+
+                                    </div>
+                                </div>
+                                <div class="offer__position-block">
+                                    <div class="offer__position-block-item">
+                                        <div class="title">
+                                            Наименование товара
+                                        </div>
+                                        <div class="text-select">
+                                            <input type="text" placeholder="Имя товара" required>
+                                        </div>
+                                    </div>
+                                    <div class="offer__position-block-item">
+                                        <div class="title">
+                                            Дополнительное наименование
+                                        </div>
+                                        <div class="text-select input-select">
+                                            <input type="text" placeholder="Указать">
+                                        </div>
+                                    </div>
+                                    <div class="offer__position-block-item">
+                                        <div class="title required">
+                                            Вес(тн.)
+                                        </div>
+                                        <div class="text-select">
+                                            <input type="number" placeholder="1">
+                                        </div>
+                                    </div>
+                                    <div class="offer__position-block-item">
+                                        <div class="title required">
+                                            Валюта
+                                        </div>
+                                        <div class="text-select">
+                                            <select name="select" id="select">
+                                                <option value="value0">Рубль</option>
+                                                <option value="value1">Доллар</option>
+                                                <option value="value2">Евро</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="offer__position-block-item">
+                                        <div class="title">
+                                            Цена за 1 тн. (минимальная)
+                                        </div>
+                                        <div class="text-select">
+                                            <input type="number" placeholder="50.000">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 only-desktop">
+                            <table class="offer__position-table productDetails">
+                                <tr>
+                                    <th>№</th>
+                                    <th>Категории товара</th>
+                                    <th>Точное наименование</th>
+                                    <th>Вес (тн.)</th>
+                                    <th>Валюта</th>
+                                    <th>
+                                        Цена за 1 тн.
+                                        @{
+                                            if (Model.IsBuy)
+                                            {
+                                                <span>(максимальная)</span>
+                                            }
+                                            else
+                                            {
+                                                <span>(минимальная)</span>
+                                            }
+                                        }
+                                    </th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <td class="productNumber">
+                                        0
+                                    </td>
+                                    <td class="categoryContainer">
+                                        <input type="text" placeholder="Название">
+                                        <div class="optionsContainer">
+                                            <div class="noMatches">
+                                                Нет результатов
+                                            </div>
+                                            @foreach (var categoryLevel1 in Model.ProductCategories.Where(c => c.Level == 1))
+                                            {
+                                                <div class="categoryLevel1">
+                                                    <button class="expandOptions expand">+</button>
+                                                    <input type="radio" name="category0" value="@categoryLevel1.Id" />
+                                                    <span>@categoryLevel1.Name</span>
+                                                </div>
+                                                var categoriesLevel2 = Model.ProductCategories.Where(c => c.ParentId == categoryLevel1.Id).ToList();
+                                                foreach (var categoryLevel2 in categoriesLevel2)
+                                                {
+                                                    <div class="categoryLevel2">
+                                                        <button class="expandOptions expand">+</button>
+                                                        <input type="radio" name="category0" value="@categoryLevel2.Id" />
+                                                        <span>@categoryLevel2.Name</span>
+                                                    </div>
+                                                    var categoriesLevel3 = Model.ProductCategories.Where(c => c.ParentId == categoryLevel2.Id).ToList();
+                                                    foreach (var categoryLevel3 in categoriesLevel3)
+                                                    {
+                                                        <div class="categoryLevel3">
+                                                            <input type="radio" name="category0" value="@categoryLevel3.Id" />
+                                                            <span>@categoryLevel3.Name</span>
+                                                        </div>
+                                                    }
+
+                                                }
+                                            }
+                                        </div>
+                                    </td>
+                                    <td class="indicate specificCategoryContainer">
+                                        <input type="text" placeholder="Указать">
+                                        <button class="removeSpecific">x</button>
+                                        <button class="addSpecific">Указать</button>
+                                    </td>
+                                    <td class="weightContainer">
+                                        <input type="text" placeholder="Вес">
+                                    </td>
+                                    <td class="currencyContainer">
+                                        <select class="currency0" name="select" id="select">
+                                            <option name="currency0" value="@((int)MContract.Models.Enums.Currencies.Rouble)">Рубли</option>
+                                            <option name="currency0" value="@((int)MContract.Models.Enums.Currencies.Dollar)">Доллары</option>
+                                        </select>
+                                    </td>
+                                    <td class="pricePerWeightContainer">
+                                        <input type="text" placeholder="Цена">
+                                    </td>
+                                    <td class="delete"></td>
+                                </tr>
+                                <tr>
+                                    <td class="add addProduct">
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-sm-12 mobile__off">
+                            <div class="offer__position-item">
+                                <div class="item-title">
+                                    <span>
+                                        Добавить позицию
+                                    </span>
+                                    <div class="add">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="offer__position-item">
+                                <div class="item-title description">
+                                    Описание
+                                </div>
+                                <div class="offer__position-block">
+                                    <div class="offer__position-block-item input-item">
+                                        <textarea name="" id="">Тестовый текст комментария для образца и показа стиля  в макете.</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="btn-wrapper">
+                                <div class="offer__send-btn offer__send-upload mobile__off">
+                                    <a href="#">
+                                        <div class="ico"></div>
+                                        <span>Загрузить</span>
+                                    </a>
+                                </div>
+                                <div class=" finalizeAd offer__send-btn offset-lg-1 ">
+                                    <a>
+                                        <span>Далее</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // Новое объявление -->
 </main>
-	
+
 <script src="../js/offer.js"></script>
 <script src="../js/lk-main.js"></script>
 <script src="../js/newad.js"></script>
+<script type="text/javascript" src="~/js/user/cityAutocomplete.js"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        var cityId = @(Model.PersonalAreaUser?.CityId);
+        $(".adDetails .cityContainer .optionsContainer").find("input[value='" + cityId + "']").prop("checked", true).trigger("change");
+        checkCity($(".adDetails .cityContainer"));
+        $(".termsOfPaymentsContainer select").on("change", function () {
+            if ($(".isBuyHf").val() == "true") {
+                if ($(this).find("option:selected").val() == 1) {
+                    $(this).closest("tr").siblings(".defermentPeriodRow").show();
+                } else {
+                    $(this).closest("tr").siblings(".defermentPeriodRow").hide();
+                }
+            }
+        });
+
+        /*$(".adDetails .deliveryTypeContainer option").click(function () {
+            event.preventDefault();
+            if ($(this).prop("selected")) {
+                adDeliveryTypeId[adDeliveryTypeId.indexOf($(this).val())].pop();
+                $(this).prop("selected", false);
+            } else {
+                adDeliveryTypeId.push($(this).val());
+                $(this).prop("selected", true);
+            }
+            adDeliveryTypeId.forEach(function () {
+                if (adDeliveryTypeId.indexOf($(this).val()) > -1) {
+                    $(this).prop("selected", true);
+                } else {
+                    $(this).prop("selected", false);
+                }
+            });
+        });*/
+
+
+        /*$(".adDetails .termsOfPaymentsContainer input").click(function () {
+            $(this).closest(".termsOfPaymentsContainer").find(".optionsContainer").css("display", "initial");
+        });
+        $(".adDetails .termsOfPaymentsContainer input").mouseleave(function () {
+            $(this).closest(".termsOfPaymentsContainer").find(".optionsContainer").css("display", "");
+            $(this).closest(".termsOfPaymentsContainer").children("input").val("");
+        });
+
+        $(".adDetails .termsOfPaymentsContainer .optionsContainer div").click(function () {
+            $(this).find("input").prop("checked", true);
+            $(this).find("input").trigger("change");
+            var text = $(this).find("span").html();
+            $(this).closest(".termsOfPaymentsContainer").children("input").attr("placeholder", text);
+        });
+
+        $(".adDetails .termsOfPaymentsContainer .optionsContainer input").change(function () {
+            $(this).closest("div").css("background-color", "whitesmoke");
+            $(this).closest("div").siblings("div").css("background-color", "");
+        });*/
+
+        var productRowId = 0;
+        $(".addProduct").on("click", function () {
+
+            var productNumber = parseInt($.trim($(".productNumber").last().html())) + 1;
+            productRowId++;
+            var row = $(".productDetails tr").eq(1).add($(".productDetails tr").eq(2));
+            $(".productDetails").append(row.clone());
+            row = $(".productNumber").last().closest("tr");
+            row.css("display", "");
+            row.find(".categoryContainer .optionsContainer input").attr("name", "category" + productRowId);
+            row.find("option").prop("selected", false);
+            row.find("input:radio").prop("checked", false);
+            row.find("input:not(:radio)").val("");
+            row.find(".categoryContainer > input").attr("placeholder", "Категории");
+            row.find(".productNumber").html(productNumber);
+            row.find(".currencyContainer select").attr("class", "currency" + productRowId)
+            row.find(".currencyContainer option").each(function () {
+                $(this).attr("name", "currency" + productRowId);
+            });
+            if ($(".productDetails tr").length == 5) {
+                $(".productDetails .removeProduct").css("display", "");
+            } else {
+                $(".productDetails .removeProduct").css("display", "initial");
+            }
+        });
+
+        $(".addProduct").trigger("click");
+
+        $("body").on("mousedown", function (event) {
+            event.stopPropagation();
+            $(".productDetails .categoryContainer .optionsContainer").hide();
+            var categoryContainer = $(event.target).closest(".categoryContainer");
+            if (categoryContainer.length == 1) {
+                categoryContainer.find(".optionsContainer").show();
+            } else {
+                $(".productDetails .categoryContainer > input").val("");
+            }
+        });
+
+
+        $(".productDetails").on("keyup", ".categoryContainer > input", function () {
+            var searchValue = $(this).val().toLowerCase();
+            if (searchValue.length > 0) {
+                $(this).siblings(".optionsContainer").find(".noMatches").css("display", "none");
+                var matches = 0;
+                $(this).siblings(".optionsContainer").children("div:not(.noMatches)").each(function () {
+                    if ($(this).find("span").html().toLowerCase().indexOf(searchValue) >= 0) {
+                        matches++;
+                        $(this).find("img").css("margin-left", "0");
+                        $(this).find("button").css("display", "none");
+                        $(this).css("display", "");
+                    } else {
+                        $(this).find("img").css("margin-left", "");
+                        $(this).css("display", "none");
+                    }
+                });
+                if (matches == 0) {
+                    $(this).siblings(".optionsContainer").find(".noMatches").css("display", "");
+                }
+            } else {
+                $(this).siblings(".optionsContainer").find(".noMatches").css("display", "none");
+                $(this).siblings(".optionsContainer").children("div:not(.noMatches)").each(function () {
+                    if ($(this).hasClass("categoryLevel1")) {
+                        $(this).css("display", "");
+                    } else {
+                        $(this).css("display", "none");
+                    }
+                    $(this).find("img").css("margin-left", "");
+                    $(this).find("button").css("display", "");
+                });
+            }
+        });
+
+        $(".productDetails").on("click", ".categoryContainer .optionsContainer div:not(.noMatches)", function (event) {
+            event.stopPropagation();
+            if ($(event.target).closest("button").length == 0) {
+                if ($(this).closest(".optionsContainer").find("input").map(function () { return $(this).prop("checked") == false }).get().every(Boolean)) {
+                    $(this).find("input").prop("checked", true).trigger("change");
+                    var text = $(this).children("span").html();
+                    $(this).closest(".categoryContainer").children("input").attr("placeholder", text).trigger("blur");
+                } else {
+                    var categoryId = ($(this).find("input").val());
+                    $(".addProduct").trigger("click");
+                    $(this).closest(".categoryContainer").trigger("click");
+                    $(this).closest(".productDetails").find(".categoryContainer .optionsContainer input[value=" + categoryId + "]").last().closest("div").trigger("click");
+                }
+            }
+        });
+
+        $(".productDetails").on("change", ".categoryContainer .optionsContainer input", function () {
+            //$(this).closest("div").css("background-color", "whitesmoke");
+            $(this).closest("div").css("background-color", "ghostwhite");
+            $(this).closest("div").siblings("div").css("background-color", "");
+        });
+
+        $(".productDetails").on("click", ".categoryContainer .optionsContainer .expandOptions", function () {
+            event.stopPropagation();
+            var currentLevel;
+            if ($(this).closest("div").hasClass("categoryLevel1")) {
+                currentLevel = 1;
+            } else if ($(this).closest("div").hasClass("categoryLevel2")) {
+                currentLevel = 2;
+            } else {
+                currentLevel = 3;
+            }
+            if ($(this).hasClass("expand")) {
+                $(this).removeClass("expand").addClass("contract");
+                $(this).html("-");
+                $(this).closest("div").nextUntil("div[class*='" + currentLevel + "'], div[class*='" + (currentLevel - 1) + "']").each(function () {
+                    if ($(this).is("div[class*=" + (currentLevel + 1) + "]")) {
+                        $(this).css("display", "flex");
+                    }
+                });
+            } else if ($(this).hasClass("contract")) {
+                $(this).removeClass("contract").addClass("expand");
+                $(this).html("+");
+                $(this).closest("div").nextUntil("div[class*='" + currentLevel + "'], div[class*='" + (currentLevel - 1) + "']").each(function () {
+                    $(this).css("display", "");
+                    $(this).find("button").removeClass("contract").addClass("expand");
+                    $(this).find("button").html("+");
+                });
+            }
+        });
+
+        $(".productDetails").on("change", ".pricePerWeightToggle", function () {
+            if ($(this).is(":checked")) {
+                $(".pricePerWeightContainer input").prop("disabled", false);
+            } else {
+                $(".pricePerWeightContainer input").val("");
+                $(".pricePerWeightContainer input").prop("disabled", true);
+            }
+        })
+
+        $(".productDetails").on("click", ".removeProduct", function () {
+            $(this).closest("tr").add($(this).closest("tr").next("tr")).remove();
+            for (let i = 0; i < $(".productNumber").length; i++) {
+                $(".productNumber").eq(i).html(i);
+            }
+            if ($(".productDetails tr").length == 5) {
+                $(".productDetails .removeProduct").hide();
+            } else {
+                $(".productDetails .removeProduct").show();
+            }
+        });
+
+        $(".productDetails").on("click", ".addSpecific", function () {
+            $(this).css("display", "none");
+            $(this).siblings("input").css("display", "initial");
+            $(this).siblings(".removeSpecific").css("display", "initial");
+        });
+        $(".productDetails").on("click", ".removeSpecific", function () {
+            $(this).css("display", "");
+            $(this).siblings("input").css("display", "");
+            $(this).siblings(".addSpecific").css("display", "");
+            $(this).closest(".specificCategoryContainer").find("input").trigger("blur");
+        });
+
+        function checkCity(obj) {
+            var tipsContainer = $(obj).closest("td").siblings(".tipsContainer");
+            if ($(obj).closest("td").find(".selectedOptionsContainer .selectedOption").length == 0) {
+                $(tipsContainer).children(".needContainer").css("display", "block");
+                $(tipsContainer).children().not(".needContainer").css("display", "");
+                return false;
+            } else {
+                $(tipsContainer).children(".checkedContainer").css("display", "block");
+                $(tipsContainer).children().not(".checkedContainer").css("display", "");
+                return true;
+            }
+        };
+
+        /*function checkDeliveryType(obj) {
+            var tipsContainer = $(obj).closest("td").siblings(".tipsContainer");
+            if ($(obj).find("input:checked").length == 0) {
+                $(tipsContainer).children(".needContainer").css("display", "block");
+                $(tipsContainer).children().not(".needContainer").css("display", "");
+                return false;
+            } else {
+                $(tipsContainer).children(".checkedContainer").css("display", "block");
+                $(tipsContainer).children().not(".checkedContainer").css("display", "");
+                return true;
+            }
+        }
+
+        function checkDeliveryLoadType(obj) {
+            var tipsContainer = $(obj).closest("td").siblings(".tipsContainer");
+            if ($(obj).find("input:checked").length == 0) {
+                $(tipsContainer).children(".needContainer").css("display", "block");
+                $(tipsContainer).children().not(".needContainer").css("display", "");
+                return false;
+            } else {
+                $(tipsContainer).children(".checkedContainer").css("display", "block");
+                $(tipsContainer).children().not(".checkedContainer").css("display", "");
+                return true;
+            }
+        }
+
+        function checkDeliveryWay(obj) {
+            var tipsContainer = $(obj).closest("td").siblings(".tipsContainer");
+            if ($(obj).find("input:checked").length == 0) {
+                $(tipsContainer).children(".needContainer").css("display", "block");
+                $(tipsContainer).children().not(".needContainer").css("display", "");
+                return false;
+            } else {
+                $(tipsContainer).children(".checkedContainer").css("display", "block");
+                $(tipsContainer).children().not(".checkedContainer").css("display", "");
+                return true;
+            }
+        }
+
+        function checkNds(obj) {
+            var tipsContainer = $(obj).closest("td").siblings(".tipsContainer");
+            if ($(obj).find("input:checked").length == 0) {
+                $(tipsContainer).children(".needContainer").css("display", "block");
+                $(tipsContainer).children().not(".needContainer").css("display", "");
+                return false;
+            } else {
+                $(tipsContainer).children(".checkedContainer").css("display", "block");
+                $(tipsContainer).children().not(".checkedContainer").css("display", "");
+                return true;
+            }
+        }
+
+        function checkTermsOfPayments(obj) {
+            var tipsContainer = $(obj).closest("td").siblings(".tipsContainer");
+            if ($(obj).find("option:selected").length == 0) {
+                $(tipsContainer).children(".needContainer").css("display", "block");
+                $(tipsContainer).children().not(".needContainer").css("display", "");
+                return false;
+            } else {
+                $(tipsContainer).children(".checkedContainer").css("display", "block");
+                $(tipsContainer).children().not(".checkedContainer").css("display", "");
+                return true;
+            }
+        }*/
+
+        function checkDeliveryAddress(obj) {
+            if ($(obj).find("input").val() != "") {
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").show();
+                return true;
+            } else {
+                $(obj).siblings(".tipsContainer").find(".needContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".needContainer").show();
+                return false;
+            }
+        }
+
+        function checkDefermentPeriod(obj) {
+            if ($(obj).find("input").val().length == 0) {
+                $(obj).siblings(".tipsContainer").find(".needContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".needContainer").show();
+                return false;
+            } else if (!$.isNumeric($(obj).find("input").val())) {
+                $(obj).siblings(".tipsContainer").find(".invalidContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".invalidContainer").show();
+                return false;
+            } else {
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").siblings("div").hide();
+                $(obj).siblings(".tipsContainer").find(".checkedContainer").show();
+                return true;
+            }
+        }
+
+        function checkCategory(obj) {
+            var tipsContainer = $(obj).closest("tr").next(".tipsRow").find(".tipsContainer");
+            if ($(obj).find(".optionsContainer input:checked").length == 0) {
+                $(tipsContainer).closest("tr").show();
+                $(tipsContainer).find(".categoryNeedContainer").show();
+                return false;
+            } else {
+                $(tipsContainer).find(".categoryNeedContainer").hide();
+                if ($(tipsContainer).children(":visible").length == 0) {
+                    $(tipsContainer).closest("tr").hide();
+                }
+                return true;
+            }
+        }
+
+        function checkSpecificCategory(obj) {
+            var tipsContainer = $(obj).closest("tr").next(".tipsRow").find(".tipsContainer");
+            if (($(obj).find(".addSpecific").css("display") == "none") && ($(obj).children("input").val().length == 0)) {
+                $(tipsContainer).closest("tr").show();
+                $(tipsContainer).find(".specificCategoryInvalidContainer").show();
+                return false;
+            } else {
+                $(tipsContainer).find(".specificCategoryInvalidContainer").hide();
+                if ($(tipsContainer).children(":visible").length == 0) {
+                    $(tipsContainer).closest("tr").hide();
+                }
+                return true;
+            }
+        }
+
+        function checkWeight(obj) {
+            var tipsContainer = $(obj).closest("tr").next(".tipsRow").find(".tipsContainer");
+            if ($(obj).children("input").val().length == 0) {
+                $(tipsContainer).closest("tr").show();
+                $(tipsContainer).find(".weightNeedContainer").show();
+                return false;
+            } else {
+                $(tipsContainer).find(".weightNeedContainer").hide();
+                if ($(tipsContainer).children(":visible").length == 0) {
+                    $(tipsContainer).closest("tr").hide();
+                }
+                return true;
+            }
+        }
+
+        /*function checkCurrency(obj) {
+            var tipsContainer = $(obj).closest("tr").next(".tipsRow").find(".tipsContainer");
+            if ($(obj).children("input:checked").length == 0) {
+                $(tipsContainer).closest("tr").show();
+                $(tipsContainer).children(".needCurrencyContainer").show();
+                return false;
+            } else {
+                $(tipsContainer).closest("tr").hide();
+                $(tipsContainer).children(".needCurrencyContainer").hide();
+                return true;
+            }
+        }*/
+
+        $("body").on("blur", ".adDetails #city", function () {
+            checkCity($(this));
+        });
+
+        /*$("body").on("change", ".adDetails .deliveryTypeContainer input", function () {
+            checkDeliveryType($(this).closest(".deliveryTypeContainer"));
+        });
+
+        $("body").on("change", ".adDetails .deliveryLoadTypeContainer input", function () {
+            checkDeliveryLoadType($(this).closest(".deliveryLoadTypeContainer"));
+        });
+
+        $("body").on("change", ".adDetails .deliveryWayContainer input", function () {
+            checkDeliveryWay($(this).closest(".deliveryWayContainer"));
+        });
+
+        $("body").on("change", ".adDetails .NdsContainer input", function () {
+            checkNds($(this).closest(".NdsContainer"));
+        });
+
+        $("body").on("change", ".adDetails .termsOfPaymentsContainer input", function () {
+            checkTermsOfPayments($(this).closest(".termsOfPaymentsContainer"));
+        });*/
+
+        $("body").on("blur", ".productDetails .categoryContainer > input", function () {
+            checkCategory($(this).closest(".categoryContainer"));
+        });
+
+        $("body").on("blur", ".productDetails .specificCategoryContainer input", function () {
+            checkSpecificCategory($(this).closest(".specificCategoryContainer"));
+        });
+
+        $("body").on("blur", ".productDetails .weightContainer input", function () {
+            checkWeight($(this).closest(".weightContainer"));
+        });
+
+        $("body").on("change", ".adDetails .currencyContainer input", function () {
+            checkCurrency($(this).closest(".currencyContainer"));
+        });
+
+        $(".finalizeAd").click(function () {
+            console.log("meow");
+            var inputsValidated = [];
+            /*inputsValidated.push(checkCity($(".adDetails .mb-1 .cityContainer")));*/
+            if ($(".adDetails .deliveryAddressRow").is(":visible")) {
+                inputsValidated.push(checkDeliveryAddress($(".adDetails .deliveryAddressContainer")));
+            }
+            if ($(".adDetails .defermentPeriodRow").is(":visible")) {
+                inputsValidated.push(checkDefermentPeriod($(".adDetails .defermentPeriodContainer")));
+            }
+            /*inputsValidated.push(checkDeliveryType($(".adDetails .deliveryTypeContainer")));
+            inputsValidated.push(checkDeliveryLoadType($(".adDetails .deliveryLoadTypeContainer")));
+            inputsValidated.push(checkDeliveryWay($(".adDetails .deliveryWayContainer")));
+            inputsValidated.push(checkNds($(".adDetails .NdsContainer")));*/
+            //inputsValidated.push(checkTermsOfPayments($(".adDetails .termsOfPaymentsContainer")));
+            $(".productDetails .productNumber").not(":eq(0)").each(function () {
+                var row = $(this).closest("tr");
+                inputsValidated.push(checkCategory($(row).find(".categoryContainer")));
+                inputsValidated.push(checkSpecificCategory($(row).find(".specificCategoryContainer")));
+                inputsValidated.push(checkWeight($(row).find(".weightContainer")));
+            });
+            console.log(inputsValidated);
+            if (inputsValidated.every(Boolean)) {
+                var adSenderId = parseInt(@(Model.PersonalAreaUser?.Id));
+                /*var adActiveToDate = new Date($.now());
+                adActiveToDate.setDate(adActiveToDate.getDate() + parseInt($(".activePeriod input:checked").val()));
+                var adActivePeriod = parseInt($(".activePeriod input:checked").val());*/
+                var adDescription = String($(".adDescriptionContainer textarea").val());
+                var adCityId = parseInt($(".cityContainer .optionsContainer div:not('.noMatches') input:checked").val());
+                /*$(".deliveryTypeContainer option:selected").each(function () {
+                    adDeliveryTypeId.push(parseInt($(this).val()));
+                });
+                $(".deliveryLoadTypeContainer option:selected").each(function () {
+                    adDeliveryLoadTypeId.push(parseInt($(this).val()));
+                });
+                $(".deliveryWayContainer option:selected").each(function () {
+                    adDeliveryWayId.push(parseInt($(this).val()));
+                });
+                $(".NdsContainer option:not(:first)").each(function () {
+                    if ($(this).is(":selected")) {
+                        adNds.push(Boolean(1));
+                    } else {
+                        adNds.push(Boolean(0));
+                    }
+                });*/
+                var adDeliveryTypeId = parseInt($(".deliveryTypeContainer option:selected").val());
+                var adDeliveryAddress;
+                if ($(".isBuyHf").val() == "true") {
+                    adDeliveryAddress = $(".deliveryAddressContainer input").val();
+                }
+                var adDeliveryLoadTypeId = parseInt($(".deliveryLoadTypeContainer option:selected").val());
+                var adDeliveryWayId = parseInt($(".deliveryWayContainer option:selected").val());
+                var adNds = parseInt($(".ndsContainer option:selected").val());
+                var adTermsOfPaymentsId = parseInt($(".termsOfPaymentsContainer option:selected").val());
+                var adDefermentPeriod = parseInt($(".defermentPeriodContainer input").val());
+                var adPartOffersAllowed = Boolean($(".partOffersAllowedContainer input:checked").val());
+                var adIsBuy = $(".isBuyHf").val() == "true" ? true : false;
+                var adAvailableForAllUsers = $(".availableForAllUsersHf").val() == "true" ? true : false;
+                var adStatusId = 1;
+                var numOfProducts = $(".productDetails .productNumber").length - 1;
+                class AdProduct {
+                    constructor(Name, ProductCategoryId, Weight, PricePerWeight, Currency) {
+                        this.Name = Name;
+                        this.ProductCategoryId = ProductCategoryId;
+                        this.Weight = Weight;
+                        this.PricePerWeight = PricePerWeight;
+                        this.Currency = Currency;
+                    }
+                }
+                var adProducts = [];
+                for (let i = 1; i <= numOfProducts; i++) {
+                    var row = $(".productNumber").eq(i).closest("tr");
+                    var productCategoryId = row.find(".categoryContainer .optionsContainer input:checked").val();
+                    var productName = row.find(".specificCategoryContainer > input").val();
+                    var productWeight = row.find(".weightContainer input").val().replace(".", ",");
+                    var productPricePerWeight = row.find(".pricePerWeightContainer input").val().replace(".", ",");
+                    var productCurrency = row.find(".currencyContainer option:selected").val();
+                    adProducts.push(new AdProduct(productName, productCategoryId, productWeight, productPricePerWeight, productCurrency));
+                }
+                $.post("@ViewBag.L.SiteUrlClear/Ads/NewAd", {
+                    SenderId: adSenderId,
+                    //ActivePeriod: adActivePeriod,
+                    Description: adDescription,
+                    CityId: adCityId,
+                    DeliveryType: adDeliveryTypeId,
+                    DeliveryAddress: adDeliveryAddress,
+                    DeliveryLoadType: adDeliveryLoadTypeId,
+                    DeliveryWay: adDeliveryWayId,
+                    TermsOfPayments: adTermsOfPaymentsId,
+                    DefermentPeriod: adDefermentPeriod,
+                    Nds: adNds,
+                    PartOffersAllowed: adPartOffersAllowed,
+                    IsBuy: adIsBuy,
+                    AvailableForAllUsers: adAvailableForAllUsers,
+                    AdStatus: adStatusId,
+                    Products: adProducts
+                }).done(function (url) {
+                    location.href = url;
+                }).fail(function (jqXHR, textStatus) {
+                    console.log("Request failed: " + textStatus);
+                });
+
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
