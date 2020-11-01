@@ -2,291 +2,538 @@
 
 @{
     ViewBag.Title = ViewBag.Heading;
-    Layout = "~/Views/Shared/_LayoutOld.cshtml";
+    Layout = "~/Views/Shared/_LayoutWithoutNav.cshtml";
 }
 
 @section Styles{
     <link href="@Url.Content("~/css/Ads/NewAdFinalStep.css")?p=2020-10-10-a" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/css/NewAdFinalStep.css")?p=2020-10-10-a" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/css/lk-layout.css")?p=2020-10-10-a" rel="stylesheet" type="text/css" />
+
+
 }
 
-<h2>
-    <button class="editAd btn btn-primary">Вернуться к редактированию</button>
-</h2>
-<table class="adDetails">
-    <tr>
-        <td>
-            @(Model.IsBuy ? "Покупатель:" : "Продавец:")
-        </td>
-        <td class="senderNameContainer">
-            @(Model.Sender?.CompanyNameWithTypeOfOwnership), @(Model.Sender?.TownName)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @(Model.IsBuy ? "Город:" : "Место фактического нахождения груза:")
-        </td>
-        <td>
-            @(Model.City?.FullNameAndRegionName)
-        </td>
-    </tr>
-    @if (Model.IsBuy)
-    {
-        <tr class="deliveryAddressRow isBuy">
-            <td>
-                Адрес поставки товара:
-            </td>
-            <td>
-                <div class="deliveryAddressContainer">
-                    <span>@Model.DeliveryAddress</span>
+<section class="header-pc">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-5 col-lg-4">
+                <div class="offer__title">
+                    <h1>Личный кабинет</h1>
                 </div>
-            </td>
-        </tr>
-    }
-    <tr>
-        <td>
-            Условия поставки:
-        </td>
-        <td class="deliveryTypeContainer">
-            <select class="deliveryType">
-                <option name="deliveryType" value="0">Не выбрано</option>
-                <option name="deliveryType" value="1">Доставка продавцом</option>
-                <option name="deliveryType" value="2">Самовывоз покупателем</option>
-            </select>
-        </td>
-    </tr>
-    @if (!Model.IsBuy)
-    {
-        <tr class="deliveryAddressRow">
-            <td>
-                Адрес поставки товара:
-            </td>
-            <td class="deliveryAddressContainer">
-                <input type="text" />
-            </td>
-        </tr>
-    }
-    <tr>
-        <td>
-            Погрузка:
-        </td>
-        <td class="deliveryLoadTypeContainer">
-            <select class="deliveryLoadType">
-                <option name="deliveryLoadType" value="0">Не выбрано</option>
-                <option name="deliveryLoadType" value="1">Силами продавца</option>
-                <option name="deliveryLoadType" value="2">Силами покупателя</option>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Способ доставки:
-        </td>
-        <td class="deliveryWayContainer">
-            <select class="deliveryWay">
-                <option name="deliveryWay" value="0">Не выбрано</option>
-                <option name="deliveryWay" value="1">Авто</option>
-                <option name="deliveryWay" value="2">Ж/Д</option>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Цена:
-        </td>
-        <td class="ndsContainer">
-            <select class="Nds">
-                <option name="Nds" value="0">Не выбрано</option>
-                <option name="Nds" value="1">C НДС</option>
-                <option name="Nds" value="2">Без НДС</option>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Условия оплаты:
-        </td>
-        <td class="termsOfPaymentsContainer">
-            <select>
-                <option value="0">Не выбрано</option>
-                <option value="1">Отсрочка платежа</option>
-                <option value="2">100% предоплата</option>
-                <option value="3">Частичная предоплата</option>
-                <option value="4">По факту поставки</option>
-            </select>
-        </td>
-    </tr>
-    @if (Model.DefermentPeriod != null)
-    {
-        <tr class="defermentPeriodRow">
-            <td>
-                Максимальный срок оплаты:
-            </td>
-            <td class="defermentPeriodContainer">
-                <input type="tel" />
-            </td>
-        </tr>
-    }
-    <tr>
-        <td>
-            Подача предложений по части позиций:
-        </td>
-        <td class="partOffersAllowedContainer">
-            <input type="checkbox" name="partOffersAllowed" id="partOffersAllowed1" value="1" />
-        </td>
-    </tr>
-</table>
-
-<table class="productDetails">
-    <tr>
-        <td>
-            №
-        </td>
-        <td>
-            Категория товара
-        </td>
-        @if (Model.Products.Any(Product => !string.IsNullOrEmpty(Product.Name)))
-        {
-            <td>
-                Точное наименование
-            </td>
-        }
-        <td>
-            Вес (тн.)
-        </td>
-        <td>
-            Валюта
-        </td>
-        @if (Model.Products.Any(Product => Product.PricePerWeight != 0))
-        {
-            <td>
-                Цена за 1 тн.<br />
-                @(Model.IsBuy ? "(максимальная)" : "(минимальная)")
-            </td>
-        }
-    </tr>
-    @{ var i = 1; }
-    @if (Model.Products.Any())
-    {
-        foreach (var product in Model.Products)
-        {
-            <tr>
-                <td class="productNumber">
-                    @i
-                </td>
-                <td class="categoryContainer">@product.ProductCategoryName</td>
-                @if (!string.IsNullOrEmpty(product.Name))
-                {
-                    <td class="specificCategoryContainer">
-                        <span>@product.Name</span>
-                    </td>
-                }
-                else if (Model.Products.Any(p => !string.IsNullOrEmpty(p.Name)))
-                {
-                    <td></td>
-                }
-                <td class="weightContainer">
-                    <span>@product.Weight.ToString("G")</span>
-                </td>
-                <td class="currencyContainer">
-                    <select class="currency@(i-1)">
-                        <option name="currency@(i-1)" value="@((int)MContract.Models.Enums.Currencies.Rouble)">Рубли</option>
-                        <option name="currency@(i-1)" value="@((int)MContract.Models.Enums.Currencies.Dollar)">Доллары</option>
-                    </select>
-                </td>
-                @if (product.PricePerWeight != 0)
-                {
-                    <td class="pricePerWeightOriginalContainer">
-                        <span>@product.PricePerWeight</span>
-                    </td>
-                }
-                else if (Model.Products.Any(Product => Product.PricePerWeight != 0))
-                {
-                    <td></td>
-                }
-            </tr>
-            i++;
-        }
-    }
-
-</table>
-
-<div class="adDescriptionContainer">
-    Описание:<br />
-    <textarea>@Model.Description</textarea>
-</div>
-
-<div class="imageUploadContainer">
-    <input type="file" name="imageSelect" id="imageSelect" accept="image/png, image/jpeg" multiple />
-    <button class="uploadImages btn btn-primary">Загрузить фотографии</button>
-    <span class="imageUploadingMessage">Фотографии загружаются на сервер...</span>
-</div>
-
-<div class="adPhotosContainer @(!Model.Photos.Any() ? "isEmpty" : "")">
-    <div class="singleAdPhotoContainer cloneSource">
-        <div class="adPhoto"></div>
-        <img src="/ico/Checkmark.svg" class="adPhotoIsMain" />
-        <img src="/ico/Home.svg" class="makeMainAdPhoto" />
-        <img src="/ico/CircledX.svg" class="removeAdPhoto" />
+            </div>
+            <div class="col-sm-12 col-md-5 col-lg-7">
+                <div class="offer__open">
+                    <div class="open">
+                        Новое объявление
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md col-lg-1 mobile-first">
+                <div class="product__crumbs">
+                    <span class="page"><a href="@ViewBag.L.SiteUrlClear">Главная</a></span>
+                </div>
+            </div>
+        </div>
     </div>
-    @if (Model.Photos.Any())
-    {
-        var requiredDimension = 200;
-        foreach (var photoId in Model.Photos.GroupBy(p => p.GroupId.ToString()).Select(g => g.FirstOrDefault().Id))
-        {
-            var bestFitPhoto = Model.GetBestFitPhotoFromPhotoId(photoId, requiredDimension);
-            var originalPhoto = Model.GetOriginalPhotoFromPhotoId(photoId);
-            <div class="singleAdPhotoContainer" data-url="@originalPhoto.Url">
-                <div style="background: url(@bestFitPhoto.Url) 50% 50% no-repeat; background-size: 100% 100%;" class="adPhoto" id="@bestFitPhoto.Id"></div>
-                <img src="/ico/Checkmark.svg" class="adPhotoIsMain @(bestFitPhoto.IsMain ? "true" : "")" />
-                <img src="/ico/Home.svg" class="makeMainAdPhoto" />
-                <img src="/ico/CircledX.svg" class="removeAdPhoto" />
+</section>
+<section class="lk__main__wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-4 col-lg-3 only__pc">
+                <section class="lk__wrapper">
+                    <div class="close__btn-lk"></div>
+                    <div class="lk__main">
+                        <div class="lk__main-user">
+                            <div class="user_img no-photo">
+                                <img src="http://m-contract.ru/ico/nonePhoto.svg" alt="">
+                            </div>
+                            <div class="oo">
+                                ООО “М-Контракт”
+                            </div>
+                            <div class="rate">
+                                <span>3,5</span>
+                                <div class="ico">
+                                    <img src="http://m-contract.ru/ico/redStar.png" alt="">
+                                    <img src="http://m-contract.ru/ico/redStar.png" alt="">
+                                    <img src="http://m-contract.ru/ico/redStar.png" alt="">
+                                    <img src="http://m-contract.ru/ico/redStar-half.png" alt="">
+                                    <img src="http://m-contract.ru/ico/redStar-none.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="lk__main-ul">
+                            <li class="lk__main-li">
+                                <div class="ico">
+                                    <img src="http://m-contract.ru/ico/user.svg" alt="">
+                                </div>
+                                <a href="Profile.html">Данные профиля</a>
+                            </li>
+                            <li class="lk__main-li have-add">
+                                <div class="ico">
+                                    <img src="http://m-contract.ru/ico/list.svg" alt="">
+                                </div>
+                                <a href="#">Мои объявления</a>
+                                <span class="add">(3)</span>
+                            </li>
+                            <li class="lk__main-li">
+                                <div class="ico">
+                                    <img src="http://m-contract.ru/ico/calendar.svg" alt="">
+                                </div>
+                                <a href="#">История сделок</a>
+                            </li>
+                            <li class="lk__main-li">
+                                <div class="ico">
+                                    <img src="http://m-contract.ru/ico/star.svg" alt="">
+                                </div>
+                                <a href="#">Избранное</a>
+                            </li>
+                            <li class="lk__main-li have-message">
+                                <div class="ico">
+                                    <img src="http://m-contract.ru/ico/email.svg" alt="">
+                                </div>
+                                <a href="#">Сообщения</a>
+                                <span class="count-of-message">1</span>
+                            </li>
+                            <li class="lk__main-li">
+                                <div class="ico">
+                                    <img src="http://m-contract.ru/ico/edit.svg" alt="">
+                                </div>
+                                <a href="#">Черновики</a>
+                            </li>
+                            <li class="lk__main-li">
+                                <div class="ico">
+                                    <img src="http://m-contract.ru/ico/comment.svg" alt="">
+                                </div>
+                                <a href="#">Мои отклики</a>
+                            </li>
+                            <li class="lk__main-li">
+                                <div class="ico">
+                                    <img src="http://m-contract.ru/ico/contact.svg" alt="">
+                                </div>
+                                <a href="#">Постоянные клиенты</a>
+                            </li>
+                            <li class="lk__main-li">
+                                <div class="ico">
+                                    <img src="http://m-contract.ru/ico/logout.svg" alt="">
+                                </div>
+                                <a clss="lk__main-exit-link" href="#">Выход</a>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
             </div>
-        }
-    }
-</div>
+            <div class="col-sm-12 deal__wrapper col-md-12 col-lg-9">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="c__offer-title">
+                            <div class="c__offer-title-wrapper">
+                                <div class="contract">
+                                    Продажа №50
+                                </div>
+                                <div class="info">открытый запрос предложений</div>
+                            </div>
+                            <a href="#" class="back-to-edit editAd only-desktop">Вернуться к редактированию</a>
+                        </div>
+                    </div>
+                    @*<div class="col-sm-12 mobile__off">
+                            <div class="offer__about offer__about-first">
+                                <div class="offer__about-item">
+                                    <a href="#" class="editAd back-link">Вернуться к редактированию</a>
+                                </div>
+                            </div>
+                        </div>*@
+                    @*<div class="col-sm-12 mobile__off">
+                            <div class="offer__position-item">
+                                <div class="item-title">
+                                    Позиция №1
+                                </div>
+                                <div class="offer__position-block">
+                                    <div class="offer__position-block-item">
+                                        <div class="title">
+                                            Категория товара
+                                        </div>
+                                        <div class="text">
+                                            Брикеты №2 из стальной стружки (7А)
+                                        </div>
+                                    </div>
+                                    <div class="offer__position-block-item">
+                                        <div class="title">
+                                            Вес (тн.)
+                                        </div>
+                                        <div class="text">
+                                            1
+                                        </div>
+                                    </div>
+                                    <div class="offer__position-block-item">
+                                        <div class="title">
+                                            Валюта
+                                        </div>
+                                        <div class="text">
+                                            Рубль
+                                        </div>
+                                    </div>
+                                    <div class="offer__position-block-item">
+                                        <div class="title">
+                                            Цена за 1 тн. (минимальная)
+                                        </div>
+                                        <div class="text">
+                                            50.000
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 mobile__off">
+                            <div class="offer__position-item">
+                                <div class="item-title">
+                                    Позиция №2
+                                </div>
+                                <div class="offer__position-block">
+                                    <div class="offer__position-block-item">
+                                        <div class="title">
+                                            Категория товара
+                                        </div>
+                                        <div class="text">
+                                            М4 Медь (разносортная)
+                                        </div>
+                                    </div>
+                                    <div class="offer__position-block-item">
+                                        <div class="title">
+                                            Вес (тн.)
+                                        </div>
+                                        <div class="text">
+                                            1
+                                        </div>
+                                    </div>
+                                    <div class="offer__position-block-item">
+                                        <div class="title">
+                                            Валюта
+                                        </div>
+                                        <div class="text">
+                                            Рубль
+                                        </div>
+                                    </div>
+                                    <div class="offer__position-block-item">
+                                        <div class="title">
+                                            Цена за 1 тн. (минимальная)
+                                        </div>
+                                        <div class="text">
+                                            50.000
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 mobile__off">
+                            <div class="offer__position-item">
+                                <div class="offer__position-block">
+                                    <div class="offer__position-block-item result-item">
+                                        <div class="result">
+                                            <span>Итого</span>
+                                            <span style="font-size: 18px;">126.500 &#8381;</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
 
-<table class="finalAdDetails">
-    <tr>
-        <td>
-            Участники не смогут видеть ценовые предложения друг друга:
-        </td>
-        <td class="offersVisibleToOtherUsersContainer">
-            <input type="checkbox" name="offersVisibleToOtherUsers" id="offersVisibleToOtherUsers1" value="1" />
-        </td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>
-            Объявление активно до:
-        </td>
-        <td class="activeUntilDateContainer">
-            <input /> 23:59 МСК
-        </td>
-        <td class="tipsContainer">
-            <span class="requiredFieldMarker">*</span>
-            <div class="needContainer activeUntilDateNeedContainer">
-                <span>Необходимо выбрать один из вариантов</span>
-            </div>
-            <div class="invalidContainer activeUntilDateInvalidContainer">
-                <span></span>
-            </div>
-            <div class="checkedContainer activeUntilDateCheckedContainer">
-                <img src="/ico/CheckmarkGreen.svg">
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Оповестить постоянных клиентов:
-        </td>
-        <td class="notifyRegularClientsContainer">
-            <input type="checkbox" name="notifyRegularClients" id="notifyRegularClients" value="1" checked />
-        </td>
-        <td></td>
-    </tr>
-</table>
+                </div>
 
-@if (Model.AvailableForAllUsers == false)
+                <div class="col-sm-12">
+                    <table class="adDetails offer__about">
+                        <tr class="offer__about-item">
+                            <td class="title">
+                                @(Model.IsBuy ? "Покупатель:" : "Продавец:")
+                            </td>
+                            <td class="senderNameContainer text">
+                                @(Model.Sender?.CompanyNameWithTypeOfOwnership), @(Model.Sender?.TownName)
+                            </td>
+                        </tr>
+                        <tr class="offer__about-item">
+                            <td class="title">
+                                @(Model.IsBuy ? "Город:" : "Место фактического нахождения груза:")
+                            </td>
+                            <td class="text">
+                                @(Model.City?.FullNameAndRegionName)
+                            </td>
+                        </tr>
+                        @if (Model.IsBuy)
+                        {
+                            <tr class="deliveryAddressRow isBuy offer__about-item">
+                                <td class="title">
+                                    Адрес поставки товара:
+                                </td>
+                                <td class="text">
+                                    <div class="deliveryAddressContainer">
+                                        <span>@Model.DeliveryAddress</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        <tr class="offer__about-item">
+                            <td class="title">
+                                Условия поставки:
+                            </td>
+                            <td class="deliveryTypeContainer text">
+                                <select class="deliveryType">
+                                    <option name="deliveryType" value="0">Не выбрано</option>
+                                    <option name="deliveryType" value="1">Доставка продавцом</option>
+                                    <option name="deliveryType" value="2">Самовывоз покупателем</option>
+                                </select>
+                            </td>
+                        </tr>
+                        @if (!Model.IsBuy)
+                        {
+                            <tr class="deliveryAddressRow offer__about-item">
+                                <td class="title">
+                                    Адрес поставки товара:
+                                </td>
+                                <td class="deliveryAddressContainer text">
+                                    <input type="text" />
+                                </td>
+                            </tr>
+                        }
+                        <tr class="offer__about-item">
+                            <td class="title">
+                                Погрузка:
+                            </td>
+                            <td class="deliveryLoadTypeContainer text">
+                                <select class="deliveryLoadType">
+                                    <option name="deliveryLoadType" value="0">Не выбрано</option>
+                                    <option name="deliveryLoadType" value="1">Силами продавца</option>
+                                    <option name="deliveryLoadType" value="2">Силами покупателя</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr class="offer__about-item">
+                            <td class="title">
+                                Способ доставки:
+                            </td>
+                            <td class="deliveryWayContainer text">
+                                <select class="deliveryWay">
+                                    <option name="deliveryWay" value="0">Не выбрано</option>
+                                    <option name="deliveryWay" value="1">Авто</option>
+                                    <option name="deliveryWay" value="2">Ж/Д</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr class="offer__about-item">
+                            <td class="title">
+                                Цена:
+                            </td>
+                            <td class="ndsContainer text">
+                                <select class="Nds">
+                                    <option name="Nds" value="0">Не выбрано</option>
+                                    <option name="Nds" value="1">C НДС</option>
+                                    <option name="Nds" value="2">Без НДС</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr class="offer__about-item">
+                            <td class="title">
+                                Условия оплаты:
+                            </td>
+                            <td class="termsOfPaymentsContainer text">
+                                <select>
+                                    <option value="0">Не выбрано</option>
+                                    <option value="1">Отсрочка платежа</option>
+                                    <option value="2">100% предоплата</option>
+                                    <option value="3">Частичная предоплата</option>
+                                    <option value="4">По факту поставки</option>
+                                </select>
+                            </td>
+                        </tr>
+                        @if (Model.DefermentPeriod != null)
+                        {
+                            <tr class="defermentPeriodRow offer__about">
+                                <td class="title">
+                                    Максимальный срок оплаты:
+                                </td>
+                                <td class="defermentPeriodContainer text">
+                                    <input type="tel" />
+                                </td>
+                            </tr>
+                        }
+                        <tr class="offer__about-item">
+                            <td class="title">
+                                Подача предложений по части позиций:
+                            </td>
+                            <td class="partOffersAllowedContainer text">
+                                <input type="checkbox" name="partOffersAllowed" id="partOffersAllowed1" value="1" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-sm-12">
+                    <table class="productDetails offer__position-table">
+                        <tr>
+                            <td>
+                                №
+                            </td>
+                            <td>
+                                Категория товара
+                            </td>
+                            @if (Model.Products.Any(Product => !string.IsNullOrEmpty(Product.Name)))
+                            {
+                                <td>
+                                    Точное наименование
+                                </td>
+                            }
+                            <td>
+                                Вес (тн.)
+                            </td>
+                            <td>
+                                Валюта
+                            </td>
+                            @if (Model.Products.Any(Product => Product.PricePerWeight != 0))
+                            {
+                                <td>
+                                    Цена за 1 тн.<br />
+                                    @(Model.IsBuy ? "(максимальная)" : "(минимальная)")
+                                </td>
+                            }
+                        </tr>
+                        @{ var i = 1; }
+                        @if (Model.Products.Any())
+                        {
+                            foreach (var product in Model.Products)
+                            {
+                                <tr>
+                                    <td class="productNumber">
+                                        @i
+                                    </td>
+                                    <td class="categoryContainer">@product.ProductCategoryName</td>
+                                    @if (!string.IsNullOrEmpty(product.Name))
+                                    {
+                                        <td class="specificCategoryContainer">
+                                            <span>@product.Name</span>
+                                        </td>
+                                    }
+                                    else if (Model.Products.Any(p => !string.IsNullOrEmpty(p.Name)))
+                                    {
+                                        <td></td>
+                                    }
+                                    <td class="weightContainer">
+                                        <span>@product.Weight.ToString("G")</span>
+                                    </td>
+                                    <td class="currencyContainer">
+                                        <select class="currency@(i-1)">
+                                            <option name="currency@(i-1)" value="@((int)MContract.Models.Enums.Currencies.Rouble)">Рубли</option>
+                                            <option name="currency@(i-1)" value="@((int)MContract.Models.Enums.Currencies.Dollar)">Доллары</option>
+                                        </select>
+                                    </td>
+                                    @if (product.PricePerWeight != 0)
+                                    {
+                                        <td class="pricePerWeightOriginalContainer">
+                                            <span>@product.PricePerWeight</span>
+                                        </td>
+                                    }
+                                    else if (Model.Products.Any(Product => Product.PricePerWeight != 0))
+                                    {
+                                        <td></td>
+                                    }
+                                </tr>
+                                i++;
+                            }
+                        }
+
+                    </table>
+                </div>
+                <div class="col-sm-12">
+                    <div class="offer__description">
+                        <div class="tab">
+                            <input id="tab-one" type="checkbox" name="tabs">
+                            <label for="tab-one">Описание</label>
+                            <div class="tab-content">
+                                <p>@Model.Description</p>
+                            </div>
+                        </div>
+                        <div class="tab">
+                            <input id="tab-sec" type="checkbox" name="tabs">
+                            <label class="tab-ph" for="tab-sec">Фотографии товара</label>
+                            <div class="tab-content tab-images">
+                                <div class="imageUploadContainer">
+                                    <input type="file" name="imageSelect" id="imageSelect" accept="image/png, image/jpeg" multiple />
+                                    <button class="uploadImages offer__send-btn offer__send-upload"><a>Загрузить фотографии</a></button>
+                                    <span class="imageUploadingMessage">Фотографии загружаются на сервер...</span>
+                                </div>
+                                <div class="adPhotosContainer @(!Model.Photos.Any() ? "isEmpty" : "")">
+                                    <div class="singleAdPhotoContainer cloneSource">
+                                        <div class="adPhoto"></div>
+                                        <img src="/ico/Checkmark.svg" class="adPhotoIsMain" />
+                                        <img src="/ico/Home.svg" class="makeMainAdPhoto" />
+                                        <img src="/ico/CircledX.svg" class="removeAdPhoto" />
+                                    </div>
+                                    @if (Model.Photos.Any())
+                                    {
+                                        var requiredDimension = 200;
+                                        foreach (var photoId in Model.Photos.GroupBy(p => p.GroupId.ToString()).Select(g => g.FirstOrDefault().Id))
+                                        {
+                                            var bestFitPhoto = Model.GetBestFitPhotoFromPhotoId(photoId, requiredDimension);
+                                            var originalPhoto = Model.GetOriginalPhotoFromPhotoId(photoId);
+                                            <div class="singleAdPhotoContainer" data-url="@originalPhoto.Url">
+                                                <div style="background: url(@bestFitPhoto.Url) 50% 50% no-repeat; background-size: 100% 100%;" class="adPhoto" id="@bestFitPhoto.Id"></div>
+                                                <img src="/ico/Checkmark.svg" class="adPhotoIsMain @(bestFitPhoto.IsMain ? "true" : "")" />
+                                                <img src="/ico/Home.svg" class="makeMainAdPhoto" />
+                                                <img src="/ico/CircledX.svg" class="removeAdPhoto" />
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-12 col-lg-9 offset-lg-3">
+                    <table class="finalAdDetails ad__form-wrapper">
+                        <tr>
+                            <td class="title">
+                                Участники не смогут видеть ценовые предложения друг друга:
+                            </td>
+                            <td class="offersVisibleToOtherUsersContainer">
+                                <input type="checkbox" name="offersVisibleToOtherUsers" id="offersVisibleToOtherUsers1" value="1" />
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="title">
+                                Объявление активно до:
+                            </td>
+                            <td class="activeUntilDateContainer">
+                                <input /> 23:59 МСК
+                            </td>
+                            <td class="tipsContainer">
+                                <span class="requiredFieldMarker">*</span>
+                                <div class="needContainer activeUntilDateNeedContainer">
+                                    <span>Необходимо выбрать один из вариантов</span>
+                                </div>
+                                <div class="invalidContainer activeUntilDateInvalidContainer">
+                                    <span></span>
+                                </div>
+                                <div class="checkedContainer activeUntilDateCheckedContainer">
+                                    <img src="/ico/CheckmarkGreen.svg">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title">
+                                Оповестить постоянных клиентов:
+                            </td>
+                            <td class="notifyRegularClientsContainer">
+                                <input type="checkbox" name="notifyRegularClients" id="notifyRegularClients" value="1" checked />
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@*@if (Model.AvailableForAllUsers == false)
 {
     var regularClientsId = Model.RegularClients.Select(u => u.Id).ToList();
     <link rel="stylesheet" href="~/js/bootstrap-select-1.13.14/dist/css/bootstrap-select.css">
@@ -306,10 +553,16 @@
             }
         </select>
     </div>
-}
+}*@
 
-<button class="postAd btn @(Model.AvailableForAllUsers ? "btn-primary" : "btn-secondary")">Опубликовать объявление</button>
-<br />
+
+<div class="col-sm-12 col-lg-9 offset-lg-3">
+    <div class="offer-btn-wrapper">
+        <a href="#" class="offer-btn-submit postAd">
+            Опубликовать объявление
+        </a>
+    </div>
+</div>
 
 <script src="~/js/user/viewImage.js?p=202006112" type="text/javascript"></script>
 <script src="~/js/jquery-ui/jquery-ui.js"></script>

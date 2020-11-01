@@ -67,6 +67,8 @@ namespace MContract.Models
 
 		//вычисляемые и заполняемые поля:
 		public User Sender { get; set; }
+		public User PersonalAreaUser { get; set; }
+
 		public string Url
 		{
 			get
