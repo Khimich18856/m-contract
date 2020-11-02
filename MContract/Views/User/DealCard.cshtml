@@ -219,8 +219,6 @@
                                         </a>
                                         <a href="#" class="printDeal rate-btn">Распечатать</a>
                                         <a href="javascript:void(null);" class="sendToEmail rate-btn" id="showEmailDiv">Отправить на E-Mail</a>
-                                        <input id="filePdf" type="hidden" value="@ViewBag.FilePDF">
-                                        <input id="history" type="hidden" value="Контракт № @Model.Ad.Id (@Model.DealDirection)">
                                         <div class="col-sm-12" id="sendEmailDiv">
                                             <div class="row">
                                                 <table style="width:50%" class="offer__position-table">
@@ -372,14 +370,12 @@
 
         var _emailUserNew = $("#emailUserNew").val();
 
-        var _history = $("#history").val();
-
         var sendEmailDiv = $('#sendEmailDiv');
 
         $.ajax('/User/SendFilePdfToEmail',
             {
                 type: 'POST',
-                data: { adId: _adId, emailUser: _emailUser, emailUserNew: _emailUserNew, history: _history },
+                data: { adId: _adId, emailUser: _emailUser, emailUserNew: _emailUserNew },
                 success: function (data) {
                     alert(data);
                     sendEmailDiv.hide();

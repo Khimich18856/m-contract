@@ -1361,7 +1361,7 @@ namespace MContract.Controllers
             return System.Web.HttpContext.Current;
         }
         [MyAuthorize]
-        public string SendFilePdfToEmail(int adId, string emailUser, string emailUserNew, string history)
+        public string SendFilePdfToEmail(int adId, string emailUser, string emailUserNew)
         {
 
             #region Create DCard 20201028 NEW
@@ -1799,57 +1799,41 @@ namespace MContract.Controllers
             #region send to email and delete file
 
             string fullPath = path + "/" + filename;
-                    string dirName = "Files";
+            string dirName = "Files";
+            string history = "Контракт № " + viewModel.Ad.Id.ToString() + " (" + viewModel.DealDirection.ToString() + ")";
+            string Subject = "История сделки - " + history;
+            string Body = "Уважаемый пользователь портала M-contract" + "<br />" +
+                "Во вложенном файле история сделки - " + history + "<br />"
+                + "<i>" + "С уважением команда портала M-contract" + "</i>";
 
             if (ValidHelper.EmailRus(emailUser) && ValidHelper.EmailRus(emailUserNew))
 
                 try
                 {
-                    string Subject = "История сделки - " + history;
-                    string Body = "Уважаемый пользователь портала M-contract" + "<br />" +
-                        "Во вложенном файле история сделки - " + history + "<br />"
-                        + "<i>" + "С уважением команда портала M-contract" + "</i>";
-
-
                     MailHelper.MailSendAttachment("info@m-contract.ru", emailUser, emailUserNew, Subject, Body, dirName, filename);
-
-                    //delete file to end send to email                   
                     if (System.IO.File.Exists(fullPath))
                         System.IO.File.Delete(fullPath);
-
                     return "История сделки - " + history + " отправлена на e-mail: " + emailUser + ", " + emailUserNew + ", с вложенным файлом -  " + filename;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.ToString());
                     return "почта не может быть доставлена" + ex.ToString();
                 }
             else if (ValidHelper.EmailRus(emailUser))
-
                 try
                 {
-                    string Subject = "История сделки - " + history;
-                    string Body = "Уважаемый пользователь портала M-contract" + "<br />" +
-                        "Во вложенном файле история сделки - " + history + "<br />"
-                        + "<i>" + "С уважением команда портала M-contract" + "</i>";
-
                     MailHelper.MailSendAttachment("info@m-contract.ru", emailUser, emailUserNew, Subject, Body, dirName, filename);
-
-                    //delete file to end send to email                 
                     if (System.IO.File.Exists(fullPath))
                         System.IO.File.Delete(fullPath);
-
                     return "История сделки - " + history + " отправлена на e-mail: " + emailUser + ", с вложенным файлом -  " + filename;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.ToString());
                     return "почта не может быть доставлена" + ex.ToString();
                 }
 
             #endregion
             return "почта не может быть доставлена на фальшивые e-mail адреса";
-
         }
         #endregion
 

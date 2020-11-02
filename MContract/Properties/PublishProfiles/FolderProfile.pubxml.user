@@ -28,10 +28,10 @@
       <publishTime>10/16/2020 16:43:00</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>11/01/2020 12:43:17</publishTime>
+      <publishTime>11/02/2020 08:42:34</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>11/01/2020 12:43:17</publishTime>
+      <publishTime>11/02/2020 08:42:33</publishTime>
     </File>
     <File Include="bin/BouncyCastle.Crypto.dll">
       <publishTime>02/21/2020 16:24:54</publishTime>
@@ -49,55 +49,55 @@
       <publishTime>10/15/2020 13:35:50</publishTime>
     </File>
     <File Include="bin/Images/Icons/ArrowRight.svg">
-      <publishTime>05/07/2020 13:34:35</publishTime>
+      <publishTime>07/05/2020 13:34:35</publishTime>
     </File>
     <File Include="bin/Images/Icons/Checkmark.svg">
-      <publishTime>05/07/2020 13:34:35</publishTime>
+      <publishTime>07/05/2020 13:34:35</publishTime>
     </File>
     <File Include="bin/Images/Icons/CheckmarkGreen.svg">
-      <publishTime>05/07/2020 13:34:35</publishTime>
+      <publishTime>07/05/2020 13:34:35</publishTime>
     </File>
     <File Include="bin/Images/Icons/CircledX.svg">
-      <publishTime>04/10/2020 14:11:42</publishTime>
+      <publishTime>10/04/2020 14:11:42</publishTime>
     </File>
     <File Include="bin/Images/Icons/Corner.svg">
-      <publishTime>04/07/2020 18:09:09</publishTime>
+      <publishTime>07/04/2020 18:09:09</publishTime>
     </File>
     <File Include="bin/Images/Icons/Edit.svg">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="bin/Images/Icons/Home.svg">
-      <publishTime>05/07/2020 13:34:35</publishTime>
+      <publishTime>07/05/2020 13:34:35</publishTime>
     </File>
     <File Include="bin/Images/Icons/Log.svg">
-      <publishTime>04/03/2020 15:52:58</publishTime>
+      <publishTime>03/04/2020 15:52:58</publishTime>
     </File>
     <File Include="bin/Images/Icons/Migrate.svg">
-      <publishTime>04/03/2020 15:52:58</publishTime>
+      <publishTime>03/04/2020 15:52:58</publishTime>
     </File>
     <File Include="bin/Images/Icons/Mobile.svg">
-      <publishTime>04/03/2020 15:52:58</publishTime>
+      <publishTime>03/04/2020 15:52:58</publishTime>
     </File>
     <File Include="bin/Images/Icons/Network.svg">
-      <publishTime>04/03/2020 15:52:58</publishTime>
+      <publishTime>03/04/2020 15:52:58</publishTime>
     </File>
     <File Include="bin/Images/Icons/Numbered.svg">
-      <publishTime>04/03/2020 15:52:58</publishTime>
+      <publishTime>03/04/2020 15:52:58</publishTime>
     </File>
     <File Include="bin/Images/Icons/Outdent.svg">
-      <publishTime>04/03/2020 15:52:58</publishTime>
+      <publishTime>03/04/2020 15:52:58</publishTime>
     </File>
     <File Include="bin/Images/Icons/Overview.svg">
-      <publishTime>04/03/2020 15:52:58</publishTime>
+      <publishTime>03/04/2020 15:52:58</publishTime>
     </File>
     <File Include="bin/Images/Icons/Password.svg">
-      <publishTime>04/03/2020 15:52:58</publishTime>
+      <publishTime>03/04/2020 15:52:58</publishTime>
     </File>
     <File Include="bin/Images/Icons/Star.svg">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="bin/Images/NoPhoto.jpg">
-      <publishTime>06/10/2020 18:35:54</publishTime>
+      <publishTime>10/06/2020 18:35:54</publishTime>
     </File>
     <File Include="bin/it/Microsoft.QualityTools.Testing.Fakes.resources.dll">
       <publishTime>10/15/2020 13:35:50</publishTime>
@@ -112,10 +112,10 @@
       <publishTime>10/15/2020 13:35:50</publishTime>
     </File>
     <File Include="bin/MContract.dll">
-      <publishTime>11/01/2020 12:42:42</publishTime>
+      <publishTime>11/02/2020 08:41:53</publishTime>
     </File>
     <File Include="bin/MContract.pdb">
-      <publishTime>11/01/2020 12:42:42</publishTime>
+      <publishTime>11/02/2020 08:41:53</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>10/16/2020 12:25:14</publishTime>
@@ -478,7 +478,7 @@
       <publishTime>10/16/2020 16:43:00</publishTime>
     </File>
     <File Include="Controllers/UserController.cs">
-      <publishTime>10/29/2020 01:19:43</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="css/Admin/Index.css">
       <publishTime>10/16/2020 12:25:06</publishTime>
@@ -679,7 +679,7 @@
       <publishTime>10/16/2020 12:25:06</publishTime>
     </File>
     <File Include="css/User/SignupOld.css">
-      <publishTime>10/06/2020 11:59:17</publishTime>
+      <publishTime>06/10/2020 11:59:17</publishTime>
     </File>
     <File Include="css/User/slick.css">
       <publishTime>10/16/2020 12:25:06</publishTime>
@@ -697,7 +697,7 @@
       <publishTime>09/20/2017 12:37:54</publishTime>
     </File>
     <File Include="Files/main-logo.png">
-      <publishTime>10/28/2020 09:12:17</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.eot">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -799,7 +799,7 @@
       <publishTime>10/16/2020 12:25:08</publishTime>
     </File>
     <File Include="ico/dollar.png">
-      <publishTime>10/16/2020 12:25:07</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="ico/dots.svg">
       <publishTime>10/16/2020 12:25:08</publishTime>
@@ -820,7 +820,7 @@
       <publishTime>10/16/2020 12:25:08</publishTime>
     </File>
     <File Include="ico/edit.png">
-      <publishTime>10/16/2020 12:25:07</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="ico/edit.svg">
       <publishTime>10/16/2020 12:25:08</publishTime>
@@ -829,7 +829,7 @@
       <publishTime>10/16/2020 12:25:08</publishTime>
     </File>
     <File Include="ico/evro.png">
-      <publishTime>10/16/2020 12:25:07</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="ico/eye-opened.svg">
       <publishTime>10/16/2020 12:25:08</publishTime>
@@ -850,7 +850,7 @@
       <publishTime>10/16/2020 12:25:08</publishTime>
     </File>
     <File Include="ico/home.png">
-      <publishTime>10/16/2020 12:25:07</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="ico/Home.svg">
       <publishTime>10/30/2020 11:21:14</publishTime>
@@ -883,7 +883,7 @@
       <publishTime>10/16/2020 12:25:08</publishTime>
     </File>
     <File Include="ico/lk.png">
-      <publishTime>10/16/2020 12:25:07</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="ico/lkWhite.png">
       <publishTime>10/16/2020 12:25:08</publishTime>
@@ -892,7 +892,10 @@
       <publishTime>10/16/2020 12:25:08</publishTime>
     </File>
     <File Include="ico/logo.png">
-      <publishTime>10/16/2020 12:25:07</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="ico/logo.svg">
+      <publishTime>10/30/2020 11:21:14</publishTime>
     </File>
     <File Include="ico/logout.svg">
       <publishTime>10/16/2020 12:25:08</publishTime>
@@ -958,19 +961,19 @@
       <publishTime>10/16/2020 12:25:08</publishTime>
     </File>
     <File Include="ico/rate.png">
-      <publishTime>10/16/2020 12:25:07</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="ico/readed.svg">
       <publishTime>10/16/2020 12:25:08</publishTime>
     </File>
     <File Include="ico/redStar-half.png">
-      <publishTime>10/16/2020 12:25:07</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="ico/redStar-none.png">
-      <publishTime>10/16/2020 12:25:07</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="ico/redStar.png">
-      <publishTime>10/16/2020 12:25:07</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="ico/refresh.svg">
       <publishTime>10/16/2020 12:25:08</publishTime>
@@ -988,7 +991,7 @@
       <publishTime>10/16/2020 12:25:08</publishTime>
     </File>
     <File Include="ico/send-message.png">
-      <publishTime>10/16/2020 12:25:07</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="ico/send.svg">
       <publishTime>10/16/2020 12:25:08</publishTime>
@@ -1018,13 +1021,13 @@
       <publishTime>10/16/2020 12:25:10</publishTime>
     </File>
     <File Include="ico/yes-green.png">
-      <publishTime>10/16/2020 12:25:08</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="ico/yes-green.svg">
       <publishTime>10/16/2020 12:25:10</publishTime>
     </File>
     <File Include="ico/yes.png">
-      <publishTime>10/16/2020 12:25:08</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Images/backgroundD.png">
       <publishTime>10/16/2020 12:25:06</publishTime>
@@ -1045,7 +1048,7 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Images/Icons/ArrowRight.svg">
-      <publishTime>05/07/2020 13:34:35</publishTime>
+      <publishTime>07/05/2020 13:34:35</publishTime>
     </File>
     <File Include="Images/Icons/burger.png">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -1054,13 +1057,13 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Images/Icons/Checkmark.svg">
-      <publishTime>05/07/2020 13:34:35</publishTime>
+      <publishTime>07/05/2020 13:34:35</publishTime>
     </File>
     <File Include="Images/Icons/CheckmarkGreen.svg">
-      <publishTime>05/07/2020 13:34:35</publishTime>
+      <publishTime>07/05/2020 13:34:35</publishTime>
     </File>
     <File Include="Images/Icons/CircledX.svg">
-      <publishTime>04/10/2020 14:11:42</publishTime>
+      <publishTime>10/04/2020 14:11:42</publishTime>
     </File>
     <File Include="Images/Icons/comment.svg">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -1069,7 +1072,7 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Images/Icons/Corner.svg">
-      <publishTime>04/07/2020 18:09:09</publishTime>
+      <publishTime>07/04/2020 18:09:09</publishTime>
     </File>
     <File Include="Images/Icons/dollar.png">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -1102,22 +1105,22 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Images/Icons/Home.svg">
-      <publishTime>05/07/2020 13:34:35</publishTime>
+      <publishTime>07/05/2020 13:34:35</publishTime>
     </File>
     <File Include="Images/Icons/icon-close-items-red.svg">
-      <publishTime>06/07/2020 19:16:54</publishTime>
+      <publishTime>07/06/2020 19:16:54</publishTime>
     </File>
     <File Include="Images/Icons/icon-close-items.svg">
-      <publishTime>06/07/2020 19:18:32</publishTime>
+      <publishTime>07/06/2020 19:18:32</publishTime>
     </File>
     <File Include="Images/Icons/icon-euro.png">
-      <publishTime>06/02/2020 16:50:30</publishTime>
+      <publishTime>02/06/2020 16:50:30</publishTime>
     </File>
     <File Include="Images/Icons/icon-usd.png">
-      <publishTime>06/02/2020 16:50:09</publishTime>
+      <publishTime>02/06/2020 16:50:09</publishTime>
     </File>
     <File Include="Images/Icons/icon-user-none-white.png">
-      <publishTime>06/08/2020 00:48:32</publishTime>
+      <publishTime>08/06/2020 00:48:32</publishTime>
     </File>
     <File Include="Images/Icons/icon-user-none.png">
       <publishTime>06/06/2020 14:10:30</publishTime>
@@ -1132,7 +1135,7 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Images/Icons/Log.svg">
-      <publishTime>04/03/2020 15:52:58</publishTime>
+      <publishTime>03/04/2020 15:52:58</publishTime>
     </File>
     <File Include="Images/Icons/logo.png">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -1144,13 +1147,13 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Images/Icons/Migrate.svg">
-      <publishTime>04/03/2020 15:52:58</publishTime>
+      <publishTime>03/04/2020 15:52:58</publishTime>
     </File>
     <File Include="Images/Icons/Mobile.svg">
-      <publishTime>04/03/2020 15:52:58</publishTime>
+      <publishTime>03/04/2020 15:52:58</publishTime>
     </File>
     <File Include="Images/Icons/Network.svg">
-      <publishTime>04/03/2020 15:52:58</publishTime>
+      <publishTime>03/04/2020 15:52:58</publishTime>
     </File>
     <File Include="Images/Icons/nonePhoto.png">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -1159,16 +1162,16 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Images/Icons/Numbered.svg">
-      <publishTime>04/03/2020 15:52:58</publishTime>
+      <publishTime>03/04/2020 15:52:58</publishTime>
     </File>
     <File Include="Images/Icons/Outdent.svg">
-      <publishTime>04/03/2020 15:52:58</publishTime>
+      <publishTime>03/04/2020 15:52:58</publishTime>
     </File>
     <File Include="Images/Icons/Overview.svg">
-      <publishTime>04/03/2020 15:52:58</publishTime>
+      <publishTime>03/04/2020 15:52:58</publishTime>
     </File>
     <File Include="Images/Icons/Password.svg">
-      <publishTime>04/03/2020 15:52:58</publishTime>
+      <publishTime>03/04/2020 15:52:58</publishTime>
     </File>
     <File Include="Images/Icons/question.png">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -1255,7 +1258,7 @@
       <publishTime>10/16/2020 12:25:06</publishTime>
     </File>
     <File Include="Images/Logos/NoLogo.jpg">
-      <publishTime>04/09/2020 21:40:52</publishTime>
+      <publishTime>09/04/2020 21:40:52</publishTime>
     </File>
     <File Include="Images/Logos/NoLogo.png">
       <publishTime>10/16/2020 12:25:06</publishTime>
@@ -1270,7 +1273,7 @@
       <publishTime>10/16/2020 12:25:06</publishTime>
     </File>
     <File Include="Images/NoPhoto.jpg">
-      <publishTime>06/10/2020 18:35:54</publishTime>
+      <publishTime>10/06/2020 18:35:54</publishTime>
     </File>
     <File Include="Images/NoPhotoOld.jpg">
       <publishTime>10/16/2020 12:25:06</publishTime>
@@ -2434,7 +2437,7 @@
       <publishTime>10/16/2020 12:25:12</publishTime>
     </File>
     <File Include="js/jspdf.min.js">
-      <publishTime>10/26/2020 20:29:42</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="js/lk-main.js">
       <publishTime>10/23/2020 10:59:32</publishTime>
@@ -2497,13 +2500,16 @@
       <publishTime>10/16/2020 12:25:12</publishTime>
     </File>
     <File Include="js/user/slick.min.js">
-      <publishTime>10/03/2017 12:49:28</publishTime>
+      <publishTime>03/10/2017 12:49:28</publishTime>
+    </File>
+    <File Include="js/user/usercommon.js">
+      <publishTime>11/01/2020 15:40:29</publishTime>
     </File>
     <File Include="js/user/viewImage.js">
       <publishTime>10/16/2020 12:25:12</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>11/01/2020 12:42:58</publishTime>
+      <publishTime>11/02/2020 08:42:08</publishTime>
     </File>
     <File Include="Scripts/bootstrap.bundle.js">
       <publishTime>10/16/2020 16:43:00</publishTime>
@@ -2839,37 +2845,37 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="SQL change scripts/2020-04-28 12-12.sql">
-      <publishTime>03/05/2020 09:49:15</publishTime>
+      <publishTime>05/03/2020 09:49:15</publishTime>
     </File>
     <File Include="SQL change scripts/2020-04-29 12-47.sql">
-      <publishTime>03/05/2020 09:49:15</publishTime>
+      <publishTime>05/03/2020 09:49:15</publishTime>
     </File>
     <File Include="SQL change scripts/2020-04-29 12-49.sql">
-      <publishTime>03/05/2020 09:49:15</publishTime>
+      <publishTime>05/03/2020 09:49:15</publishTime>
     </File>
     <File Include="SQL change scripts/2020-04-29 13-43.sql">
-      <publishTime>03/05/2020 09:49:15</publishTime>
+      <publishTime>05/03/2020 09:49:15</publishTime>
     </File>
     <File Include="SQL change scripts/2020-04-29 15-42.sql">
-      <publishTime>03/05/2020 09:49:15</publishTime>
+      <publishTime>05/03/2020 09:49:15</publishTime>
     </File>
     <File Include="SQL change scripts/2020-05-01 10-35.sql">
-      <publishTime>03/05/2020 09:49:15</publishTime>
+      <publishTime>05/03/2020 09:49:15</publishTime>
     </File>
     <File Include="SQL change scripts/2020-05-01 12-10.sql">
-      <publishTime>03/05/2020 09:49:15</publishTime>
+      <publishTime>05/03/2020 09:49:15</publishTime>
     </File>
     <File Include="SQL change scripts/2020-05-02 16-46.sql">
-      <publishTime>03/05/2020 09:49:15</publishTime>
+      <publishTime>05/03/2020 09:49:15</publishTime>
     </File>
     <File Include="SQL change scripts/2020-05-04 09-26.sql">
-      <publishTime>06/05/2020 11:09:44</publishTime>
+      <publishTime>05/06/2020 11:09:44</publishTime>
     </File>
     <File Include="SQL change scripts/2020-05-06 9-16.sql">
-      <publishTime>07/05/2020 14:27:53</publishTime>
+      <publishTime>05/07/2020 14:27:53</publishTime>
     </File>
     <File Include="SQL change scripts/2020-05-08 10-40.sql">
-      <publishTime>10/05/2020 11:21:17</publishTime>
+      <publishTime>05/10/2020 11:21:17</publishTime>
     </File>
     <File Include="SQL change scripts/2020-05-12 16-25.sql">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -2917,13 +2923,13 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="SQL change scripts/2020-06-01 19-10.sql">
-      <publishTime>04/06/2020 12:24:15</publishTime>
+      <publishTime>06/04/2020 12:24:15</publishTime>
     </File>
     <File Include="SQL change scripts/2020-06-02 16-58.sql">
-      <publishTime>04/06/2020 20:55:52</publishTime>
+      <publishTime>06/04/2020 20:55:52</publishTime>
     </File>
     <File Include="SQL change scripts/2020-06-10 10-10.sql">
-      <publishTime>11/06/2020 18:01:15</publishTime>
+      <publishTime>06/11/2020 18:01:15</publishTime>
     </File>
     <File Include="SQL change scripts/2020-06-25 16-54.sql">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -2935,40 +2941,40 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="SQL change scripts/2020-07-01 17-47.sql">
-      <publishTime>03/07/2020 16:24:22</publishTime>
+      <publishTime>07/03/2020 16:24:22</publishTime>
     </File>
     <File Include="SQL change scripts/2020-07-05 09-53.sql">
-      <publishTime>06/07/2020 14:02:18</publishTime>
+      <publishTime>07/06/2020 14:02:18</publishTime>
     </File>
     <File Include="SQL change scripts/2020-07-06 16-15.sql">
-      <publishTime>06/07/2020 22:08:34</publishTime>
+      <publishTime>07/06/2020 22:08:34</publishTime>
     </File>
     <File Include="SQL change scripts/2020-07-09 17-14.sql">
-      <publishTime>10/07/2020 11:22:16</publishTime>
+      <publishTime>07/10/2020 11:22:16</publishTime>
     </File>
     <File Include="SQL change scripts/2020-07-10 09-49.sql">
-      <publishTime>10/07/2020 12:53:11</publishTime>
+      <publishTime>07/10/2020 12:53:11</publishTime>
     </File>
     <File Include="SQL change scripts/2020-07-10 17-07.sql">
-      <publishTime>12/07/2020 15:10:57</publishTime>
+      <publishTime>07/12/2020 15:10:57</publishTime>
     </File>
     <File Include="SQL change scripts/2020-07-16 11-27.sql">
-      <publishTime>02/08/2020 11:27:32</publishTime>
+      <publishTime>08/02/2020 11:27:32</publishTime>
     </File>
     <File Include="SQL change scripts/2020-08-01 14-14.sql">
-      <publishTime>02/08/2020 11:27:32</publishTime>
+      <publishTime>08/02/2020 11:27:32</publishTime>
     </File>
     <File Include="SQL change scripts/2020-08-04 17-29.sql">
-      <publishTime>06/08/2020 17:22:25</publishTime>
+      <publishTime>08/06/2020 17:22:25</publishTime>
     </File>
     <File Include="SQL change scripts/2020-08-09 18-40.sql">
-      <publishTime>09/08/2020 18:40:14</publishTime>
+      <publishTime>08/09/2020 18:40:14</publishTime>
     </File>
     <File Include="SQL change scripts/2020-08-30 09-58 Create table AdViews.sql">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="SQL change scripts/2020-09-12 09-41 create table DialogInfos.sql">
-      <publishTime>12/09/2020 11:42:02</publishTime>
+      <publishTime>09/12/2020 11:42:02</publishTime>
     </File>
     <File Include="SQL change scripts/2020-09-30 21-05 Create table DeletedMessages.sql">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -3001,7 +3007,7 @@
       <publishTime>10/30/2020 11:21:14</publishTime>
     </File>
     <File Include="Views/Ads/NewAd.cshtml">
-      <publishTime>10/16/2020 12:25:06</publishTime>
+      <publishTime>11/01/2020 16:06:34</publishTime>
     </File>
     <File Include="Views/Ads/NewAdFinalStep.cshtml">
       <publishTime>10/16/2020 12:25:06</publishTime>
@@ -3010,7 +3016,7 @@
       <publishTime>10/16/2020 12:25:06</publishTime>
     </File>
     <File Include="Views/Ads/NewAdStep0.cshtml">
-      <publishTime>10/30/2020 11:21:14</publishTime>
+      <publishTime>11/01/2020 16:06:34</publishTime>
     </File>
     <File Include="Views/Ads/NewOffer.cshtml">
       <publishTime>10/16/2020 12:25:06</publishTime>
@@ -3019,7 +3025,7 @@
       <publishTime>10/16/2020 12:25:06</publishTime>
     </File>
     <File Include="Views/Ads/Offers.cshtml">
-      <publishTime>09/10/2020 20:03:12</publishTime>
+      <publishTime>10/09/2020 20:03:12</publishTime>
     </File>
     <File Include="Views/Ads/OffersOld.cshtml">
       <publishTime>10/30/2020 11:21:14</publishTime>
@@ -3055,9 +3061,12 @@
       <publishTime>10/30/2020 11:21:14</publishTime>
     </File>
     <File Include="Views/Shared/_LayoutLight.cshtml">
-      <publishTime>09/01/2020 19:59:57</publishTime>
+      <publishTime>01/09/2020 19:59:57</publishTime>
     </File>
     <File Include="Views/Shared/_LayoutOld.cshtml">
+      <publishTime>10/30/2020 11:21:14</publishTime>
+    </File>
+    <File Include="Views/Shared/_LayoutWithoutNav.cshtml">
       <publishTime>10/30/2020 11:21:14</publishTime>
     </File>
     <File Include="Views/Shared/_LeftMenu.cshtml">
@@ -3082,7 +3091,7 @@
       <publishTime>10/16/2020 12:25:06</publishTime>
     </File>
     <File Include="Views/User/DealCard.cshtml">
-      <publishTime>11/01/2020 11:51:12</publishTime>
+      <publishTime>11/02/2020 08:06:29</publishTime>
     </File>
     <File Include="Views/User/DealsHistory.cshtml">
       <publishTime>10/16/2020 12:25:06</publishTime>
@@ -3118,19 +3127,19 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Views/User/MessagesOld.cshtml">
-      <publishTime>09/12/2020 10:18:11</publishTime>
+      <publishTime>12/09/2020 10:18:11</publishTime>
     </File>
     <File Include="Views/User/MyAds.cshtml">
       <publishTime>10/16/2020 12:25:06</publishTime>
     </File>
     <File Include="Views/User/MyAds1.cshtml">
-      <publishTime>09/01/2020 20:19:51</publishTime>
+      <publishTime>01/09/2020 20:19:51</publishTime>
     </File>
     <File Include="Views/User/MyOffers.cshtml">
       <publishTime>10/16/2020 12:25:06</publishTime>
     </File>
     <File Include="Views/User/MyProfile.cshtml">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>11/01/2020 16:04:04</publishTime>
     </File>
     <File Include="Views/User/MyProfile_OLD_20201023.cshtml">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -3166,7 +3175,7 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Views/User/TestMail.cshtml">
-      <publishTime>07/10/2020 18:55:20</publishTime>
+      <publishTime>10/07/2020 18:55:20</publishTime>
     </File>
     <File Include="Views/User/UpdateEmail.cshtml">
       <publishTime>10/25/2020 10:10:00</publishTime>
@@ -3184,7 +3193,7 @@
       <publishTime>10/16/2020 12:25:08</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/01/2020 12:42:45</publishTime>
+      <publishTime>11/02/2020 08:17:22</publishTime>
     </File>
     <File Include="Верстка Максима/.DS_Store">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -3193,10 +3202,10 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/Ads/EditAd.html">
-      <publishTime>04/09/2020 18:33:40</publishTime>
+      <publishTime>09/04/2020 18:33:40</publishTime>
     </File>
     <File Include="Верстка Максима/Ads/EditOffer.html">
-      <publishTime>04/09/2020 18:33:44</publishTime>
+      <publishTime>09/04/2020 18:33:44</publishTime>
     </File>
     <File Include="Верстка Максима/Ads/Index-favourites.html">
       <publishTime>09/09/2020 19:39:19</publishTime>
@@ -3211,40 +3220,40 @@
       <publishTime>09/09/2020 19:39:29</publishTime>
     </File>
     <File Include="Верстка Максима/Ads/NewOffer.html">
-      <publishTime>04/09/2020 18:34:07</publishTime>
+      <publishTime>09/04/2020 18:34:07</publishTime>
     </File>
     <File Include="Верстка Максима/Ads/Offer.html">
-      <publishTime>04/09/2020 18:34:11</publishTime>
+      <publishTime>09/04/2020 18:34:11</publishTime>
     </File>
     <File Include="Верстка Максима/Ads/Offers.html">
-      <publishTime>06/09/2020 23:34:33</publishTime>
+      <publishTime>09/06/2020 23:34:33</publishTime>
     </File>
     <File Include="Верстка Максима/Ads/Show.html">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/css/.DS_Store">
-      <publishTime>11/08/2020 19:55:01</publishTime>
+      <publishTime>08/11/2020 19:55:01</publishTime>
     </File>
     <File Include="Верстка Максима/css/bootstrap.min.css">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/css/chernovik.css">
-      <publishTime>08/09/2020 20:33:31</publishTime>
+      <publishTime>09/08/2020 20:33:31</publishTime>
     </File>
     <File Include="Верстка Максима/css/Companies.css">
-      <publishTime>03/09/2020 19:51:45</publishTime>
+      <publishTime>09/03/2020 19:51:45</publishTime>
     </File>
     <File Include="Верстка Максима/css/dealcard.css">
-      <publishTime>03/09/2020 19:51:47</publishTime>
+      <publishTime>09/03/2020 19:51:47</publishTime>
     </File>
     <File Include="Верстка Максима/css/dealshistory.css">
       <publishTime>09/09/2020 19:18:24</publishTime>
     </File>
     <File Include="Верстка Максима/css/Dialog.css">
-      <publishTime>03/09/2020 19:51:51</publishTime>
+      <publishTime>09/03/2020 19:51:51</publishTime>
     </File>
     <File Include="Верстка Максима/css/Dialogs.css">
-      <publishTime>03/09/2020 19:51:49</publishTime>
+      <publishTime>09/03/2020 19:51:49</publishTime>
     </File>
     <File Include="Верстка Максима/css/layout.css">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -3259,37 +3268,37 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/css/MyResponse.css">
-      <publishTime>03/09/2020 19:51:59</publishTime>
+      <publishTime>09/03/2020 19:51:59</publishTime>
     </File>
     <File Include="Верстка Максима/css/MyResponses.css">
-      <publishTime>03/09/2020 21:20:56</publishTime>
+      <publishTime>09/03/2020 21:20:56</publishTime>
     </File>
     <File Include="Верстка Максима/css/NewAd.css">
-      <publishTime>03/09/2020 19:51:39</publishTime>
+      <publishTime>09/03/2020 19:51:39</publishTime>
     </File>
     <File Include="Верстка Максима/css/NewAdFinalStep.css">
-      <publishTime>03/09/2020 19:51:38</publishTime>
+      <publishTime>09/03/2020 19:51:38</publishTime>
     </File>
     <File Include="Верстка Максима/css/NewAdStep0.css">
-      <publishTime>03/09/2020 19:51:37</publishTime>
+      <publishTime>09/03/2020 19:51:37</publishTime>
     </File>
     <File Include="Верстка Максима/css/NewChat%28base%29.css">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/css/NewChat.css">
-      <publishTime>03/09/2020 19:51:36</publishTime>
+      <publishTime>09/03/2020 19:51:36</publishTime>
     </File>
     <File Include="Верстка Максима/css/offer.css">
-      <publishTime>04/09/2020 18:29:29</publishTime>
+      <publishTime>09/04/2020 18:29:29</publishTime>
     </File>
     <File Include="Верстка Максима/css/profile.css">
-      <publishTime>04/09/2020 01:07:59</publishTime>
+      <publishTime>09/04/2020 01:07:59</publishTime>
     </File>
     <File Include="Верстка Максима/css/purch.css">
-      <publishTime>07/09/2020 00:01:46</publishTime>
+      <publishTime>09/07/2020 00:01:46</publishTime>
     </File>
     <File Include="Верстка Максима/css/send-offer.css">
-      <publishTime>03/09/2020 19:51:32</publishTime>
+      <publishTime>09/03/2020 19:51:32</publishTime>
     </File>
     <File Include="Верстка Максима/css/slick-theme.css">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -3298,7 +3307,7 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/Home/Index.html">
-      <publishTime>08/09/2020 18:35:13</publishTime>
+      <publishTime>09/08/2020 18:35:13</publishTime>
     </File>
     <File Include="Верстка Максима/ico/.DS_Store">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -3310,10 +3319,10 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/ico/arr-top.png">
-      <publishTime>06/08/2020 17:41:09</publishTime>
+      <publishTime>08/06/2020 17:41:09</publishTime>
     </File>
     <File Include="Верстка Максима/ico/arrDown-black.png">
-      <publishTime>01/08/2020 16:17:29</publishTime>
+      <publishTime>08/01/2020 16:17:29</publishTime>
     </File>
     <File Include="Верстка Максима/ico/arrDown.png">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -3328,10 +3337,10 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/ico/burger.png">
-      <publishTime>12/08/2020 16:00:55</publishTime>
+      <publishTime>08/12/2020 16:00:55</publishTime>
     </File>
     <File Include="Верстка Максима/ico/calendar.svg">
-      <publishTime>02/08/2020 00:14:40</publishTime>
+      <publishTime>08/02/2020 00:14:40</publishTime>
     </File>
     <File Include="Верстка Максима/ico/close-blue.svg">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -3343,10 +3352,10 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/ico/comment.svg">
-      <publishTime>02/08/2020 00:14:40</publishTime>
+      <publishTime>08/02/2020 00:14:40</publishTime>
     </File>
     <File Include="Верстка Максима/ico/contact.svg">
-      <publishTime>02/08/2020 00:14:40</publishTime>
+      <publishTime>08/02/2020 00:14:40</publishTime>
     </File>
     <File Include="Верстка Максима/ico/delete.svg">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -3355,10 +3364,10 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/ico/dollar.png">
-      <publishTime>01/08/2020 14:45:08</publishTime>
+      <publishTime>08/01/2020 14:45:08</publishTime>
     </File>
     <File Include="Верстка Максима/ico/dots.svg">
-      <publishTime>04/09/2020 02:34:52</publishTime>
+      <publishTime>09/04/2020 02:34:52</publishTime>
     </File>
     <File Include="Верстка Максима/ico/down-arrow.svg">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -3367,40 +3376,40 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/ico/edit-pencil.svg">
-      <publishTime>10/08/2020 20:13:08</publishTime>
+      <publishTime>08/10/2020 20:13:08</publishTime>
     </File>
     <File Include="Верстка Максима/ico/edit-square.png">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/ico/edit.png">
-      <publishTime>12/08/2020 16:51:53</publishTime>
+      <publishTime>08/12/2020 16:51:53</publishTime>
     </File>
     <File Include="Верстка Максима/ico/edit.svg">
-      <publishTime>02/08/2020 00:14:40</publishTime>
+      <publishTime>08/02/2020 00:14:40</publishTime>
     </File>
     <File Include="Верстка Максима/ico/email.svg">
-      <publishTime>02/08/2020 00:14:40</publishTime>
+      <publishTime>08/02/2020 00:14:40</publishTime>
     </File>
     <File Include="Верстка Максима/ico/evro.png">
-      <publishTime>01/08/2020 14:45:15</publishTime>
+      <publishTime>08/01/2020 14:45:15</publishTime>
     </File>
     <File Include="Верстка Максима/ico/eye-opened.svg">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/ico/eye-w.svg">
-      <publishTime>04/08/2020 15:53:44</publishTime>
+      <publishTime>08/04/2020 15:53:44</publishTime>
     </File>
     <File Include="Верстка Максима/ico/eye.svg">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/ico/file.png">
-      <publishTime>12/08/2020 13:43:03</publishTime>
+      <publishTime>08/12/2020 13:43:03</publishTime>
     </File>
     <File Include="Верстка Максима/ico/filter.svg">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/ico/home.png">
-      <publishTime>12/08/2020 16:09:05</publishTime>
+      <publishTime>08/12/2020 16:09:05</publishTime>
     </File>
     <File Include="Верстка Максима/ico/info-img.svg">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -3409,7 +3418,7 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/ico/list.svg">
-      <publishTime>02/08/2020 00:14:40</publishTime>
+      <publishTime>08/02/2020 00:14:40</publishTime>
     </File>
     <File Include="Верстка Максима/ico/lk.png">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -3421,13 +3430,13 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/ico/logout.svg">
-      <publishTime>02/08/2020 00:14:40</publishTime>
+      <publishTime>08/02/2020 00:14:40</publishTime>
     </File>
     <File Include="Верстка Максима/ico/message-w-white.svg">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/ico/message-w.svg">
-      <publishTime>04/08/2020 15:53:44</publishTime>
+      <publishTime>08/04/2020 15:53:44</publishTime>
     </File>
     <File Include="Верстка Максима/ico/message.svg">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -3436,37 +3445,37 @@
       <publishTime>09/09/2020 19:37:27</publishTime>
     </File>
     <File Include="Верстка Максима/ico/not-slider.png">
-      <publishTime>06/08/2020 18:27:01</publishTime>
+      <publishTime>08/06/2020 18:27:01</publishTime>
     </File>
     <File Include="Верстка Максима/ico/notification-none.svg">
-      <publishTime>04/09/2020 01:51:16</publishTime>
+      <publishTime>09/04/2020 01:51:16</publishTime>
     </File>
     <File Include="Верстка Максима/ico/notification.svg">
-      <publishTime>04/09/2020 01:51:33</publishTime>
+      <publishTime>09/04/2020 01:51:33</publishTime>
     </File>
     <File Include="Верстка Максима/ico/photo-camera.svg">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/ico/question.png">
-      <publishTime>01/08/2020 14:44:29</publishTime>
+      <publishTime>08/01/2020 14:44:29</publishTime>
     </File>
     <File Include="Верстка Максима/ico/rate.png">
-      <publishTime>06/08/2020 03:30:47</publishTime>
+      <publishTime>08/06/2020 03:30:47</publishTime>
     </File>
     <File Include="Верстка Максима/ico/readed.svg">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/ico/redStar-half.png">
-      <publishTime>12/08/2020 23:33:40</publishTime>
+      <publishTime>08/12/2020 23:33:40</publishTime>
     </File>
     <File Include="Верстка Максима/ico/redStar-none.png">
-      <publishTime>12/08/2020 23:33:50</publishTime>
+      <publishTime>08/12/2020 23:33:50</publishTime>
     </File>
     <File Include="Верстка Максима/ico/redStar.png">
-      <publishTime>12/08/2020 23:33:32</publishTime>
+      <publishTime>08/12/2020 23:33:32</publishTime>
     </File>
     <File Include="Верстка Максима/ico/refresh.svg">
-      <publishTime>03/09/2020 01:07:50</publishTime>
+      <publishTime>09/03/2020 01:07:50</publishTime>
     </File>
     <File Include="Верстка Максима/ico/search.png">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -3478,76 +3487,76 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/ico/send-message.png">
-      <publishTime>06/08/2020 02:58:14</publishTime>
+      <publishTime>08/06/2020 02:58:14</publishTime>
     </File>
     <File Include="Верстка Максима/ico/send.svg">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/ico/slider-blue.png">
-      <publishTime>06/08/2020 18:23:46</publishTime>
+      <publishTime>08/06/2020 18:23:46</publishTime>
     </File>
     <File Include="Верстка Максима/ico/star-w-fill.svg">
-      <publishTime>05/08/2020 02:09:08</publishTime>
+      <publishTime>08/05/2020 02:09:08</publishTime>
     </File>
     <File Include="Верстка Максима/ico/star-w.svg">
-      <publishTime>04/08/2020 15:53:44</publishTime>
+      <publishTime>08/04/2020 15:53:44</publishTime>
     </File>
     <File Include="Верстка Максима/ico/star.svg">
-      <publishTime>02/08/2020 00:14:40</publishTime>
+      <publishTime>08/02/2020 00:14:40</publishTime>
     </File>
     <File Include="Верстка Максима/ico/trash-black.svg">
-      <publishTime>10/08/2020 20:13:08</publishTime>
+      <publishTime>08/10/2020 20:13:08</publishTime>
     </File>
     <File Include="Верстка Максима/ico/trash-bold.svg">
-      <publishTime>03/09/2020 01:27:32</publishTime>
+      <publishTime>09/03/2020 01:27:32</publishTime>
     </File>
     <File Include="Верстка Максима/ico/user.svg">
-      <publishTime>02/08/2020 00:14:40</publishTime>
+      <publishTime>08/02/2020 00:14:40</publishTime>
     </File>
     <File Include="Верстка Максима/ico/yes-green.png">
-      <publishTime>06/08/2020 17:10:03</publishTime>
+      <publishTime>08/06/2020 17:10:03</publishTime>
     </File>
     <File Include="Верстка Максима/ico/yes-green.svg">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/ico/yes.png">
-      <publishTime>01/08/2020 14:44:55</publishTime>
+      <publishTime>08/01/2020 14:44:55</publishTime>
     </File>
     <File Include="Верстка Максима/images/.DS_Store">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/images/backgroundD.png">
-      <publishTime>03/08/2020 03:18:51</publishTime>
+      <publishTime>08/03/2020 03:18:51</publishTime>
     </File>
     <File Include="Верстка Максима/images/backgroundM.png">
-      <publishTime>01/08/2020 22:26:11</publishTime>
+      <publishTime>08/01/2020 22:26:11</publishTime>
     </File>
     <File Include="Верстка Максима/images/counter-accepted.png">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/images/item-1.png">
-      <publishTime>04/08/2020 02:26:32</publishTime>
+      <publishTime>08/04/2020 02:26:32</publishTime>
     </File>
     <File Include="Верстка Максима/images/item-2.png">
-      <publishTime>04/08/2020 02:26:32</publishTime>
+      <publishTime>08/04/2020 02:26:32</publishTime>
     </File>
     <File Include="Верстка Максима/images/item-3.png">
-      <publishTime>04/08/2020 02:26:32</publishTime>
+      <publishTime>08/04/2020 02:26:32</publishTime>
     </File>
     <File Include="Верстка Максима/images/item-4.png">
-      <publishTime>04/08/2020 02:26:33</publishTime>
+      <publishTime>08/04/2020 02:26:33</publishTime>
     </File>
     <File Include="Верстка Максима/images/item-5.png">
-      <publishTime>04/08/2020 02:26:33</publishTime>
+      <publishTime>08/04/2020 02:26:33</publishTime>
     </File>
     <File Include="Верстка Максима/images/item-6.png">
-      <publishTime>04/08/2020 02:26:33</publishTime>
+      <publishTime>08/04/2020 02:26:33</publishTime>
     </File>
     <File Include="Верстка Максима/images/item-7.png">
-      <publishTime>04/08/2020 02:26:33</publishTime>
+      <publishTime>08/04/2020 02:26:33</publishTime>
     </File>
     <File Include="Верстка Максима/images/item-8.png">
-      <publishTime>04/08/2020 02:26:33</publishTime>
+      <publishTime>08/04/2020 02:26:33</publishTime>
     </File>
     <File Include="Верстка Максима/images/logo-counter1.png">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -3559,25 +3568,25 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/images/none.png">
-      <publishTime>06/08/2020 03:53:33</publishTime>
+      <publishTime>08/06/2020 03:53:33</publishTime>
     </File>
     <File Include="Верстка Максима/images/user-iamge.png">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/js/.DS_Store">
-      <publishTime>01/08/2020 17:32:16</publishTime>
+      <publishTime>08/01/2020 17:32:16</publishTime>
     </File>
     <File Include="Верстка Максима/js/bootstrap.min.js">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/js/chernovik.js">
-      <publishTime>08/09/2020 20:40:15</publishTime>
+      <publishTime>09/08/2020 20:40:15</publishTime>
     </File>
     <File Include="Верстка Максима/js/common.js">
-      <publishTime>08/09/2020 18:53:22</publishTime>
+      <publishTime>09/08/2020 18:53:22</publishTime>
     </File>
     <File Include="Верстка Максима/js/companies.js">
-      <publishTime>08/09/2020 22:02:05</publishTime>
+      <publishTime>09/08/2020 22:02:05</publishTime>
     </File>
     <File Include="Верстка Максима/js/dealcard.js">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -3592,25 +3601,25 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/js/Favoutites.js">
-      <publishTime>08/09/2020 20:36:57</publishTime>
+      <publishTime>09/08/2020 20:36:57</publishTime>
     </File>
     <File Include="Верстка Максима/js/jquery.min.js">
-      <publishTime>02/05/2019 02:19:28</publishTime>
+      <publishTime>05/02/2019 02:19:28</publishTime>
     </File>
     <File Include="Верстка Максима/js/lk-main.js">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/js/main.js">
-      <publishTime>02/08/2020 01:50:43</publishTime>
+      <publishTime>08/02/2020 01:50:43</publishTime>
     </File>
     <File Include="Верстка Максима/js/mini-chat.js">
-      <publishTime>04/09/2020 16:11:51</publishTime>
+      <publishTime>09/04/2020 16:11:51</publishTime>
     </File>
     <File Include="Верстка Максима/js/MyResponse.js">
-      <publishTime>03/09/2020 02:00:29</publishTime>
+      <publishTime>09/03/2020 02:00:29</publishTime>
     </File>
     <File Include="Верстка Максима/js/MyResponses.js">
-      <publishTime>03/09/2020 19:15:03</publishTime>
+      <publishTime>09/03/2020 19:15:03</publishTime>
     </File>
     <File Include="Верстка Максима/js/newad.js">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -3625,19 +3634,19 @@
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Верстка Максима/js/selectinputs.js">
-      <publishTime>07/09/2020 20:10:46</publishTime>
+      <publishTime>09/07/2020 20:10:46</publishTime>
     </File>
     <File Include="Верстка Максима/js/slick.min.js">
-      <publishTime>03/10/2017 22:39:47</publishTime>
+      <publishTime>10/03/2017 22:39:47</publishTime>
     </File>
     <File Include="Верстка Максима/subscription%28alert%29.html">
-      <publishTime>04/09/2020 00:09:52</publishTime>
+      <publishTime>09/04/2020 00:09:52</publishTime>
     </File>
     <File Include="Верстка Максима/subscription%28buy%29.html">
-      <publishTime>04/09/2020 00:31:36</publishTime>
+      <publishTime>09/04/2020 00:31:36</publishTime>
     </File>
     <File Include="Верстка Максима/subscription%28test%29.html">
-      <publishTime>04/09/2020 00:26:17</publishTime>
+      <publishTime>09/04/2020 00:26:17</publishTime>
     </File>
     <File Include="Верстка Максима/User/Companies%28client%29.html">
       <publishTime>09/09/2020 19:37:55</publishTime>
@@ -3664,7 +3673,7 @@
       <publishTime>09/09/2020 19:38:15</publishTime>
     </File>
     <File Include="Верстка Максима/User/Login.html">
-      <publishTime>04/09/2020 18:34:56</publishTime>
+      <publishTime>09/04/2020 18:34:56</publishTime>
     </File>
     <File Include="Верстка Максима/User/MyAds.html">
       <publishTime>09/09/2020 19:38:30</publishTime>
@@ -3688,7 +3697,7 @@
       <publishTime>09/09/2020 19:38:58</publishTime>
     </File>
     <File Include="Верстка Максима/User/SignUp.html">
-      <publishTime>04/09/2020 18:35:23</publishTime>
+      <publishTime>09/04/2020 18:35:23</publishTime>
     </File>
   </ItemGroup>
 </Project>

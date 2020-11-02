@@ -1101,6 +1101,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\User\VerificationEmail.cshtml" />
     <Content Include="Views\User\ResetPassword.cshtml" />
+    <Content Include="Views\Shared\_LayoutWithoutNav.cshtml" />
     <None Include="Views\User\MyProfile.cshtml" />
     <Content Include="Views\User\UpdateEmail.cshtml" />
   </ItemGroup>
