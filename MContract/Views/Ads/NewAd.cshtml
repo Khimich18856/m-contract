@@ -55,10 +55,10 @@
                         <div class="col-sm-12">
                             <div class="c__offer-title">
                                 <div class="title">
-                                    Продажа
+                                    @(Model.IsBuy ? "Покупка" : "Продажа")
                                 </div>
                                 <div class="company">
-                                    <span>открытый запрос предложений</span>
+                                    @(Model.AvailableForAllUsers ? "открытый запрос предложений":"закрытый запрос предложений")
                                 </div>
                             </div>
                         </div>
@@ -141,22 +141,27 @@
                                     <div class="title">
                                         Цена
                                     </div>
-                                    <div class="text-select not-first">
-                                        <input type="number" placeholder="Цена" required>
+                                    <div class="text-select ndsContainer">
+                                        <span class="cat-span category-btn">Не выбрано</span>
+                                        <ul class="filter-item-list closed nds">
+                                            <li name="nds" value="0">Не выбрано</li>
+                                            <li name="nds" value="1">С НДС</li>
+                                            <li name="nds" value="2">Без НДС</li>
+                                        </ul>
                                     </div>
                                 </div>
                                 <div class="offer__about-item">
                                     <div class="title">
                                         Условия оплаты
                                     </div>
-                                    <div class="text-select ndsContainer">
+                                    <div class="text-select termsOfPaymentsContainer">
                                         <span class="cat-span category-btn">Не выбрано</span>
-                                        <ul class="filter-item-list closed Nds">
-                                            <li name="Nds" value="0">Не выбрано</li>
-                                            <li name="Nds" value="1">Отсрочка платежа</li>
-                                            <li name="Nds" value="2">100% предоплата</li>
-                                            <li name="Nds" value="3">Частичная предоплата</li>
-                                            <li name="Nds" value="4">По факту поставки</li>
+                                        <ul class="filter-item-list closed termsOfPayments">
+                                            <li name="termsOfPayments" value="0">Не выбрано</li>
+                                            <li name="termsOfPayments" value="1">Отсрочка платежа</li>
+                                            <li name="termsOfPayments" value="2">100% предоплата</li>
+                                            <li name="termsOfPayments" value="3">Частичная предоплата</li>
+                                            <li name="termsOfPayments" value="4">По факту поставки</li>
                                         </ul>
                                     </div>
 
@@ -165,7 +170,7 @@
                                     <div class="title">
                                         Подача предложений по части позиций:
                                     </div>
-                                    <div class="text-select check-box-text">
+                                    <div class="text-select check-box-text partOffersAllowedContainer">
                                         <input type="checkbox" class="offer-check" name="yes" id="offerSend">
                                         <label for="offerSend">
                                         </label>
@@ -368,19 +373,48 @@
                                     <td class="pricePerWeightContainer">
                                         <input type="text" placeholder="Цена">
                                     </td>
-                                    <td class="delete"></td>
-                                </tr>
-                                <tr>
-                                    <td class="add addProduct">
+                                    <td>
+                                        <button class="removeProduct">x</button>
                                     </td>
+                                </tr>
+                                <tr class="tipsRow">
                                     <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td colspan="5" class="tipsContainer">
+                                        <div class="needContainer categoryNeedContainer">
+                                            <span>Поле "Категория" обязательно для заполнения</span>
+                                        </div>
+                                        <div class="invalidContainer categoryInvalidContainer">
+                                            <span></span>
+                                        </div>
+                                        <div class="needContainer specificCategoryNeedContainer">
+                                            <span></span>
+                                        </div>
+                                        <div class="invalidContainer specificCategoryInvalidContainer">
+                                            <span>Необходимо указать или удалить точное наименование</span>
+                                        </div>
+                                        <div class="needContainer weightNeedContainer">
+                                            <span>Поле "Вес" обязательно для заполнения</span>
+                                        </div>
+                                        <div class="invalidContainer weightInvalidContainer">
+                                            <span></span>
+                                        </div>
+                                        <div class="needContainer currencyNeedContainer">
+                                            <span>Поле "Валюта" обязательно для заполнения</span>
+                                        </div>
+                                        <div class="invalidContainer currencyInvalidContainer">
+                                            <span></span>
+                                        </div>
+                                        <div class="needContainer pricePerWeightNeedContainer">
+                                            <span></span>
+                                        </div>
+                                        <div class="invalidContainer pricePerWeightInvalidContainer">
+                                            <span></span>
+                                        </div>
+                                    </td>
                                     <td></td>
                                 </tr>
                             </table>
+                            <button class="addProduct">+</button>
                         </div>
                         <div class="col-sm-12 mobile__off">
                             <div class="offer__position-item">
@@ -399,7 +433,7 @@
                                 <div class="item-title description">
                                     Описание
                                 </div>
-                                <div class="offer__position-block">
+                                <div class="offer__position-block adDescriptionContainer">
                                     <div class="offer__position-block-item input-item">
                                         <textarea name="" id="">Тестовый текст комментария для образца и показа стиля  в макете.</textarea>
                                     </div>
@@ -489,7 +523,6 @@
 
         var productRowId = 0;
         $(".addProduct").on("click", function () {
-
             var productNumber = parseInt($.trim($(".productNumber").last().html())) + 1;
             productRowId++;
             var row = $(".productDetails tr").eq(1).add($(".productDetails tr").eq(2));
@@ -849,7 +882,7 @@
         });
 
         $(".finalizeAd").click(function () {
-            console.log("meow");
+            //console.log("meow");
             var inputsValidated = [];
             /*inputsValidated.push(checkCity($(".adDetails .mb-1 .cityContainer")));*/
             if ($(".adDetails .deliveryAddressRow").is(":visible")) {
@@ -869,7 +902,7 @@
                 inputsValidated.push(checkSpecificCategory($(row).find(".specificCategoryContainer")));
                 inputsValidated.push(checkWeight($(row).find(".weightContainer")));
             });
-            console.log(inputsValidated);
+            //console.log(inputsValidated);
             if (inputsValidated.every(Boolean)) {
                 var adSenderId = parseInt(@(Model.PersonalAreaUser?.Id));
                 /*var adActiveToDate = new Date($.now());
@@ -893,15 +926,15 @@
                         adNds.push(Boolean(0));
                     }
                 });*/
-                var adDeliveryTypeId = parseInt($(".deliveryTypeContainer option:selected").val());
+                var adDeliveryTypeId = parseInt($(".deliveryTypeContainer .selected").val());
                 var adDeliveryAddress;
                 if ($(".isBuyHf").val() == "true") {
                     adDeliveryAddress = $(".deliveryAddressContainer input").val();
                 }
-                var adDeliveryLoadTypeId = parseInt($(".deliveryLoadTypeContainer option:selected").val());
-                var adDeliveryWayId = parseInt($(".deliveryWayContainer option:selected").val());
-                var adNds = parseInt($(".ndsContainer option:selected").val());
-                var adTermsOfPaymentsId = parseInt($(".termsOfPaymentsContainer option:selected").val());
+                var adDeliveryLoadTypeId = parseInt($(".deliveryLoadTypeContainer .selected").val());
+                var adDeliveryWayId = parseInt($(".deliveryWayContainer .selected").val());
+                var adNds = parseInt($(".ndsContainer .selected").val());
+                var adTermsOfPaymentsId = parseInt($(".termsOfPaymentsContainer .selected").val());
                 var adDefermentPeriod = parseInt($(".defermentPeriodContainer input").val());
                 var adPartOffersAllowed = Boolean($(".partOffersAllowedContainer input:checked").val());
                 var adIsBuy = $(".isBuyHf").val() == "true" ? true : false;
